@@ -18,7 +18,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
 <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
 <div class="flex flex-col gap-1 text-white">
     <p>Halo Sahabat Investa,</p>
-    <h1 class="font-bold text-sm leading-[20px] ">Temukan Property Impian Kamu</h1>
+    <h1 class="font-bold text-sm leading-[20px] ">Temukan Property Impian Kamu aaaa</h1>
 </div>
 <a href="#" class="flex justify-center items-center w-20 h-20 overflow-hiddenrounded-full shrink-0">
     <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[60px] h-[60px]" alt="icon">
