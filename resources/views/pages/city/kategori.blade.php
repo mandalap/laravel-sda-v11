@@ -61,23 +61,23 @@
                         <div class="flex gap-4 justify-between items-center px-4">
                             <div class="title flex flex-col gap-[6px]">
                                 <div class="flex gap-1 items-center">
-                                    <h1 class="font-semibold w-fit">{{ $city->regency->name }}</h1>
+                                    <h2 class="font-semibold w-fit">{{ $city->regency->name }}</h2>
                                 </div>
                                 <div class="flex items-center gap-[2px]">
                                     <div class="flex w-4 h-4 shrink-0">
                                         <img src="{{ asset('assets/images/icons/location.svg') }}" alt="icon">
                                     </div>
-                                    <p class="text-sm leading-[21px] text-[#909DBF]">{{ $city->province->name }}</p>
+                                    <p class="text-xs leading-[21px] text-[#909DBF]">{{ $city->province->name }}</p>
                                 </div>
                             </div>
                             <div class="rating flex flex-col gap-[6px]">
                                 <div class="flex items-center justify-end text-right gap-[6px]">
-                                    <h1 class="font-semibold w-fit">
+                                    <h2 class="font-semibold w-fit">
                                         {{ $city->project->count() }} Project
-                                    </h1>
+                                    </h2>
                                 </div>
                                 <div class="flex items-center justify-end text-right gap-[2px]">
-                                    <p class="text-sm leading-[21px] text-[#909DBF]">
+                                    <p class="text-xs leading-[21px] text-[#909DBF]">
                                         {{ $city->jumlah_produk_tersedia }} Properti
                                     </p>
                                 </div>

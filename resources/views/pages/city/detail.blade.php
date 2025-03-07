@@ -19,11 +19,11 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
             class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
             <img src="{{asset('assets/images/icons/arrow-left.svg')}}" class="w-[28px] h-[28px]" alt="icon">
         </a>
-        <h3 class="text-lg font-bold text-white">Lokasi Properti</h3>
+        <h3 class="text-lg font-bold text-white">List Properti</h3>
         <div class="w-10 dummy-btn"></div>
     </div>
     <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
-        <h1 class="font-bold text-[20px] leading-[30px] text-white">{{ $city->regency->name }}</h1>
+        <h2 class="font-bold text-[20px] leading-[30px] text-white">{{ $city->regency->name }}</h2>
         <p class="text-white">{{ $city->project->count() }} Project Ditemukan</p>
     </div>
     <form action="" class="flex relative z-10 flex-col gap-6 mt-6">
@@ -51,23 +51,34 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
                 <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
+                    <div class="relative">
+                        <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
+                            Turun Harga
+                        </button>
+                        <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
+                    </div>
                 </div>
                 <div class="flex flex-col gap-3 w-full">
-                    <h3 class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}</h3>
+                    <h3 class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}</h3>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-sm text-ngekos-grey">{{ $city->regency->name }}</p>
+                        <p class="text-xs text-ngekos-grey">{{ $city->regency->name }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-sm text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
+                        <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
                     </div>
                     <hr class="border-[#F1F2F6]">
-                    <p class="font-semibold text-lg text-[#d40065]">
-                        Rp {{ number_format($project->project_product->min('harga')) }}
-                    </p>
+                    @php
+                        $harga = $project->project_product->min('harga');
+                        $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
+                        $harga_setelah_diskon = $harga - $diskon;
+                    @endphp
+                    <div class="flex">
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
+                        <p class="ml-2 text-[0.625rem] font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
+                    </div>
                 </div>
             </div>
         </a>
