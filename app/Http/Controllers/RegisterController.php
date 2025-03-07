@@ -19,11 +19,20 @@ class RegisterController extends Controller
 {
     //
 
-    public function login()
+    public function login(Request $request)
     {
-        if (Auth::guard('member')->check()) {
-            return redirect()->route('beranda'); // Redirect langsung ke beranda jika sudah login
+        \Illuminate\Support\Facades\Log::info('Auth status: ', ['member_auth' => Auth::guard('member')->check()]);
+
+        // Regenerate session jika ada indikasi baru logout
+        if ($request->session()->has('just_logged_out')) {
+            $request->session()->forget('just_logged_out');
+            return view('pages.register.login');
         }
+
+        if (Auth::guard('member')->check()) {
+            return redirect()->route('beranda');
+        }
+
         return view('pages.register.login');
     }
 

@@ -4,17 +4,17 @@
 @endsection
 
 @push('prepend-style')
-<style>
-    .no-outline {
-    outline: none;
-}
-</style>
+    <style>
+        .no-outline {
+            outline: none;
+        }
+    </style>
 @endpush
 @push('addon-style')
 @endpush
 
 @section('content')
-<div id="Content-Container"
+    <div id="Content-Container"
         class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
         <div id="Background"
             class="absolute top-0 w-full h-[430px] rounded-b-[75px] bg-gradient-to-t from-[#a7006d] to-[#d40065]">
@@ -32,8 +32,8 @@
                         <p class="font-semibold">Booking ID</p>
                         <label
                             class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/note-favorite-grey.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
+                            <img src="{{ asset('assets/images/icons/note-favorite-grey.svg') }}"
+                                class="flex w-5 h-5 shrink-0" alt="icon">
                             <input type="text" name="" id=""
                                 class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                                 placeholder="Masukkan Booking ID">
@@ -43,7 +43,8 @@
                         <p class="font-semibold">Nomor Telepon</p>
                         <label
                             class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
+                            <img src="{{ asset('assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0"
+                                alt="icon">
                             <input type="tel" name="" id=""
                                 class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                                 placeholder="Masukkan Nomor Telepon">
@@ -51,7 +52,8 @@
                     </div>
 
                     <button type="submit"
-                        class="flex w-full justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white">Lihat Booking Kamu</button>
+                        class="flex w-full justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white">Lihat
+                        Booking Kamu</button>
                 </div>
             </form>
         </div>
@@ -59,5 +61,3 @@
         @include('includes.footer')
     </div>
 @endsection
-
-
