@@ -51,26 +51,25 @@
 
         <main id="Details" class="relative flex flex-col rounded-t-[40px] py-5 pb-[10px] gap-4 bg-white z-10">
             <div id="Title" class="flex gap-2 justify-between items-center px-5">
-                <h1 class="font-bold text-[22px] leading-[33px]">{{ $project->nama_project }}</h1>
-
+                <h2 class="font-bold text-lg leading-[33px]">{{ $project->nama_project }}</h2>
             </div>
             <hr class="border-[#F1F2F6] mx-5">
             <div id="Features" class="grid grid-cols-2 gap-x-[10px] gap-y-4 px-5">
                 <div class="flex items-center gap-[6px]">
                     <img src="{{ asset('assets/images/icons/location.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
-                    <p class="text-sm text-grey">{{ $project->lokasi->regency->name }}</p>
+                    <p class="text-xs text-grey">{{ $project->lokasi->regency->name }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
                     <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
-                    <p class="text-sm text-grey">{{ $project->kategori->kategori }}</p>
+                    <p class="text-xs text-grey">{{ $project->kategori->kategori }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
                     <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
-                    <p class="text-sm text-grey">Terisa {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit</p>
+                    <p class="text-xs text-grey">Terisa {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
                     <img src="{{ asset('assets/images/icons/shield-tick.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
-                    <p class="text-sm text-grey">Terverikasi</p>
+                    <p class="text-xs text-grey">Terverikasi</p>
                 </div>
             </div>
             <hr class="border-[#F1F2F6] mx-5">
@@ -187,15 +186,15 @@
         <div id="BottomNav" class="relative flex w-full h-[138px] shrink-0">
             <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
                 <div class="flex items-center justify-between rounded-[40px] py-4 px-6 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-                    <p class="font-bold text-lg leading-[30px] text-white">
+                    <p class="font-bold text-sm leading-[30px] text-white">
                         Rp 100.000
                     </p>
                     @if ($project->project_product->where('status', 'Tersedia')->count() == '0')
                         <a href="#"
-                            class="flex shrink-0 rounded-full py-[14px] px-5 bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Tidak tersedia</a>
+                            class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Tidak tersedia</a>
                     @else
                     <a href="{{ route('custinfo', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
-                        class="flex shrink-0 rounded-full py-[14px] px-5 bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Booking Sekarang</a>
+                        class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Booking Sekarang</a>
                     @endif
                 </div>
             </div>

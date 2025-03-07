@@ -155,4 +155,14 @@ class ProfilController extends Controller
 
         return redirect('login');
     }
+
+    public function edit()
+    {
+        return view('pages.profil.edit');
+    }
+
+    public function password()
+    {
+        return view('pages.profil.password');
+    }
 }
