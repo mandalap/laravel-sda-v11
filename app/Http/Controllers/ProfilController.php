@@ -11,4 +11,14 @@ class ProfilController extends Controller
     {
         return view('pages.profil.index');
     }
+
+    public function edit()
+    {
+        return view('pages.profil.edit');
+    }
+
+    public function password()
+    {
+        return view('pages.profil.password');
+    }
 }

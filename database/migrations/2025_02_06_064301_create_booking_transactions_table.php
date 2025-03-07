@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('diskon');
             $table->unsignedBigInteger('total_harga');
             $table->boolean('is_paid');
-            $table->string('status')->nullable(); /// Booking, Pending, Dibayar
+            $table->string('status')->nullable(); /// Booking, Pending, Cancel
             $table->softDeletes();
             $table->timestamps();
         });

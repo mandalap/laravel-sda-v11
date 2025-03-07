@@ -35,17 +35,17 @@
                         <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
                     </div>
                     <div class="flex flex-col gap-3 w-full">
-                        <p class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">
+                        <p class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">
                             {{ $project->nama_project }}
                         </p>
                         <hr class="border-[#F1F2F6]">
                         <div class="flex items-center gap-[6px]">
                             <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                            <p class="text-sm text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
+                            <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                         </div>
                         <div class="flex items-center gap-[6px]">
                             <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                            <p class="text-sm text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti</p>
+                            <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti</p>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
 
 
 
-                <div class="flex flex-col gap-2">
+                {{-- <div class="flex flex-col gap-2">
                     <p class="px-5 font-semibold">Pilih Properti</p>
                     <div class="overflow-x-hidden w-full swiper">
                         <div class="swiper-wrapper">
@@ -114,11 +114,29 @@
                                 <label class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] transition-all duration-300">
                                     <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="w-8 h-8" alt="icon">
                                     <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
-                                    <input type="radio" name="product" class="absolute top-1/2 left-1/2 opacity-0 -z-10" value="{{ $product->slug }}" required onchange="updateCodeProduct('{{ $product->code_product }}')">
+                                    <input type="radio" name="product" class="absolute top-1/2 left-1/2 opacity-0 -z-10" value="{{ $product->slug }}" required >
                                 </label>
                             </div>
                             @empty
                             <p class="px-5 font-semibold">Tidak ada properti tersedia</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="flex flex-col gap-2">
+                    <p class="px-5 font-semibold">Pilih Properti</p>
+                    <div class="w-full overflow-x-hidden swiper">
+                        <div class="swiper-wrapper">
+                            @forelse ($products as $product)
+                            <div class="swiper-slide !w-fit py-[2px]">
+                                <label
+                                    class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
+                                    <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="w-8 h-8" alt="icon">
+                                    <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
+                                    <input type="radio" name="product" class="absolute opacity-0 top-1/2 left-1/2 -z-10" value="{{ $product->slug }}" onchange="updateCodeProduct('{{ $product->code_product }}')" required>
+                                </label>
+                            </div>
+                            @empty
                             @endforelse
                         </div>
                     </div>
@@ -129,7 +147,7 @@
                 <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
                     <div class="flex items-center justify-between rounded-[40px] py-4 px-6 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
                         <div class="flex flex-col gap-[2px]">
-                            <p id="price" class="font-bold text-lg leading-[30px] text-white">
+                            <p id="price" class="font-bold text-sm leading-[30px] text-white">
                                 <!-- price dari js -->
                             </p>
                             <span class="text-sm text-white">Total Booking</span>
@@ -138,7 +156,7 @@
                             </p>
                         </div>
                         <button type="submit"
-                            class="flex shrink-0 rounded-full py-[14px] px-5 bg-white hover:bg-black hover:text-white font-bold text-black">
+                            class="flex shrink-0 text-sm rounded-full py-[14px] px-5 bg-white hover:bg-black hover:text-white font-bold text-black">
                             Lanjutkan
                         </button>
                     </div>
@@ -149,4 +167,5 @@
 @endsection
 
 @push('addon-script')
+<script src="{{ asset('js/cust-info.js') }}"></script>
 @endpush

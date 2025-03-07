@@ -32,5 +32,13 @@ Route::post('/checkout/{project}', [DetailsController::class, 'checkout'])->name
 
 // Profil
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+Route::get('/edit-profil', [ProfilController::class, 'edit'])->name('editprofil');
+Route::get('/password', [ProfilController::class, 'password'])->name('password');
+
+// Cek Booking
 Route::get('/check-booking', [CekBookingController::class, 'index'])->name('check-booking');
+Route::post('/cari-booking', [CekBookingController::class, 'caribooking'])->name('cari-booking');
+
+// Cari
 Route::get('/cari-properti', [PencarianController::class, 'index'])->name('cara-properti');
+Route::post('/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
