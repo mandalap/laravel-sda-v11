@@ -1,17 +1,13 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\CekBookingController;
 use App\Http\Controllers\DetailsController;
 use App\Http\Controllers\ListCityController;
 use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
-use Illuminate\Support\Facades\Route;
-
-
-
-// Beranda
-Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
 
 
 /// List City
@@ -41,4 +37,21 @@ Route::post('/cari-booking', [CekBookingController::class, 'caribooking'])->name
 
 // Cari
 Route::get('/cari-properti', [PencarianController::class, 'index'])->name('cara-properti');
+
+Route::middleware('auth:member')->group(function () {
+    // Beranda
+    Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
+
+    // profil
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+    Route::get('/profil-detail', [ProfilController::class, 'detail'])->name('detail.profil');
+    Route::put('/profil-update', [ProfilController::class, 'updateProfil'])->name('update.profil');
+    Route::get('/password', [ProfilController::class, 'password'])->name('index.password');
+    Route::put('/password-update', [ProfilController::class, 'updatePassword'])->name('update.password');
+});
+
+Route::get('/test', function () {
+    return view('test');
+});
+require __DIR__ . '/auth.php';
 Route::post('/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
