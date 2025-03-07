@@ -41,13 +41,6 @@ class ProfilController extends Controller
         return view('pages.profile.password', []);
     }
 
-    public function edit(Request $request): View
-    {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
-
     public function updatePassword(Request $request)
     {
         try {
@@ -156,13 +149,5 @@ class ProfilController extends Controller
         return redirect('login');
     }
 
-    public function edit()
-    {
-        return view('pages.profil.edit');
-    }
 
-    public function password()
-    {
-        return view('pages.profil.password');
-    }
 }
