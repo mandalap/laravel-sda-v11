@@ -17,6 +17,7 @@ Route::get('/lihat-semua', [ListCityController::class, 'lihat'])->name('lihatsem
 
 Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');
 Route::get('/properti', [ListCityController::class, 'properti'])->name('properti');
+Route::post('/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
 
 /// Details
 Route::get('/{jenis}/{kategori}/{project}', [DetailsController::class, 'index'])->name('detailproject');
@@ -44,7 +45,7 @@ Route::middleware('auth:member')->group(function () {
 
     // profil
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
-    Route::get('/profil-detail', [ProfilController::class, 'detail'])->name('detail.profil');
+    Route::get('/profil-edit', [ProfilController::class, 'detail'])->name('detail.profil');
     Route::put('/profil-update', [ProfilController::class, 'updateProfil'])->name('update.profil');
     Route::get('/password', [ProfilController::class, 'password'])->name('index.password');
     Route::put('/password-update', [ProfilController::class, 'updatePassword'])->name('update.password');
@@ -54,4 +55,4 @@ Route::get('/test', function () {
     return view('test');
 });
 require __DIR__ . '/auth.php';
-Route::post('/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
+

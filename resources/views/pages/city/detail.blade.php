@@ -33,9 +33,9 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                 <div class="w-6 h-6 flex shrink-0 mr-[6px]">
                     <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
                 </div>
-                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full bg-white outline-none" placeholder="Tuliskan nama lokasi Cth. Punggur, Sungai Raya Dalam Rasau" required>
+                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full text-sm bg-white outline-none" placeholder="Tuliskan nama lokasi Cth. Punggur, Sungai Raya Dalam Rasau" required>
                 <button type="submit"
-                        class="flex justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white">Cari</button>
+                        class="flex justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-sm">Cari</button>
             </div>
         </div>
     </form>
@@ -55,11 +55,12 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                         <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
                             Turun Harga
                         </button>
-                        <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
+                        <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
                     </div>
                 </div>
                 <div class="flex flex-col gap-3 w-full">
-                    <h3 class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}</h3>
+                    <h3 class="font-semibold text-lg ">{{ $project->nama_project }}</h3>
+                    <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
@@ -125,7 +126,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     }
 
     text_list = [
-        "Cari tanah kavling dengan nama lokasi. \"PAL\"",
+        "Cari properti dengan nama lokasi. \"PAL\"",
         "Sungai Raya",
         "Serdam",
         "Punggur",
@@ -135,7 +136,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         "Singkawang",
         "Mempawah",
         "Sambas",
-        "Cari tanah kavling dengan nama project. \"Parit Berkat\"",
+        "Cari properti dengan nama project. \"Parit Berkat\"",
         "Parit Rintis",
         "Parit Buluh",
     ];

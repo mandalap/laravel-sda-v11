@@ -21,35 +21,23 @@ class BerandaController extends Controller
                 ->where('is_approved', 'Diterima')
                 ->whereHas('project_product', function($query) {
                     $query->where('status', 'Tersedia');
-                })->get();
+                })->take(5)->get();
 
         $cities = Lokasi::limit(6)->inRandomOrder()->get();
 
-        $kavling = Project::where('status', 'tampil')
-            ->where('is_approved', 'Diterima')
-            ->whereHas('project_product', function($query) {
-                    $query->where('status', 'Tersedia');
-                })
-            ->whereHas('kategori', function($query) {
-                $query->where('slug', 'tanah-kavling');  // Pastikan kolom kategori sesuai
-                })
-            ->get();
-
-        $rumah = Project::where('status', 'tampil')
-            ->where('is_approved', 'Diterima')
-            ->whereHas('project_product', function($query) {
-            $query->where('status', 'Tersedia');
-            })
-            ->whereHas('kategori', function($query) {
-                $query->where('slug', 'rumah');  // Pastikan kolom kategori sesuai
-                })
-            ->get();
+        // $kavling = Project::where('status', 'tampil')
+        //     ->where('is_approved', 'Diterima')
+        //     ->whereHas('project_product', function($query) {
+        //             $query->where('status', 'Tersedia');
+        //         })
+        //     ->whereHas('kategori', function($query) {
+        //         $query->where('slug', 'tanah-kavling');
+        //     })
+        //     ->get();
 
         return view('pages.beranda.index', compact(
             'projects',
             'cities',
-            'kavling',
-            'rumah',
             'kategories',
             'kelompoks',
             'kota',
