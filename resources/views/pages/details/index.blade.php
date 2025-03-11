@@ -40,7 +40,7 @@
                 @empty
                 <div class="swiper-slide !w-fit">
                     <div class="flex shrink-0 w-[320px] h-[430px] overflow-hidden">
-                        <img src="{{ $photo->url }}" class="object-cover w-full h-full"
+                        <img src="" class="object-cover w-full h-full"
                             alt="gallery thumbnails">
                     </div>
                 </div>
