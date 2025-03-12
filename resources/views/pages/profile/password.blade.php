@@ -29,7 +29,7 @@
                 <img src="{{ asset('storage/' . Auth::user()->thumbnail) }}"
                     class="w-20 h-20 rounded-full border border-dark" alt="icon">
             @else
-                <img src="{{ asset('/assets/images/icons/Default-User.png') }}"
+                <img src="{{ asset('/assets/images/icons/profil-default.png') }}"
                     class="w-20 h-20 rounded-full border border-dark" alt="Default thumbnail">
             @endif
         </div>
@@ -89,7 +89,9 @@
                 </label>
             </div>
 
-            <button type="submit" class="bg-[#d40065] text-white p-3 rounded-lg mt-4">Simpan Perubahan</button>
+            <button type="submit"
+                class="flex w-full justify-center rounded-full p-[10px_20px] bg-[#d40065] hover:bg-black hover:text-white font-bold text-white">Simpan
+                Perubahan</button>
         </div>
     </form>
     @include('includes.footer')
