@@ -23,7 +23,6 @@
         <div class="w-10 dummy-btn"></div>
     </div>
 
-
     <form action="{{ route('update.profil') }}" method="POST" enctype="multipart/form-data"
         class="relative flex flex-col px-5 mt-[18px]">
         @csrf
@@ -45,8 +44,7 @@
                 <p class="font-semibold text-sm">Nomor WhatsApp</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0"
-                        alt="icon">
+                    <img src="{{ asset('/assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                     <input type="number" name="telepon" value="{{ $member->telepon }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Nomor WhatsApp">
@@ -72,8 +70,7 @@
                 <p class="font-semibold text-sm">Email</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/sms.svg') }}" class="flex w-5 h-5 shrink-0"
-                        alt="icon">
+                    <img src="{{ asset('/assets/images/icons/sms.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                     <input type="text" name="email" value="{{ $member->email }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Email">

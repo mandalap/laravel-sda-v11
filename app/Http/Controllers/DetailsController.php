@@ -9,6 +9,8 @@ use App\Models\Project;
 use App\Models\ProjectFasilitas;
 use App\Models\ProjectPhoto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class DetailsController extends Controller
 {
@@ -29,11 +31,12 @@ class DetailsController extends Controller
 
     public function custinfo($jenis, $kategori, $project)
     {
+        $member = Auth::guard('member')->user();
         $jenis = Jenis::where('slug', $jenis)->firstOrFail();
         $kategori = Kategori::where('slug', $kategori)->firstOrFail();
         $project = Project::where("slug", $project)->firstOrFail();
         $products = Product::where('project_id', $project->id)->get();
-        return view("pages.details.cust-info", compact('project', 'products', 'kategori'));
+        return view("pages.details.cust-info", compact('project', 'products', 'kategori', 'member'));
     }
 
     public function checkout(Request $request, $project)
