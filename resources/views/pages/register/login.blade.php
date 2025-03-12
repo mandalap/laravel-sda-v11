@@ -21,7 +21,7 @@
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Nomor WhatsApp</label>
                     <input type="text" name="telepon" value="{{ old('telepon') }}"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#058E2A] focus:border-[#058E2A]"
+                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
                         placeholder="Masukkan Nomor WhatsApp" required />
                     @error('telepon')
                         <p class="text-sm text-red-500">{{ $message }}</p>
@@ -30,7 +30,7 @@
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
                     <input type="password" name="password"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#058E2A] focus:border-[#058E2A]"
+                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
                         placeholder="••••••••" required />
                     @error('password')
                         <p class="text-sm text-red-500">{{ $message }}</p>
@@ -39,22 +39,22 @@
 
                 <div class="flex justify-between items-center">
                     <label class="flex items-center">
-                        <input type="checkbox" class="text-[#058E2A] rounded border-gray-300 focus:ring-[#058E2A]" />
+                        <input type="checkbox" class="text-[#d40065] rounded border-gray-300 focus:ring-[#d40065]" />
                         <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
                     </label>
-                    <a href="{{ route('lupapassword') }}" class="text-sm text-[#058E2A] hover:text-black">Lupa
+                    <a href="{{ route('lupapassword') }}" class="text-sm text-[#d40065] hover:text-black">Lupa
                         Password?</a>
                 </div>
 
                 <button
-                    class="py-2.5 w-full font-medium text-white  bg-[#058E2A] hover:bg-green-500  rounded-lg transition-colors">
+                    class="py-2.5 w-full font-medium text-white  bg-[#d40065] hover:bg-green-500  rounded-lg transition-colors">
                     Masuk
                 </button>
             </form>
 
             <div class="mt-6 text-sm text-center text-gray-600">
                 Belum punya akun?
-                <a href="{{ route('daftar') }}" class="font-medium text-[#058E2A] hover:text-black">Daftar</a>
+                <a href="{{ route('daftar') }}" class="font-medium text-[#d40065] hover:text-black">Daftar</a>
             </div>
         </div>
     </div>

@@ -33,7 +33,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
             <div class="w-6 h-6 flex shrink-0 mr-[6px]">
             <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
             </div>
-            <input type="text" name="location" id="Location" class="w-full bg-white outline-none" placeholder="Masukkan nama jalan, nama kota nama daerah">
+            <input type="text" name="location" id="Location" class="w-full bg-white outline-none text-sm" placeholder="Masukkan nama jalan, nama kota nama daerah">
         </div>
         </div>
     </form>
@@ -48,14 +48,15 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
                 <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
+                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
                 </div>
                 <div class="flex flex-col gap-3 w-full">
-                    <h3 class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}</h3>
+                    <h3 class="font-semibold text-sm">{{ $project->nama_project }}</h3>
+                    <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-sm text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
+                        <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">

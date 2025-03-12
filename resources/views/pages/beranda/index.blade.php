@@ -112,12 +112,13 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
                                 Turun Harga
                             </button>
                             <div class="flex w-full h-[150px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                                <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="thumbnail">
+                                <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
                             </div>
                         </div>
 
                         <div class="flex flex-col gap-3">
-                            <h3 class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}</h3>
+                            <h3 class="font-semibold text-sm ">{{ $project->nama_project }}</h3>
+                            <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                             <hr class="border-[#F1F2F6]">
                             <div class="flex items-center gap-[6px]">
                                 <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
@@ -209,7 +210,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
         @endif
     </div>
     <div class="flex flex-col gap-4">
-        @forelse ($kavling as $kavlingterbaik)
+        @forelse ($projects->filter(function($project) { return $project->kategori->slug === 'tanah-kavling'; }) as $kavlingterbaik)
         <a href="{{ route('detailproject', [$kavlingterbaik->jenis->slug, $kavlingterbaik->kategori->slug, $kavlingterbaik->slug]) }}" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
                 <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
@@ -217,11 +218,12 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
                         <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
                             Turun Harga
                         </button>
-                        <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
+                        <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $kavlingterbaik->jenis->jenis }} {{ $kavlingterbaik->kategori->kategori }} {{ $kavlingterbaik->nama_project }} di {{ $kavlingterbaik->alamat_project }} - {{ $kavlingterbaik->lokasi->regency->name }}">
                     </div>
                 </div>
                 <div class="flex flex-col w-full gap-3">
-                    <h3 class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">{{ $kavlingterbaik->nama_project }}</h3>
+                    <h3 class="font-semibold text-sm ">{{ $kavlingterbaik->nama_project }}</h3>
+                    <p class="text-sm text-ngekos-grey">{{ $kavlingterbaik->alamat_project }}</p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
@@ -276,22 +278,23 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
     </div>
     <div class="w-full overflow-x-hidden swiper">
         <div class="swiper-wrapper">
-            @forelse ($rumah as $rumahterbaik)
+            @forelse ($projects->filter(function($project) { return $project->kategori->slug === 'rumah'; }) as $rumahterbaik)
             <div class="swiper-slide !w-fit">
                 <a href="{{ route('detailproject', [$rumahterbaik->jenis->slug, $rumahterbaik->kategori->slug, $rumahterbaik->slug]) }}" class="card">
                     <div class="flex flex-col w-[250px] shrink-0 rounded-[30px] border border-[#F1F2F6] p-4 pb-5 gap-[10px] hover:border-[#d40065] text-black transition-all duration-300">
                         <div class="relative">
                             <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
                                 Turun Harga
-                            </button>
+                        </button>
                             <div class="flex w-full h-[150px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                                <img src="{{ asset('storage/' . $rumahterbaik->thumbnail) }}" class="object-cover w-full h-full" alt="thumbnail">
+                                <img src="{{ asset('storage/' . $rumahterbaik->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $rumahterbaik->jenis->jenis }} {{ $rumahterbaik->kategori->kategori }} {{ $rumahterbaik->nama_project }} di {{ $rumahterbaik->alamat_project }} - {{ $rumahterbaik->lokasi->regency->name }}">
                             </div>
                         </div>
                         <div class="flex flex-col gap-3">
-                            <h3 class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">
+                            <h3 class="font-semibold text-sm">
                                 {{ $rumahterbaik->nama_project }}
                             </h3>
+                            <p class="text-sm text-ngekos-grey">{{ $rumahterbaik->alamat_project }}</p>
                             <hr class="border-[#F1F2F6]">
                             <div class="flex items-center gap-[6px]">
                                 <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
@@ -323,9 +326,6 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
             </div>
             @empty
             @endforelse
-
-
-
         </div>
     </div>
 </section>

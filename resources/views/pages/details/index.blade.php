@@ -21,7 +21,7 @@
                 class="flex overflow-hidden justify-center items-center w-12 h-12 rounded-full backdrop-blur-sm shrink-0 bg-white/10">
                 <img src="{{ asset('assets/images/icons/arrow-left-transparent.svg') }}" class="w-8 h-8" alt="icon">
             </a>
-            <p class="font-semibold text-white">Details</p>
+            <p class="font-semibold text-white">Detail</p>
             <button
                 class="flex overflow-hidden justify-center items-center w-12 h-12 rounded-full backdrop-blur-sm shrink-0 bg-white/10">
                 <img src="{{ asset('assets/images/icons/like.svg') }}" class="w-[26px] h-[26px]" alt="">
@@ -50,8 +50,9 @@
         </div>
 
         <main id="Details" class="relative flex flex-col rounded-t-[40px] py-5 pb-[10px] gap-4 bg-white z-10">
-            <div id="Title" class="flex gap-2 justify-between items-center px-5">
-                <h2 class="font-bold text-lg leading-[33px]">{{ $project->nama_project }}</h2>
+            <div id="Title" class="flex flex-col gap-2  px-5">
+                <h2 class="font-bold text-sm">{{ $project->nama_project }}</h2>
+                <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
             </div>
             <hr class="border-[#F1F2F6] mx-5">
             <div id="Features" class="grid grid-cols-2 gap-x-[10px] gap-y-4 px-5">
