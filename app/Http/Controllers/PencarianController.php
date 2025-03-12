@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Lokasi;
 use App\Models\Product;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -26,16 +27,19 @@ class PencarianController extends Controller
         $lokasi = $request->lokasi;
 
         // Buat query dasar
-        $query = Product::with(['project.lokasi']);
+        $query = Project::with(['lokasi']);
 
         // Tambahkan kondisi pencarian berdasarkan nama
         if (!empty($nama)) {
-            $query->where('nama_product', 'like', '%' . $nama . '%');
+            $query->where(function($query) use ($nama) {
+                $query->where('nama_project', 'like', '%' . $nama . '%')
+                      ->orWhere('alamat_project', 'like', '%' . $nama . '%');
+            });
         }
 
         // Tambahkan kondisi pencarian berdasarkan lokasi
         if (!empty($lokasi)) {
-            $query->orWhereHas('project.lokasi', function($query) use ($lokasi) {
+            $query->orWhereHas('lokasi', function($query) use ($lokasi) {
                 $query->where('regency_id', $lokasi);
             });
         }

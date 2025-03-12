@@ -21,24 +21,24 @@
                 @csrf
                 <div id="InputContainer" class="flex flex-col gap-[18px]">
                     <div class="flex flex-col gap-2 w-full">
-                        <p class="font-semibold">Nama Properti</p>
+                        <p class="font-semibold text-sm">Nama Properti</p>
                         <label
-                            class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#058E2A] transition-all duration-300">
+                            class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                             <img src="{{ asset('assets/images/icons/note-favorite-grey.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <input type="text" name="nama" id="nama" value="{{ old('nama') }}"
-                                class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
+                                class="w-full text-sm font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                                 placeholder="Masukkan nama properti">
                         </label>
                     </div>
                     <div class="flex flex-col gap-2 w-full">
-                        <p class="font-semibold">Pilih Lokasi</p>
+                        <p class="font-semibold text-sm">Pilih Lokasi</p>
                         <label
-                            class="relative flex items-center w-full rounded-full p-[10px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#058E2A] transition-all duration-300">
+                            class="relative flex items-center w-full rounded-full p-[10px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                             <img src="{{ asset('assets/images/icons/location.svg') }}"
                                 class="flex absolute left-5 top-1/2 w-5 h-5 transform -translate-y-1/2 shrink-0"
                                 alt="icon">
-                            <select name="lokasi" id="lokasi" class="pl-8 w-full bg-white appearance-none outline-none">
+                            <select name="lokasi" id="lokasi" class="text-sm pl-8 w-full bg-white appearance-none outline-none">
                                 <option value="" hidden>Pilih Lokasi</option>
                                 @forelse ($lokasi as $data)
                                 <option value="{{ $data->regency_id }}" {{ old('lokasi') == $data->regency_id ? 'selected' : '' }}>{{ $data->regency->name }}</option>
@@ -51,7 +51,7 @@
                     </div>
 
                     <button type="submit"
-                        class="flex w-full justify-center rounded-full p-[10px_20px] bg-[#d40065] hover:bg-black hover:text-white font-bold text-white">Cari Sekarang</button>
+                        class="text-sm flex w-full justify-center rounded-full p-[10px_20px] bg-[#d40065] hover:bg-black hover:text-white font-bold text-white">Cari Sekarang</button>
                 </div>
             </form>
         </div>
@@ -64,4 +64,54 @@
 
 @push('addon-script')
 <script src="{{ asset('js/find-kos.js') }}"></script>
+
+<script>
+    timeout_var = null;
+
+    function typeWriter(selector_target, text_list, placeholder = false, i = 0, text_list_i = 0, delay_ms = 200) {
+        if (!i) {
+            if (placeholder) {
+                document.querySelector(selector_target).placeholder = "";
+            } else {
+                document.querySelector(selector_target).innerHTML = "";
+            }
+        }
+        txt = text_list[text_list_i];
+        if (i < txt.length) {
+            if (placeholder) {
+                document.querySelector(selector_target).placeholder += txt.charAt(i);
+            } else {
+                document.querySelector(selector_target).innerHTML += txt.charAt(i);
+            }
+            i++;
+            setTimeout(typeWriter, delay_ms, selector_target, text_list, placeholder, i, text_list_i);
+        } else {
+            text_list_i++;
+            if (typeof text_list[text_list_i] === "undefined") {
+                setTimeout(typeWriter, (delay_ms * 5), selector_target, text_list, placeholder);
+            } else {
+                i = 0;
+                setTimeout(typeWriter, (delay_ms * 3), selector_target, text_list, placeholder, i, text_list_i);
+            }
+        }
+    }
+
+    text_list = [
+        "Cari properti dengan nama lokasi. \"PAL\"",
+        "Sungai Raya",
+        "Serdam",
+        "Punggur",
+        "Rasau Jaya",
+        "Pontianak",
+        "Kubu Raya",
+        "Singkawang",
+        "Mempawah",
+        "Sambas",
+        "Cari properti dengan nama project. \"Parit Berkat\"",
+        "Parit Rintis",
+        "Parit Buluh",
+    ];
+
+    return_value = typeWriter("#nama", text_list, true);
+</script>
 @endpush
