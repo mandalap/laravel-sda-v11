@@ -27,10 +27,10 @@
     <div id="Header" class="relative flex gap-2 px-5 mt-[18px]">
         <div class="flex flex-col">
             @if ($member->thumbnail)
-                <img src="{{ asset('storage/' . $member->thumbnail) }}"
-                    class="w-20 h-20 rounded-full border border-dark" alt="icon">
+                <img src="{{ asset('storage/' . $member->thumbnail) }}" class="w-20 h-20 rounded-full border border-dark"
+                    alt="icon">
             @else
-                <img src="{{ asset('/assets/images/icons/Default-User.png') }}"
+                <img src="{{ asset('/assets/images/icons/profil-default.png') }}"
                     class="w-20 h-20 rounded-full border border-dark" alt="Default thumbnail">
             @endif
         </div>
@@ -61,8 +61,7 @@
                 <p class="font-semibold">Nomor WhatsApp</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0"
-                        alt="icon">
+                    <img src="{{ asset('/assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                     <input type="number" name="telepon" value="{{ $member->telepon }}"
                         class="w-full font-semibold outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Nomor WhatsApp">
@@ -88,8 +87,7 @@
                 <p class="font-semibold">Email</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/sms.svg') }}" class="flex w-5 h-5 shrink-0"
-                        alt="icon">
+                    <img src="{{ asset('/assets/images/icons/sms.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                     <input type="text" name="email" value="{{ $member->email }}"
                         class="w-full font-semibold outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Email">
@@ -135,7 +133,9 @@
             <label class="text-lg font-semibold">Foto Profil</label>
             <input type="file" name="profile_picture" class="p-2 border rounded-lg">
 
-            <button type="submit" class="bg-[#d40065] text-white p-3 rounded-lg mt-4">Simpan Perubahan</button>
+            <button type="submit"
+                class="flex w-full justify-center rounded-full p-[10px_20px] bg-[#d40065] hover:bg-black hover:text-white font-bold text-white">Simpan
+                Perubahan</button>
         </div>
     </form>
     @include('includes.footer')
