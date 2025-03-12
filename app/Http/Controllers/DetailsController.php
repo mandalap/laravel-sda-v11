@@ -11,7 +11,6 @@ use App\Models\ProjectPhoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class DetailsController extends Controller
 {
     //
@@ -36,12 +35,22 @@ class DetailsController extends Controller
         $jenis = Jenis::where('slug', $jenis)->firstOrFail();
         $kategori = Kategori::where('slug', $kategori)->firstOrFail();
         $project = Project::where("slug", $project)->firstOrFail();
-        $products = Product::where('project_id', $project->id)->get();
-        return view("pages.details.cust-info", compact('project', 'products', 'kategori'));
+        $products = Product::where('project_id', $project->id)
+            ->where('status', 'Tersedia')
+            ->get();
+
+        // Mengurutkan di level aplikasi
+        $products = $products->sortBy(function($product) {
+            preg_match('/([A-Za-z]+)([0-9]+)/', $product->nama_product, $matches);
+            return [$matches[1], (int)$matches[2]]; // Urutkan berdasarkan huruf dan angka
+        })->values(); // Mengembalikan koleksi yang terurut
+
+        return view("pages.details.cust-info", compact('project', 'products', 'kategori', 'member'));
     }
 
     public function checkout(Request $request, $project)
     {
+      
         // Mengambil input dari request
         $nama = $request->input('nama');
         $email = $request->input('email');
@@ -49,10 +58,10 @@ class DetailsController extends Controller
 
         // Mencari project berdasarkan slug
         $project = Project::where("slug", $project)->firstOrFail();
-
-        // Mencari product berdasarkan slug yang diambil dari request
-        $product = Product::where("slug", $request->input('product'))->firstOrFail();
-
+        
+        // Mencari product berdasarkan code_product yang diambil dari request
+        $product = Product::where("code_product", $request->input('product'))->firstOrFail();
+       
         // Mengambil nilai dari input tersembunyi
         $kodeProduct = $request->input('code_product'); // Mengambil nilai dari input tersembunyi
 

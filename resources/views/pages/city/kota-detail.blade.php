@@ -27,20 +27,20 @@
     </div>
         <section id="Store-list" class="flex flex-col gap-6 px-4 mt-[60px]">
             @php
-                // Menghitung jumlah produk tersedia untuk setiap kota
+                // Menghitung jumlah produk Tersedia untuk setiap kota
                 $citiesWithProductCount = $cities->map(function ($city) {
                     $jumlahProdukTersedia = $city->project->flatMap(function ($project) {
                         return $project->project_product()->where('status', 'Tersedia')->get();
                     })->count();
 
-                    // Menambahkan jumlah produk tersedia ke objek kota
-                    $city->jumlah_produk_tersedia = $jumlahProdukTersedia;
+                    // Menambahkan jumlah produk Tersedia ke objek kota
+                    $city->jumlah_produk_Tersedia = $jumlahProdukTersedia;
 
                     return $city;
                 });
 
-                // Mengurutkan kota berdasarkan jumlah produk tersedia (descending)
-                $sortedCities = $citiesWithProductCount->sortByDesc('jumlah_produk_tersedia');
+                // Mengurutkan kota berdasarkan jumlah produk Tersedia (descending)
+                $sortedCities = $citiesWithProductCount->sortByDesc('jumlah_produk_Tersedia');
             @endphp
 {{-- {{ route('detailkategori', [$kategori->slug, $city->slug]) }} --}}
             @forelse ($sortedCities as $city)
@@ -48,7 +48,7 @@
                     <div class="flex flex-col gap-4 rounded-[20px] ring-1 ring-[#E9E8ED] pb-4 bg-white overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-[#d40065]">
                         <div class="w-full h-[120px] flex shrink-0 overflow-hidden relative">
                             <img src="{{ asset('storage/' . $city->thumbnail) }}" class="object-cover w-full h-full" alt="thumbnail">
-                            @if ($city->jumlah_produk_tersedia == 0)
+                            @if ($city->jumlah_produk_Tersedia == 0)
                                 <p class="rounded-full p-[6px_10px] bg-[#F12B3E] w-fit h-fit font-bold text-[10px] leading-[15px] text-white absolute top-4 right-4">
                                     Habis
                                 </p>
@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="flex items-center justify-end text-right gap-[2px]">
                                     <p class="text-sm leading-[21px] text-[#909DBF]">
-                                        {{ $city->jumlah_produk_tersedia }} Properti
+                                        {{ $city->jumlah_produk_Tersedia }} Properti
                                     </p>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                     </div>
                 </a>
             @empty
-                <p class="text-center">Data belum tersedia</p>
+                <p class="text-center">Data belum Tersedia</p>
             @endforelse
         </section>
 @endsection

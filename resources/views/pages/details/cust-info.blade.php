@@ -17,7 +17,7 @@
         <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
             <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
                 class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
-                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
+                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
             </a>
             <p class="font-semibold text-white">Informasi Pelanggan</p>
             <div class="w-10 dummy-btn"></div>
@@ -37,9 +37,10 @@
                             alt="icon">
                     </div>
                     <div class="flex flex-col gap-3 w-full">
-                        <p class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">
+                        <p class="text-lg font-semibold">
                             {{ $project->nama_project }}
                         </p>
+                        <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                         <hr class="border-[#F1F2F6]">
                         <div class="flex items-center gap-[6px]">
                             <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
@@ -50,6 +51,17 @@
                             <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti</p>
+                        </div>
+                        @php
+                            $harga = $project->project_product->min('harga');
+                            $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
+                            $harga_setelah_diskon = $harga - $diskon;
+                        @endphp
+
+                        <hr class="border-[#F1F2F6]">
+                        <div class="flex">
+                            <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
+                            <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp {{ number_format($harga) }}</p>
                         </div>
                     </div>
                 </div>
@@ -128,21 +140,9 @@
                                 <label class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
                                     <img src="{{ asset('assets/images/icons/real-estate.svg') }}" class="w-8 h-8" alt="icon">
                                     <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
-                                    <input type="radio" name="product" class="absolute top-1/2 left-1/2 opacity-0 -z-10" value="{{ $product->slug }}" onchange="updateCodeProduct('{{ $product->code_product }}')" required>
+                                    <input type="radio" name="product" class="absolute top-1/2 left-1/2 opacity-0 -z-10" value="{{ $product->code_product }}" onchange="updateCodeProduct('{{ $product->code_product }}')" required>
                                 </label>
                             </div>
-                                <div class="swiper-slide !w-fit py-[2px]">
-                                    <label
-                                        class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
-                                        <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="w-8 h-8"
-                                            alt="icon">
-                                        <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
-                                        <input type="radio" name="product"
-                                            class="absolute top-1/2 left-1/2 opacity-0 -z-10"
-                                            value="{{ $product->slug }}"
-                                            onchange="updateCodeProduct('{{ $product->code_product }}')" required>
-                                    </label>
-                                </div>
                             @empty
                             <p>Tidak ada produk tersedia.</p>
                             @endforelse
