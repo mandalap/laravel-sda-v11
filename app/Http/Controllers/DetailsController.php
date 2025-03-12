@@ -23,8 +23,9 @@ class DetailsController extends Controller
         $project = Project::where("slug", $project)->firstOrFail();
         $facilities = ProjectFasilitas::where('project_id', $project->id)->get();
         $photos = ProjectPhoto::where('project_id', $project->id)->get();
+        $siteplan = Product::get();
 
-        return view("pages.details.index", compact('project', 'photos', 'facilities', 'kategori'));
+        return view("pages.details.index", compact('project', 'photos', 'facilities', 'kategori', 'siteplan'));
     }
 
     public function custinfo($jenis, $kategori, $project)
@@ -32,7 +33,16 @@ class DetailsController extends Controller
         $jenis = Jenis::where('slug', $jenis)->firstOrFail();
         $kategori = Kategori::where('slug', $kategori)->firstOrFail();
         $project = Project::where("slug", $project)->firstOrFail();
-        $products = Product::where('project_id', $project->id)->get();
+        $products = Product::where('project_id', $project->id)
+            ->where('status', 'Tersedia')
+            ->get();
+
+        // Mengurutkan di level aplikasi
+        $products = $products->sortBy(function($product) {
+            preg_match('/([A-Za-z]+)([0-9]+)/', $product->nama_product, $matches);
+            return [$matches[1], (int)$matches[2]]; // Urutkan berdasarkan huruf dan angka
+        })->values(); // Mengembalikan koleksi yang terurut
+
         return view("pages.details.cust-info", compact('project', 'products', 'kategori'));
     }
 
