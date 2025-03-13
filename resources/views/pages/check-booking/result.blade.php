@@ -126,7 +126,7 @@
                 @if ($booking->status == 'Booking')
                     <p class="rounded-full p-[6px_12px] bg-[#058E2A] font-bold text-xs leading-[18px] text-white">BOOKING</p>
                 @elseif ($booking->status == 'Pending')
-                    <p class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">PENDING</p>
+                    <p class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">Pending</p>
                 @elseif ($booking->status == 'Cancel')
                     <p class="rounded-full p-[6px_12px] bg-[#d40065] font-bold text-xs leading-[18px] text-white">CANCEL</p>
                 @endif
@@ -139,7 +139,7 @@
                 @if ($booking->is_paid == '1')
                     <p class="rounded-full p-[6px_12px] bg-[#058E2A] font-bold text-xs leading-[18px] text-white">BERHASIL</p>
                 @elseif ($booking->is_paid == '0')
-                    <p class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">PENDING</p>
+                    <p class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">Pending</p>
                 @endif
             </div>
         </div>

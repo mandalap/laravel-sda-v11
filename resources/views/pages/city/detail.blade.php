@@ -43,7 +43,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     @forelse ( $projects as $project )
 
         @php
-            // Menghitung jumlah produk tersedia untuk proyek saat ini
+            // Menghitung jumlah produk Tersedia untuk proyek saat ini
             $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
         @endphp
 
@@ -85,7 +85,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         </a>
     </section>
     @empty
-        <p class="text-center">Tidak ada properti tersedia</p>
+        <p class="text-center">Tidak ada properti Tersedia</p>
     @endforelse
 
     @include('includes.footer')

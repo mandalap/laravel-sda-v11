@@ -6,6 +6,7 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
+
 @endpush
 
 @section('content')
@@ -50,8 +51,8 @@
         </div>
 
         <main id="Details" class="relative flex flex-col rounded-t-[40px] py-5 pb-[10px] gap-4 bg-white z-10">
-            <div id="Title" class="flex flex-col gap-2  px-5">
-                <h2 class="font-bold text-sm">{{ $project->nama_project }}</h2>
+            <div id="Title" class="flex flex-col gap-2 px-5">
+                <h2 class="text-sm font-bold">{{ $project->nama_project }}</h2>
                 <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
             </div>
             <hr class="border-[#F1F2F6] mx-5">
@@ -139,38 +140,17 @@
 
                     </div>
                 </div>
+
+                
                 <div id="Testimonials-Tab" class="hidden flex-col gap-5 tab-content">
                     <div class="flex flex-col gap-4">
-                        <div
-                            class="testi-card flex flex-col rounded-[22px] border border-[#F1F2F6] p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
-                            <div class="flex gap-3 items-center">
-                                <div
-                                    class="w-[70px] h-[70px] flex shrink-0 rounded-full border-4 border-white ring-1 ring-[#F1F2F6] overflow-hidden">
-                                    <img src="assets/images/photos/sami.png" class="object-cover w-full h-full"
-                                        alt="icon">
-                                </div>
-                                <div>
-                                    <p class="font-semibold">Samina Ryin</p>
-                                    <p class="mt-[2px] text-sm text-ngekos-grey">9 September 2024</p>
-                                </div>
-                            </div>
-                            <p class="leading-[26px]">Enak banget ngekos di sini sampe lupa rumah emak saking nyamannya
-                                lol...</p>
-                            <div class="flex">
-                                <img src="assets/images/icons/Star 1.svg" class="w-[22px] h-[22px] flex shrink-0"
-                                    alt="">
-                                <img src="assets/images/icons/Star 1.svg" class="w-[22px] h-[22px] flex shrink-0"
-                                    alt="">
-                                <img src="assets/images/icons/Star 1.svg" class="w-[22px] h-[22px] flex shrink-0"
-                                    alt="">
-                                <img src="assets/images/icons/Star 1.svg" class="w-[22px] h-[22px] flex shrink-0"
-                                    alt="">
-                                <img src="assets/images/icons/Star 1.svg" class="w-[22px] h-[22px] flex shrink-0"
-                                    alt="">
-                            </div>
+                        <div class="testi-card flex flex-col rounded-[22px] border border-[#F1F2F6] p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
+                            @include('pages.detailkavling.'.$project->slug)
                         </div>
                     </div>
                 </div>
+
+
                 <div id="Rules-Tab" class="hidden flex-col gap-5 tab-content">
                     Brosur
                 </div>
@@ -187,12 +167,18 @@
         <div id="BottomNav" class="relative flex w-full h-[138px] shrink-0">
             <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
                 <div class="flex items-center justify-between rounded-[40px] py-4 px-6 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-                    <p class="font-bold text-sm leading-[30px] text-white">
-                        Rp 100.000
-                    </p>
+                    <div class="flex flex-col gap-[2px]">
+                        <p id="price" class="font-bold text-sm leading-[30px] text-white">
+                            <!-- price dari js -->
+                        </p>
+                        <span class="text-sm text-white">Biaya Booking</span>
+                        <p class="font-bold text-lg leading-[30px] text-white">
+                            Rp 100.000
+                        </p>
+                    </div>
                     @if ($project->project_product->where('status', 'Tersedia')->count() == '0')
                         <a href="#"
-                            class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Tidak tersedia</a>
+                            class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Tidak Tersedia</a>
                     @else
                     <a href="{{ route('custinfo', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
                         class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Booking Sekarang</a>
@@ -204,6 +190,8 @@
 @endsection
 
 @push('addon-script')
+
+
 <script>
     const swiperCategories = new Swiper('.swiper-choose', {
         direction: 'horizontal',

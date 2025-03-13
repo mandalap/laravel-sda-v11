@@ -15,7 +15,7 @@
             class="absolute top-0 w-full h-[230px] rounded-b-[75px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
         </div>
         <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
-            <a href=""
+            <a href="{{ route('custinfo', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
                 class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
                 <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
             </a>
@@ -26,12 +26,13 @@
             <div class="flex flex-col w-full rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white">
                 <div class="flex gap-4">
                     <div class="flex w-[120px] h-[132px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                        <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
+                        <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
                     </div>
                     <div class="flex flex-col gap-3 w-full">
-                        <p class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">
+                        <p class="text-lg font-semibold">
                             {{ $project->nama_project }}
                         </p>
+                        <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                         <hr class="border-[#F1F2F6]">
                         <div class="flex items-center gap-[6px]">
                             <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
@@ -41,6 +42,17 @@
                             <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-sm text-ngekos-grey">{{ $project->kategori->kategori }}</p>
+                        </div>
+                        @php
+                            $harga = $project->project_product->min('harga');
+                            $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
+                            $harga_setelah_diskon = $harga - $diskon;
+                        @endphp
+
+                        <hr class="border-[#F1F2F6]">
+                        <div class="flex">
+                            <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
+                            <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp {{ number_format($harga) }}</p>
                         </div>
                     </div>
                 </div>
