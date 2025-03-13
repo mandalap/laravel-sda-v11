@@ -9,7 +9,6 @@ use App\Http\Controllers\ListCityController;
 use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
 
-
 /// List City
 Route::get('/jual/{slug}', [ListCityController::class, 'kategori'])->name('kategori');
 Route::get('/{kategori}/{cities}', [ListCityController::class, 'detailkategori'])->name('detailkategori');

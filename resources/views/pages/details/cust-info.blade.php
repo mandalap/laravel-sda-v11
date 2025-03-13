@@ -17,13 +17,14 @@
         <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
             <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
                 class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
-                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
+                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
             </a>
             <p class="font-semibold text-white">Informasi Pelanggan</p>
             <div class="w-10 dummy-btn"></div>
         </div>
 
         @php
+        // Menghitung jumlah produk Tersedia untuk proyek saat ini
             // Menghitung jumlah produk tersedia untuk proyek saat ini
             $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
         @endphp
@@ -36,9 +37,10 @@
                             alt="icon">
                     </div>
                     <div class="flex flex-col gap-3 w-full">
-                        <p class="font-semibold text-sm leading-[27px] line-clamp-2 min-h-[54px]">
+                        <p class="text-lg font-semibold">
                             {{ $project->nama_project }}
                         </p>
+                        <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                         <hr class="border-[#F1F2F6]">
                         <div class="flex items-center gap-[6px]">
                             <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
@@ -49,6 +51,17 @@
                             <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti</p>
+                        </div>
+                        @php
+                            $harga = $project->project_product->min('harga');
+                            $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
+                            $harga_setelah_diskon = $harga - $diskon;
+                        @endphp
+
+                        <hr class="border-[#F1F2F6]">
+                        <div class="flex">
+                            <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
+                            <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp {{ number_format($harga) }}</p>
                         </div>
                     </div>
                 </div>
@@ -110,48 +123,48 @@
                     </label>
                 </div>
 
-
-
-                {{-- <div class="flex flex-col gap-2">
-                    <p class="px-5 font-semibold">Pilih Properti</p>
+                <div class="flex flex-col gap-2 px-5 w-full">
+                    <p class="font-semibold">Pilih Properti</p>
+                    <label
+                        class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
+                        <img src="{{ asset('assets/images/icons/search-2.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
+                        <input type="text" id="search" placeholder="Cari produk..."
+                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal" onkeyup="filterProducts()">
+                    </label>
+                </div>
+                <div class="flex flex-col gap-2">
                     <div class="overflow-x-hidden w-full swiper">
-                        <div class="swiper-wrapper">
+                        <div class="swiper-wrapper" id="product-list">
                             @forelse ($products as $product)
-                            <div class="swiper-slide !w-fit">
-                                <label class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] transition-all duration-300">
-                                    <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="w-8 h-8" alt="icon">
+                            <div class="swiper-slide !w-fit py-[2px] product-item">
+                                <label class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
+                                    <img src="{{ asset('assets/images/icons/real-estate.svg') }}" class="w-8 h-8" alt="icon">
                                     <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
-                                    <input type="radio" name="product" class="absolute top-1/2 left-1/2 opacity-0 -z-10" value="{{ $product->slug }}" required >
+                                    <input type="radio" name="product" class="absolute top-1/2 left-1/2 opacity-0 -z-10" value="{{ $product->code_product }}" onchange="updateCodeProduct('{{ $product->code_product }}')" required>
                                 </label>
                             </div>
                             @empty
-                            <p class="px-5 font-semibold">Tidak ada properti tersedia</p>
-                            @endforelse
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="flex flex-col gap-2">
-                    <p class="px-5 font-semibold">Pilih Properti</p>
-                    <div class="w-full overflow-x-hidden swiper">
-                        <div class="swiper-wrapper">
-                            @forelse ($products as $product)
-                                <div class="swiper-slide !w-fit py-[2px]">
-                                    <label
-                                        class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
-                                        <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="w-8 h-8"
-                                            alt="icon">
-                                        <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
-                                        <input type="radio" name="product"
-                                            class="absolute opacity-0 top-1/2 left-1/2 -z-10"
-                                            value="{{ $product->slug }}"
-                                            onchange="updateCodeProduct('{{ $product->code_product }}')" required>
-                                    </label>
-                                </div>
-                            @empty
+                            <p>Tidak ada produk tersedia.</p>
                             @endforelse
                         </div>
                     </div>
                 </div>
+                
+                <script>
+                function filterProducts() {
+                    const searchInput = document.getElementById('search').value.toLowerCase();
+                    const productItems = document.querySelectorAll('.product-item');
+                
+                    productItems.forEach(item => {
+                        const productName = item.querySelector('p').textContent.toLowerCase();
+                        if (productName.includes(searchInput)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+                </script>
             </div>
 
             <div id="BottomNav" class="relative flex w-full h-[132px] shrink-0 bg-white">
