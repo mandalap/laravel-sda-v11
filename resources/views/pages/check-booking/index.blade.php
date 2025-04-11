@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+Periksa Booking
 @endsection
 
 @push('prepend-style')

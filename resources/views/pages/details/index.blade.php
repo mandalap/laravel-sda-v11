@@ -1,50 +1,45 @@
 @extends('layouts.app')
 
 @section('title')
+    {{ $project->nama_project }}
 @endsection
 
 @push('prepend-style')
 @endpush
 @push('addon-style')
-
 @endpush
 
 @section('content')
-<div id="Content-Container"
+    <div id="Content-Container"
         class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
 
         <div id="ForegroundFade"
             class="absolute top-0 w-full h-[143px] bg-[linear-gradient(180deg,#070707_0%,rgba(7,7,7,0)_100%)] z-10">
         </div>
 
-        <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center justify-between w-full px-5 z-10">
+        <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center w-full px-5 z-10">
             <a href="{{ route('detailkategori', [$kategori->slug, $project->lokasi->slug]) }}"
                 class="flex overflow-hidden justify-center items-center w-12 h-12 rounded-full backdrop-blur-sm shrink-0 bg-white/10">
                 <img src="{{ asset('assets/images/icons/arrow-left-transparent.svg') }}" class="w-8 h-8" alt="icon">
             </a>
-            <p class="font-semibold text-white">Detail</p>
-            <button
-                class="flex overflow-hidden justify-center items-center w-12 h-12 rounded-full backdrop-blur-sm shrink-0 bg-white/10">
-                <img src="{{ asset('assets/images/icons/like.svg') }}" class="w-[26px] h-[26px]" alt="">
-            </button>
+            <p class="font-semibold text-white flex-1 text-center">Detail</p>
         </div>
 
         <div id="Gallery" class="swiper-gallery w-full overflow-x-hidden -mb-[38px]">
             <div class="swiper-wrapper">
                 @forelse ($photos as $photo)
-                <div class="swiper-slide !w-fit">
-                    <div class="flex shrink-0 w-[320px] h-[430px] overflow-hidden">
-                        <img src="{{ asset('storage/' . $photo->photo) }}" class="object-cover w-full h-full"
-                            alt="gallery thumbnails">
+                    <div class="swiper-slide !w-fit">
+                        <div class="flex shrink-0 w-[320px] h-[430px] overflow-hidden">
+                            <img src="{{ asset('storage/' . $photo->photo) }}" class="object-cover w-full h-full"
+                                alt="gallery thumbnails">
+                        </div>
                     </div>
-                </div>
                 @empty
-                <div class="swiper-slide !w-fit">
-                    <div class="flex shrink-0 w-[320px] h-[430px] overflow-hidden">
-                        <img src="" class="object-cover w-full h-full"
-                            alt="gallery thumbnails">
+                    <div class="swiper-slide !w-fit">
+                        <div class="flex shrink-0 w-[320px] h-[430px] overflow-hidden">
+                            <img src="" class="object-cover w-full h-full" alt="gallery thumbnails">
+                        </div>
                     </div>
-                </div>
                 @endforelse
 
             </div>
@@ -58,19 +53,24 @@
             <hr class="border-[#F1F2F6] mx-5">
             <div id="Features" class="grid grid-cols-2 gap-x-[10px] gap-y-4 px-5">
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/location.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
+                    <img src="{{ asset('assets/images/icons/location.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                        alt="icon">
                     <p class="text-xs text-grey">{{ $project->lokasi->regency->name }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
+                    <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                        alt="icon">
                     <p class="text-xs text-grey">{{ $project->kategori->kategori }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
-                    <p class="text-xs text-grey">Terisa {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit</p>
+                    <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                        alt="icon">
+                    <p class="text-xs text-grey">Terisa
+                        {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/shield-tick.svg') }}" class="w-[26px] h-[26px] flex shrink-0" alt="icon">
+                    <img src="{{ asset('assets/images/icons/shield-tick.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                        alt="icon">
                     <p class="text-xs text-grey">Terverikasi</p>
                 </div>
             </div>
@@ -114,30 +114,30 @@
             <div id="TabsContent" class="px-5">
                 <div id="Bonus-Tab" class="flex flex-col gap-5 tab-content">
                     <div class="flex flex-col gap-4">
-                        @forelse ( $facilities as $facility )
-                        <div
-                            class="bonus-card flex items-center rounded-[22px] border border-[#F1F2F6] p-[10px] gap-3 hover:border-[#d40065] transition-all duration-300">
-                            <div class="flex w-[26px] h-[26px] shrink-0">
-                                <img src="{{ asset('assets/images/icons/check-mark.svg') }}" class="object-cover w-full h-full"
-                                    alt="icon">
+                        @forelse ($facilities as $facility)
+                            <div
+                                class="bonus-card flex items-center rounded-[22px] border border-[#F1F2F6] p-[10px] gap-3 hover:border-[#d40065] transition-all duration-300">
+                                <div class="flex w-[26px] h-[26px] shrink-0">
+                                    <img src="{{ asset('assets/images/icons/check-mark.svg') }}"
+                                        class="object-cover w-full h-full" alt="icon">
+                                </div>
+                                <div>
+                                    <p class="font-semibold">{{ $facility->fasilitas }}</p>
+                                    <p class="text-sm text-ngekos-grey">Faslitas</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="font-semibold">{{ $facility->fasilitas }}</p>
-                                <p class="text-sm text-ngekos-grey">Faslitas</p>
-                            </div>
-                        </div>
                         @empty
-                        <div
-                            class="bonus-card flex items-center rounded-[22px] border border-[#F1F2F6] p-[10px] gap-3 hover:border-[#d40065] transition-all duration-300">
-                            <div class="flex w-[26px] h-[26px] shrink-0">
-                                <img src="{{ asset('assets/images/icons/check-mark.svg') }}" class="object-cover w-full h-full"
-                                    alt="icon">
+                            <div
+                                class="bonus-card flex items-center rounded-[22px] border border-[#F1F2F6] p-[10px] gap-3 hover:border-[#d40065] transition-all duration-300">
+                                <div class="flex w-[26px] h-[26px] shrink-0">
+                                    <img src="{{ asset('assets/images/icons/check-mark.svg') }}"
+                                        class="object-cover w-full h-full" alt="icon">
+                                </div>
+                                <div>
+                                    <p class="font-semibold">Belum Ada Fasilitas</p>
+                                    <p class="text-sm text-ngekos-grey">Fasilitas</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="font-semibold">Belum Ada Fasilitas</p>
-                                <p class="text-sm text-ngekos-grey">Fasilitas</p>
-                            </div>
-                        </div>
                         @endforelse
 
                     </div>
@@ -146,8 +146,9 @@
 
                 <div id="Testimonials-Tab" class="hidden flex-col gap-5 tab-content">
                     <div class="flex flex-col gap-4">
-                        <div class="testi-card flex flex-col rounded-[22px] border border-[#F1F2F6] p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
-                            @include('pages.detailkavling.'.$project->slug)
+                        <div
+                            class="testi-card flex flex-col rounded-[22px] border border-[#F1F2F6] p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
+                            @include('pages.detailkavling.' . $project->slug)
                         </div>
                     </div>
                 </div>
@@ -157,10 +158,17 @@
                     Brosur
                 </div>
                 <div id="Contact-Tab" class="hidden flex-col gap-5 tab-content">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/MAUanyqHEqc?si=ZG3VkLYVPMNVdYPW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe width="100%" height="100%"
+                        src="https://www.youtube.com/embed/MAUanyqHEqc?si=ZG3VkLYVPMNVdYPW" title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
                 <div id="Rewards-Tab" class="hidden flex-col gap-5 tab-content">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d37861.70197033057!2d109.31364600000003!3d-0.04458950000000253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sid!4v1740366145418!5m2!1sen!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d37861.70197033057!2d109.31364600000003!3d-0.04458950000000253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sid!4v1740366145418!5m2!1sen!2sid"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
 
@@ -168,7 +176,8 @@
 
         <div id="BottomNav" class="relative flex w-full h-[138px] shrink-0">
             <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
-                <div class="flex items-center justify-between rounded-[40px] py-4 px-6 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
+                <div
+                    class="flex items-center justify-between rounded-[40px] py-4 px-6 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
                     <div class="flex flex-col gap-[2px]">
                         <p id="price" class="font-bold text-sm leading-[30px] text-white">
                             <!-- price dari js -->
@@ -180,10 +189,12 @@
                     </div>
                     @if ($project->project_product->where('status', 'Tersedia')->count() == '0')
                         <a href="#"
-                            class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Tidak Tersedia</a>
+                            class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Tidak
+                            Tersedia</a>
                     @else
-                    <a href="{{ route('custinfo', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
-                        class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Booking Sekarang</a>
+                        <a href="{{ route('custinfo', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
+                            class="flex shrink-0 rounded-full py-[14px] px-5 text-sm bg-white font-bold text-[#d40065] hover:bg-black hover:text-white">Booking
+                            Sekarang</a>
                     @endif
                 </div>
             </div>
@@ -192,22 +203,20 @@
 @endsection
 
 @push('addon-script')
-
-
-<script>
-    const swiperCategories = new Swiper('.swiper-choose', {
-        direction: 'horizontal',
-        spaceBetween: 14,
-        slidesOffsetBefore: 16,
-        slidesOffsetAfter: 16,
-        slidesPerView: 'auto',
-    });
-    const swiperPopular = new Swiper('.swiper-popular', {
-        direction: 'horizontal',
-        spaceBetween: 16,
-        slidesOffsetBefore: 16,
-        slidesOffsetAfter: 16,
-        slidesPerView: 'auto',
-    });
-</script>
+    <script>
+        const swiperCategories = new Swiper('.swiper-choose', {
+            direction: 'horizontal',
+            spaceBetween: 14,
+            slidesOffsetBefore: 16,
+            slidesOffsetAfter: 16,
+            slidesPerView: 'auto',
+        });
+        const swiperPopular = new Swiper('.swiper-popular', {
+            direction: 'horizontal',
+            spaceBetween: 16,
+            slidesOffsetBefore: 16,
+            slidesOffsetAfter: 16,
+            slidesPerView: 'auto',
+        });
+    </script>
 @endpush
