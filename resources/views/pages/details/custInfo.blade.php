@@ -7,6 +7,17 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
+<style>
+    .swiper {
+    display: flex; /* Menggunakan flexbox untuk menjaga posisi item */
+    overflow: hidden; /* Sembunyikan overflow */
+}
+
+.swiper-wrapper {
+    display: flex; /* Pastikan wrapper juga menggunakan flex */
+    transition: transform 0.3s ease; /* Tambahkan transisi untuk efek yang lebih halus */
+}
+</style>
 @endpush
 
 @section('content')
@@ -161,19 +172,38 @@
                 </div>
 
                 <script>
-                    function filterProducts() {
-                        const searchInput = document.getElementById('search').value.toLowerCase();
-                        const productItems = document.querySelectorAll('.product-item');
+                function filterProducts() {
+                    const searchInput = document.getElementById('search').value.toLowerCase();
+                    const productItems = document.querySelectorAll('.product-item');
+                    let visibleCount = 0;
 
-                        productItems.forEach(item => {
-                            const productName = item.querySelector('p').textContent.toLowerCase();
-                            if (productName.includes(searchInput)) {
-                                item.style.display = '';
-                            } else {
-                                item.style.display = 'none';
-                            }
-                        });
-                    }
+                    productItems.forEach(item => {
+                        const productName = item.querySelector('p').textContent.toLowerCase();
+                        if (productName.includes(searchInput)) {
+                            item.style.display = '';
+                            visibleCount++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    // Jika hanya ada satu item yang terlihat, atur posisi
+                    if (visibleCount === 1) {
+                        const visibleItem = Array.from(productItems).find(item => item.style.display !== 'none');
+                        if (visibleItem) {
+                            // Pusatkan item
+                            const swiperWrapper = document.querySelector('.swiper-wrapper');
+                            const itemWidth = visibleItem.offsetWidth;
+                            const totalWidth = itemWidth * visibleCount; // Total lebar item yang terlihat
+                            const offset = (swiperWrapper.offsetWidth - totalWidth) / 2; // Hitung offset untuk memusatkan
+                            swiperWrapper.style.transform = `translateX(${offset}px)`; // Pusatkan item
+                        }
+                    } else {
+                        // Reset transform jika lebih dari satu item terlihat
+                        const swiperWrapper = document.querySelector('.swiper-wrapper');
+        swiperWrapper.style.transform = 'translateX(0)';
+    }
+}
                 </script>
             </div>
 

@@ -6,6 +6,13 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
+<style>
+    #filter_dropdown {
+    left: unset; /* Hapus posisi left yang sebelumnya */
+    right: 0; /* Tempatkan dropdown di sisi kanan */
+    transform: translateX(-10%); /* Geser dropdown ke kiri agar tidak keluar dari layar */
+}
+</style>
 @endpush
 
 @section('content')
@@ -26,17 +33,47 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <h1 class="font-bold text-[20px] leading-[30px] text-white">Properti {{ $kelompok->kelompok }}</h1>
         <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
     </div>
-    <form action="" class="flex relative z-10 flex-col gap-6 mt-6">
-        <div class="flex flex-col gap-2 px-4">
-        <label for="Location" class="font-semibold text-white">Pencarian</label>
-        <div class="rounded-full flex items-center p-[12px_16px] bg-white w-full transition-all duration-300 focus-within:ring-2 focus-within:ring-black">
-            <div class="w-6 h-6 flex shrink-0 mr-[6px]">
-            <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
+    <div class="sticky top-0 z-50 flex items-center w-full gap-4 px-5 py-2 mt-6 bg-white shadow-md">
+
+        <form action="" class="relative z-10 flex flex-row items-center flex-grow w-full">
+            <div class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
+                <div class="w-4 h-4 flex shrink-0 mr-[4px]">
+                    <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
+                </div>
+                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full text-xs bg-white outline-none" placeholder="Tuliskan nama lokasi" required>
+                <button type="submit" class="ml-2 flex justify-center rounded-full p-[6px_12px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-xs">Cari</button>
             </div>
-            <input type="text" name="location" id="Location" class="w-full bg-white outline-none text-sm" placeholder="Masukkan nama jalan, nama kota nama daerah">
+        </form>
+        <div class="relative">
+            <button type="button" id="filter_button"
+                class="p-2 bg-white border border-gray-300 rounded-md hover:border-[#d40065]">
+                <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
+            </button>
+            <div id="filter_dropdown"
+                class="absolute left-0 hidden w-40 p-2 mt-2 text-sm text-black bg-white border border-gray-300 rounded-md shadow-lg">
+                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terbaru')">Listing
+                    Terbaru</button>
+                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terlama')">Listing
+                    Terlama</button>
+                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('termurah')">Harga
+                    Termurah</button>
+                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('tertinggi')">
+                    Harga Termahal</button>
+            </div>
         </div>
-        </div>
-    </form>
+    </div>
+
+    <script>
+        document.getElementById('filter_button').addEventListener('click', function() {
+            const filter = document.getElementById('filter_dropdown');
+            filter.classList.toggle('hidden');
+        });
+
+        function selectFilter(value) {
+            console.log("Filter dipilih:", value); // Bisa diganti dengan logika lain
+            document.getElementById('filter_dropdown').classList.add('hidden');
+        }
+    </script>
 
     @forelse ( $projects as $project )
     @php
@@ -78,3 +115,55 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
 @endsection
 
 
+
+@push('addon-script')
+<script>
+    timeout_var = null;
+
+    function typeWriter(selector_target, text_list, placeholder = false, i = 0, text_list_i = 0, delay_ms = 200) {
+        if (!i) {
+            if (placeholder) {
+                document.querySelector(selector_target).placeholder = "";
+            } else {
+                document.querySelector(selector_target).innerHTML = "";
+            }
+        }
+        txt = text_list[text_list_i];
+        if (i < txt.length) {
+            if (placeholder) {
+                document.querySelector(selector_target).placeholder += txt.charAt(i);
+            } else {
+                document.querySelector(selector_target).innerHTML += txt.charAt(i);
+            }
+            i++;
+            setTimeout(typeWriter, delay_ms, selector_target, text_list, placeholder, i, text_list_i);
+        } else {
+            text_list_i++;
+            if (typeof text_list[text_list_i] === "undefined") {
+                setTimeout(typeWriter, (delay_ms * 5), selector_target, text_list, placeholder);
+            } else {
+                i = 0;
+                setTimeout(typeWriter, (delay_ms * 3), selector_target, text_list, placeholder, i, text_list_i);
+            }
+        }
+    }
+
+    text_list = [
+        "Cari properti dengan nama lokasi. \"PAL\"",
+        "Sungai Raya",
+        "Serdam",
+        "Punggur",
+        "Rasau Jaya",
+        "Pontianak",
+        "Kubu Raya",
+        "Singkawang",
+        "Mempawah",
+        "Sambas",
+        "Cari properti dengan nama project. \"Parit Berkat\"",
+        "Parit Rintis",
+        "Parit Buluh",
+    ];
+
+    return_value = typeWriter("#cari_kavling", text_list, true);
+</script>
+@endpush

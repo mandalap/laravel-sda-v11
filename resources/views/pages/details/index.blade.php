@@ -77,7 +77,9 @@
             <hr class="border-[#F1F2F6] mx-5">
             <div id="About" class="flex flex-col gap-[6px] px-5">
                 <h2 class="font-bold">Deskripsi</h2>
-                <p class="leading-[30px]">{{ $project->deskripsi }}</p>
+                <p class="leading-[30px]">
+                    {!! str($project->deskripsi)->sanitizeHtml() !!}
+                </p>
             </div>
             <div id="Tabs" class="overflow-x-hidden w-full swiper-tab">
                 <div class="swiper-wrapper">

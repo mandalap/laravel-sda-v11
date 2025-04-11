@@ -22,19 +22,19 @@
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Nomor WhatsApp</label>
                     <input type="number"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#058E2A] focus:border-[#058E2A]"
+                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
                         placeholder="Masukkan Nomor WhatsApp" />
                 </div>
 
                 <button
-                    class="py-2.5 w-full font-medium text-white bg-[#058E2A] hover:bg-green-500  rounded-lg transition-colors">
+                    class="py-2.5 w-full font-medium text-white bg-[#d40065] hover:bg-black  rounded-lg transition-colors">
                     Kirim Password
                 </button>
             </form>
 
             <div class="mt-8 text-sm text-center text-gray-600">
                 Sudah punya akun?
-                <a href="{{ route('login') }}" class="font-medium text-[#058E2A] hover:text-black">Login</a>
+                <a href="{{ route('login') }}" class="font-medium text-[#d40065] hover:text-black">Login</a>
             </div>
         </div>
     </div>

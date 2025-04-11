@@ -13,6 +13,7 @@ use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -99,7 +100,7 @@ class ProjectResource extends Resource
                     ->label('Lat-Lang Google Maps')
                     ->nullable(),
 
-                    Textarea::make('deskripsi')
+                    RichEditor::make('deskripsi')
                     ->label('Deskripsi')
                     ->nullable(),
 
