@@ -7,6 +7,13 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
+<style>
+    @property --num {
+        syntax: '<integer>';
+        initial-value: 0;
+        inherits: false;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -135,7 +142,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
                                     alt="icon">
                                 <p class="text-xs text-ngekos-grey">Tersisa {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit</p>
                             </div>
- 
+
                                 @php
                                     $harga = $project->project_product->min('harga');
                                     $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
@@ -144,7 +151,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
 
                                 <hr class="border-[#F1F2F6]">
                                 <div class="flex">
-                                    <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
+                                    <p class="text-sm lg:text-sm font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
                                     <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp {{ number_format($harga) }}</p>
                                 </div>
                             </div>
@@ -316,7 +323,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
                             @endphp
                             <hr class="border-[#F1F2F6]">
                             <div class="flex">
-                                <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
+                                <p class="text-sm lg:text-sm font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
                             <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
 
                             </div>
@@ -330,7 +337,117 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
     </div>
 </section>
 
-<section id="Listing" class="flex flex-col p-5 gap-4 bg-[#F5F6F8] mt-[30px]">
+<section id="Counter" class="flex flex-cols p-5 gap-4 bg-[#F5F6F8] mt-[30px] justify-between">
+    <!-- Block #1 -->
+    <article class="flex flex-col items-center">
+        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+            <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="icon">
+        </div>
+        <h2 class="text-center">
+            <span class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]" x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $properties }}]'">
+                <span class="supports-[counter-set]:sr-only">{{ $properties }}</span>+
+            </span>
+            <span class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Projects</span>
+        </h2>
+    </article>
+    <!-- Block #2 -->
+    <article class="flex flex-col items-center">
+        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+            <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="icon">
+        </div>
+        <h2 class="text-center">
+            <span class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]" x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $products }}]'">
+                <span class="supports-[counter-set]:sr-only">{{ $products }}</span>+
+            </span>
+            <span class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Properties</span>
+        </h2>
+    </article>
+    <!-- Block #3 -->
+    <article>
+        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+            <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
+        </div>
+        <h2>
+            <span class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]" x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $agency }}]'">
+                <span class="supports-[counter-set]:sr-only">{{ $agency }}</span>+
+            </span>
+            <span class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Agent</span>
+        </h2>
+
+    </article>
+    <!-- Block #4 -->
+    <article>
+        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+            <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="icon">
+        </div>
+        <h2>
+            <span class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]" x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $members }}]'">
+                <span class="supports-[counter-set]:sr-only">{{ $members }}</span>+
+            </span>
+            <span class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Users</span>
+        </h2>
+
+    </article>
+<!-- End: Animated Number Counter -->
+</section>
+
+<section id="Listing" class="flex flex-col gap-4 px-5 mt-[30px] ">
+    <div class="flex justify-between items-center">
+        <h2 class="text-sm font-bold">Listing Terbaru</h2>
+        @if($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
+        <a href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug]) }}">
+            <div class="flex gap-1 items-center">
+                <span class="text-sm">Lihat Semua</span>
+                <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-6 h-6 shrink-0"
+                    alt="icon">
+            </div>
+        </a>
+        @endif
+    </div>
+    <div class="flex flex-col gap-4">
+        @forelse ($projects->filter(function($project) { return $project->kategori->slug === 'tanah-kavling'; }) as $kavlingterbaru)
+        <a href="{{ route('detailproject', [$kavlingterbaru->jenis->slug, $kavlingterbaru->kategori->slug, $kavlingterbaru->slug]) }}" class="card">
+            <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
+                <div class="flex w-[150px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
+                    <div class="relative">
+                        <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
+                            Turun Harga
+                        </button>
+                        <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $kavlingterbaik->jenis->jenis }} {{ $kavlingterbaik->kategori->kategori }} {{ $kavlingterbaik->nama_project }} di {{ $kavlingterbaik->alamat_project }} - {{ $kavlingterbaik->lokasi->regency->name }}">
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 w-full">
+                    <h3 class="text-sm font-semibold">{{ $kavlingterbaik->nama_project }}</h3>
+                    <p class="text-sm text-ngekos-grey">{{ $kavlingterbaik->alamat_project }}</p>
+                    <hr class="border-[#F1F2F6]">
+                    <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
+                        <p class="text-xs text-ngekos-grey">{{ $kavlingterbaik->lokasi->regency->name }}</p>
+                    </div>
+                    <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
+                            alt="icon">
+                        <p class="text-xs text-ngekos-grey">Tersisa {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }}</p>
+                    </div>
+                    <hr class="border-[#F1F2F6]">
+                    @php
+                        $harga = $kavlingterbaik->project_product->min('harga');
+                        $diskon = $kavlingterbaik->project_product->min('discount'); // Asumsi diskon dalam persen
+                        $harga_setelah_diskon = $harga - $diskon;
+                    @endphp
+                    <div class="flex">
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
+                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        @empty
+        @endforelse
+
+    </div>
+</section>
+{{-- <section id="Listing" class="flex flex-col p-5 gap-4 bg-[#F5F6F8] mt-[30px]">
     <div class="flex justify-between items-center">
         <h2 class="font-bold">Listing Terbaru</h2>
         @if($popularKelompok = $kelompoks->where('slug', 'terbaru')->first())
@@ -364,10 +481,13 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
 
         </div>
     </div>
-</section>
+</section> --}}
 
 @include('includes.footer')
 @endsection
 
 @push('addon-script')
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @endpush

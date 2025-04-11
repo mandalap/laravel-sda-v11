@@ -13,7 +13,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    @stack('prepend-style')
     @include('includes.style')
+    @stack('addon-style')
 </head>
 
 <body>

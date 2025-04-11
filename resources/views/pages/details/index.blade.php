@@ -77,7 +77,9 @@
             <hr class="border-[#F1F2F6] mx-5">
             <div id="About" class="flex flex-col gap-[6px] px-5">
                 <h2 class="font-bold">Deskripsi</h2>
-                <p class="leading-[30px]">{{ $project->deskripsi }}</p>
+                <p class="leading-[30px]">
+                    {!! str($project->deskripsi)->sanitizeHtml() !!}
+                </p>
             </div>
             <div id="Tabs" class="overflow-x-hidden w-full swiper-tab">
                 <div class="swiper-wrapper">
@@ -141,7 +143,7 @@
                     </div>
                 </div>
 
-                
+
                 <div id="Testimonials-Tab" class="hidden flex-col gap-5 tab-content">
                     <div class="flex flex-col gap-4">
                         <div class="testi-card flex flex-col rounded-[22px] border border-[#F1F2F6] p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">

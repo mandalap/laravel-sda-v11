@@ -47,7 +47,7 @@
                 </div>
 
                 <button
-                    class="py-2.5 w-full font-medium text-white  bg-[#d40065] hover:bg-green-500  rounded-lg transition-colors">
+                    class="py-2.5 w-full font-medium text-white  bg-[#d40065] hover:bg-black  rounded-lg transition-colors">
                     Masuk
                 </button>
             </form>

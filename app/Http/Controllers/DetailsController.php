@@ -42,7 +42,7 @@ class DetailsController extends Controller
         // Mengurutkan di level aplikasi
         $products = $products->sortBy(function($product) {
             preg_match('/([A-Za-z]+)([0-9]+)/', $product->nama_product, $matches);
-            return [$matches[1], (int)$matches[2]]; // Urutkan berdasarkan huruf dan angka
+            return isset($matches[1]) ? [$matches[1], (int)($matches[2] ?? 0)] : [$product->nama_product, 0]; // Urutkan berdasarkan huruf dan angka
         })->values(); // Mengembalikan koleksi yang terurut
 
         return view("pages.details.cust-info", compact('project', 'products', 'kategori', 'member'));
@@ -50,7 +50,7 @@ class DetailsController extends Controller
 
     public function checkout(Request $request, $project)
     {
-      
+
         // Mengambil input dari request
         $nama = $request->input('nama');
         $email = $request->input('email');
@@ -58,10 +58,10 @@ class DetailsController extends Controller
 
         // Mencari project berdasarkan slug
         $project = Project::where("slug", $project)->firstOrFail();
-        
+
         // Mencari product berdasarkan code_product yang diambil dari request
         $product = Product::where("code_product", $request->input('product'))->firstOrFail();
-       
+
         // Mengambil nilai dari input tersembunyi
         $kodeProduct = $request->input('code_product'); // Mengambil nilai dari input tersembunyi
 

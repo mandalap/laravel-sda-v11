@@ -6,13 +6,6 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
-<style>
-    #filter_dropdown {
-    left: unset; /* Hapus posisi left yang sebelumnya */
-    right: 0; /* Tempatkan dropdown di sisi kanan */
-    transform: translateX(-10%); /* Geser dropdown ke kiri agar tidak keluar dari layar */
-}
-</style>
 @endpush
 
 @section('content')
@@ -33,48 +26,19 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <h2 class="font-bold text-[20px] leading-[30px] text-white">{{ $city->regency->name }}</h2>
         <p class="text-white">{{ $city->project->count() }} Project Ditemukan</p>
     </div>
-
-    <div class="sticky top-0 z-50 flex items-center w-full gap-4 px-5 py-2 mt-6 bg-white shadow-md">
-
-        <form action="" class="relative z-10 flex flex-row items-center flex-grow w-full">
-            <div class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
-                <div class="w-4 h-4 flex shrink-0 mr-[4px]">
+    <form action="" class="relative z-10 flex flex-col gap-6 mt-6">
+        <div class="flex flex-col gap-2 px-4">
+            <label for="Location" class="font-semibold text-white">Pencarian</label>
+            <div class="rounded-full flex items-center p-[12px_16px] bg-white w-full transition-all duration-300 focus-within:ring-2 focus-within:ring-black">
+                <div class="w-6 h-6 flex shrink-0 mr-[6px]">
                     <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
                 </div>
-                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full text-xs bg-white outline-none" placeholder="Tuliskan nama lokasi" required>
-                <button type="submit" class="ml-2 flex justify-center rounded-full p-[6px_12px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-xs">Cari</button>
-            </div>
-        </form>
-        <div class="relative">
-            <button type="button" id="filter_button"
-                class="p-2 bg-white border border-gray-300 rounded-md hover:border-[#d40065]">
-                <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
-            </button>
-            <div id="filter_dropdown"
-                class="absolute left-0 hidden w-40 p-2 mt-2 text-sm text-black bg-white border border-gray-300 rounded-md shadow-lg">
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terbaru')">Listing
-                    Terbaru</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terlama')">Listing
-                    Terlama</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('termurah')">Harga
-                    Termurah</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('tertinggi')">
-                    Harga Termahal</button>
+                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full text-sm bg-white outline-none" placeholder="Tuliskan nama lokasi Cth. Punggur, Sungai Raya Dalam Rasau" required>
+                <button type="submit"
+                        class="flex justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-sm">Cari</button>
             </div>
         </div>
-    </div>
-
-    <script>
-        document.getElementById('filter_button').addEventListener('click', function() {
-            const filter = document.getElementById('filter_dropdown');
-            filter.classList.toggle('hidden');
-        });
-
-        function selectFilter(value) {
-            console.log("Filter dipilih:", value); // Bisa diganti dengan logika lain
-            document.getElementById('filter_dropdown').classList.add('hidden');
-        }
-    </script>
+    </form>
 
     @forelse ( $projects as $project )
 
@@ -86,7 +50,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     <section id="Result" class="relative flex flex-col gap-4 px-5 mt-5 mb-3">
         <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
-                <div class="flex w-[200px] h-[200px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
+                <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
                     <div class="relative">
                         <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
                             Turun Harga
