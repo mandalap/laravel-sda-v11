@@ -24,14 +24,14 @@ class CekBookingController extends Controller
          ]);
 
          if ($validator->fails()) {
-            Alert::toast('Data tidak boleh kosong.', 'error');
+            Alert::toast('Data tidak boleh kosong.', 'info')->autoClose(10000)->timerProgressBar();
             return redirect()->route('check-booking')->withInput();
         }
 
         $booking = BookingTransaction::where('invoice', $request->code_booking)->first();
 
         if (!$booking) {
-            Alert::toast('Booking tidak ditemukan.', 'error');
+            Alert::toast('Booking tidak ditemukan.', 'error')->autoClose(10000)->timerProgressBar();
             return redirect()->route('check-booking')->withInput();
         }
 

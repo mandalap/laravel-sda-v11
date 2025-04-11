@@ -27,8 +27,8 @@ class PencarianController extends Controller
         $lokasi = $request->lokasi;
 
         if (empty($nama) && empty($lokasi)) {
-            Alert::toast('Data tidak boleh kosong.', 'error');
-            return redirect()->route('cara-properti')->withInput();
+            Alert::toast('Data tidak boleh kosong.', 'info')->autoClose(10000)->timerProgressBar();
+            return redirect()->back()->withInput();
         }
 
         $query = Project::with(['lokasi']);
@@ -49,8 +49,8 @@ class PencarianController extends Controller
         $product = $query->get()->unique('id');
 
         if ($product->isEmpty()) {
-            Alert::toast('Properti tidak ditemukan.', 'error');
-            return redirect()->route('cara-properti')->withInput();
+            Alert::toast('Properti tidak ditemukan.', 'error')->autoClose(10000)->timerProgressBar();
+            return redirect()->back()->withInput();
         }
 
         return view('pages.pencarian.result', compact('product'));

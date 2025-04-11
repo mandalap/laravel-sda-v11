@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+Cari Properti
 @endsection
 
 @push('prepend-style')
