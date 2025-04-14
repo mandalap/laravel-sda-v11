@@ -71,12 +71,37 @@ class DetailsController extends Controller
                 if ($bookingTransaction->member_id !== $user->id) {
                     abort(403, 'Unauthorized');
                 }
-                // Cek status booking sebelum checkout
+
+                // Validasi untuk transaksi yang sudah dibayar
+                if ($bookingTransaction->status == 'booking' && $bookingTransaction->is_paid) {
+                    // Cari transaksi lain untuk produk yang sama dengan status pending atau cancel
+                    $duplicateBookings = BookingTransaction::where('product_id', $bookingTransaction->product_id)
+                        ->where('member_id', $user->id)
+                        ->where(function ($query) {
+                            $query->where('status', 'pending')
+                                ->orWhere('status', 'cancel');
+                        })
+                        ->where('id', '!=', $bookingTransaction->id)
+                        ->get();
+
+                    // Hapus transaksi duplikat
+                    if ($duplicateBookings->isNotEmpty()) {
+                        foreach ($duplicateBookings as $duplicateBooking) {
+                            $duplicateBooking->delete();
+                        }
+                    }
+
+                    Alert::toast('Produk ini sudah dibeli.', 'info')->autoClose(10000)->timerProgressBar();
+                    return redirect()->route('custinfo', [
+                        'jenis' => $project->jenis->slug,
+                        'kategori' => $project->kategori->slug,
+                        'project' => $project->slug
+                    ]);
+                }
+
+                // Sisanya tetap sama seperti sebelumnya...
                 if ($bookingTransaction->status == 'cancel') {
-                    Alert::toast('Pembayaran telah dibatalkan, silakan lakukan pembelian lagi.', 'error')->autoClose(10000)->timerProgressBar();
-                    return redirect()->back();
-                } elseif ($bookingTransaction->status == 'booking') {
-                    Alert::toast('Pembayaran telah diselesaikan.', 'success')->autoClose(10000)->timerProgressBar();
+                    Alert::toast('Pembayaran telah dibatalkan, silakan lakukan pembelian lagi.', 'info')->autoClose(10000)->timerProgressBar();
                     return redirect()->back();
                 }
 
@@ -97,12 +122,38 @@ class DetailsController extends Controller
 
             // Validasi wajib memilih produk
             if (!$request->has('product') || empty($request->input('product'))) {
-                Alert::toast('Silahkan memilih properti terlebih dahulu!', 'error')->autoClose(10000)->timerProgressBar();
+                Alert::toast('Silahkan memilih properti terlebih dahulu', 'info')->autoClose(10000)->timerProgressBar();
                 return redirect()->back();
             }
 
             // Jika bukan dari riwayat booking, lanjutkan dengan logika checkout baru
             $product = Product::where("code_product", $request->input('product'))->firstOrFail();
+
+            // Cek apakah sudah ada transaksi lunas untuk produk ini
+            $existingPaidBooking = BookingTransaction::where('product_id', $product->id)
+                ->where('member_id', $user->id)
+                ->where('status', 'booking')
+                ->where('is_paid', true)
+                ->first();
+
+            if ($existingPaidBooking) {
+                // Hapus transaksi pending atau cancel untuk produk yang sama
+                BookingTransaction::where('product_id', $product->id)
+                    ->where('member_id', $user->id)
+                    ->where(function ($query) {
+                        $query->where('status', 'pending')
+                            ->orWhere('status', 'cancel');
+                    })
+                    ->where('id', '!=', $existingPaidBooking->id)
+                    ->delete(); // Atau soft delete
+
+                Alert::toast('Produk ini sudah dibeli.', 'info')->autoClose(10000)->timerProgressBar();
+                return redirect()->route('custinfo', [
+                    'jenis' => $project->jenis->slug,
+                    'kategori' => $project->kategori->slug,
+                    'project' => $project->slug
+                ]);
+            }
 
             // Cek apakah produk sedang dalam booking aktif oleh user lain
             $existingBooking = BookingTransaction::where('product_id', $product->id)
@@ -118,9 +169,8 @@ class DetailsController extends Controller
                 })
                 ->first();
 
-
             if ($existingBooking && $existingBooking->member_id !== $user->id) {
-                Alert::toast('Produk ini sedang dalam proses booking oleh pengguna lain.', 'error')->autoClose(10000)->timerProgressBar();
+                Alert::toast('Produk ini sedang dalam proses booking oleh pengguna lain.', 'info')->autoClose(10000)->timerProgressBar();
                 return redirect()->back();
             }
 
@@ -152,8 +202,22 @@ class DetailsController extends Controller
             $user = Auth::guard('member')->user();
             $product = Product::where("code_product", $request->input('product'))->firstOrFail();
 
+            // Cek apakah user ini sudah menyelesaikan pembayaran
+            $alreadyBooked = BookingTransaction::where('product_id', $product->id)
+                ->where('member_id', $user->id)
+                ->where('status', 'booking')
+                ->where('is_paid', true)
+                ->first();
+
+            if ($alreadyBooked) {
+                return response()->json([
+                    'error' => 'Produk ini sudah Anda booking.',
+                ], 409);
+            }
+
             // Cek apakah ada booking aktif untuk produk ini
             $existingBooking = BookingTransaction::where('product_id', $product->id)
+                ->where('member_id', $user->id)
                 ->where('is_paid', false)
                 ->where('snap_token_expiry', '>', now()) // Booking masih berlaku
                 ->whereIn('status', ['pending', 'booking'])
@@ -182,6 +246,48 @@ class DetailsController extends Controller
     {
         DB::beginTransaction();
         try {
+            // Cek apakah user ini sudah pernah beli (booking & paid)
+            $alreadyBookedBySelf = BookingTransaction::where('product_id', $product->id)
+                ->where('member_id', $user->id)
+                ->where('status', 'booking')
+                ->where('is_paid', true)
+                ->first();
+
+            if ($alreadyBookedBySelf) {
+                Alert::toast('Anda sudah menyelesaikan pembayaran untuk produk ini.', 'info')->autoClose(10000)->timerProgressBar();
+                return redirect()->route('custinfo', [
+                    'jenis' => $product->project->jenis->slug,
+                    'kategori' => $product->project->kategori->slug,
+                    'project' => $product->project->slug,
+                ]);
+            }
+
+            // LOCKING: Kunci record produk saat proses berlangsung
+            $product = Product::where('id', $product->id)->lockForUpdate()->first();
+
+            // Cek apakah produk sedang di-booking user lain
+            $conflictingBooking = BookingTransaction::where('product_id', $product->id)
+                ->where('member_id', '!=', $user->id)
+                ->where(function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('status', 'pending')
+                            ->where('is_paid', false)
+                            ->where('snap_token_expiry', '>', now());
+                    })->orWhere(function ($q) {
+                        $q->where('status', 'booking')
+                            ->where('is_paid', true);
+                    });
+                })
+                ->lockForUpdate() // Kunci juga booking terkait
+                ->first();
+
+            if ($conflictingBooking) {
+                DB::rollBack();
+                return response()->json([
+                    'error' => 'Produk ini sedang dalam proses booking oleh pengguna lain.'
+                ], 409);
+            }
+
             // Jika sudah ada transaksi yang belum dibayar, gunakan invoice lama
             $invoice = $existingBooking ? $existingBooking->invoice : BookingTransaction::generateUniqueTrxId();
 
@@ -247,6 +353,12 @@ class DetailsController extends Controller
             DB::rollBack(); // Jika error, rollback
             Log::error('Gagal membuat snapToken: ' . $e->getMessage());
             return response()->json(['error' => 'Gagal membuat transaksi pembayaran'], 500);
+            Alert::toast('Terjadi kesalahan saat memproses pembayaran.', 'info')->autoClose(10000)->timerProgressBar();
+            return redirect()->route('custinfo', [
+                'jenis' => $product->project->jenis->slug,
+                'kategori' => $product->project->kategori->slug,
+                'project' => $product->project->slug,
+            ]);
         }
     }
 
@@ -330,9 +442,9 @@ class DetailsController extends Controller
                             'is_paid' => true,
                             'tanggal_bayar' => now(),
                         ]);
-                        // Update status produk menjadi "Terjual"
+                        // Update status produk menjadi "Booking"
                         if ($booking->product) {
-                            $booking->product->update(['status' => 'Terjual']);
+                            $booking->product->update(['status' => 'Booking']);
                         }
                         Log::info(
                             'Status updated to Booking',

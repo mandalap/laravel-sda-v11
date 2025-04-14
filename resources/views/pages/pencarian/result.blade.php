@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-
+Hasil Pencarian
 @endsection
 
 @push('prepend-style')
@@ -18,7 +18,7 @@
 <div id="Content-Container" class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
     <div id="Background" class="absolute top-0 w-full h-[300px] rounded-b-[75px] bg-gradient-to-t from-[#a7006d] to-[#d40065]"></div>
     <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
-        <a href="{{ route('cara-properti') }}" class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
+        <a href="{{ route('cari-properti') }}" class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
             <img src="assets/images/icons/arrow-left.svg" class="w-[28px] h-[28px]" alt="icon">
         </a>
         <p class="font-semibold text-white">Hasil Semua Pencarian</p>

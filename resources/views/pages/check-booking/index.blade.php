@@ -41,7 +41,7 @@ Periksa Booking
                                 placeholder="Masukkan Booking ID">
                         </label>
                     </div>
-                    <div class="flex flex-col gap-2 w-full">
+                    {{-- <div class="flex flex-col gap-2 w-full">
                         <p class="text-sm font-semibold">Nomor Telepon</p>
                         <label
                             class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
@@ -51,7 +51,7 @@ Periksa Booking
                                 class="w-full text-sm  font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                                 placeholder="Masukkan Nomor Telepon">
                         </label>
-                    </div>
+                    </div> --}}
 
                     <button type="submit"
                         class="flex w-full text-sm  justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white">Lihat

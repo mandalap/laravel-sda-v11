@@ -31,12 +31,12 @@
                             </p>
                         </div>
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                            <img src="{{ asset('assets/images/icons/invoice.svg') }}"
                                 class="flex w-5 h-5 shrink-0" alt="icon">
                             <p class="text-xs text-ngekos-grey">{{ $booking->invoice }}</p>
                         </div>
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                            <img src="{{ asset('assets/images/icons/price.svg') }}"
                                 class="flex w-5 h-5 shrink-0" alt="icon">
                             <p class="text-xs text-ngekos-grey">Rp {{ number_format($booking->total_harga) }}</p>
                         </div>
@@ -54,10 +54,8 @@
                                 @endphp
 
                                 <div class="inline-block">
-                                    <span
-                                        class="inline-flex items-center bg-[#d40065] text-white rounded-lg px-4 py-2 text-sm font-semibold">
-                                        Pending
-                                    </span>
+                                    <p class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">
+                                        PENDING</p>
                                 </div>
 
                                 <div class="text-xs text-gray-700 text-left">
@@ -69,17 +67,13 @@
                                 </div>
                             @elseif ($booking->status == 'booking')
                                 <div class="inline-block">
-                                    <span
-                                        class="inline-flex items-center bg-[#d40065] text-white rounded-lg px-4 py-2 text-sm font-semibold">
-                                        Booking
-                                    </span>
+                                    <p class="rounded-full p-[6px_12px] bg-[#058E2A] font-bold text-xs leading-[18px] text-white">
+                                        BOOKING</p>
                                 </div>
                             @elseif ($booking->status == 'cancel')
                                 <div class="inline-block">
-                                    <span
-                                        class="inline-flex items-center bg-[#d40065] text-white rounded-lg px-4 py-2 text-sm font-semibold">
-                                        Cancel
-                                    </span>
+                                    <p class="rounded-full p-[6px_12px] bg-[#FF0000] font-bold text-xs leading-[18px] text-white">
+                                        CANCEL</p>
                                 </div>
                             @endif
                         </div>

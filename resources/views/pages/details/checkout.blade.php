@@ -193,14 +193,23 @@
 @push('addon-script')
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+        });
+
         const payButton = document.getElementById('pay-button');
         payButton.addEventListener('click', async function(e) {
             e.preventDefault();
             payButton.disabled = true;
 
             try {
-                // Mengambil response dari server untuk mendapatkan snap token
                 const response = await fetch('{{ route('getSnapToken') }}', {
                     method: 'POST',
                     headers: {
@@ -212,42 +221,63 @@
                     })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+
+                // Jika terjadi konflik data (misal: produk sudah dibooking orang lain)
+                if (response.status === 409 && data.error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: data.error
+                    });
+                    setTimeout(() => {
+                        window.location.href =
+                            "{{ route('custinfo', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}";
+                    }, 2000);
+                    return;
                 }
 
-                const data = await response.json();
-                console.log('Response Data:', data); // Memastikan data diterima dengan benar
+                if (!response.ok) {
+                    throw new Error(data.error || 'Gagal memproses permintaan.');
+                }
 
-                // Perbaiki pengecekan, gunakan data.snapToken, bukan data.snap_token
                 if (data && data.snapToken) {
-                    console.log('Snap Token:', data.snapToken); // Memastikan token ada
-
                     window.snap.pay(data.snapToken, {
                         onSuccess: function(result) {
                             window.location.href = "{{ route('riwayat.booking') }}";
                         },
                         onPending: function(result) {
                             window.location.href = "{{ route('riwayat.booking') }}";
+                            Toast.fire({
+                                icon: 'info',
+                                title: 'Pembayaran pending, silahkan selesaikan pembayaran.'
+                            });
                         },
                         onError: function(result) {
-                            // console.log('Terjadi kesalahan:', result);
-                            window.location.reload(); // Refresh halaman jika terjadi error
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Pembayaran gagal, silakan coba lagi.'
+                            });
+                            window.location.reload();
                         },
                         onClose: function() {
-                            // console.log('User menutup pembayaran');
-                            payButton.disabled = false; // Aktifkan kembali tombol
-                            window.location.reload(); // Refresh halaman
+                            payButton.disabled = false;
+                            Toast.fire({
+                                icon: 'info',
+                                title: 'Pembayaran pending, silahkan selesaikan pembayaran.'
+                            });
                         }
                     });
                 } else {
-                    console.error('Snap token tidak ditemukan!');
-                    throw new Error('Tidak mendapatkan snap token');
+                    throw new Error('Token pembayaran tidak tersedia.');
                 }
+
             } catch (error) {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan saat memproses pembayaran');
-                payButton.disabled = false; // Mengaktifkan kembali tombol jika ada error
+                Toast.fire({
+                    icon: 'error',
+                    title: error.message || 'Terjadi kesalahan tidak terduga.'
+                });
+                payButton.disabled = false;
             }
         });
     </script>
