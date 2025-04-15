@@ -12,7 +12,7 @@
                                 class="object-cover w-full h-full" alt="{{ $booking->product->name }}">
                         </div>
                     </div>
-                    <div class="flex flex-col gap-3  ">
+                    <div class="flex flex-col gap-3 text-left">
                         <div class="flex items-center gap-[6px]">
                             <h3 class="font-semibold text-lg">{{ $booking->product->project->nama_project }}</h3>
                         </div>
@@ -31,13 +31,13 @@
                             </p>
                         </div>
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/invoice.svg') }}"
-                                class="flex w-5 h-5 shrink-0" alt="icon">
+                            <img src="{{ asset('assets/images/icons/bill.svg') }}" class="flex w-5 h-5 shrink-0"
+                                alt="icon">
                             <p class="text-xs text-ngekos-grey">{{ $booking->invoice }}</p>
                         </div>
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/price.svg') }}"
-                                class="flex w-5 h-5 shrink-0" alt="icon">
+                            <img src="{{ asset('assets/images/icons/price.svg') }}" class="flex w-5 h-5 shrink-0"
+                                alt="icon">
                             <p class="text-xs text-ngekos-grey">Rp {{ number_format($booking->total_harga) }}</p>
                         </div>
                         <hr class="border-[#F1F2F6]">
@@ -45,43 +45,51 @@
                             <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp
                                 {{ number_format($booking->jumlah_uang_booking) }}</p>
                         </div>
-                        <div class="flex">
-                            @if ($booking->status == 'pending')
-                                @php
-                                    \Carbon\Carbon::setLocale('id');
-                                    $expiryUTC = \Carbon\Carbon::parse($booking->snap_token_expiry);
-                                    $expiryGMT7 = $expiryUTC->copy()->addHours(7);
-                                @endphp
+                        @if ($booking->status == 'pending')
+                            @php
+                                \Carbon\Carbon::setLocale('id');
+                                $expiryUTC = \Carbon\Carbon::parse($booking->snap_token_expiry);
+                                $expiryGMT7 = $expiryUTC->copy()->addHours(7);
+                            @endphp
 
-                                <div class="inline-block">
-                                    <p class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">
-                                        PENDING</p>
-                                </div>
+                            <div class="flex flex-col items-start gap-2">
+                                <p
+                                    class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">
+                                    PENDING
+                                </p>
 
                                 <div class="text-xs text-gray-700 text-left">
                                     Silakan lanjutkan pembayaran Anda, batas waktu pembayaran adalah tanggal
                                     <strong>{{ $expiryGMT7->translatedFormat('d F Y') }}</strong> pukul
                                     <strong>{{ $expiryGMT7->format('H:i') }} WIB</strong>
-                                    (<span class="text-[#d40065] font-medium" id="countdown-{{ $booking->id }}"
-                                        data-expiry="{{ $booking->snap_token_expiry }}"></span>)
                                 </div>
-                            @elseif ($booking->status == 'booking')
-                                <div class="inline-block">
-                                    <p class="rounded-full p-[6px_12px] bg-[#058E2A] font-bold text-xs leading-[18px] text-white">
-                                        BOOKING</p>
+                                <div class="text-xs text-[#d40065] font-medium">
+                                    Sisa waktu: <span id="countdown-{{ $booking->id }}"
+                                        data-expiry="{{ $booking->snap_token_expiry }}"></span>
                                 </div>
-                            @elseif ($booking->status == 'cancel')
-                                <div class="inline-block">
-                                    <p class="rounded-full p-[6px_12px] bg-[#FF0000] font-bold text-xs leading-[18px] text-white">
-                                        CANCEL</p>
-                                </div>
-                            @endif
-                        </div>
+                            </div>
+                        @elseif ($booking->status == 'booking')
+                            <div class="flex">
+                                <p
+                                    class="rounded-full p-[6px_12px] bg-[#058E2A] font-bold text-xs leading-[18px] text-white">
+                                    BOOKING
+                                </p>
+                            </div>
+                        @elseif ($booking->status == 'cancel')
+                            <div class="flex">
+                                <p
+                                    class="rounded-full p-[6px_12px] bg-[#FF0000] font-bold text-xs leading-[18px] text-white">
+                                    CANCEL
+                                </p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </button>
         </form>
     </section>
 @empty
-    <p class="text-center">Anda belum memiliki riwayat booking.</p>
+    <div class="flex flex-col items-center justify-center h-[300px] text-center">
+        <p class="text-center">Data belum tersedia</p>
+    </div>
 @endforelse
