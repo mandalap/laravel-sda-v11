@@ -120,7 +120,7 @@
                         <img src="{{ asset('storage/' . $member->thumbnail) }}"
                             class="w-20 h-20 rounded-full border border-dark" alt="icon">
                     @else
-                        <img src="{{ asset('/assets/images/icons/Default-User.png') }}"
+                        <img src="{{ asset('/assets/images/icons/profil-default.png') }}"
                             class="w-20 h-20 rounded-full border border-dark" alt="Default thumbnail">
                     @endif
                 </div>
