@@ -33,9 +33,9 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <h1 class="font-bold text-[20px] leading-[30px] text-white">Properti {{ $kelompok->kelompok }}</h1>
         <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
     </div>
-    <div class="sticky top-0 z-50 flex items-center w-full gap-4 px-5 py-2 mt-6 bg-white shadow-md">
+    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
 
-        <form action="" class="relative z-10 flex flex-row items-center flex-grow w-full">
+        <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
             <div class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
                 <div class="w-4 h-4 flex shrink-0 mr-[4px]">
                     <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
@@ -50,15 +50,16 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                 <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
             </button>
             <div id="filter_dropdown"
-                class="absolute left-0 hidden w-40 p-2 mt-2 text-sm text-black bg-white border border-gray-300 rounded-md shadow-lg">
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terbaru')">Listing
-                    Terbaru</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terlama')">Listing
-                    Terlama</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('termurah')">Harga
-                    Termurah</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('tertinggi')">
-                    Harga Termahal</button>
+                class="hidden absolute left-0 p-2 mt-2 w-40 text-sm text-black bg-white rounded-md border border-gray-300 shadow-lg">
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terbaru']) }}" class="block p-2 w-full text-left hover:bg-gray-200">
+                    Listing Terbaru
+                </a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terlama']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Listing
+                    Terlama</a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'termurah']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termurah</a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'tertinggi']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termahal</a>
             </div>
         </div>
     </div>
@@ -82,13 +83,13 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     @endphp
 
     <section id="Result" class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
-        <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
+        <a href="" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
                 <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
+                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="">
                 </div>
                 <div class="flex flex-col gap-3 w-full">
-                    <h3 class="font-semibold text-sm">{{ $project->nama_project }}</h3>
+                    <h3 class="text-sm font-semibold">{{ $project->nama_project }}</h3>
                     <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
@@ -96,13 +97,37 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                         <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
+                            alt="icon">
+                        <p class="text-xs text-ngekos-grey">{{ $project->kategori->kategori }}</p>
+                    </div>
+                    <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                         <p class="text-sm text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
                     </div>
                     <hr class="border-[#F1F2F6]">
-                    <p class="font-semibold text-lg text-[#d40065]">
-                        Rp {{ number_format($project->project_product->min('harga')) }}
-                    </p>
+                    @php
+                        $harga = $project->project_product->min('harga');
+                        $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
+                        $harga_setelah_diskon = $harga - $diskon;
+
+                        $hargaX = $project->project_product->max('harga');
+                        $diskonX = $project->project_product->max('discount'); // Asumsi diskon dalam persen
+                        $harga_setelah_diskonX = $hargaX - $diskonX;
+                    @endphp
+                    @if ($project->kategori->slug == 'tanah-kavling')
+                    <div class="flex">
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }} </p>
+                        <p class="px-1"> - </p>
+
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]"> {{ number_format($harga_setelah_diskonX) }}</p>
+                    </div>
+                    @else
+                    <div class="flex">
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }}</p>
+                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </a>
