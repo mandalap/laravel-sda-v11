@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('title')
-List Properti
 @endsection
 
 @push('prepend-style')
@@ -22,22 +21,21 @@ List Properti
 class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
     <div id="Background" class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
-    <div id="TopNav" class="relative flex items-center justify-between px-5 pt-5">
-        <a href="{{ route('lihatkota') }}"
-            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
+    <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
+        <a href="{{ route('beranda') }}"
+            class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
             <img src="{{asset('assets/images/icons/arrow-left.svg')}}" class="w-[28px] h-[28px]" alt="icon">
         </a>
-        <h3 class="text-lg font-bold text-white">List Properti</h3>
+        <h3 class="text-lg font-bold text-white">Semua Properti</h3>
         <div class="w-10 dummy-btn"></div>
     </div>
     <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
-        <h2 class="font-bold text-[20px] leading-[30px] text-white">{{ $city->regency->name }}</h2>
-        <p class="text-white">{{ $city->project->count() }} Project Ditemukan</p>
+        <h1 class="font-bold text-[20px] leading-[30px] text-white">Properti {{ $kelompok->kelompok }}</h1>
+        <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
     </div>
+    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
 
-    <div class="sticky top-0 z-50 flex items-center w-full gap-4 px-5 py-2 mt-6 bg-white shadow-md">
-
-        <form action="" class="relative z-10 flex flex-row items-center flex-grow w-full">
+        <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
             <div class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
                 <div class="w-4 h-4 flex shrink-0 mr-[4px]">
                     <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
@@ -52,15 +50,15 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                 <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
             </button>
             <div id="filter_dropdown"
-                class="absolute left-0 hidden w-40 p-2 mt-2 text-sm text-black bg-white border border-gray-300 rounded-md shadow-lg">
-                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'terbaru']) }}" class="block p-2 w-full text-left hover:bg-gray-200">
+                class="hidden absolute left-0 p-2 mt-2 w-40 text-sm text-black bg-white rounded-md border border-gray-300 shadow-lg">
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terbaru']) }}" class="block p-2 w-full text-left hover:bg-gray-200">
                     Listing Terbaru
                 </a>
-                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'terlama']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Listing
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terlama']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Listing
                     Terlama</a>
-                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'termurah']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'termurah']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
                     Termurah</a>
-                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'tertinggi']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'tertinggi']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
                     Termahal</a>
             </div>
         </div>
@@ -79,63 +77,33 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     </script>
 
     @forelse ( $projects as $project )
+    @php
+        // Menghitung jumlah produk Tersedia untuk proyek saat ini
+        $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
+    @endphp
 
-        @php
-            // Menghitung jumlah produk Tersedia untuk proyek saat ini
-            $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
-        @endphp
-
-    <section id="Result" class="relative flex flex-col gap-4 px-5 mt-5 mb-3">
-        <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
+    <section id="Result" class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
+        <a href="" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
-                <div class="flex w-[200px] h-[200px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <div class="relative">
-                        <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
-                            Turun Harga
-                        </button>
-                        <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
-                    </div>
+                <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
+                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="">
                 </div>
-                <div class="flex flex-col w-full gap-3">
-                    <h3 class="text-lg font-semibold ">{{ $project->nama_project }}</h3>
+                <div class="flex flex-col gap-3 w-full">
+                    <h3 class="text-sm font-semibold">{{ $project->nama_project }}</h3>
                     <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-xs text-ngekos-grey">{{ $city->regency->name }}</p>
-                    </div>
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
-                            alt="icon">
-                        <p class="text-xs text-ngekos-grey">{{ $project->kategori->kategori }}</p>
+                        <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
+                        <p class="text-sm text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
                     </div>
                     <hr class="border-[#F1F2F6]">
-                    @php
-                        $harga = $project->project_product->min('harga');
-                        $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
-                        $harga_setelah_diskon = $harga - $diskon;
-
-                        $hargaX = $project->project_product->max('harga');
-                        $diskonX = $project->project_product->max('discount'); // Asumsi diskon dalam persen
-                        $harga_setelah_diskonX = $hargaX - $diskonX;
-                    @endphp
-                    @if ($project->kategori->slug == 'tanah-kavling')
-                    <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }} </p>
-                        <p class="px-1"> - </p>
-
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]"> {{ number_format($harga_setelah_diskonX) }}</p>
-                    </div>
-                    @else
-                    <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }}</p>
-                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
-                    </div>
-                    @endif
+                    <p class="font-semibold text-lg text-[#d40065]">
+                        Rp {{ number_format($project->project_product->min('harga')) }}
+                    </p>
                 </div>
             </div>
         </a>
@@ -143,11 +111,11 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     @empty
         <p class="text-center">Tidak ada properti Tersedia</p>
     @endforelse
-
-    @include('includes.footer')
 </div>
 
 @endsection
+
+
 
 @push('addon-script')
 <script>
@@ -200,5 +168,3 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     return_value = typeWriter("#cari_kavling", text_list, true);
 </script>
 @endpush
-
-

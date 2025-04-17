@@ -45,7 +45,10 @@
             @endphp
 
             @forelse ($sortedCities as $city)
-                <a href="{{ route('detailkategori', [$kategori->slug, $city->slug]) }}" class="card">
+                {{-- <a href="{{ route('detailkategori', [$kategori->slug, $city->slug]) }}" class="card">
+                     --}}
+
+            <a href="{{ route('lihatproperti', ['propertiKategori' => $kategori->slug, 'propertiCity' => $city->slug, 'filter' => 'none']) }}" class="card">
                     <div class="flex flex-col gap-4 rounded-[20px] ring-1 ring-[#E9E8ED] pb-4 bg-white overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-[#d40065]">
                         <div class="w-full h-[120px] flex shrink-0 overflow-hidden relative">
                             <img src="{{ asset('storage/' . $city->thumbnail) }}" class="object-cover w-full h-full" alt="thumbnail">
