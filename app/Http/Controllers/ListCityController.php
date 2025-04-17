@@ -32,25 +32,39 @@ class ListCityController extends Controller
     }
 
     public function detailkategori($kategori, $slug){
-        $kategori = Kategori::where('slug', $kategori)->firstOrFail();
-        $city = Lokasi::where('slug', $slug)->firstOrFail();
-        $projects = Project::where('lokasi_id', $city->id)
-                ->where('is_approved', 'Diterima')
-                ->where('status', 'tampil')
-                ->get();
-        return view("pages.city.detail", compact('city', 'projects', 'kategori'));
+
     }
 
-    public function lihat(Request $request)
+
+
+    public function lihatproperti(Request $request)
     {
-        $slug = $request->query('propertiType');
-        $kelompok = Kelompok::where('slug', $slug)->firstOrFail();
-        $projects = Project::where('kelompok_id', $kelompok->id)
-                ->where('is_approved', 'Diterima')
-                ->where('status', 'tampil')
-                ->get();
-        $projectCount = $projects->count();
-        return view("pages.lihatsemua.index", compact('projects', 'kelompok', 'projectCount'));
+        $propertyKategori = $request->query('propertiKategori');
+        $propertyCity = $request->query('propertiCity');
+        $filter = $request->query('filter');
+        if($propertyKategori == 'all'){
+            $kategori = Kategori::all();
+        } else{
+            $kategori = Kategori::where('slug', $propertyKategori)->firstOrFail();
+        }
+
+        if($propertyCity == 'all'){
+            $city = Lokasi::all();
+        } else{
+            $city = Lokasi::where('slug', $propertyCity)->firstOrFail();
+        }
+        $projects   = Project::where('lokasi_id', $city->id)
+                    ->where('is_approved', 'Diterima')
+                    ->where('status', 'tampil')
+                    ->when($filter == 'terbaru', function($query) {
+                        return $query->orderBy('id', 'desc');
+                    })
+                    ->when($filter == 'terlama', function($query) {
+                        return $query->orderBy('id', 'asc');
+                    })
+                    ->get();
+
+        return view("pages.city.detail", compact('city', 'projects', 'kategori', 'filter', 'propertyKategori', 'propertyCity'));
     }
 
     public function lihatkota(Request $request)
@@ -81,6 +95,59 @@ class ListCityController extends Controller
 
         $projectCount = $projects->count();
         return view("pages.city.properti", compact('projects', 'city', 'projectCount'));
+    }
+
+    public function lihat(Request $request)
+    {
+        $type = $request->query('propertiType');
+        $kat = $request->query('propertiKategori');
+        $filter = $request->query('filter');
+
+        $kelompok = Kelompok::where('slug', $type)->firstOrFail();
+        if($kat == 'all'){
+            $kategori = Kategori::all();
+        } else{
+            $kategori = Kategori::where('slug', $kat)->firstOrFail();
+        }
+        if($kelompok->slug == 'popular' || $kelompok->slug == 'terbaru') {
+            $projects = Project::where('kelompok_id', $kelompok->id)
+                ->where('is_approved', 'Diterima')
+                ->where('status', 'tampil')
+                ->when($filter == 'terbaru', function($query) {
+                    return $query->orderBy('id', 'desc');
+                })
+                ->when($filter == 'terlama', function($query) {
+                    return $query->orderBy('id', 'asc');
+                })
+                // ->when($filter == 'termurah', function($query) {
+                //     // Menggunakan relasi untuk mengurutkan berdasarkan harga
+                //     return $query->join('products', 'products.project_id', '=', 'project_id')
+                //                  ->orderBy('products.harga', 'asc');
+                // })
+                // ->when($filter == 'termahal', function($query) {
+                //     // Menggunakan relasi untuk mengurutkan berdasarkan harga
+                //     return $query->join('products', 'products.project_id', '=', 'project_id')
+                //                  ->orderBy('products.harga', 'desc');
+                // })
+                ->get();
+
+        } else{
+            $projects = Project::where('kelompok_id', $kelompok->id)
+                ->where('is_approved', 'Diterima')
+                ->where('status', 'tampil')
+                ->when($filter == 'terbaru', function($query) {
+                    return $query->orderBy('id', 'desc');
+                })
+                ->when($filter == 'terbaru', function($query) {
+                    return $query->orderBy('id', 'desc');
+                })
+                ->when($filter == 'terlama', function($query) {
+                    return $query->orderBy('id', 'asc');
+                })
+                ->get();
+        }
+        $projectCount = $projects->count();
+        return view("pages.lihatsemua.index", compact('projects', 'kelompok', 'projectCount', 'kategori', 'filter', 'type', 'kat'));
     }
 
 }
