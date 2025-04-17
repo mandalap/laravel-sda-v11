@@ -22,7 +22,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     <div id="Background" class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
     <div id="TopNav" class="relative flex items-center justify-between px-5 pt-5">
-        <a href="{{ route('kategori', $kategori->slug) }}"
+        <a href="{{ route('lihatkota') }}"
             class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
             <img src="{{asset('assets/images/icons/arrow-left.svg')}}" class="w-[28px] h-[28px]" alt="icon">
         </a>
@@ -52,14 +52,15 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
             </button>
             <div id="filter_dropdown"
                 class="absolute left-0 hidden w-40 p-2 mt-2 text-sm text-black bg-white border border-gray-300 rounded-md shadow-lg">
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terbaru')">Listing
-                    Terbaru</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('terlama')">Listing
-                    Terlama</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('termurah')">Harga
-                    Termurah</button>
-                <button class="block w-full p-2 text-left hover:bg-gray-200" onclick="selectFilter('tertinggi')">
-                    Harga Termahal</button>
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'terbaru']) }}" class="block p-2 w-full text-left hover:bg-gray-200">
+                    Listing Terbaru
+                </a>
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'terlama']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Listing
+                    Terlama</a>
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'termurah']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termurah</a>
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'tertinggi']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termahal</a>
             </div>
         </div>
     </div>
@@ -103,6 +104,11 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                         <p class="text-xs text-ngekos-grey">{{ $city->regency->name }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
+                            alt="icon">
+                        <p class="text-xs text-ngekos-grey">{{ $project->kategori->kategori }}</p>
+                    </div>
+                    <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                         <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
                     </div>
@@ -111,11 +117,24 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                         $harga = $project->project_product->min('harga');
                         $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
                         $harga_setelah_diskon = $harga - $diskon;
+
+                        $hargaX = $project->project_product->max('harga');
+                        $diskonX = $project->project_product->max('discount'); // Asumsi diskon dalam persen
+                        $harga_setelah_diskonX = $hargaX - $diskonX;
                     @endphp
+                    @if ($project->kategori->slug == 'tanah-kavling')
                     <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
-                        <p class="ml-2 text-[0.625rem] font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }} </p>
+                        <p class="px-1"> - </p>
+
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]"> {{ number_format($harga_setelah_diskonX) }}</p>
                     </div>
+                    @else
+                    <div class="flex">
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }}</p>
+                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </a>

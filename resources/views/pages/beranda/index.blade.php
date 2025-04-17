@@ -7,13 +7,7 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
-<style>
-    @property --num {
-        syntax: '<integer>';
-        initial-value: 0;
-        inherits: false;
-    }
-</style>
+<link href="{{ asset('counter.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -27,7 +21,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
         <p>Halo Sahabat Investa,</p>
         <h1 class="font-bold text-sm leading-[20px] ">Temukan Property Impian Kamu</h1>
     </div>
-    <a href="#" class="flex justify-center items-center w-20 h-20 overflow-hiddenrounded-full shrink-0">
+    <a href="#" class="flex justify-center items-center w-20 h-20 overflow-hidden rounded-full shrink-0">
         <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[60px] h-[60px]" alt="icon">
     </a>
 </div>
@@ -160,9 +154,9 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
                     </a>
                 </div>
             @empty
-                <div class="swiper-slide !w-fit">
-                    <p class="items-center text-center">Data belum Tersedia</p>
-                </div>
+            <div class="flex justify-between items-center px-5">
+                <h2 class="text-sm">Properti belum tersedia</h2>
+            </div>
             @endforelse
 
         </div>
@@ -183,7 +177,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
     </div>
     <div class="grid grid-cols-2 gap-4">
         @forelse ($cities as $city)
-        <a href="{{ route('properti', ['citiesType' => $city->slug]) }}" class="card">
+            <a href="{{ route('lihatproperti', ['propertiKategori' => 'all', 'propertiCity' => $city->slug, 'filter' => 'none']) }}" class="card">
             <div
                 class="flex items-center rounded-[22px] p-[10px] gap-3 bg-white border border-white overflow-hidden hover:border-emerald-text-emerald-600 transition-all duration-300 hover:border-[#d40065] ">
                 <div
@@ -240,6 +234,11 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
                         <p class="text-xs text-ngekos-grey">{{ $kavlingterbaik->lokasi->regency->name }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
+                            alt="icon">
+                        <p class="text-xs text-ngekos-grey">{{ $kavlingterbaik->kategori->kategori }}</p>
+                    </div>
+                    <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <p class="text-xs text-ngekos-grey">Tersisa {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }}</p>
@@ -272,6 +271,9 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
             </div>
         </a>
         @empty
+        <div class="flex justify-between items-center px-5">
+            <h2 class="text-sm">Properti belum tersedia</h2>
+        </div>
         @endforelse
 
     </div>
@@ -368,6 +370,9 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
                 </a>
             </div>
             @empty
+            <div class="flex justify-between items-center px-5">
+                <h2 class="text-sm">Properti belum tersedia</h2>
+            </div>
             @endforelse
         </div>
     </div>
@@ -378,7 +383,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
 <section id="Counter" class="flex flex-cols p-5 gap-4 bg-[#F5F6F8] mt-[30px] justify-between">
     <!-- Block #1 -->
     <article class="flex flex-col items-center">
-        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+        <div class="flex justify-center items-center mb-6 w-14 h-14">
             <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="icon">
         </div>
         <h2 class="text-center">
@@ -390,7 +395,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
     </article>
     <!-- Block #2 -->
     <article class="flex flex-col items-center">
-        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+        <div class="flex justify-center items-center mb-6 w-14 h-14">
             <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="icon">
         </div>
         <h2 class="text-center">
@@ -402,7 +407,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
     </article>
     <!-- Block #3 -->
     <article>
-        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+        <div class="flex justify-center items-center mb-6 w-14 h-14">
             <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
         </div>
         <h2>
@@ -415,7 +420,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
     </article>
     <!-- Block #4 -->
     <article>
-        <div class="flex justify-center items-center mb-6 w-14 h-14 bg-white rounded shadow-md rotate-3">
+        <div class="flex justify-center items-center mb-6 w-14 h-14">
             <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="icon">
         </div>
         <h2>

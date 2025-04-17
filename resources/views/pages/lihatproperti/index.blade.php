@@ -97,37 +97,13 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                         <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
-                            alt="icon">
-                        <p class="text-xs text-ngekos-grey">{{ $project->kategori->kategori }}</p>
-                    </div>
-                    <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                         <p class="text-sm text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
                     </div>
                     <hr class="border-[#F1F2F6]">
-                    @php
-                        $harga = $project->project_product->min('harga');
-                        $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
-                        $harga_setelah_diskon = $harga - $diskon;
-
-                        $hargaX = $project->project_product->max('harga');
-                        $diskonX = $project->project_product->max('discount'); // Asumsi diskon dalam persen
-                        $harga_setelah_diskonX = $hargaX - $diskonX;
-                    @endphp
-                    @if ($project->kategori->slug == 'tanah-kavling')
-                    <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }} </p>
-                        <p class="px-1"> - </p>
-
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]"> {{ number_format($harga_setelah_diskonX) }}</p>
-                    </div>
-                    @else
-                    <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }}</p>
-                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
-                    </div>
-                    @endif
+                    <p class="font-semibold text-lg text-[#d40065]">
+                        Rp {{ number_format($project->project_product->min('harga')) }}
+                    </p>
                 </div>
             </div>
         </a>

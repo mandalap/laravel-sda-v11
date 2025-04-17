@@ -43,7 +43,7 @@ class Project extends Model
     {
         return $this->belongsTo(Developer::class);
     }
-    
+
 
     public function lokasi() :BelongsTo
     {
@@ -97,8 +97,8 @@ class Project extends Model
     }
 
     public function products()
-{
-    return $this->hasMany(Product::class);
-}
+    {
+        return $this->hasMany(Product::class);
+    }
 
 }

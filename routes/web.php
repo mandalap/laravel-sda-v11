@@ -16,6 +16,7 @@ Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
 Route::get('/jual/{slug}', [ListCityController::class, 'kategori'])->name('kategori');
 Route::get('/{kategori}/{cities}', [ListCityController::class, 'detailkategori'])->name('detailkategori');
 Route::get('/lihat-semua', [ListCityController::class, 'lihat'])->name('lihatsemua');
+Route::get('/lihat-properti', [ListCityController::class, 'lihatproperti'])->name('lihatproperti');
 
 Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');
 Route::get('/properti', [ListCityController::class, 'properti'])->name('properti');
