@@ -23,6 +23,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+
             ->default()
             ->id('admin')
             ->path('admin')
@@ -53,6 +54,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->brandName('Dashboard Sajada')
+            ->brandLogoHeight('2rem')
+            ;
     }
 }

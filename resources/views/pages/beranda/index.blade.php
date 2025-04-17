@@ -450,7 +450,7 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
         @endif
     </div>
     <div class="flex flex-col gap-4">
-        @forelse ($projects->filter(function($project) { return $project->kategori->slug === 'tanah-kavling'; })->filter(function($project) { return $project->kelompok->slug === 'terbaru'; }) as $kavlingterbaru)
+        @forelse ($projects->filter(function($project) { return $project->kelompok->slug === 'terbaru'; }) as $kavlingterbaru)
         <a href="{{ route('detailproject', [$kavlingterbaru->jenis->slug, $kavlingterbaru->kategori->slug, $kavlingterbaru->slug]) }}" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
                 <div class="flex w-[150px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
@@ -492,7 +492,46 @@ class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gr
 
     </div>
 </section> --}}
-{{-- End: Terbaik --}}
+<section id="Terbaru" class="flex flex-col gap-4 mt-[30px] ">
+    <div class="flex justify-between items-center px-5">
+        <h2 class="text-sm font-bold">Listing Terbaru</h2>
+        @if($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
+        <a href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
+            <div class="flex gap-1 items-center">
+                <span class="text-sm">Lihat Semua</span>
+                <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-6 h-6 shrink-0"
+                    alt="icon">
+            </div>
+        </a>
+        @endif
+    </div>
+    <div class="overflow-x-hidden w-full swiper">
+        <div class="swiper-wrapper">
+            @forelse ($projects->filter(function($project) { return $project->kelompok->slug === 'terbaru'; }) as $listingterbaru)
+            <div class="swiper-slide !w-fit pb-[30px]">
+                <a href="{{ route('detailproject', [$listingterbaru->jenis->slug, $listingterbaru->kategori->slug, $listingterbaru->slug]) }}" class="card">
+                    <div
+                        class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-[#d40065]">
+                        <div class="flex shrink-0 overflow-hidden rounded-[30px]">
+                            <img src="{{ asset('storage/' . $listingterbaru->thumbnail) }}" class="object-cover w-full h-full"
+                                alt="thumbnail">
+                        </div>
+                        <div class="flex flex-col gap-[2px]">
+                            <h3 class="font-semibold text-sm">{{ $listingterbaru->nama_project }}</h3>
+                            <p class="text-xs text-ngekos-grey">{{ $listingterbaru->lokasi->regency->name }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @empty
+            <div class="flex justify-between items-center px-5">
+                <h2 class="text-sm">Properti belum tersedia</h2>
+            </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+{{-- End: Terbaru --}}
 
 
 @include('includes.footer')

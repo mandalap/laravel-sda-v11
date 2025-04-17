@@ -22,7 +22,7 @@ class TestimoniBannerResource extends Resource
 {
     protected static ?string $model = TestimoniBanner::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-video-camera';
 
     public static function form(Form $form): Form
     {
@@ -35,7 +35,7 @@ class TestimoniBannerResource extends Resource
                     ->required(),
                 TextInput::make('title')
                     ->required(),
-                TextInput::make('description'),
+                // TextInput::make('description'),
                 Select::make('status')
                     ->options([
                         'active' => 'Active',
@@ -53,8 +53,8 @@ class TestimoniBannerResource extends Resource
                 ImageColumn::make('image'),
                 TextColumn::make('title')
                     ->searchable(),
-                TextColumn::make('description')
-                    ->searchable(),
+                // TextColumn::make('description')
+                //     ->searchable(),
                 TextColumn::make('status')
                     ->searchable(),
             ])
