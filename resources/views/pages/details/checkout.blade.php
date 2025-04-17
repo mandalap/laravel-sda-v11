@@ -249,12 +249,18 @@
                             window.location.href = "{{ route('riwayat.booking') }}";
                             Toast.fire({
                                 icon: 'info',
+                                position: 'top', // Menempatkan toast di atas halaman
+                                toast: true, // Menggunakan tampilan toast
+                                width: '32rem',
                                 title: 'Pembayaran pending, silahkan selesaikan pembayaran.'
                             });
                         },
                         onError: function(result) {
                             Toast.fire({
                                 icon: 'error',
+                                position: 'top', // Menempatkan toast di atas halaman
+                                toast: true, // Menggunakan tampilan toast
+                                width: '32rem',
                                 title: 'Pembayaran gagal, silakan coba lagi.'
                             });
                             window.location.reload();
@@ -263,6 +269,9 @@
                             payButton.disabled = false;
                             Toast.fire({
                                 icon: 'info',
+                                position: 'top', // Menempatkan toast di atas halaman
+                                toast: true, // Menggunakan tampilan toast
+                                width: '32rem',
                                 title: 'Pembayaran pending, silahkan selesaikan pembayaran.'
                             });
                         }
