@@ -25,7 +25,7 @@
         </a>
     </div>
 
-    <section id="Testimonials" class="flex flex-col gap-4 px-5 mt-[100px] mb-[10px] ">
+    <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
 
         <!-- Landscape Testimonials -->
         <div>
@@ -34,12 +34,13 @@
                     <div class="swiper-wrapper">
                         <!-- Loop untuk Menampilkan Gambar dari Database -->
                         @foreach ($testimoniBanners as $banner)
-                            <div class="swiper-slide !w-fit">
+                            <div
+                                class="swiper-slide aspect-[360/120] aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
                                 <div
-                                    class="w-[600px] h-[200px] rounded-[20px] border border-[#F1F2F6] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                    class="w-[610px] h-[200px] rounded-[20px] border border-[#F1F2F6] overflow-hidden hover:border-[#d40065] transition-all duration-300">
                                     <!-- Menampilkan Gambar dari Storage -->
-                                    <img src="{{ asset('storage/' . $banner->image) }}" class="w-full h-full object-cover"
-                                        alt="testimonial">
+                                    <img src="{{ asset('storage/' . $banner->image) }}"
+                                        class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
                                 </div>
                             </div>
                         @endforeach

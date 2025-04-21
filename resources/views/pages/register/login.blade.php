@@ -27,16 +27,24 @@
                         <p class="text-sm text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
-                <div>
+                <div class="relative">
                     <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
                     <input type="password" name="password"
                         class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
-                        placeholder="••••••••" required />
+                        placeholder="••••••••" id="password-field" required />
+                    <!-- Show/Hide Password Icon (SVG) -->
+                    <span class="absolute right-3 top-9 cursor-pointer" onclick="togglePassword()">
+                        <!-- Icon untuk Password Tersembunyi (Disable Eye) -->
+                        <img id="eye-disabled" src="{{ asset('assets/images/icons/hide.svg') }}" alt="Eye Disabled"
+                            class="w-6 h-6 text-gray-600 hover:text-black" />
+                        <!-- Icon untuk Password Terlihat (Enable Eye) -->
+                        <img id="eye-enabled" src="{{ asset('assets/images/icons/enabled.svg') }}" alt="Eye Enabled"
+                            class="w-6 h-6 text-gray-600 hover:text-black hidden" />
+                    </span>
                     @error('password')
                         <p class="text-sm text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
-
                 <div class="flex justify-between items-center">
                     <label class="flex items-center">
                         <input type="checkbox" class="text-[#d40065] rounded border-gray-300 focus:ring-[#d40065]" />
@@ -63,4 +71,22 @@
 @endsection
 
 @push('addon-script')
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById('password-field');
+            var eyeEnabled = document.getElementById('eye-enabled');
+            var eyeDisabled = document.getElementById('eye-disabled');
+
+            // Toggle between showing and hiding password
+            if (passwordField.type === "password") {
+                passwordField.type = "text"; // Show the password
+                eyeEnabled.classList.remove('hidden'); // Show eye icon
+                eyeDisabled.classList.add('hidden'); // Hide eye-disabled icon
+            } else {
+                passwordField.type = "password"; // Hide the password
+                eyeEnabled.classList.add('hidden'); // Hide eye icon
+                eyeDisabled.classList.remove('hidden'); // Show eye-disabled icon
+            }
+        }
+    </script>
 @endpush
