@@ -23,7 +23,7 @@ class DeveloperResource extends Resource
     protected static ?string $title = 'Developer';
     protected static ?string $model = Developer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
 
     protected static ?string $navigationLabel = 'Developer';
 

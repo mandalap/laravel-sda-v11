@@ -19,25 +19,25 @@
                 @csrf
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Sapaan</label>
-                    <select name="sapaan"
+                    <select name="sapaan" value="{{ old('sapaan') }}" required
                         class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]">
                         <option value="" disabled selected>Pilih Sapaan</option>
-                        <option value="Bapak">Bapak</option>
-                        <option value="Ibu">Ibu</option>
-                        <option value="Bang">Bang</option>
-                        <option value="Kak">Kak</option>
+                        <option value="Bapak" @if(old('sapaan') == 'Bapak') selected @endif>Bapak</option>
+                        <option value="Ibu" @if(old('sapaan') == 'Ibu') selected @endif>Ibu</option>
+                        <option value="Bang" @if(old('sapaan') == 'Bang') selected @endif>Bang</option>
+                        <option value="Kak" @if(old('sapaan') == 'Kak') selected @endif>Kak</option>
                     </select>
                 </div>
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Nama Lengkap</label>
-                    <input type="text" name="nama"
+                    <input type="text" name="nama" value="{{ old('nama') }}"
                         class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
                         placeholder="Masukkan Nama Lengkap" required/>
                 </div>
 
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Nomor WhatsApp</label>
-                    <input type="number" name="telepon"
+                    <input type="number" name="telepon" value="{{ old('telepon') }}"
                         class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
                         placeholder="Masukkan Nomor WhatsApp" />
                 </div>

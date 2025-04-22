@@ -2,42 +2,28 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelompokResource\Pages;
-use App\Filament\Resources\KelompokResource\RelationManagers;
-use App\Models\Kelompok;
+use App\Filament\Resources\BookingTransactionResource\Pages;
+use App\Filament\Resources\BookingTransactionResource\RelationManagers;
+use App\Models\BookingTransaction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 
-class KelompokResource extends Resource
+class BookingTransactionResource extends Resource
 {
-    protected static ?string $model = Kelompok::class;
+    protected static ?string $model = BookingTransaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
-    protected static ?string $title = 'Kelompok';
-    protected static ?string $navigationLabel = 'Kelompok';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 //
-                Forms\Components\TextInput::make('kelompok')
-                    ->reactive() // Penting: Membuat field kategori reaktif
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $set('slug', Str::slug($state)); // Memanggil mutator secara manual
-                    })
-                    ->unique(ignoreRecord: true)
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->disabled()
-                    ->label('Tampilan'),
             ]);
     }
 
@@ -46,8 +32,6 @@ class KelompokResource extends Resource
         return $table
             ->columns([
                 //
-                TextColumn::make('kelompok')
-                ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -74,9 +58,9 @@ class KelompokResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListKelompoks::route('/'),
-            'create' => Pages\CreateKelompok::route('/create'),
-            'edit' => Pages\EditKelompok::route('/{record}/edit'),
+            'index' => Pages\ListBookingTransactions::route('/'),
+            'create' => Pages\CreateBookingTransaction::route('/create'),
+            'edit' => Pages\EditBookingTransaction::route('/{record}/edit'),
         ];
     }
 
