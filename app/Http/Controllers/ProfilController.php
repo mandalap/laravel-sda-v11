@@ -142,11 +142,11 @@ class ProfilController extends Controller
     {
         $user = Auth::guard('member')->user();
 
-        // Ambil booking dengan pagination (3 per halaman)
+        // Ambil booking dengan pagination (5 per halaman)
         $bookings = BookingTransaction::where('member_id', $user->id)
             ->with(['product', 'product.project'])
             ->orderBy('created_at', 'desc')
-            ->paginate(3);
+            ->paginate(5);
 
         if ($request->ajax()) {
             return response()->json([
@@ -157,9 +157,6 @@ class ProfilController extends Controller
 
         return view('pages.profile.riwayatBooking', compact('bookings'));
     }
-
-
-
 
     /**
      * Delete the user's account.

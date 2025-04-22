@@ -55,15 +55,14 @@ class RegisterController extends Controller
             // Cek apakah user memiliki role "member"
             if (!$user->hasRole('member')) {
                 Auth::guard('member')->logout(); // Logout user jika tidak memiliki role
-                Alert::toast('Akun Anda tidak memiliki akses.', 'error')->autoClose(10000);
+                Alert::toast('Akun Anda tidak memiliki akses.', 'error')->autoClose(10000)->timerProgressBar();
                 return back();
             }
 
-            Alert::toast('Login berhasil!', 'success')->autoClose(3000);
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
-        Alert::toast('Nomor Telepon atau Password Anda Salah.', 'error')->autoClose(10000);
+        Alert::toast('Nomor telepon atau password anda salah.', 'error')->autoClose(10000)->timerProgressBar();
         return back();
     }
 
@@ -81,10 +80,10 @@ class RegisterController extends Controller
                 'nama' => ['required', 'string', 'max:255'],
                 'telepon' => ['required', 'string', 'max:15', 'unique:members,telepon'],
             ], [
-                'sapaan.required' => 'Sapaan harus dipilih!',
-                'nama.required' => 'Nama harus diisi!',
-                'telepon.required' => 'Nomor WhatsApp harus diisi!',
-                'telepon.unique' => 'Nomor Whatsapp sudah terdaftar!',
+                'sapaan.required' => 'Sapaan harus dipilih.',
+                'nama.required' => 'Nama harus diisi.',
+                'telepon.required' => 'Nomor WhatsApp harus diisi.',
+                'telepon.unique' => 'Nomor Whatsapp sudah terdaftar.',
             ]);
 
             $rd = random_int(10000, 99999);
@@ -100,24 +99,23 @@ class RegisterController extends Controller
             $memberRole = Role::where('name', 'member')->first();
             $member->addRole($memberRole);
 
-            // Alert sukses registrasi
-            Alert::toast('Akun Anda berhasil dibuat!', 'success')->autoClose(5000);
 
             // Dispatch job untuk mengirim pesan WhatsApp
             SendWhatsAppDaftar::dispatch($member);
 
-            return redirect('/');
+            // redirect jika berhasil membuat akun
+            return redirect()->route('login')->with('success', 'Akun anda berhasil dibuat.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Menampilkan error validasi sebagai toast
             $errors = $e->validator->errors()->all();
             foreach ($errors as $error) {
-                Alert::toast($error, 'error')->autoClose(5000);
+                Alert::toast($error, 'error')->autoClose(10000)->timerProgressBar();
             }
 
             return back()->withInput();
         } catch (\Exception $e) {
             // Menangani error lain
-            Alert::toast('Terjadi kesalahan pada sistem!', 'error')->autoClose(5000);
+            Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
             return back()->withInput();
         }
     }

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+{{ $kategori->kategori }}
 @endsection
 
 @push('prepend-style')
