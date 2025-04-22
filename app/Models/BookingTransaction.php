@@ -22,14 +22,18 @@ class BookingTransaction extends Model
         'diskon',
         'total_harga',
         'is_paid',
+        'tanggal_bayar',
         'status',
+        'payment_method',
+        'snap_token_created_at',
+        'snap_token_expiry',
     ];
 
     public static function generateUniqueTrxId()
     {
         $prefix = 'SDA';
         do{
-            $randomSting = $prefix . mt_rand(100000,999999);
+            $randomSting = $prefix . mt_rand(100000000,999999999);
         }while(self::where('invoice',$randomSting)->exists());
 
         return $randomSting;

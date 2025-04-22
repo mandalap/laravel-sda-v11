@@ -1,11 +1,44 @@
 @extends('layouts.app')
 
 @section('title')
+Hasil Pencarian
 @endsection
 
 @push('prepend-style')
 @endpush
 @push('addon-style')
+<style>
+    #filter_dropdown {
+        left: unset; /* Hapus posisi left yang sebelumnya */
+        right: 0; /* Tempatkan dropdown di sisi kanan */
+        transform: translateX(-10%); /* Geser dropdown ke kiri agar tidak keluar dari layar */
+    }
+    
+    /* Skeleton animation */
+    @keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+    }
+    
+    .animate-pulse {
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    /* Hide skeleton loader initially */
+    #skeleton-loader {
+        display: none;
+    }
+    
+    /* No more data message */
+    #no-more-data {
+        display: none;
+        text-align: center;
+        padding: 20px 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -26,55 +59,175 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <h1 class="font-bold text-[20px] leading-[30px] text-white">Properti {{ $kelompok->kelompok }}</h1>
         <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
     </div>
-    <form action="" class="flex relative z-10 flex-col gap-6 mt-6">
-        <div class="flex flex-col gap-2 px-4">
-        <label for="Location" class="font-semibold text-white">Pencarian</label>
-        <div class="rounded-full flex items-center p-[12px_16px] bg-white w-full transition-all duration-300 focus-within:ring-2 focus-within:ring-black">
-            <div class="w-6 h-6 flex shrink-0 mr-[6px]">
-            <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
-            </div>
-            <input type="text" name="location" id="Location" class="w-full bg-white outline-none text-sm" placeholder="Masukkan nama jalan, nama kota nama daerah">
-        </div>
-        </div>
-    </form>
+    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
 
-    @forelse ( $projects as $project )
-    @php
-        // Menghitung jumlah produk Tersedia untuk proyek saat ini
-        $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
-    @endphp
-
-    <section id="Result" class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
-        <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
-            <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
-                <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
+        <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
+            <div class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
+                <div class="w-4 h-4 flex shrink-0 mr-[4px]">
+                    <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
                 </div>
-                <div class="flex flex-col gap-3 w-full">
-                    <h3 class="font-semibold text-sm">{{ $project->nama_project }}</h3>
-                    <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
-                    <hr class="border-[#F1F2F6]">
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
-                    </div>
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-sm text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
-                    </div>
-                    <hr class="border-[#F1F2F6]">
-                    <p class="font-semibold text-lg text-[#d40065]">
-                        Rp {{ number_format($project->project_product->min('harga')) }}
-                    </p>
-                </div>
+                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full text-xs bg-white outline-none" placeholder="Tuliskan nama lokasi" required>
+                <button type="submit" class="ml-2 flex justify-center rounded-full p-[6px_12px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-xs">Cari</button>
             </div>
-        </a>
-    </section>
-    @empty
-        <p class="text-center">Tidak ada properti Tersedia</p>
-    @endforelse
+        </form>
+        <div class="relative">
+            <button type="button" id="filter_button"
+                class="p-2 bg-white border border-gray-300 rounded-md hover:border-[#d40065]">
+                <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
+            </button>
+            <div id="filter_dropdown"
+                class="hidden absolute left-0 p-2 mt-2 w-40 text-sm text-black bg-white rounded-md border border-gray-300 shadow-lg">
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terbaru']) }}" class="block p-2 w-full text-left hover:bg-gray-200">
+                    Listing Terbaru
+                </a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terlama']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Listing
+                    Terlama</a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'termurah']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termurah</a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'tertinggi']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termahal</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects container where items will be loaded -->
+    <div id="projects-container">
+        @include('pages.lihatsemua.itemProperti')
+    </div>
+    
+    <!-- Skeleton loader (single item) -->
+    <div id="skeleton-loader">
+        @include('pages.lihatsemua.skeletonLoader')
+    </div>
+    
+    <!-- No more data message -->
+    <div id="no-more-data">
+        Semua properti telah ditampilkan
+    </div>
 </div>
 
 @endsection
 
+@push('addon-script')
+<script>
+    // Typewriter effect for search placeholder
+    timeout_var = null;
 
+    function typeWriter(selector_target, text_list, placeholder = false, i = 0, text_list_i = 0, delay_ms = 200) {
+        if (!i) {
+            if (placeholder) {
+                document.querySelector(selector_target).placeholder = "";
+            } else {
+                document.querySelector(selector_target).innerHTML = "";
+            }
+        }
+        txt = text_list[text_list_i];
+        if (i < txt.length) {
+            if (placeholder) {
+                document.querySelector(selector_target).placeholder += txt.charAt(i);
+            } else {
+                document.querySelector(selector_target).innerHTML += txt.charAt(i);
+            }
+            i++;
+            setTimeout(typeWriter, delay_ms, selector_target, text_list, placeholder, i, text_list_i);
+        } else {
+            text_list_i++;
+            if (typeof text_list[text_list_i] === "undefined") {
+                setTimeout(typeWriter, (delay_ms * 5), selector_target, text_list, placeholder);
+            } else {
+                i = 0;
+                setTimeout(typeWriter, (delay_ms * 3), selector_target, text_list, placeholder, i, text_list_i);
+            }
+        }
+    }
+
+    text_list = [
+        "Cari properti dengan nama lokasi. \"PAL\"",
+        "Sungai Raya",
+        "Serdam",
+        "Punggur",
+        "Rasau Jaya",
+        "Pontianak",
+        "Kubu Raya",
+        "Singkawang",
+        "Mempawah",
+        "Sambas",
+        "Cari properti dengan nama project. \"Parit Berkat\"",
+        "Parit Rintis",
+        "Parit Buluh",
+    ];
+
+    return_value = typeWriter("#cari_kavling", text_list, true);
+    
+    // Filter dropdown toggle
+    document.getElementById('filter_button').addEventListener('click', function() {
+        const filter = document.getElementById('filter_dropdown');
+        filter.classList.toggle('hidden');
+    });
+
+    // Infinite scroll implementation
+    let currentPage = 1;
+    let isLoading = false;
+    let hasMorePages = true;
+    
+    // Function to load more properties
+    function loadMoreProjects() {
+        if (isLoading || !hasMorePages) return;
+        
+        isLoading = true;
+        document.getElementById('skeleton-loader').style.display = 'block';
+        
+        // Get current filters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertiType = urlParams.get('propertiType') || '';
+        const propertiKategori = urlParams.get('propertiKategori') || '';
+        const filter = urlParams.get('filter') || '';
+        
+        // Increment page
+        currentPage++;
+        
+        // Fetch next page of projects
+        fetch(`{{ route('lihatsemua') }}?propertiType=${propertiType}&propertiKategori=${propertiKategori}&filter=${filter}&page=${currentPage}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide skeleton loader
+            document.getElementById('skeleton-loader').style.display = 'none';
+            
+            // Append new projects to container
+            document.getElementById('projects-container').insertAdjacentHTML('beforeend', data.html);
+            
+            // Check if there are more pages
+            hasMorePages = data.hasMorePages;
+            
+            if (!hasMorePages) {
+                document.getElementById('no-more-data').style.display = 'block';
+            }
+            
+            isLoading = false;
+        })
+        .catch(error => {
+            console.error('Error loading more projects:', error);
+            isLoading = false;
+            document.getElementById('skeleton-loader').style.display = 'none';
+        });
+    }
+    
+    // Detect when user scrolls near the bottom of the page
+    window.addEventListener('scroll', function() {
+        const scrollHeight = Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+        
+        // Load more projects when user is 200px from bottom of page
+        if (window.innerHeight + window.pageYOffset >= scrollHeight - 200) {
+            loadMoreProjects();
+        }
+    });
+</script>
+@endpush

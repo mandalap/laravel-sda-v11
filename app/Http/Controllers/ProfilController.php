@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\BookingTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,8 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 
 use App\Models\Member;
 
@@ -131,7 +134,25 @@ class ProfilController extends Controller
         }
     }
 
+    public function riwayatBooking(Request $request)
+    {
+        $user = Auth::guard('member')->user();
 
+        // Ambil booking dengan pagination (5 per halaman)
+        $bookings = BookingTransaction::where('member_id', $user->id)
+            ->with(['product', 'product.project'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('pages.profile.partials.riwayatBookingList', compact('bookings'))->render(),
+                'hasMorePages' => $bookings->hasMorePages()
+            ]);
+        }
+
+        return view('pages.profile.riwayatBooking', compact('bookings'));
+    }
 
     /**
      * Delete the user's account.
@@ -148,6 +169,4 @@ class ProfilController extends Controller
 
         return redirect('login');
     }
-
-
 }

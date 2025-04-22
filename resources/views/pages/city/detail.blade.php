@@ -1,11 +1,19 @@
 @extends('layouts.app')
 
 @section('title')
+List Properti
 @endsection
 
 @push('prepend-style')
 @endpush
 @push('addon-style')
+<style>
+    #filter_dropdown {
+    left: unset; /* Hapus posisi left yang sebelumnya */
+    right: 0; /* Tempatkan dropdown di sisi kanan */
+    transform: translateX(-10%); /* Geser dropdown ke kiri agar tidak keluar dari layar */
+}
+</style>
 @endpush
 
 @section('content')
@@ -14,9 +22,9 @@
 class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
     <div id="Background" class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
-    <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
-        <a href="{{ route('kategori', $kategori->slug) }}"
-            class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
+    <div id="TopNav" class="relative flex items-center justify-between px-5 pt-5">
+        <a href="{{ route('lihatkota') }}"
+            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
             <img src="{{asset('assets/images/icons/arrow-left.svg')}}" class="w-[28px] h-[28px]" alt="icon">
         </a>
         <h3 class="text-lg font-bold text-white">List Properti</h3>
@@ -26,19 +34,49 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <h2 class="font-bold text-[20px] leading-[30px] text-white">{{ $city->regency->name }}</h2>
         <p class="text-white">{{ $city->project->count() }} Project Ditemukan</p>
     </div>
-    <form action="" class="flex relative z-10 flex-col gap-6 mt-6">
-        <div class="flex flex-col gap-2 px-4">
-            <label for="Location" class="font-semibold text-white">Pencarian</label>
-            <div class="rounded-full flex items-center p-[12px_16px] bg-white w-full transition-all duration-300 focus-within:ring-2 focus-within:ring-black">
-                <div class="w-6 h-6 flex shrink-0 mr-[6px]">
+
+    <div class="sticky top-0 z-50 flex items-center w-full gap-4 px-5 py-2 mt-6 bg-white shadow-md">
+
+        <form action="" class="relative z-10 flex flex-row items-center flex-grow w-full">
+            <div class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
+                <div class="w-4 h-4 flex shrink-0 mr-[4px]">
                     <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
                 </div>
-                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full text-sm bg-white outline-none" placeholder="Tuliskan nama lokasi Cth. Punggur, Sungai Raya Dalam Rasau" required>
-                <button type="submit"
-                        class="flex justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-sm">Cari</button>
+                <input type="text" name="cari_kavling" id="cari_kavling" class="w-full text-xs bg-white outline-none" placeholder="Tuliskan nama lokasi" required>
+                <button type="submit" class="ml-2 flex justify-center rounded-full p-[6px_12px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-xs">Cari</button>
+            </div>
+        </form>
+        <div class="relative">
+            <button type="button" id="filter_button"
+                class="p-2 bg-white border border-gray-300 rounded-md hover:border-[#d40065]">
+                <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
+            </button>
+            <div id="filter_dropdown"
+                class="absolute left-0 hidden w-40 p-2 mt-2 text-sm text-black bg-white border border-gray-300 rounded-md shadow-lg">
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'terbaru']) }}" class="block p-2 w-full text-left hover:bg-gray-200">
+                    Listing Terbaru
+                </a>
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'terlama']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Listing
+                    Terlama</a>
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'termurah']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termurah</a>
+                <a href="{{ route('lihatproperti', ['propertiKategori' => $propertyKategori, 'propertiCity' => $city->slug, 'filter' => 'tertinggi']) }}" class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termahal</a>
             </div>
         </div>
-    </form>
+    </div>
+
+    <script>
+        document.getElementById('filter_button').addEventListener('click', function() {
+            const filter = document.getElementById('filter_dropdown');
+            filter.classList.toggle('hidden');
+        });
+
+        function selectFilter(value) {
+            console.log("Filter dipilih:", value); // Bisa diganti dengan logika lain
+            document.getElementById('filter_dropdown').classList.add('hidden');
+        }
+    </script>
 
     @forelse ( $projects as $project )
 
@@ -47,10 +85,10 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
             $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
         @endphp
 
-    <section id="Result" class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
+    <section id="Result" class="relative flex flex-col gap-4 px-5 mt-5 mb-3">
         <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
-                <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
+                <div class="flex w-[200px] h-[200px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
                     <div class="relative">
                         <button class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
                             Turun Harga
@@ -58,13 +96,18 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                         <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
                     </div>
                 </div>
-                <div class="flex flex-col gap-3 w-full">
-                    <h3 class="font-semibold text-lg ">{{ $project->nama_project }}</h3>
+                <div class="flex flex-col w-full gap-3">
+                    <h3 class="text-lg font-semibold ">{{ $project->nama_project }}</h3>
                     <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                         <p class="text-xs text-ngekos-grey">{{ $city->regency->name }}</p>
+                    </div>
+                    <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
+                            alt="icon">
+                        <p class="text-xs text-ngekos-grey">{{ $project->kategori->kategori }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
@@ -75,11 +118,24 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
                         $harga = $project->project_product->min('harga');
                         $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
                         $harga_setelah_diskon = $harga - $diskon;
+
+                        $hargaX = $project->project_product->max('harga');
+                        $diskonX = $project->project_product->max('discount'); // Asumsi diskon dalam persen
+                        $harga_setelah_diskonX = $hargaX - $diskonX;
                     @endphp
+                    @if ($project->kategori->slug == 'tanah-kavling')
                     <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
-                        <p class="ml-2 text-[0.625rem] font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }} </p>
+                        <p class="px-1"> - </p>
+
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]"> {{ number_format($harga_setelah_diskonX) }}</p>
                     </div>
+                    @else
+                    <div class="flex">
+                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }}</p>
+                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </a>

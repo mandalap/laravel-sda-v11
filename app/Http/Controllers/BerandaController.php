@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
 use App\Models\Kategori;
 use App\Models\Kelompok;
 use App\Models\Lokasi;
+use App\Models\Member;
+use App\Models\Product;
 use App\Models\Project;
+use App\Models\TestimoniBanner;
 
 class BerandaController extends Controller
 {
@@ -14,26 +18,24 @@ class BerandaController extends Controller
     {
 
         $kelompoks = Kelompok::all();
+        // Mengambil semua data TestimoniBanner
+        $testimoniBanners = TestimoniBanner::where('status', 'active')->get();
         $kota = Lokasi::all();
         $kategories = Kategori::orderBy('kategori', 'desc')->get();
 
         $projects = Project::where('status', 'tampil')
-                ->where('is_approved', 'Diterima')
-                ->whereHas('project_product', function($query) {
-                    $query->where('status', 'Tersedia');
-                })->take(5)->get();
+            ->where('is_approved', 'Diterima')
+            ->whereHas('project_product', function ($query) {
+                $query->where('status', 'Tersedia');
+            })->take(5)->get();
 
         $cities = Lokasi::limit(6)->inRandomOrder()->get();
 
-        // $kavling = Project::where('status', 'tampil')
-        //     ->where('is_approved', 'Diterima')
-        //     ->whereHas('project_product', function($query) {
-        //             $query->where('status', 'Tersedia');
-        //         })
-        //     ->whereHas('kategori', function($query) {
-        //         $query->where('slug', 'tanah-kavling');
-        //     })
-        //     ->get();
+        $agency     = Agency::count();
+        $properties = Project::count();
+        $products = Product::count();
+        $members  = Member::count();
+
 
         return view('pages.beranda.index', compact(
             'projects',
@@ -41,6 +43,11 @@ class BerandaController extends Controller
             'kategories',
             'kelompoks',
             'kota',
+            'agency',
+            'properties',
+            'products',
+            'members',
+            'testimoniBanners'
         ));
     }
 }

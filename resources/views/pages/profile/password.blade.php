@@ -23,22 +23,6 @@
         <p class="font-semibold text-white">Ubah Password</p>
         <div class="w-12 dummy-btn"></div>
     </div>
-    <div id="Header" class="relative flex gap-2 px-5 mt-[18px]">
-        <div class="flex flex-col">
-            @if (Auth::user()->thumbnail)
-                <img src="{{ asset('storage/' . Auth::user()->thumbnail) }}"
-                    class="w-20 h-20 rounded-full border border-dark" alt="icon">
-            @else
-                <img src="{{ asset('/assets/images/icons/profil-default.png') }}"
-                    class="w-20 h-20 rounded-full border border-dark" alt="Default thumbnail">
-            @endif
-        </div>
-        <button class="flex flex-col ml-4 shrink-0">
-            <h1 class="font-bold text-[32px] leading-[48px] text-white">{{ Auth::user()->nama }}</h1>
-            <p class="text-white">{{ Auth::user()->telepon }}</p>
-        </button>
-    </div>
-
 
     <form action="{{ route('update.password') }}" method="POST" class="relative flex flex-col px-5 mt-[18px]">
         @csrf

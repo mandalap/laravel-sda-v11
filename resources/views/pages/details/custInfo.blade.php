@@ -1,11 +1,23 @@
 @extends('layouts.app')
 
 @section('title')
+    Informasi Pelanggan
 @endsection
 
 @push('prepend-style')
 @endpush
 @push('addon-style')
+<style>
+    .swiper {
+    display: flex; /* Menggunakan flexbox untuk menjaga posisi item */
+    overflow: hidden; /* Sembunyikan overflow */
+}
+
+.swiper-wrapper {
+    display: flex; /* Pastikan wrapper juga menggunakan flex */
+    transition: transform 0.3s ease; /* Tambahkan transisi untuk efek yang lebih halus */
+}
+</style>
 @endpush
 
 @section('content')
@@ -17,15 +29,15 @@
         <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
             <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
                 class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
-                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
+                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]"
+                    alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
             </a>
             <p class="font-semibold text-white">Informasi Pelanggan</p>
             <div class="w-10 dummy-btn"></div>
         </div>
 
         @php
-        // Menghitung jumlah produk Tersedia untuk proyek saat ini
-            // Menghitung jumlah produk tersedia untuk proyek saat ini
+            // Menghitung jumlah produk Tersedia untuk proyek saat ini
             $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
         @endphp
 
@@ -60,8 +72,10 @@
 
                         <hr class="border-[#F1F2F6]">
                         <div class="flex">
-                            <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp {{ number_format($harga_setelah_diskon) }}</p>
-                            <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp {{ number_format($harga) }}</p>
+                            <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp
+                                {{ number_format($harga_setelah_diskon) }}</p>
+                            <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp {{ number_format($harga) }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -127,43 +141,69 @@
                     <p class="font-semibold">Pilih Properti</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/search-2.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
+                        <img src="{{ asset('assets/images/icons/search-2.svg') }}" class="flex w-5 h-5 shrink-0"
+                            alt="icon">
                         <input type="text" id="search" placeholder="Cari produk..."
-                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal" onkeyup="filterProducts()">
+                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
+                            onkeyup="filterProducts()">
                     </label>
                 </div>
                 <div class="flex flex-col gap-2">
                     <div class="overflow-x-hidden w-full swiper">
                         <div class="swiper-wrapper" id="product-list">
                             @forelse ($products as $product)
-                            <div class="swiper-slide !w-fit py-[2px] product-item">
-                                <label class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
-                                    <img src="{{ asset('assets/images/icons/real-estate.svg') }}" class="w-8 h-8" alt="icon">
-                                    <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
-                                    <input type="radio" name="product" class="absolute top-1/2 left-1/2 opacity-0 -z-10" value="{{ $product->code_product }}" onchange="updateCodeProduct('{{ $product->code_product }}')" required>
-                                </label>
-                            </div>
+                                <div class="swiper-slide !w-fit py-[2px] product-item">
+                                    <label
+                                        class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
+                                        <img src="{{ asset('assets/images/icons/real-estate.svg') }}" class="w-8 h-8"
+                                            alt="icon">
+                                        <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
+                                        <input type="radio" name="product"
+                                            class="absolute top-1/2 left-1/2 opacity-0 -z-10"
+                                            value="{{ $product->code_product }}"
+                                            onchange="updateCodeProduct('{{ $product->code_product }}')" >
+                                    </label>
+                                </div>
                             @empty
-                            <p>Tidak ada produk tersedia.</p>
+                                <p>Tidak ada produk tersedia.</p>
                             @endforelse
                         </div>
                     </div>
                 </div>
-                
+
                 <script>
                 function filterProducts() {
                     const searchInput = document.getElementById('search').value.toLowerCase();
                     const productItems = document.querySelectorAll('.product-item');
-                
+                    let visibleCount = 0;
+
                     productItems.forEach(item => {
                         const productName = item.querySelector('p').textContent.toLowerCase();
                         if (productName.includes(searchInput)) {
                             item.style.display = '';
+                            visibleCount++;
                         } else {
                             item.style.display = 'none';
                         }
                     });
-                }
+
+                    // Jika hanya ada satu item yang terlihat, atur posisi
+                    if (visibleCount === 1) {
+                        const visibleItem = Array.from(productItems).find(item => item.style.display !== 'none');
+                        if (visibleItem) {
+                            // Pusatkan item
+                            const swiperWrapper = document.querySelector('.swiper-wrapper');
+                            const itemWidth = visibleItem.offsetWidth;
+                            const totalWidth = itemWidth * visibleCount; // Total lebar item yang terlihat
+                            const offset = (swiperWrapper.offsetWidth - totalWidth) / 2; // Hitung offset untuk memusatkan
+                            swiperWrapper.style.transform = `translateX(${offset}px)`; // Pusatkan item
+                        }
+                    } else {
+                        // Reset transform jika lebih dari satu item terlihat
+                        const swiperWrapper = document.querySelector('.swiper-wrapper');
+        swiperWrapper.style.transform = 'translateX(0)';
+    }
+}
                 </script>
             </div>
 

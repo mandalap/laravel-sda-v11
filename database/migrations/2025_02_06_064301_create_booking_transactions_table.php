@@ -19,10 +19,15 @@ return new class extends Migration
             $table->string('invoice')->nullable();
             $table->unsignedBigInteger('jumlah_uang_booking')->nullable();
             $table->unsignedBigInteger('harga_tanah');
-            $table->unsignedBigInteger('diskon');
+            $table->unsignedBigInteger('diskon')->nullable();
             $table->unsignedBigInteger('total_harga');
             $table->boolean('is_paid');
-            $table->string('status')->nullable(); /// Booking, Pending, Cancel
+            $table->datetime('tanggal_bayar')->nullable();
+            $table->enum('status', ['pending', 'booking', 'cancel']);
+            $table->string('snap_token')->nullable(); //
+            $table->timestamp('snap_token_created_at')->nullable();
+            $table->timestamp('snap_token_expiry')->nullable();
+            $table->string('payment_method')->nullable(); //
             $table->softDeletes();
             $table->timestamps();
         });

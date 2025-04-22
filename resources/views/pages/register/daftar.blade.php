@@ -20,7 +20,7 @@
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Sapaan</label>
                     <select name="sapaan"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#058E2A] focus:border-[#058E2A]">
+                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]">
                         <option value="" disabled selected>Pilih Sapaan</option>
                         <option value="Bapak">Bapak</option>
                         <option value="Ibu">Ibu</option>
@@ -31,26 +31,26 @@
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Nama Lengkap</label>
                     <input type="text" name="nama"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#058E2A] focus:border-[#058E2A]"
+                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
                         placeholder="Masukkan Nama Lengkap" required/>
                 </div>
 
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Nomor WhatsApp</label>
                     <input type="number" name="telepon"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#058E2A] focus:border-[#058E2A]"
+                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
                         placeholder="Masukkan Nomor WhatsApp" />
                 </div>
 
                 <button type="submit"
-                    class="py-2.5 w-full font-medium text-white bg-[#058E2A] hover:bg-green-500  rounded-lg transition-colors">
+                    class="py-2.5 w-full font-medium text-white bg-[#d40065] hover:bg-black  rounded-lg transition-colors">
                     Daftar Sekarang
                 </button>
             </form>
 
             <div class="mt-6 text-sm text-center text-gray-600">
                 Sudah punya akun?
-                <a href="{{ route('login') }}" class="font-medium text-[#058E2A] hover:text-black">Login</a>
+                <a href="{{ route('login') }}" class="font-medium text-[#d40065] hover:text-black">Login</a>
             </div>
         </div>
     </div>
