@@ -9,6 +9,7 @@ use App\Models\Lokasi;
 use App\Models\Member;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\TestimoniBanner;
 
 class BerandaController extends Controller
 {
@@ -17,14 +18,16 @@ class BerandaController extends Controller
     {
 
         $kelompoks = Kelompok::all();
+        // Mengambil semua data TestimoniBanner
+        $testimoniBanners = TestimoniBanner::where('status', 'active')->get();
         $kota = Lokasi::all();
         $kategories = Kategori::orderBy('kategori', 'desc')->get();
 
         $projects = Project::where('status', 'tampil')
-                ->where('is_approved', 'Diterima')
-                ->whereHas('project_product', function($query) {
-                    $query->where('status', 'Tersedia');
-                })->take(5)->get();
+            ->where('is_approved', 'Diterima')
+            ->whereHas('project_product', function ($query) {
+                $query->where('status', 'Tersedia');
+            })->take(5)->get();
 
         $cities = Lokasi::limit(6)->inRandomOrder()->get();
 
@@ -43,7 +46,8 @@ class BerandaController extends Controller
             'agency',
             'properties',
             'products',
-            'members'
+            'members',
+            'testimoniBanners'
         ));
     }
 }

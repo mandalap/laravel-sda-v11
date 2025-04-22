@@ -101,9 +101,9 @@
             <div class="flex flex-col gap-4 pt-[22px]">
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/invoice.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
-                        <p class="text-ngekos-grey">Booking ID</p>
+                        <p class="text-ngekos-grey">Invoice</p>
                     </div>
                     <p class="font-semibold">{{ $booking->invoice }}</p>
                 </div>
@@ -189,6 +189,18 @@
                         @else
                             <p class="font-semibold">TIDAK DIKETAHUI</p>
                         @endif
+                    </div>
+                @endif
+                @if ($booking->tanggal_bayar)
+                    <div class="flex justify-between items-center">
+                        <div class="flex gap-3 items-center">
+                            <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="flex w-6 h-6 shrink-0"
+                                alt="icon">
+                            <p class="text-ngekos-grey">Tanggal Bayar</p>
+                        </div>
+                        <p class="font-semibold">
+                            {{ \Carbon\Carbon::parse($booking->tanggal_bayar)->setTimezone('Asia/Jakarta')->translatedFormat('d F Y H:i') }}
+                        </p>
                     </div>
                 @endif
             </div>

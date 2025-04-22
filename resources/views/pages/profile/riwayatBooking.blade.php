@@ -7,6 +7,27 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
+    <style>
+        /* Skeleton animation */
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .skeleton {
+            background-color: #E8E8E8;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -30,15 +51,46 @@
             @include('pages.profile.partials.riwayatBookingList')
         </div>
 
-        <div id="loading" class="text-center mt-4 hidden">
-            <p>Sedang memuat...</p>
+        <div id="loading" class="hidden">
+            <!-- Skeleton loader cards -->
+            <section class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
+                <div class="card w-full">
+                    <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white">
+                        <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] skeleton"></div>
+                        <div class="flex flex-col gap-3 text-left w-full">
+                            <div class="skeleton h-6 rounded-md w-3/4"></div>
+                            <div class="skeleton h-4 rounded-md w-1/2"></div>
+                            <div class="skeleton h-4 rounded-md w-2/3"></div>
+                            <hr class="border-[#F1F2F6]">
+                            <div class="flex items-start gap-[6px]">
+                                <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
+                                <div class="skeleton h-4 rounded-md w-1/3"></div>
+                            </div>
+                            <div class="flex items-start gap-[6px]">
+                                <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
+                                <div class="skeleton h-4 rounded-md w-2/5"></div>
+                            </div>
+                            <div class="flex items-start gap-[6px]">
+                                <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
+                                <div class="skeleton h-4 rounded-md w-1/4"></div>
+                            </div>
+                            <hr class="border-[#F1F2F6]">
+                            <div class="flex">
+                                <div class="skeleton h-6 rounded-md w-1/3"></div>
+                            </div>
+                            <div class="flex">
+                                <div class="skeleton h-6 rounded-full w-1/4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Second skeleton card -->
+            
         </div>
 
-        @if ($bookings->hasMorePages())
-            <div class="text-center mt-4">
-                <button id="load-more" class="px-4 py-2 bg-[#d40065] text-white rounded-lg">Muat lebih banyak</button>
-            </div>
-        @endif
+        <!-- Observer target untuk infinite scroll -->
+        <div id="observer-target" class="h-10"></div>
     </div>
 @endsection
 
@@ -85,13 +137,17 @@
     </script>
     <script>
         let page = 1;
-        const loadMoreBtn = document.getElementById('load-more');
+        let isLoading = false;
+        let hasMorePages = {{ $bookings->hasMorePages() ? 'true' : 'false' }};
         const riwayatBookingList = document.getElementById('booking-list');
         const loading = document.getElementById('loading');
+        const observerTarget = document.getElementById('observer-target');
 
         async function loadMoreData() {
+            if (isLoading || !hasMorePages) return;
+
+            isLoading = true;
             page++;
-            loadMoreBtn.style.display = 'none';
             loading.classList.remove('hidden');
 
             try {
@@ -101,25 +157,43 @@
                     }
                 });
 
-                const data = await response.json(); // Parse JSON response
+                const data = await response.json();
 
                 // Tambahkan HTML baru ke daftar booking
                 riwayatBookingList.insertAdjacentHTML('beforeend', data.html);
-                loading.classList.add('hidden');
 
-                // Cek apakah masih ada halaman berikutnya
-                if (!data.hasMorePages) {
-                    loadMoreBtn.remove();
-                } else {
-                    loadMoreBtn.style.display = 'block';
-                }
-            } catch (error) {
-                Alert::toast('Terjadi kesalahan', 'error')->autoClose(10000);
+                // Initialize countdowns for new items
+                document.querySelectorAll(`[id^=countdown-]`).forEach(el => {
+                    const expiryTimeUTC = el.getAttribute("data-expiry");
+                    if (expiryTimeUTC) {
+                        startCountdown(el.id.split('-')[1], expiryTimeUTC);
+                    }
+                });
+
+                // Update hasMorePages status
+                hasMorePages = data.hasMorePages;
+
+                isLoading = false;
                 loading.classList.add('hidden');
-                loadMoreBtn.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading more data:', error);
+                isLoading = false;
+                loading.classList.add('hidden');
             }
         }
 
-        loadMoreBtn.addEventListener('click', loadMoreData);
+        // Set up Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && hasMorePages && !isLoading) {
+                loadMoreData();
+            }
+        }, {
+            rootMargin: '0px 0px 200px 0px' // Load more when target is 200px from viewport
+        });
+
+        // Start observing
+        if (observerTarget) {
+            observer.observe(observerTarget);
+        }
     </script>
 @endpush

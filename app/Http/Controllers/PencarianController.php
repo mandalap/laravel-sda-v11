@@ -22,36 +22,53 @@ class PencarianController extends Controller
 
     public function findproperti(Request $request)
     {
-
         $nama = $request->nama;
         $lokasi = $request->lokasi;
 
-        if (empty($nama) && empty($lokasi)) {
+        // Validasi input
+        if (!$request->ajax() && empty($nama) && empty($lokasi)) {
             Alert::toast('Data tidak boleh kosong.', 'info')->autoClose(10000)->timerProgressBar();
             return redirect()->back()->withInput();
         }
 
-        $query = Project::with(['lokasi']);
+        $query = Project::with(['lokasi', 'jenis', 'kategori', 'project_product']);
 
+        // Filter berdasarkan nama
         if (!empty($nama)) {
-            $query->where(function($query) use ($nama) {
+            $query->where(function ($query) use ($nama) {
                 $query->where('nama_project', 'like', '%' . $nama . '%')
                     ->orWhere('alamat_project', 'like', '%' . $nama . '%');
             });
         }
 
+        // Filter berdasarkan lokasi
         if (!empty($lokasi)) {
-            $query->orWhereHas('lokasi', function($query) use ($lokasi) {
+            $query->whereHas('lokasi', function ($query) use ($lokasi) {
                 $query->where('regency_id', $lokasi);
             });
         }
 
-        $product = $query->get()->unique('id');
+        // Pagination hasil pencarian
+        $product = $query->paginate(10);
 
-        if ($product->isEmpty()) {
+        if ($product->isEmpty() && !$request->ajax()) {
             Alert::toast('Properti tidak ditemukan.', 'error')->autoClose(10000)->timerProgressBar();
             return redirect()->back()->withInput();
         }
+
+        // Jika request AJAX (infinite scroll), kirim response JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('pages.pencarian.partials.propertyList', compact('product'))->render(),
+                'hasMorePages' => $product->hasMorePages()
+            ]);
+        }
+
+        // Pass search parameters to maintain them during pagination
+        $product->appends([
+            'nama' => $nama,
+            'lokasi' => $lokasi
+        ]);
 
         return view('pages.pencarian.result', compact('product'));
     }

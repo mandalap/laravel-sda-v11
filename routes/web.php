@@ -20,7 +20,8 @@ Route::get('/lihat-properti', [ListCityController::class, 'lihatproperti'])->nam
 
 Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');
 Route::get('/properti', [ListCityController::class, 'properti'])->name('properti');
-Route::post('/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
+// Route::post('/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
+
 
 /// Details
 Route::get('/{jenis}/{kategori}/{project}', [DetailsController::class, 'index'])->name('detailproject');
@@ -31,6 +32,7 @@ Route::post('/check-booking/hasil-pencarian', [CekBookingController::class, 'car
 
 // Cari
 Route::get('/cari-properti', [PencarianController::class, 'index'])->name('cari-properti');
+Route::match(['get', 'post'], '/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
 
 Route::middleware('auth:member')->group(function () {
 
