@@ -47,7 +47,7 @@ class SendWhatsAppBookingFirst implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hallo, $sapaan $nama!*\n\nKami sudah menerima detail transaksinya, tinggal menunggu proses pembayarannya ya\nAgar pesanan kamu bisa segera kami proses, mohon untuk segera melakukan pembayaran.\n\n*Silahkan memilih metode pembayaran sebelum batas waktu : $exp*\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nKami sudah menerima detail transaksinya, tinggal menunggu proses pembayarannya ya\nAgar pesanan kamu bisa segera kami proses, mohon untuk segera melakukan pembayaran.\n\n*Silahkan memilih metode pembayaran sebelum batas waktu : $exp*\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();

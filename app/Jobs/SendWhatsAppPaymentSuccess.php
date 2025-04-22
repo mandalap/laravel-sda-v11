@@ -38,10 +38,8 @@ class SendWhatsAppPaymentSuccess implements ShouldQueue
         $invoice = $dapat->invoice;
         $kavling = $dapat->product->project->nama_project;
         $blok   = $dapat->product->nama_product;
-        $biaya = number_format($dapat->jumlah_uang_booking);
         $route = route("riwayat.booking");
         $status = $dapat->status;
-        $payment = $dapat->payment_method;
 
         // Token Whatsapp
         $token = WhatsappApiToken::where('status', 'active')->first();
@@ -50,7 +48,8 @@ class SendWhatsAppPaymentSuccess implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hallo, $sapaan $nama!*\n\nTransaksi booking tanah kavling kamu sudah berhasil kami terima dan sudah kami proses ya.\n\n*Detail Transaksi :*\nInvoice = $invoice\nTanah Kavling = $kavling\nBlok = $blok\nStatus = $status\nMetode Pembayaran = $payment\nBiaya Booking = Rp $biaya\n\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nTransaksi booking tanah kavling kamu dikonfirmasi ya.
+            *Invoice ID $invoice*\nTanah Kavling: $kavling - $blok\nstatus: $status\n\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();

@@ -51,7 +51,7 @@ class SendWhatsAppPaymentMethod implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hallo, $sapaan $nama!*\n\nKami sudah menerima detail transaksinya, tinggal menunggu proses pembayarannya ya\nAgar pesanan kamu bisa segera kami proses, mohon untuk segera melakukan pembayaran.\n\n*Detail Transaksi :*\nInvoice = $invoice\nTanah Kavling = $kavling\nBlok = $blok\nStatus = $status\nMetode Pembayaran = $payment\nBiaya Booking = Rp $biaya\n\n*Silahkan melakukan pembayaran sebelum batas waktu : $exp*\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nLakukan pembayaran untuk pemesanan kavling tanah yang sudah kamu pilih ya\n\nTanah Kavling $kavling - $blok dengan Invoice $invoice *sebelum batas waktu : $exp*\n\nSilahkan lakukan pembayaran agar pesananmu bisa diproses.\n\n*Total Pembayaran: Rp $biaya*\nMetode Pembayaran: $payment\nStatus: $status\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();

@@ -50,7 +50,7 @@ class SendWhatsAppPaymentCancel implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hallo, $sapaan $nama!*\n\nTransaksi booking tanah kavling dibatalkan dan gagal kami proses ya.\n\n*Detail Transaksi :*\nInvoice = $invoice\nTanah Kavling = $kavling\nBlok = $blok\nStatus = $status\nMetode Pembayaran = $payment\nBiaya Booking = Rp $biaya\n\nJika ingin melakukan pembelian silahkan lakukan transaksi ulang.\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nTransaksi booking tanah kavling dibatalkan dan gagal kami proses ya.\n\n*Detail Transaksi :*\nInvoice = $invoice\nTanah Kavling = $kavling\nBlok = $blok\nStatus = $status\nMetode Pembayaran = $payment\nBiaya Booking = Rp $biaya\n\nJika ingin melakukan pembelian silahkan lakukan transaksi ulang.\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();
