@@ -101,49 +101,57 @@ class ListCityController extends Controller
         $type = $request->query('propertiType');
         $kat = $request->query('propertiKategori');
         $filter = $request->query('filter');
+        $cari = $request->query('cari');
         $page = $request->query('page', 1); // Default to page 1
-    
+
         $kelompok = Kelompok::where('slug', $type)->firstOrFail();
-        if($kat == 'all'){
+        if ($kat == 'all') {
             $kategori = Kategori::all();
-        } else{
+        } else {
             $kategori = Kategori::where('slug', $kat)->firstOrFail();
         }
-        
+
         // Create the base query
         $query = Project::where('kelompok_id', $kelompok->id)
             ->where('is_approved', 'Diterima')
             ->where('status', 'tampil');
-            
-        // Apply filters
-        if($filter == 'terbaru') {
+
+        // Apply the search filter
+        if ($cari) {
+            $query->where(function ($q) use ($cari) {
+                $q->where('nama_project', 'like', '%' . $cari . '%')
+                    ->orWhere('alamat_project', 'like', '%' . $cari . '%');
+            });
+        }
+
+        // Apply other filters like 'terbaru', 'terlama'
+        if ($filter == 'terbaru') {
             $query->orderBy('id', 'desc');
-        } elseif($filter == 'terlama') {
+        } elseif ($filter == 'terlama') {
             $query->orderBy('id', 'asc');
         }
-        
+
         // Count total projects for the current filter
         $projectCount = $query->count();
-        
+
         // For AJAX requests, return JSON with just the projects
-        if($request->ajax()) {
+        if ($request->ajax()) {
             $projects = $query->skip(($page - 1) * 5)->take(5)->get();
-            
-            // Only render the view if there are projects
+
             $html = '';
-            if($projects->count() > 0) {
+            if ($projects->count() > 0) {
                 $html = view('pages.lihatsemua.itemProperti', compact('projects'))->render();
             }
-            
+
             return response()->json([
                 'html' => $html,
                 'hasMorePages' => $projects->count() == 5 && $page * 5 < $projectCount
             ]);
         }
-        
+
         // For initial page load, get first 5 projects
-        $projects = $query->take(5)->get();
-        
-        return view("pages.lihatsemua.index", compact('projects', 'kelompok', 'projectCount', 'kategori', 'filter', 'type', 'kat'));
+        $projects = $query->skip(($page - 1) * 5)->take(5)->get();
+
+        return view("pages.lihatsemua.index", compact('projects', 'kelompok', 'projectCount', 'kategori', 'filter', 'type', 'kat', 'cari'));
     }
 }
