@@ -36,7 +36,7 @@
                             @foreach ($testimoniBanners as $banner)
                                 <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
                                     <div
-                                        class="w-[610px] h-[200px] rounded-[20px] border border-[#F1F2F6] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                        class="w-[610px] h-[200px] rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
                                         <!-- Menampilkan Gambar dari Storage -->
                                         <img src="{{ asset('storage/' . $banner->image) }}"
                                             class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
@@ -48,12 +48,12 @@
 
                     <!-- Navigation arrows positioned on sides -->
                     <button
-                        class="landscape-prev absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
+                        class="landscape-prev absolute left-1 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
                         <img src="{{ asset('assets/images/icons/left-arrow.svg') }}" class="w-5 h-5" alt="prev">
                     </button>
 
                     <button
-                        class="landscape-next absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
+                        class="landscape-next absolute right-1 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
                         <img src="{{ asset('assets/images/icons/right-arrow.svg') }}" class="w-5 h-5" alt="next">
                     </button>
                 </div>

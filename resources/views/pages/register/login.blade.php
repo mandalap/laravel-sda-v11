@@ -12,6 +12,9 @@
 @section('content')
     <!-- component -->
     <div class="flex justify-center items-center p-4 min-h-screen bg-gray-100">
+        <a href="{{ route('beranda') }}" class="absolute top-5 right-4 text-sm font-medium text-[#d40065] hover:text-black">
+            Lewati
+        </a>
         <div class="p-8 w-full max-w-md bg-white rounded-xl shadow-lg">
             <img src="{{ asset('assets/images/icons/logo.svg') }}" class="mx-auto w-auto h-20" alt="icon">
             <h2 class="mt-4 mb-6 text-2xl font-semibold text-center text-gray-900">Login</h2>
