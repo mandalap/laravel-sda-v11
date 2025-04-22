@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendWhatsAppDaftar;
+use App\Jobs\SendWhatsAppResetPassword;
 use Illuminate\Http\Request;
 use App\Models\Member;
 use Laratrust\Models\Role;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\RedirectResponse;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 
 
@@ -84,11 +87,13 @@ class RegisterController extends Controller
                 'telepon.unique' => 'Nomor Whatsapp sudah terdaftar!',
             ]);
 
+            $rd = random_int(10000, 99999);
             $member = Member::create([
                 'sapaan' => $request->sapaan,
                 'nama' => $request->nama,
                 'telepon' => $request->telepon,
-                'password' => Hash::make('123456'),
+                'password' => Hash::make($rd),
+                'recovery_code' => $rd,
             ]);
 
             // Menambahkan role konsumen
@@ -97,6 +102,9 @@ class RegisterController extends Controller
 
             // Alert sukses registrasi
             Alert::toast('Akun Anda berhasil dibuat!', 'success')->autoClose(5000);
+
+            // Dispatch job untuk mengirim pesan WhatsApp
+            SendWhatsAppDaftar::dispatch($member);
 
             return redirect('/');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -117,5 +125,32 @@ class RegisterController extends Controller
     public function lupapassword()
     {
         return view('pages.register.lupa-password');
+    }
+
+    public function resetpassword(Request $request)
+    {
+        try {
+            $member = Member::where('telepon',$request->telepon)->first();
+
+            if ($member === null) {
+                Alert::error('Opss....!', 'Nomor tidak ditemukan atau belum terdaftar. Silahkan cek kembali!');
+                return redirect()->route('lupapassword');
+            }else{
+                $item = Member::where('telepon', $request->telepon)->firstOrFail();
+                $rd = random_int(10000, 99999);
+
+                $item->password = Hash::make($rd);
+                $item->recovery_code = $rd;
+                $item->save();
+
+                SendWhatsAppResetPassword::dispatch($member);
+
+                Alert::success('Password berhasil diubah', 'Silahkan Cek WhatsApp Kamu');
+                return redirect()->route('login');
+            }
+        } catch (\Exception $e) {
+            Alert::toast('Terjadi kesalahan pada sistem!', 'error')->autoClose(5000);
+            return back()->withInput();
+        }
     }
 }

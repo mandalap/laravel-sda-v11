@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Jobs\SendWhatsAppSuccessChange;
 use App\Models\BookingTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -61,6 +62,9 @@ class ProfilController extends Controller
             $request->user()->update([
                 'password' => Hash::make($validated['password']),
             ]);
+            $member = $request->user();
+
+            SendWhatsAppSuccessChange::dispatch($member);
             // Flash message ke session
             Alert::toast('Password berhasil diubah.', 'success')->autoClose(5000);
         } catch (\Exception $e) {
@@ -143,7 +147,7 @@ class ProfilController extends Controller
             ->with(['product', 'product.project'])
             ->orderBy('created_at', 'desc')
             ->paginate(3);
-            
+
         if ($request->ajax()) {
             return response()->json([
                 'html' => view('pages.profile.partials.riwayatBookingList', compact('bookings'))->render(),

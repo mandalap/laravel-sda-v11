@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendWhatsAppBookingFirst;
+use App\Jobs\SendWhatsAppPaymentCancel;
+use App\Jobs\SendWhatsAppPaymentMethod;
+use App\Jobs\SendWhatsAppPaymentSuccess;
 use App\Models\BookingTransaction;
 use App\Models\Jenis;
 use App\Models\Kategori;
@@ -237,6 +241,7 @@ class DetailsController extends Controller
             $booking->save(); // Pastikan perubahan disimpan
 
             DB::commit();
+            SendWhatsAppBookingFirst::dispatch($booking);
 
             return response()->json([
                 'snapToken' => $snapToken,
@@ -314,6 +319,7 @@ class DetailsController extends Controller
                 }
 
                 $booking->update($updateData);
+                SendWhatsAppPaymentMethod::dispatch($booking);
 
                 // Log untuk memastikan update berjalan
                 Log::info('Booking updated with expiry time', [
@@ -341,6 +347,7 @@ class DetailsController extends Controller
                                 'product_id' => $booking->product->id ?? null
                             ]
                         );
+                        SendWhatsAppPaymentSuccess::dispatch($booking);
                         break;
                     case 'pending':
                         // Pembayaran masih pending
@@ -353,6 +360,7 @@ class DetailsController extends Controller
                         // Pembayaran gagal atau dibatalkan
                         $booking->update(['status' => 'cancel']);
                         Log::info('Status updated to Failed', ['booking_id' => $booking->id]);
+                        SendWhatsAppPaymentCancel::dispatch($booking);
                         break;
                 }
 
