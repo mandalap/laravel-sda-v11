@@ -25,43 +25,42 @@
         </a>
     </div>
 
-    <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
-
-        <!-- Landscape Testimonials -->
-        <div>
-            <div class="testimonial-landscape-container relative">
-                <div class="testimonial-landscape-swiper overflow-hidden w-full">
-                    <div class="swiper-wrapper">
-                        <!-- Loop untuk Menampilkan Gambar dari Database -->
-                        @foreach ($testimoniBanners as $banner)
-                            <div
-                                class="swiper-slide aspect-[360/120] aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
-                                <div
-                                    class="w-[610px] h-[200px] rounded-[20px] border border-[#F1F2F6] overflow-hidden hover:border-[#d40065] transition-all duration-300">
-                                    <!-- Menampilkan Gambar dari Storage -->
-                                    <img src="{{ asset('storage/' . $banner->image) }}"
-                                        class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
+    @if ($testimoniBanners->isNotEmpty())
+        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
+            <!-- Landscape Testimonials -->
+            <div>
+                <div class="testimonial-landscape-container relative">
+                    <div class="testimonial-landscape-swiper overflow-hidden w-full">
+                        <div class="swiper-wrapper">
+                            <!-- Loop untuk Menampilkan Gambar dari Database -->
+                            @foreach ($testimoniBanners as $banner)
+                                <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
+                                    <div
+                                        class="w-[610px] h-[200px] rounded-[20px] border border-[#F1F2F6] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                        <!-- Menampilkan Gambar dari Storage -->
+                                        <img src="{{ asset('storage/' . $banner->image) }}"
+                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
+
+                    <!-- Navigation arrows positioned on sides -->
+                    <button
+                        class="landscape-prev absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
+                        <img src="{{ asset('assets/images/icons/left-arrow.svg') }}" class="w-5 h-5" alt="prev">
+                    </button>
+
+                    <button
+                        class="landscape-next absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
+                        <img src="{{ asset('assets/images/icons/right-arrow.svg') }}" class="w-5 h-5" alt="next">
+                    </button>
                 </div>
-
-                <!-- Navigation arrows positioned on sides -->
-                <button
-                    class="landscape-prev absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
-                    <img src="{{ asset('assets/images/icons/left-arrow.svg') }}" class="w-5 h-5" alt="prev">
-                </button>
-
-                <button
-                    class="landscape-next absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
-                    <img src="{{ asset('assets/images/icons/right-arrow.svg') }}" class="w-5 h-5" alt="next">
-                </button>
             </div>
+        </section>
+    @endif
 
-        </div>
-
-    </section>
 
 
     <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
