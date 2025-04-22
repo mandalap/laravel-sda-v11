@@ -74,6 +74,7 @@
 @endsection
 
 @push('addon-script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function togglePassword() {
             var passwordField = document.getElementById('password-field');
@@ -92,4 +93,26 @@
             }
         }
     </script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Definisikan Toast terlebih dahulu
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 10000,
+                    width:'32rem',
+                    timerProgressBar: true,
+                });
+
+                // Kemudian gunakan Toast
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}"
+                });
+            });
+        </script>
+    @endif
 @endpush
