@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+Hasil Pencarian
 @endsection
 
 @push('prepend-style')
@@ -8,10 +9,35 @@
 @push('addon-style')
 <style>
     #filter_dropdown {
-    left: unset; /* Hapus posisi left yang sebelumnya */
-    right: 0; /* Tempatkan dropdown di sisi kanan */
-    transform: translateX(-10%); /* Geser dropdown ke kiri agar tidak keluar dari layar */
-}
+        left: unset; /* Hapus posisi left yang sebelumnya */
+        right: 0; /* Tempatkan dropdown di sisi kanan */
+        transform: translateX(-10%); /* Geser dropdown ke kiri agar tidak keluar dari layar */
+    }
+    
+    /* Skeleton animation */
+    @keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 1; }
+        100% { opacity: 0.6; }
+    }
+    
+    .animate-pulse {
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    /* Hide skeleton loader initially */
+    #skeleton-loader {
+        display: none;
+    }
+    
+    /* No more data message */
+    #no-more-data {
+        display: none;
+        text-align: center;
+        padding: 20px 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
 </style>
 @endpush
 
@@ -64,85 +90,27 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         </div>
     </div>
 
-    <script>
-        document.getElementById('filter_button').addEventListener('click', function() {
-            const filter = document.getElementById('filter_dropdown');
-            filter.classList.toggle('hidden');
-        });
-
-        function selectFilter(value) {
-            console.log("Filter dipilih:", value); // Bisa diganti dengan logika lain
-            document.getElementById('filter_dropdown').classList.add('hidden');
-        }
-    </script>
-
-    @forelse ( $projects as $project )
-    @php
-        // Menghitung jumlah produk Tersedia untuk proyek saat ini
-        $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
-    @endphp
-
-    <section id="Result" class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
-        <a href="" class="card">
-            <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
-                <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="">
-                </div>
-                <div class="flex flex-col gap-3 w-full">
-                    <h3 class="text-sm font-semibold">{{ $project->nama_project }}</h3>
-                    <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
-                    <hr class="border-[#F1F2F6]">
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
-                    </div>
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
-                            alt="icon">
-                        <p class="text-xs text-ngekos-grey">{{ $project->kategori->kategori }}</p>
-                    </div>
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <p class="text-sm text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti </p>
-                    </div>
-                    <hr class="border-[#F1F2F6]">
-                    @php
-                        $harga = $project->project_product->min('harga');
-                        $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
-                        $harga_setelah_diskon = $harga - $diskon;
-
-                        $hargaX = $project->project_product->max('harga');
-                        $diskonX = $project->project_product->max('discount'); // Asumsi diskon dalam persen
-                        $harga_setelah_diskonX = $hargaX - $diskonX;
-                    @endphp
-                    @if ($project->kategori->slug == 'tanah-kavling')
-                    <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }} </p>
-                        <p class="px-1"> - </p>
-
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]"> {{ number_format($harga_setelah_diskonX) }}</p>
-                    </div>
-                    @else
-                    <div class="flex">
-                        <p class="text-sm lg:text-lg font-semibold text-[#d40065]">{{ number_format($harga_setelah_diskon) }}</p>
-                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">{{ number_format($harga) }}</p>
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </a>
-    </section>
-    @empty
-        <p class="text-center">Tidak ada properti Tersedia</p>
-    @endforelse
+    <!-- Projects container where items will be loaded -->
+    <div id="projects-container">
+        @include('pages.lihatsemua.itemProperti')
+    </div>
+    
+    <!-- Skeleton loader (single item) -->
+    <div id="skeleton-loader">
+        @include('pages.lihatsemua.skeletonLoader')
+    </div>
+    
+    <!-- No more data message -->
+    <div id="no-more-data">
+        Semua properti telah ditampilkan
+    </div>
 </div>
 
 @endsection
 
-
-
 @push('addon-script')
 <script>
+    // Typewriter effect for search placeholder
     timeout_var = null;
 
     function typeWriter(selector_target, text_list, placeholder = false, i = 0, text_list_i = 0, delay_ms = 200) {
@@ -190,5 +158,76 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
     ];
 
     return_value = typeWriter("#cari_kavling", text_list, true);
+    
+    // Filter dropdown toggle
+    document.getElementById('filter_button').addEventListener('click', function() {
+        const filter = document.getElementById('filter_dropdown');
+        filter.classList.toggle('hidden');
+    });
+
+    // Infinite scroll implementation
+    let currentPage = 1;
+    let isLoading = false;
+    let hasMorePages = true;
+    
+    // Function to load more properties
+    function loadMoreProjects() {
+        if (isLoading || !hasMorePages) return;
+        
+        isLoading = true;
+        document.getElementById('skeleton-loader').style.display = 'block';
+        
+        // Get current filters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertiType = urlParams.get('propertiType') || '';
+        const propertiKategori = urlParams.get('propertiKategori') || '';
+        const filter = urlParams.get('filter') || '';
+        
+        // Increment page
+        currentPage++;
+        
+        // Fetch next page of projects
+        fetch(`{{ route('lihatsemua') }}?propertiType=${propertiType}&propertiKategori=${propertiKategori}&filter=${filter}&page=${currentPage}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide skeleton loader
+            document.getElementById('skeleton-loader').style.display = 'none';
+            
+            // Append new projects to container
+            document.getElementById('projects-container').insertAdjacentHTML('beforeend', data.html);
+            
+            // Check if there are more pages
+            hasMorePages = data.hasMorePages;
+            
+            if (!hasMorePages) {
+                document.getElementById('no-more-data').style.display = 'block';
+            }
+            
+            isLoading = false;
+        })
+        .catch(error => {
+            console.error('Error loading more projects:', error);
+            isLoading = false;
+            document.getElementById('skeleton-loader').style.display = 'none';
+        });
+    }
+    
+    // Detect when user scrolls near the bottom of the page
+    window.addEventListener('scroll', function() {
+        const scrollHeight = Math.max(
+            document.body.scrollHeight, document.documentElement.scrollHeight,
+            document.body.offsetHeight, document.documentElement.offsetHeight,
+            document.body.clientHeight, document.documentElement.clientHeight
+        );
+        
+        // Load more projects when user is 200px from bottom of page
+        if (window.innerHeight + window.pageYOffset >= scrollHeight - 200) {
+            loadMoreProjects();
+        }
+    });
 </script>
 @endpush

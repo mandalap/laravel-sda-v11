@@ -38,9 +38,6 @@
 </a>
 @empty
 <div class="flex flex-col items-center justify-center p-8 text-center">
-    <img src="{{ asset('assets/images/icons/no-result.svg') }}" class="w-40 h-40 mb-4" alt="No Results">
     <h3 class="font-semibold text-lg mb-2">Properti Tidak Ditemukan</h3>
-    <p class="text-ngekos-grey">Maaf, tidak ada properti yang sesuai dengan kriteria pencarian Anda.</p>
-    <a href="{{ route('cari-properti') }}" class="mt-4 px-6 py-2 bg-[#d40065] text-white rounded-full">Cari Lagi</a>
 </div>
 @endforelse
