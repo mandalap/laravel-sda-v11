@@ -198,9 +198,9 @@
     <script>
         const Toast = Swal.mixin({
             toast: true,
-            position: 'top-end',
+            position: 'top',
             showConfirmButton: false,
-            timer: 4000,
+            timer: 10000,
             timerProgressBar: true,
         });
 
@@ -289,7 +289,7 @@
                     icon: 'error',
                     position: 'top', // Menempatkan toast di atas halaman
                     toast: true, // Menggunakan tampilan toast
-                    width: '32rem'
+                    width: '32rem',
                     title: error.message || 'Terjadi kesalahan tidak terduga.'
                 });
                 payButton.disabled = false;
