@@ -227,6 +227,9 @@
                 if (response.status === 409 && data.error) {
                     Toast.fire({
                         icon: 'error',
+                        toast: true, // Menggunakan tampilan toast
+                        position: 'top', // Menempatkan toast di atas halaman
+                        width: '32rem',
                         title: data.error
                     });
                     setTimeout(() => {
@@ -284,6 +287,9 @@
                 console.error('Error:', error);
                 Toast.fire({
                     icon: 'error',
+                    position: 'top', // Menempatkan toast di atas halaman
+                    toast: true, // Menggunakan tampilan toast
+                    width: '32rem'
                     title: error.message || 'Terjadi kesalahan tidak terduga.'
                 });
                 payButton.disabled = false;

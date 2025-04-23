@@ -104,7 +104,7 @@ class RegisterController extends Controller
             SendWhatsAppDaftar::dispatch($member);
 
             // redirect jika berhasil membuat akun
-            return redirect()->route('login')->with('success', 'Akun anda berhasil dibuat.');
+            return redirect()->route('login')->with('success', 'Akun anda berhasil dibuat, silahkan cek WhatsApp untuk melihat password anda.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Menampilkan error validasi sebagai toast
             $errors = $e->validator->errors()->all();
