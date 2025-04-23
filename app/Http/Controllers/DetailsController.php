@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendWhatsAppBookingFirst;
+use App\Jobs\SendWhatsAppPaymentCancel;
+use App\Jobs\SendWhatsAppPaymentMethod;
+use App\Jobs\SendWhatsAppPaymentSuccess;
 use App\Models\BookingTransaction;
 use App\Models\Jenis;
 use App\Models\Kategori;
@@ -91,7 +95,7 @@ class DetailsController extends Controller
                         }
                     }
 
-                    Alert::toast('Produk ini sudah dibeli.', 'info')->autoClose(10000)->timerProgressBar();
+                    Alert::toast('Produk ini sudah dibooking.', 'info')->autoClose(10000)->timerProgressBar();
                     return redirect()->route('custinfo', [
                         'jenis' => $project->jenis->slug,
                         'kategori' => $project->kategori->slug,
@@ -147,7 +151,7 @@ class DetailsController extends Controller
                     ->where('id', '!=', $existingPaidBooking->id)
                     ->delete(); // Atau soft delete
 
-                Alert::toast('Produk ini sudah dibeli.', 'info')->autoClose(10000)->timerProgressBar();
+                Alert::toast('Produk ini sudah dibooking.', 'info')->autoClose(10000)->timerProgressBar();
                 return redirect()->route('custinfo', [
                     'jenis' => $project->jenis->slug,
                     'kategori' => $project->kategori->slug,
@@ -211,7 +215,7 @@ class DetailsController extends Controller
 
             if ($alreadyBooked) {
                 return response()->json([
-                    'error' => 'Produk ini sudah Anda booking.',
+                    'error' => 'Produk ini sudah dibooking.',
                 ], 409);
             }
 
@@ -343,6 +347,7 @@ class DetailsController extends Controller
             $booking->save(); // Pastikan perubahan disimpan
 
             DB::commit();
+            SendWhatsAppBookingFirst::dispatch($booking);
 
             return response()->json([
                 'snapToken' => $snapToken,
@@ -414,6 +419,9 @@ class DetailsController extends Controller
                     }
                 }
 
+                // Simpan payment_method sebelumnya untuk mendeteksi perubahan
+                $previousPaymentMethod = $booking->payment_method;
+
                 // Update waktu kadaluarsa snap_token sesuai dengan expiry_time dari Midtrans
                 $updateData = [
                     'status' => 'pending',
@@ -433,8 +441,26 @@ class DetailsController extends Controller
                     'snap_token_expiry' => $expiryTime ? $expiryTime->format('Y-m-d H:i:s') : null
                 ]);
 
+                // Tentukan status transaksi
+                $transactionStatus = $request->transaction_status;
+
+                // Kirim notifikasi WhatsApp ketika metode pembayaran pertama kali dipilih
+                // Kondisi: status pending, memiliki payment_type, dan sebelumnya tidak ada payment_method
+                if (
+                    $request->payment_type &&
+                    $transactionStatus === 'pending' &&
+                    (empty($previousPaymentMethod) || $previousPaymentMethod != $request->payment_type)
+                ) {
+
+                    Log::info('Sending payment method notification', [
+                        'payment_method' => $request->payment_type
+                    ]);
+
+                    SendWhatsAppPaymentMethod::dispatch($booking);
+                }
+
                 // Update status transaksi berdasarkan status pembayaran
-                switch ($request->transaction_status) {
+                switch ($transactionStatus) {
                     case 'settlement':
                         // Pembayaran berhasil dan diterima
                         $booking->update([
@@ -453,6 +479,7 @@ class DetailsController extends Controller
                                 'product_id' => $booking->product->id ?? null
                             ]
                         );
+                        SendWhatsAppPaymentSuccess::dispatch($booking);
                         break;
                     case 'pending':
                         // Pembayaran masih pending
@@ -465,6 +492,7 @@ class DetailsController extends Controller
                         // Pembayaran gagal atau dibatalkan
                         $booking->update(['status' => 'cancel']);
                         Log::info('Status updated to Failed', ['booking_id' => $booking->id]);
+                        SendWhatsAppPaymentCancel::dispatch($booking);
                         break;
                 }
 

@@ -2,40 +2,38 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TestimoniBannerResource\Pages;
-use App\Filament\Resources\TestimoniBannerResource\RelationManagers;
-use App\Models\TestimoniBanner;
+use App\Filament\Resources\WhatsappApiTokenResource\Pages;
+use App\Filament\Resources\WhatsappApiTokenResource\RelationManagers;
+use App\Models\WhatsappApiToken;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TestimoniBannerResource extends Resource
+class WhatsappApiTokenResource extends Resource
 {
-    protected static ?string $model = TestimoniBanner::class;
+    protected static ?string $model = WhatsappApiToken::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-video-camera';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                FileUpload::make('image')
-                    ->label('Banner (1083 x 360 - 360 pixels)')
-                    ->image()
-                    ->optimize('webp')
+                //
+                TextInput::make('sender')
+                    ->required()
+                    ->numeric(),
+                TextInput::make('api_token')
                     ->required(),
-                TextInput::make('title')
+                TextInput::make('url')
                     ->required(),
-                // TextInput::make('description'),
                 Select::make('status')
                     ->options([
                         'active' => 'Active',
@@ -50,16 +48,18 @@ class TestimoniBannerResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image'),
-                TextColumn::make('title')
+                //
+                TextColumn::make('sender')
                     ->searchable(),
-                // TextColumn::make('description')
-                //     ->searchable(),
+                TextColumn::make('api_token')
+                    ->searchable(),
+                TextColumn::make('url')
+                    ->searchable(),
                 TextColumn::make('status')
                     ->searchable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -67,8 +67,6 @@ class TestimoniBannerResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -83,17 +81,9 @@ class TestimoniBannerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTestimoniBanners::route('/'),
-            'create' => Pages\CreateTestimoniBanner::route('/create'),
-            'edit' => Pages\EditTestimoniBanner::route('/{record}/edit'),
+            'index' => Pages\ListWhatsappApiTokens::route('/'),
+            'create' => Pages\CreateWhatsappApiToken::route('/create'),
+            'edit' => Pages\EditWhatsappApiToken::route('/{record}/edit'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 }

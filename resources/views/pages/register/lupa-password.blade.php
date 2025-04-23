@@ -18,15 +18,16 @@
 
             <p class="text-sm text-center text-gray-600">Masukkan nomor whatsapp <br>Kami akan mengirim password terbaru</p>
 
-            <form class="mt-8 space-y-4">
+            <form class="mt-8 space-y-4" action="{{ route('resetpassword') }}" method="POST" >
+                @csrf
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Nomor WhatsApp</label>
                     <input type="number"
                         class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
-                        placeholder="Masukkan Nomor WhatsApp" />
+                        placeholder="Masukkan Nomor WhatsApp" name="telepon" />
                 </div>
 
-                <button
+                <button type="submit"
                     class="py-2.5 w-full font-medium text-white bg-[#d40065] hover:bg-black  rounded-lg transition-colors">
                     Kirim Password
                 </button>
