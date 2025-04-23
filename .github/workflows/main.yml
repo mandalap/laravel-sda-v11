@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}  # FTP username
           password: ${{ secrets.FTP_PASSWORD }}  # FTP password
           local-dir: ./  # Local directory to deploy (root of your repository)
-          server-dir: /home/wablitzc/public_html/wablitz.com  # Target directory on your server
+          server-dir: /home/wablitzc/public_html/wablitz.com/  # Target directory on your server
           exclude: |
             .git*
             node_modules
