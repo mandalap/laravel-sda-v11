@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+{{ $kategori->kategori }}
 @endsection
 
 @push('prepend-style')
@@ -27,28 +28,31 @@
     </div>
         <section id="Store-list" class="flex flex-col gap-6 px-4 mt-[60px]">
             @php
-                // Menghitung jumlah produk tersedia untuk setiap kota
+                // Menghitung jumlah produk Tersedia untuk setiap kota
                 $citiesWithProductCount = $cities->map(function ($city) {
                     $jumlahProdukTersedia = $city->project->flatMap(function ($project) {
                         return $project->project_product()->where('status', 'Tersedia')->get();
                     })->count();
 
-                    // Menambahkan jumlah produk tersedia ke objek kota
-                    $city->jumlah_produk_tersedia = $jumlahProdukTersedia;
+                    // Menambahkan jumlah produk Tersedia ke objek kota
+                    $city->jumlah_produk_Tersedia = $jumlahProdukTersedia;
 
                     return $city;
                 });
 
-                // Mengurutkan kota berdasarkan jumlah produk tersedia (descending)
-                $sortedCities = $citiesWithProductCount->sortByDesc('jumlah_produk_tersedia');
+                // Mengurutkan kota berdasarkan jumlah produk Tersedia (descending)
+                $sortedCities = $citiesWithProductCount->sortByDesc('jumlah_produk_Tersedia');
             @endphp
 
             @forelse ($sortedCities as $city)
-                <a href="{{ route('detailkategori', [$kategori->slug, $city->slug]) }}" class="card">
+                {{-- <a href="{{ route('detailkategori', [$kategori->slug, $city->slug]) }}" class="card">
+                     --}}
+
+            <a href="{{ route('lihatproperti', ['propertiKategori' => $kategori->slug, 'propertiCity' => $city->slug, 'filter' => 'none']) }}" class="card">
                     <div class="flex flex-col gap-4 rounded-[20px] ring-1 ring-[#E9E8ED] pb-4 bg-white overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-[#d40065]">
                         <div class="w-full h-[120px] flex shrink-0 overflow-hidden relative">
                             <img src="{{ asset('storage/' . $city->thumbnail) }}" class="object-cover w-full h-full" alt="thumbnail">
-                            @if ($city->jumlah_produk_tersedia == 0)
+                            @if ($city->jumlah_produk_Tersedia == 0)
                                 <p class="rounded-full p-[6px_10px] bg-[#F12B3E] w-fit h-fit font-bold text-[10px] leading-[15px] text-white absolute top-4 right-4">
                                     Habis
                                 </p>
@@ -61,24 +65,24 @@
                         <div class="flex gap-4 justify-between items-center px-4">
                             <div class="title flex flex-col gap-[6px]">
                                 <div class="flex gap-1 items-center">
-                                    <h1 class="font-semibold w-fit">{{ $city->regency->name }}</h1>
+                                    <h2 class="font-semibold w-fit">{{ $city->regency->name }}</h2>
                                 </div>
                                 <div class="flex items-center gap-[2px]">
                                     <div class="flex w-4 h-4 shrink-0">
                                         <img src="{{ asset('assets/images/icons/location.svg') }}" alt="icon">
                                     </div>
-                                    <p class="text-sm leading-[21px] text-[#909DBF]">{{ $city->province->name }}</p>
+                                    <p class="text-xs leading-[21px] text-[#909DBF]">{{ $city->province->name }}</p>
                                 </div>
                             </div>
                             <div class="rating flex flex-col gap-[6px]">
                                 <div class="flex items-center justify-end text-right gap-[6px]">
-                                    <h1 class="font-semibold w-fit">
+                                    <h2 class="font-semibold w-fit">
                                         {{ $city->project->count() }} Project
-                                    </h1>
+                                    </h2>
                                 </div>
                                 <div class="flex items-center justify-end text-right gap-[2px]">
-                                    <p class="text-sm leading-[21px] text-[#909DBF]">
-                                        {{ $city->jumlah_produk_tersedia }} Properti
+                                    <p class="text-xs leading-[21px] text-[#909DBF]">
+                                        {{ $city->jumlah_produk_Tersedia }} Properti
                                     </p>
                                 </div>
                             </div>
@@ -86,7 +90,7 @@
                     </div>
                 </a>
             @empty
-                <p class="text-center">Data belum tersedia</p>
+                <p class="text-center">Data belum Tersedia</p>
             @endforelse
         </section>
 

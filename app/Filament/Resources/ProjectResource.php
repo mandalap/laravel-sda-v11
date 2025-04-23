@@ -13,6 +13,7 @@ use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -31,7 +32,7 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
 
     public static function form(Form $form): Form
     {
@@ -99,7 +100,7 @@ class ProjectResource extends Resource
                     ->label('Lat-Lang Google Maps')
                     ->nullable(),
 
-                    Textarea::make('deskripsi')
+                    RichEditor::make('deskripsi')
                     ->label('Deskripsi')
                     ->nullable(),
 

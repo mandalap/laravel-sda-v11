@@ -16,13 +16,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class DeveloperResource extends Resource
 {
     protected static ?string $title = 'Developer';
     protected static ?string $model = Developer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
 
     protected static ?string $navigationLabel = 'Developer';
 
@@ -53,11 +54,26 @@ class DeveloperResource extends Resource
                 ->unique(ignoreRecord: true)
                 ->maxLength(255),
 
+                // Forms\Components\FileUpload::make('thumbnail')
+                // ->required()
+                // ->image()
+                // ->optimize('webp'),
+
                 Forms\Components\FileUpload::make('thumbnail')
                 ->required()
                 ->image()
-                ->optimize('webp'),
+                ->optimize('webp')
+                ->afterStateUpdated(function ($state, callable $get) {
+                    // Menghapus foto lama jika ada
+                    $existingThumbnail = $get('existing_thumbnail'); // Ambil foto yang ada dari state
 
+                    if ($existingThumbnail) {
+                        Storage::delete($existingThumbnail); // Hapus foto lama
+                    }
+                }),
+
+            Forms\Components\Hidden::make('existing_thumbnail')
+                ->default(fn ($record) => $record ? $record->thumbnail : null), // Cek apakah $record ada
 
             ]);
     }

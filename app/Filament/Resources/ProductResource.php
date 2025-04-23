@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Lokasi;
 use App\Models\Product;
 use App\Models\Project;
 use Filament\Forms;
@@ -15,6 +16,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,7 +25,7 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     public static function form(Form $form): Form
     {
@@ -159,6 +161,31 @@ class ProductResource extends Resource
                 ->searchable(),
             ])
             ->filters([
+                SelectFilter::make('project_id')
+                ->label('project')
+                ->relationship('project', 'nama_project'),
+
+                SelectFilter::make('status')
+                ->label('Status')
+                ->options([
+                    'Tersedia' => 'Tersedia',
+                    'Booking' => 'Booking',
+                    'Pending' => 'Pending',
+                    'Terjual' => 'Terjual',
+                ]),
+
+                // SelectFilter::make('project.developer_id')
+                // ->label('Developer')
+                // ->options(function () {
+                //     return Project::with('developer')
+                //         ->whereHas('products') // Hanya ambil project yang memiliki produk
+                //         ->get()
+                //         ->pluck('developer.nama', 'developer_id') // Ambil nama developer dan id-nya
+                //         ->filter(function ($name) {
+                //             return !is_null($name); // Filter out null names
+                //         })
+                //         ->sort();
+                // }),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

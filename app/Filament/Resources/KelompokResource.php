@@ -19,7 +19,7 @@ class KelompokResource extends Resource
 {
     protected static ?string $model = Kelompok::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
     protected static ?string $title = 'Kelompok';
     protected static ?string $navigationLabel = 'Kelompok';
 

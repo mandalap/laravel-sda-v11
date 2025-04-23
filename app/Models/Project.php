@@ -44,6 +44,7 @@ class Project extends Model
         return $this->belongsTo(Developer::class);
     }
 
+
     public function lokasi() :BelongsTo
     {
         return $this->belongsTo(Lokasi::class);
@@ -95,5 +96,9 @@ class Project extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 
 }

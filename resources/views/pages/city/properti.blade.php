@@ -40,7 +40,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
 
     @forelse ( $projects as $project )
     @php
-        // Menghitung jumlah produk tersedia untuk proyek saat ini
+        // Menghitung jumlah produk Tersedia untuk proyek saat ini
         $jumlahProdukTersedia = $project->project_product()->where('status', 'Tersedia')->count();
     @endphp
 
@@ -48,7 +48,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         <a href="{{ route('detailproject', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}" class="card">
             <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
                 <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="icon">
+                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full" alt="{{ $project->jenis->jenis }} {{ $project->kategori->kategori }} {{ $project->nama_project }} di {{ $project->alamat_project }} - {{ $project->lokasi->regency->name }}">
                 </div>
                 <div class="flex flex-col gap-3 w-full">
                     <h3 class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}</h3>
@@ -70,7 +70,7 @@ class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white
         </a>
     </section>
     @empty
-        <p class="text-center">Tidak ada properti tersedia</p>
+        <p class="text-center">Tidak ada properti Tersedia</p>
     @endforelse
 </div>
 

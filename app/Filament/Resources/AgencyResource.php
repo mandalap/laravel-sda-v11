@@ -22,7 +22,7 @@ class AgencyResource extends Resource
 {
     protected static ?string $model = Agency::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $navigationLabel = 'Agency';
     protected static ?string $title = 'Agency';
