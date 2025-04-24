@@ -1,4 +1,4 @@
-name: 🚀 Deploy to cPanel via FTP (Passive Mode)
+name: 🚀 Deploy to cPanel via FTP
 on:
   push:
     branches:
@@ -8,18 +8,23 @@ jobs:
     name: 🎉 Deploy Laravel Website
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
         
+      # Install dependencies via Composer
       - name: 📦 Install dependencies
         run: |
-          composer install --no-dev --optimize-autoloader
+          curl -sS https://getcomposer.org/installer | php
+          php composer.phar install --no-dev --optimize-autoloader
           
+      # Zip vendor folder untuk mempercepat upload
       - name: 📦 Zip vendor folder
         run: |
           zip -r vendor.zip vendor
           rm -rf vendor
           
+      # Sync files via FTP
       - name: 📂 Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -27,10 +32,8 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: ./
-          protocol: ftp
-          port: 21  # Default FTP port
-          passive: true  # Use passive mode
+          server-dir: /home/wablitzc/public_html/wablitz.com/
+          passive: true  # Gunakan mode pasif untuk mengatasi firewall
           exclude: |
             .git*
             node_modules
