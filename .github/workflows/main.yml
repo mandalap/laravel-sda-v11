@@ -1,4 +1,4 @@
-name: 🚀 Deploy to cPanel via SFTP
+name: 🚀 Deploy to cPanel via FTP (Passive Mode)
 on:
   push:
     branches:
@@ -20,12 +20,18 @@ jobs:
           zip -r vendor.zip vendor
           rm -rf vendor
           
-      - name: 📂 Sync files via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      - name: 📂 Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local_path: ./*
-          remote_path: ./
-          sftpArgs: '-o StrictHostKeyChecking=no'
+          local-dir: ./
+          server-dir: ./
+          protocol: ftp
+          port: 21  # Default FTP port
+          passive: true  # Use passive mode
+          exclude: |
+            .git*
+            node_modules
+            .github
