@@ -27,7 +27,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }} 
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: /sajadav2testing/
+          server-dir: ./
           exclude: |
             .git*
             node_modules
