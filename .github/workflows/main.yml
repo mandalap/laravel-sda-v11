@@ -1,4 +1,4 @@
-name: 🚀 Deploy to cPanel via FTP
+name: 🚀 Deploy to cPanel via SFTP
 on:
   push:
     branches:
@@ -20,15 +20,12 @@ jobs:
           zip -r vendor.zip vendor
           rm -rf vendor
           
-      - name: 📂 Sync files via FTP (excluding original vendor)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 📂 Sync files via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }} 
+          username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          server-dir: ./
-          exclude: |
-            .git*
-            node_modules
-            .github
+          local_path: ./*
+          remote_path: ./
+          sftpArgs: '-o StrictHostKeyChecking=no'
