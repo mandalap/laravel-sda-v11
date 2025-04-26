@@ -37,7 +37,7 @@ jobs:
     - name: 📂 Deploy ke Server
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: wablitz.com
+        server: ftp.wablitz.com
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: /public_html/sajadav2testing/
