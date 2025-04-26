@@ -1,40 +1,52 @@
-name: 🚀 Deploy to cPanel via FTP
+name: 🚀 Deploy Laravel ke wablitz.com
+
 on:
   push:
     branches:
       - main
+  workflow_dispatch:    # Memungkinkan untuk menjalankan workflow secara manual
+
 jobs:
   web-deploy:
-    name: 🎉 Deploy Laravel Website
+    name: 🎉 Deploy Website
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v4
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+      
+    - name: 🧹 Prepare files
+      run: |
+        # Hapus direktori dan file yang tidak perlu di-upload
+        rm -rf vendor
+        rm -rf node_modules
+        rm -rf .git
+        rm -rf .github
         
-      # Install dependencies via Composer
-      - name: 📦 Install dependencies
-        run: |
-          curl -sS https://getcomposer.org/installer | php
-          php composer.phar install --no-dev --optimize-autoloader
-          
-      # Zip vendor folder untuk mempercepat upload
-      - name: 📦 Zip vendor folder
-        run: |
-          zip -r vendor.zip vendor
-          rm -rf vendor
-          
-      # Sync files via FTP
-      - name: 📂 Sync files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          server-dir: /home/wablitzc/public_html/wablitz.com/
-          passive: true  # Gunakan mode pasif untuk mengatasi firewall
-          exclude: |
-            .git*
-            node_modules
-            .github
+        # Buat file deploy-script.php untuk instalasi di server
+        echo "<?php
+        // Script untuk menjalankan perintah setelah deployment
+        shell_exec('composer install --no-dev --optimize-autoloader --no-interaction');
+        shell_exec('cp .env.example .env');
+        shell_exec('php artisan key:generate');
+        shell_exec('php artisan config:clear');
+        shell_exec('php artisan cache:clear');
+        shell_exec('chmod -R 755 storage bootstrap/cache');
+        echo 'Deployment berhasil! Dependencies sudah terinstall.';
+        " > deploy-script.php
+    
+    - name: 📂 Deploy ke Server
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: wablitz.com
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /public_html/sajadav2testing/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/vendor/**
+          **/storage/framework/cache/**
+          **/storage/framework/sessions/**
+          **/storage/framework/views/**
+          **/storage/logs/**
