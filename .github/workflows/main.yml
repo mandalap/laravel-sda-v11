@@ -19,7 +19,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /public_html/    # Path ke domain wablitz.com
+        server-dir: /   # Path ke domain wablitz.com
         local-dir: ./               # Mengupload dari root repository
         exclude: |
           **/.git*
