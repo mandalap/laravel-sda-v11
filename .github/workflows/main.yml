@@ -12,15 +12,15 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
     
-    # sync files via FTP (tanpa vendor)
+    # Sync files via FTP (tanpa vendor)
     - name: 📂 Sync project files (tanpa vendor)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /   # Sesuaikan dengan path direktori project Anda
-        local-dir: ./
+        server-dir: /public_html    # Path ke domain wablitz.com
+        local-dir: ./               # Mengupload dari root repository
         exclude: |
           **/.git*
           **/.git*/**
