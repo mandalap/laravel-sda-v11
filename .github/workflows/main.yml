@@ -1,118 +1,22 @@
-name: Deploy Laravel to wablitz.com
-
-on:
+on: 
   push:
-    branches: [ main ]  # Ganti dengan branch utama yang Anda gunakan
-  workflow_dispatch:    # Memungkinkan untuk menjalankan workflow secara manual
+    branches:
+      - main
+name: 🚀 Deploy website on push
 
 jobs:
-  deploy:
+  web-deploy:
+    name: 🎉 Deploy website
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'  # Sesuaikan dengan versi PHP di hosting Anda
-        extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, fileinfo, tokenizer
-        coverage: none
-      
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      
-    - name: Install Dependencies
-      run: composer install --no-dev --optimize-autoloader --no-interaction
-      
-    - name: Generate key
-      run: php artisan key:generate
-      
-    - name: Directory Permissions
-      run: chmod -R 755 storage bootstrap/cache
-      
-    - name: Clear Config
-      run: |
-        php artisan config:clear
-        php artisan cache:clear
-        php artisan route:clear
-        php artisan view:clear
-      
-    - name: Compile Assets with NPM
-      run: |
-        npm install
-        npm run build
-        
-    - name: Create artifact
-      run: |
-        # Membuat folder untuk artifact
-        mkdir -p ./artifact
-        
-        # Salin file dan folder yang dibutuhkan untuk production
-        cp -r app bootstrap config database lang public resources routes storage vendor composer.json composer.lock artisan package.json ./artifact/
-        cp .env.example ./artifact/.env
-        
-        # Hapus folder node_modules yang besar jika ada
-        rm -rf ./artifact/node_modules
-        
-    - name: Configure FTP deployment
+    # Checkout the repository
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    # sync files via FTP
+    - name: 📂 Sync files via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ftp.wablitz.com  # FTP server dari domain utama
-        username: ${{ secrets.FTP_USERNAME }} # Username FTP Anda
-        password: ${{ secrets.FTP_PASSWORD }}
-        port: 21
-        protocol: ftp
-        local-dir: ./artifact/
-        server-dir: /public_html/sajadav2testing/  # Deploy ke folder sajadav2testing di public_html
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/.env.example
-          **/storage/framework/cache/**
-          **/storage/framework/sessions/**
-          **/storage/framework/views/**
-          **/storage/logs/**
-          
-    - name: Create post-deployment script
-      run: |
-        mkdir -p ./post-deploy
-        echo "<?php
-        // Script ini akan dijalankan di server hosting untuk menyelesaikan deployment
-        
-        // Set permission untuk storage
-        shell_exec('chmod -R 755 storage');
-        shell_exec('chmod -R 755 bootstrap/cache');
-        
-        // Update environment file
-        shell_exec('cp .env.example .env');
-        
-        // Ganti configuration di .env sesuai kebutuhan
-        shell_exec('sed -i \"s/DB_DATABASE=laravel/DB_DATABASE=${{ secrets.DB_DATABASE }}/g\" .env');
-        shell_exec('sed -i \"s/DB_USERNAME=root/DB_USERNAME=${{ secrets.DB_USERNAME }}/g\" .env');
-        shell_exec('sed -i \"s/DB_PASSWORD=/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g\" .env');
-        
-        // Generate app key
-        shell_exec('php artisan key:generate');
-        
-        // Clear caches
-        shell_exec('php artisan config:clear');
-        shell_exec('php artisan cache:clear');
-        shell_exec('php artisan route:clear');
-        shell_exec('php artisan view:clear');
-        
-        echo 'Post-deployment setup completed!';
-        " > ./post-deploy/deploy.php
-        
-    - name: Deploy post-deployment script
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ftp.wablitz.com
+        server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        port: 21
-        protocol: ftp
-        local-dir: ./post-deploy/
-        server-dir: /public_html/sajadav2testing/
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: ./
