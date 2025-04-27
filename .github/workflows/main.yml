@@ -3,7 +3,6 @@ on:
     branches:
       - main
 name: 🚀 Deploy website on push
-
 jobs:
   web-deploy:
     name: 🎉 Deploy website
@@ -12,11 +11,32 @@ jobs:
     # Checkout the repository
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
+      
+    # Persiapkan script post-deployment
+    - name: Create post-deployment script
+      run: |
+        echo "<?php
+        // Jalankan composer install di server
+        echo 'Mulai instalasi dependencies...<br>';
+        \$output = shell_exec('cd /home/wablitzc/wablitz.com/sajadav2testing && composer install --no-dev --optimize-autoloader');
+        echo '<pre>'.\$output.'</pre>';
+        echo 'Deployment selesai!';
+        " > deploy-script.php
+    
+    # Menghapus folder vendor jika ada
+    - name: Remove vendor folder
+      run: rm -rf vendor/
+      
     # sync files via FTP
     - name: 📂 Sync files via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        password: ${{ secrets.FTP_PASSWORD }}
         server-dir: ./
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/vendor/**
