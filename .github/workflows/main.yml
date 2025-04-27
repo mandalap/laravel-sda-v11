@@ -59,8 +59,10 @@ jobs:
           **/.git*
           **/.git*/**
           **/node_modules/**
+          vendor/**
           **/vendor/**
           vendor.zip
+          extract-vendor.php
           
     # Upload vendor.zip terpisah
     - name: 📂 Upload vendor.zip
