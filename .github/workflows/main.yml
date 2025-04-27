@@ -11,32 +11,66 @@ jobs:
     # Checkout the repository
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
-      
-    # Persiapkan script post-deployment
-    - name: Create post-deployment script
-      run: |
-        echo "<?php
-        // Jalankan composer install di server
-        echo 'Mulai instalasi dependencies...<br>';
-        \$output = shell_exec('cd /home/wablitzc/wablitz.com/sajadav2testing && composer install --no-dev --optimize-autoloader');
-        echo '<pre>'.\$output.'</pre>';
-        echo 'Deployment selesai!';
-        " > deploy-script.php
     
     # Menghapus folder vendor jika ada
     - name: Remove vendor folder
       run: rm -rf vendor/
+    
+    # Install dependencies di runner GitHub
+    - name: Install composer dependencies
+      run: composer install --no-dev --optimize-autoloader
       
+    # Create deployment zip
+    - name: Create deployment package
+      run: |
+        # Membuat zip kecil tanpa vendor
+        zip -r project-no-vendor.zip . -x "vendor/*" "node_modules/*" ".git/*"
+        
+        # Membuat zip khusus untuk vendor
+        cd vendor && zip -r ../vendor.zip . && cd ..
+        
+        # Membuat script ekstrak
+        echo "<?php
+        echo 'Mulai ekstraksi vendor...<br>';
+        \$zip = new ZipArchive();
+        if (\$zip->open('vendor.zip') === TRUE) {
+            if (!\file_exists('vendor')) {
+                mkdir('vendor', 0755, true);
+            }
+            \$zip->extractTo('vendor/');
+            \$zip->close();
+            echo 'Vendor berhasil diekstrak!<br>';
+        } else {
+            echo 'Gagal membuka vendor.zip<br>';
+        }
+        echo 'Deployment selesai!';
+        " > extract-vendor.php
+    
     # sync files via FTP
-    - name: 📂 Sync files via FTP
+    - name: 📂 Sync project files (tanpa vendor)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: ./
+        local-dir: ./
         exclude: |
           **/.git*
           **/.git*/**
           **/node_modules/**
           **/vendor/**
+          vendor.zip
+          
+    # Upload vendor.zip terpisah
+    - name: 📂 Upload vendor.zip
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: ./
+        local-dir: ./
+        include: |
+          vendor.zip
+          extract-vendor.php
