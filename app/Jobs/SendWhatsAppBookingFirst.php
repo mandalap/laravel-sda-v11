@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Carbon\Carbon;
 
 
 class SendWhatsAppBookingFirst implements ShouldQueue
@@ -36,9 +37,13 @@ class SendWhatsAppBookingFirst implements ShouldQueue
         $nama = $dapat->member->nama;
         $telepon = $dapat->member->telepon;
         $sapaan = $dapat->member->sapaan;
-
+        $kavling = $dapat->product->project->nama_project;
+        $blok   = $dapat->product->nama_product;
+        $invoice = $dapat->invoice;
+        $biaya = number_format($dapat->jumlah_uang_booking);
         $route = route("riwayat.booking");
-        $exp = $dapat->snap_token_expiry;
+        Carbon::setLocale('id');
+        $exp = Carbon::parse($dapat->snap_token_expiry)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i');
 
         // Token Whatsapp
         $token = WhatsappApiToken::where('status', 'active')->first();
@@ -47,7 +52,7 @@ class SendWhatsAppBookingFirst implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hai, $sapaan $nama!*\n\nKami sudah menerima detail transaksinya, tinggal menunggu proses pembayarannya ya\nAgar pesanan kamu bisa segera kami proses, mohon untuk segera melakukan pembayaran.\n\n*Silahkan memilih metode pembayaran sebelum batas waktu : $exp*\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nKami sudah menerima detail transaksinya ya,\nTinggal menunggu proses pembayarannya, agar pesanan $sapaan $nama bisa segera kami proses,\n\n*Invoice: $invoice*\n*Project: $kavling*\n*Blok: $blok*\n*Biaya Booking: Rp $biaya*\n\nMohon untuk segera melakukan pembayaran.\n\n*Silahkan memilih metode pembayaran sebelum batas waktu : $exp WIB*\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();
@@ -63,13 +68,13 @@ class SendWhatsAppBookingFirst implements ShouldQueue
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array(
-              'Content-Type: application/json'
+                'Content-Type: application/json'
             ),
-          ));
+        ));
 
-          $response = curl_exec($curl);
+        $response = curl_exec($curl);
 
-          curl_close($curl);
-          echo $response;
+        curl_close($curl);
+        echo $response;
     }
 }

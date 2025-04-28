@@ -36,12 +36,20 @@ class SendWhatsAppPaymentCancel implements ShouldQueue
         $telepon = $dapat->member->telepon;
         $sapaan = $dapat->member->sapaan;
         $invoice = $dapat->invoice;
+        $kategori = $dapat->product->project->kategori->kategori;
         $kavling = $dapat->product->project->nama_project;
         $blok   = $dapat->product->nama_product;
         $biaya = number_format($dapat->jumlah_uang_booking);
         $route = route("riwayat.booking");
-        $status = $dapat->status;
-        $payment = $dapat->payment_method;
+        $status = strtoupper($dapat->status);
+
+        if ($dapat->payment_method == 'bank_transfer') {
+            $payment = 'BANK TRANSFER';
+        } elseif ($dapat->payment_method == 'qris') {
+            $payment = 'QRIS';
+        } else {
+            $payment = strtoupper($dapat->payment_method); // fallback
+        }
 
         // Token Whatsapp
         $token = WhatsappApiToken::where('status', 'active')->first();
@@ -50,7 +58,7 @@ class SendWhatsAppPaymentCancel implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hai, $sapaan $nama!*\n\nTransaksi booking tanah kavling dibatalkan dan gagal kami proses ya.\n\n*Detail Transaksi :*\nInvoice = $invoice\nTanah Kavling = $kavling\nBlok = $blok\nStatus = $status\nMetode Pembayaran = $payment\nBiaya Booking = Rp $biaya\n\nJika ingin melakukan pembelian silahkan lakukan transaksi ulang.\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nTransaksi Booking *$kategori* $sapaan $nama dibatalkan dan gagal kami proses ya.\n\n*Detail Transaksi :*\n*Invoice: $invoice*\n*Project: $kavling*\n*Blok: $blok*\n*Metode Pembayaran: $payment*\n*Biaya Booking: Rp $biaya*\n*Status: $status*\n\nJika ingin melakukan pembelian silahkan lakukan transaksi ulang.\n\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();
@@ -66,13 +74,13 @@ class SendWhatsAppPaymentCancel implements ShouldQueue
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array(
-              'Content-Type: application/json'
+                'Content-Type: application/json'
             ),
-          ));
+        ));
 
-          $response = curl_exec($curl);
+        $response = curl_exec($curl);
 
-          curl_close($curl);
-          echo $response;
+        curl_close($curl);
+        echo $response;
     }
 }
