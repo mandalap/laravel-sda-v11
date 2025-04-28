@@ -9,6 +9,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Carbon\Carbon;
+
 
 class SendWhatsAppPaymentSuccess implements ShouldQueue
 {
@@ -36,10 +38,22 @@ class SendWhatsAppPaymentSuccess implements ShouldQueue
         $telepon = $dapat->member->telepon;
         $sapaan = $dapat->member->sapaan;
         $invoice = $dapat->invoice;
+        $kategori = $dapat->product->project->kategori->kategori;
         $kavling = $dapat->product->project->nama_project;
         $blok   = $dapat->product->nama_product;
+        $biaya = number_format($dapat->jumlah_uang_booking);
         $route = route("riwayat.booking");
-        $status = $dapat->status;
+        $status = strtoupper($dapat->status);
+        $tgl_bayar = Carbon::parse($dapat->tanggal_bayar)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i');
+
+
+        if ($dapat->payment_method == 'bank_transfer') {
+            $payment = 'BANK TRANSFER';
+        } elseif ($dapat->payment_method == 'qris') {
+            $payment = 'QRIS';
+        } else {
+            $payment = strtoupper($dapat->payment_method);
+        }
 
         // Token Whatsapp
         $token = WhatsappApiToken::where('status', 'active')->first();
@@ -48,8 +62,7 @@ class SendWhatsAppPaymentSuccess implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hai, $sapaan $nama!*\n\nTransaksi booking tanah kavling kamu dikonfirmasi ya.
-            *Invoice ID $invoice*\nTanah Kavling: $kavling - $blok\nstatus: $status\n\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nTransaksi Booking *$kategori* $sapaan $nama sudah dikonfirmasi ya.\n\n*Invoice: $invoice*\n*Project: $kavling*\n*Blok: $blok*\n*Metode Pembayaran: $payment*\n*Biaya Booking: Rp $biaya*\n*Status: $status (BERHASIL)*\n*Tanggal Pembayaran: $tgl_bayar WIB*\n\nUntuk melihat detail transaksinya klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();
@@ -65,13 +78,13 @@ class SendWhatsAppPaymentSuccess implements ShouldQueue
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array(
-              'Content-Type: application/json'
+                'Content-Type: application/json'
             ),
-          ));
+        ));
 
-          $response = curl_exec($curl);
+        $response = curl_exec($curl);
 
-          curl_close($curl);
-          echo $response;
+        curl_close($curl);
+        echo $response;
     }
 }

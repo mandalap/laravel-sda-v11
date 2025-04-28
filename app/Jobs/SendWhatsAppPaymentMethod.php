@@ -9,10 +9,12 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Carbon\Carbon;
+
 
 class SendWhatsAppPaymentMethod implements ShouldQueue
 {
-     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
@@ -37,12 +39,21 @@ class SendWhatsAppPaymentMethod implements ShouldQueue
         $sapaan = $dapat->member->sapaan;
         $invoice = $dapat->invoice;
         $kavling = $dapat->product->project->nama_project;
+        $kategori = $dapat->product->project->kategori->kategori;
         $blok   = $dapat->product->nama_product;
         $biaya = number_format($dapat->jumlah_uang_booking);
         $route = route("riwayat.booking");
-        $exp = $dapat->snap_token_expiry;
-        $status = $dapat->status;
-        $payment = $dapat->payment_method;
+        Carbon::setLocale('id');
+        $exp = Carbon::parse($dapat->snap_token_expiry)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i');
+        $status = strtoupper($dapat->status);
+
+        if ($dapat->payment_method == 'bank_transfer') {
+            $payment = 'BANK TRANSFER';
+        } elseif ($dapat->payment_method == 'qris') {
+            $payment = 'QRIS';
+        } else {
+            $payment = strtoupper($dapat->payment_method); // fallback
+        }
 
         // Token Whatsapp
         $token = WhatsappApiToken::where('status', 'active')->first();
@@ -51,7 +62,7 @@ class SendWhatsAppPaymentMethod implements ShouldQueue
             'api_key' => $token->api_token,
             'sender'  => $token->sender,
             'number'  => $telepon,
-            'message' => "*Hai, $sapaan $nama!*\n\nLakukan pembayaran untuk pemesanan kavling tanah yang sudah kamu pilih ya\n\nTanah Kavling $kavling - $blok dengan Invoice $invoice *sebelum batas waktu : $exp*\n\nSilahkan lakukan pembayaran agar pesananmu bisa diproses.\n\n*Total Pembayaran: Rp $biaya*\nMetode Pembayaran: $payment\nStatus: $status\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
+            'message' => "*Hai, $sapaan $nama!*\n\nSilahkan lakukan pembayaran untuk Booking *$kategori* yang sudah $sapaan $nama pilih ya\n\n*Invoice: $invoice*\n*Project: $kavling*\n*Blok: $blok*\n\n*Sebelum batas waktu : $exp WIB*\n\nSilahkan lakukan pembayaran agar pesanan $sapaan $nama bisa diproses.\n\n*Total Pembayaran: Rp $biaya*\n*Metode Pembayaran: $payment*\n*Status: $status*\n\nUntuk melanjukan pembayaran klik link dibawah ini :\n🔗 $route\n\nJika ada kendala atau pertanyaan, jangan ragu untuk hubungi kami ya.",
         ];
 
         $curl = curl_init();
@@ -67,13 +78,13 @@ class SendWhatsAppPaymentMethod implements ShouldQueue
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => array(
-              'Content-Type: application/json'
+                'Content-Type: application/json'
             ),
-          ));
+        ));
 
-          $response = curl_exec($curl);
+        $response = curl_exec($curl);
 
-          curl_close($curl);
-          echo $response;
+        curl_close($curl);
+        echo $response;
     }
 }
