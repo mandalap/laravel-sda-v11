@@ -44,6 +44,7 @@ class SendWhatsAppPaymentSuccess implements ShouldQueue
         $biaya = number_format($dapat->jumlah_uang_booking);
         $route = route("riwayat.booking");
         $status = strtoupper($dapat->status);
+        Carbon::setLocale('id');
         $tgl_bayar = Carbon::parse($dapat->tanggal_bayar)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i');
 
 

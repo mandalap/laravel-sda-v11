@@ -17,8 +17,8 @@
 
     <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[60px]">
         <a href="{{ route('profil') }}"
-            class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="{{ asset('/assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
+            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
+            <img src="assets/images/icons/arrow-left.svg" class="w-[20px] h-[20px]" alt="icon">
         </a>
         <p class="font-semibold text-white">Ubah Password</p>
         <div class="w-12 dummy-btn"></div>
