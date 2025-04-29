@@ -225,7 +225,7 @@
                                     d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-3A2.25 2.25 0 0 0 8.25 5.25V9m-3 3h12m-9 6.75A2.25 2.25 0 0 1 8.25 18V9m6.75 9a2.25 2.25 0 0 1-2.25 2.25H10.5A2.25 2.25 0 0 1 8.25 18V9">
                                 </path>
                             </svg>
-                            <p class="font-normal text-sm">Logout</p>
+                            <p class="font-normal text-sm">Keluar</p>
                         </div>
                     </button>
                 </form>

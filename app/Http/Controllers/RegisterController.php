@@ -63,7 +63,7 @@ class RegisterController extends Controller
         }
 
         Alert::toast('Nomor telepon atau password anda salah.', 'error')->autoClose(10000)->timerProgressBar();
-        return back();
+        return back()->withInput();
     }
 
 

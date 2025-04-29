@@ -18,7 +18,7 @@
         </div>
 
         <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center w-full px-5 z-10">
-            <a href="{{ route('detailkategori', [$kategori->slug, $project->lokasi->slug]) }}"
+            <a href="{{ route('lihatkota') }}"
                 class="flex overflow-hidden justify-center items-center w-12 h-12 rounded-full backdrop-blur-sm shrink-0 bg-white/10">
                 <img src="{{ asset('assets/images/icons/arrow-left-transparent.svg') }}" class="w-8 h-8" alt="icon">
             </a>
