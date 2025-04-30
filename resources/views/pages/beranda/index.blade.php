@@ -36,7 +36,7 @@
                             @foreach ($testimoniBanners as $banner)
                                 <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
                                     <div
-                                        class="w-[610px] h-[200px] rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                        class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
                                         <!-- Menampilkan Gambar dari Storage -->
                                         <img src="{{ asset('storage/' . $banner->image) }}"
                                             class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
@@ -44,18 +44,18 @@
                                 </div>
                             @endforeach
                         </div>
+                        <!-- Pagination -->
+                        <div class="swiper-pagination"></div>
+
                     </div>
 
                     <!-- Navigation arrows positioned on sides -->
-                    <button
-                        class="landscape-prev absolute left-1 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
-                        <img src="{{ asset('assets/images/icons/left-arrow.svg') }}" class="w-5 h-5" alt="prev">
-                    </button>
-
-                    <button
-                        class="landscape-next absolute right-1 top-1/2 transform -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-white/80 rounded-full shadow-md">
-                        <img src="{{ asset('assets/images/icons/right-arrow.svg') }}" class="w-5 h-5" alt="next">
-                    </button>
+                    <div
+                        class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
+                    </div>
+                    <div
+                        class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
+                    </div>
                 </div>
             </div>
         </section>
@@ -632,64 +632,65 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
-        // Initialize Testimonial Swiper
-        var testimonialSwiper = new Swiper('.testimonial-swiper', {
-            slidesPerView: 'auto',
-            spaceBetween: 12,
-            grabCursor: true,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: '.testimonial-next',
-                prevEl: '.testimonial-prev',
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 3,
-                    spaceBetween: 16,
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Landscape Testimonial Swiper
+            var landscapeSwiper = new Swiper('.testimonial-landscape-swiper', {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                grabCursor: true,
+                loop: true,
+                // effect: 'fade', // Menggunakan efek fade yang lebih sederhana
+                // fadeEffect: {
+                //     crossFade: true // Mengaktifkan crossfade untuk transisi yang lebih halus
+                // },
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
                 },
-                768: {
-                    slidesPerView: 3,
-                    spaceBetween: 16,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
                 },
-                1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    type: 'bullets', // Menggunakan pagination tipe bullets
+                    dynamicBullets: true, // Bullets yang dinamis
+                    
                 },
-            }
-        });
+                keyboard: {
+                    enabled: true, // Mengaktifkan navigasi dengan keyboard
+                },
 
-        // Initialize Landscape Testimonial Swiper
-        var landscapeSwiper = new Swiper('.testimonial-landscape-swiper', {
-            slidesPerView: 'auto',
-            spaceBetween: 12,
-            grabCursor: true,
-            loop: true,
-            autoplay: {
-                delay: 4000, // Different timing from portrait for visual interest
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: '.landscape-next',
-                prevEl: '.landscape-prev',
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
-                },
-                768: {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
-                },
-                1024: {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
-                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 1,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                    },
+                }
+            });
+
+            // Update fraction text (e.g., "1/5")
+            function updateFraction(swiper) {
+                const fractionElement = document.querySelector('.testimonial-fraction');
+                if (fractionElement) {
+                    const activeIndex = swiper.realIndex + 1;
+                    const totalSlides = document.querySelectorAll(
+                        '.testimonial-landscape-swiper .swiper-slide:not(.swiper-slide-duplicate)').length;
+                    fractionElement.textContent = `${activeIndex}/${totalSlides}`;
+                }
             }
+
+            // Tambahkan A11y untuk aksesibilitas
+            landscapeSwiper.a11y.enable();
         });
     </script>
 @endpush
