@@ -128,12 +128,12 @@ class RegisterController extends Controller
     public function resetpassword(Request $request)
     {
         try {
-            $member = Member::where('telepon',$request->telepon)->first();
+            $member = Member::where('telepon', $request->telepon)->first();
 
             if ($member === null) {
-                Alert::error('Opss....!', 'Nomor tidak ditemukan atau belum terdaftar. Silahkan cek kembali!');
+                Alert::toast('Opss....!, Nomor tidak ditemukan atau belum terdaftar. Silahkan cek kembali.', 'error')->autoClose(10000)->timerProgressBar();
                 return redirect()->route('lupapassword');
-            }else{
+            } else {
                 $item = Member::where('telepon', $request->telepon)->firstOrFail();
                 $rd = random_int(10000, 99999);
 
@@ -143,11 +143,11 @@ class RegisterController extends Controller
 
                 SendWhatsAppResetPassword::dispatch($member);
 
-                Alert::success('Password berhasil diubah', 'Silahkan Cek WhatsApp Kamu');
+                Alert::toast('Password berhasil diubah, silahkan cek WhatsApp kamu', 'success')->autoClose(10000)->timerProgressBar();
                 return redirect()->route('login');
             }
         } catch (\Exception $e) {
-            Alert::toast('Terjadi kesalahan pada sistem!', 'error')->autoClose(5000);
+            Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
             return back()->withInput();
         }
     }
