@@ -11,6 +11,7 @@ module.exports = {
                 "ngekos-black": "#070707",
                 "ngekos-grey": "#5E6F76",
                 "ngekos-orange": "#FF801A",
+                "cancel": "#FF0000",
             },
         },
     },
