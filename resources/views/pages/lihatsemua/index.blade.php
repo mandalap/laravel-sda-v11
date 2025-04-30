@@ -53,79 +53,76 @@
 @endpush
 
 @section('content')
-    <div id="Content-Container"
-        class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
-        <div id="Background"
-            class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-        </div>
-        <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
-            <a href="{{ route('beranda') }}"
-                class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
-                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
-            </a>
-            <h3 class="text-lg font-bold text-white">Semua Properti</h3>
-            <div class="w-10 dummy-btn"></div>
-        </div>
-        <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
-            <h1 class="font-bold text-[20px] leading-[30px] text-white">Properti {{ $kelompok->kelompok }}</h1>
-            <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
-        </div>
-        <div class="flex sticky top-0 z-50 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
+    <div id="Background"
+        class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
+    </div>
+    <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
+        <a href="{{ route('beranda') }}"
+            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
+            <img src="assets/images/icons/arrow-left.svg" class="w-[20px] h-[20px]" alt="icon">
+        </a>
+        <h3 class="text-lg font-bold text-white">Semua Properti</h3>
+        <div class="w-10 dummy-btn"></div>
+    </div>
+    <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
+        <h1 class="font-bold text-[20px] leading-[30px] text-white">Properti {{ $kelompok->kelompok }}</h1>
+        <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
+    </div>
+    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
 
-            <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
-                <!-- Menambahkan hidden input untuk membawa query string lainnya -->
-                <input type="hidden" name="propertiType" value="{{ request()->query('propertiType', 'popular') }}">
-                <input type="hidden" name="propertiKategori" value="{{ request()->query('propertiKategori', 'all') }}">
-                <input type="hidden" name="filter" value="{{ request()->query('filter', 'none') }}">
-                <div
-                    class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
-                    <div class="w-4 h-4 flex shrink-0 mr-[4px]">
-                        <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
-                    </div>
-                    <input type="text" name="cari" id="cari_kavling" class="w-full text-xs bg-white outline-none"
-                        placeholder="Tuliskan nama lokasi" value="{{ request()->query('cari') }}">
-                    <button type="submit"
-                        class="ml-2 flex justify-center rounded-full p-[6px_12px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-xs">Cari</button>
+        <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
+            <!-- Menambahkan hidden input untuk membawa query string lainnya -->
+            <input type="hidden" name="propertiType" value="{{ request()->query('propertiType', 'popular') }}">
+            <input type="hidden" name="propertiKategori" value="{{ request()->query('propertiKategori', 'all') }}">
+            <input type="hidden" name="filter" value="{{ request()->query('filter', 'none') }}">
+            <div
+                class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
+                <div class="w-4 h-4 flex shrink-0 mr-[4px]">
+                    <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
                 </div>
-            </form>
-            <div class="relative">
-                <button type="button" id="filter_button"
-                    class="p-2 bg-white border border-gray-300 rounded-md hover:border-[#d40065]">
-                    <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
-                </button>
-                <div id="filter_dropdown"
-                    class="hidden absolute left-0 p-2 mt-2 w-40 text-sm text-black bg-white rounded-md border border-gray-300 shadow-lg">
-                    <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terbaru']) }}"
-                        class="block p-2 w-full text-left hover:bg-gray-200">
-                        Listing Terbaru
-                    </a>
-                    <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terlama']) }}"
-                        class="block p-2 w-full text-left hover:bg-gray-200">Listing
-                        Terlama</a>
-                    <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'termurah']) }}"
-                        class="block p-2 w-full text-left hover:bg-gray-200">Harga
-                        Termurah</a>
-                    <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'tertinggi']) }}"
-                        class="block p-2 w-full text-left hover:bg-gray-200">Harga
-                        Termahal</a>
-                </div>
+                <input type="text" name="cari" id="cari_kavling" class="w-full text-xs bg-white outline-none"
+                    placeholder="Tuliskan nama lokasi" value="{{ request()->query('cari') }}">
+                <button type="submit"
+                    class="ml-2 flex justify-center rounded-full p-[6px_12px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-xs">Cari</button>
+            </div>
+        </form>
+        <div class="relative">
+            <button type="button" id="filter_button"
+                class="p-2 bg-white border border-gray-300 rounded-md hover:border-[#d40065]">
+                <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
+            </button>
+            <div id="filter_dropdown"
+                class="hidden absolute left-0 p-2 mt-2 w-40 text-sm text-black bg-white rounded-md border border-gray-300 shadow-lg">
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terbaru']) }}"
+                    class="block p-2 w-full text-left hover:bg-gray-200">
+                    Listing Terbaru
+                </a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'terlama']) }}"
+                    class="block p-2 w-full text-left hover:bg-gray-200">Listing
+                    Terlama</a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'termurah']) }}"
+                    class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termurah</a>
+                <a href="{{ route('lihatsemua', ['propertiType' => $type, 'propertiKategori' => $kat, 'filter' => 'tertinggi']) }}"
+                    class="block p-2 w-full text-left hover:bg-gray-200">Harga
+                    Termahal</a>
             </div>
         </div>
+    </div>
 
-        <!-- Projects container where items will be loaded -->
-        <div id="projects-container">
-            @include('pages.lihatsemua.itemProperti')
-        </div>
+    <!-- Projects container where items will be loaded -->
+    <div id="projects-container">
+        @include('pages.lihatsemua.itemProperti')
+    </div>
 
-        <!-- Skeleton loader (single item) -->
-        <div id="skeleton-loader">
-            @include('pages.lihatsemua.skeletonLoader')
-        </div>
+    <!-- Skeleton loader (single item) -->
+    <div id="skeleton-loader">
+        @include('pages.lihatsemua.skeletonLoader')
+    </div>
 
-        <!-- No more data message -->
-        <div id="no-more-data">
-            Semua properti telah ditampilkan
-        </div>
+    <!-- No more data message -->
+    <div id="no-more-data">
+        Semua properti telah ditampilkan
     </div>
 @endsection
 
