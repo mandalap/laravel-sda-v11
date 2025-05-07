@@ -124,6 +124,8 @@
     <div id="no-more-data">
         Semua properti telah ditampilkan
     </div>
+
+    @include('includes.footer')
 @endsection
 
 @push('addon-script')

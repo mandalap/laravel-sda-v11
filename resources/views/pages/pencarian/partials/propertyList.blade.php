@@ -37,21 +37,21 @@
                     <div class="flex items-center gap-1 md:gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
                             alt="icon">
-                        <p class="text-[10px] md:text-xs text-ngekos-grey">
+                        <p class="text-xs md:text-xs text-ngekos-grey">
                             {{ $item->lokasi->regency->name }}
                         </p>
                     </div>
                     <div class="flex items-center gap-1 md:gap-[6px]">
                         <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
                             alt="icon">
-                        <p class="text-[10px] md:text-xs text-ngekos-grey">
+                        <p class="text-xs md:text-xs text-ngekos-grey">
                             {{ $item->kategori->kategori }}
                         </p>
                     </div>
                     <div class="flex items-center gap-1 md:gap-[6px]">
                         <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
                             alt="icon">
-                        <p class="text-[10px] md:text-xs text-ngekos-grey">Tersisa {{ $jumlahProdukTersedia }}
+                        <p class="text-xs md:text-xs text-ngekos-grey">Tersedia {{ $jumlahProdukTersedia }} Properti
                         </p>
                     </div>
                 </div>
@@ -67,18 +67,18 @@
                             $harga_setelah_diskonX = $hargaX - $diskonX;
                         @endphp
                         <div class="flex items-center">
-                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">
+                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">Rp
                                 {{ number_format($harga_setelah_diskon) }}</p>
                             <p class="px-1"> - </p>
-                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">
+                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">Rp
                                 {{ number_format($harga_setelah_diskonX) }}</p>
                         </div>
                     @else
                         <div class="flex items-center">
-                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">
+                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">Rp
                                 {{ number_format($harga_setelah_diskon) }}</p>
                             @if ($diskon > 0)
-                                <p class="ml-3 text-xs md:text-sm text-gray-500 line-through">
+                                <p class="ml-3 text-xs md:text-sm text-gray-500 line-through">Rp
                                     {{ number_format($harga) }}
                                 </p>
                             @endif
