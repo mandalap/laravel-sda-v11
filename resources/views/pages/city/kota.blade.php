@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
+Lihat Semua Kota
 @endsection
 
 @push('prepend-style')

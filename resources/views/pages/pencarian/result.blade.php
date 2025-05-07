@@ -42,7 +42,7 @@ Hasil Pencarian
     </div>
     <div id="Header" class="relative flex items-center justify-between gap-2 px-5 mt-[18px]">
         <div class="flex flex-col gap-[6px]">
-            <h1 class="font-bold text-[32px] leading-[48px] text-white">Hasil Pencarian</h1>
+            <h1 class="font-bold text-[25px] leading-[48px] text-white">Hasil Pencarian</h1>
             <p class="text-white">Tersedia {{ $product->total() }} Properti</p>
         </div>
     </div>

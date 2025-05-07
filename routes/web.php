@@ -27,8 +27,8 @@ Route::get('/properti', [ListCityController::class, 'properti'])->name('properti
 Route::get('/{jenis}/{kategori}/{project}', [DetailsController::class, 'index'])->name('detailproject');
 
 // Cek Booking
-Route::get('/check-booking', [CekBookingController::class, 'index'])->name('check-booking');
-Route::post('/check-booking/hasil-pencarian', [CekBookingController::class, 'caribooking'])->name('cari-booking');
+Route::get('/cek-booking', [CekBookingController::class, 'index'])->name('check-booking');
+Route::post('/cek-booking/hasil-pencarian', [CekBookingController::class, 'caribooking'])->name('cari-booking');
 
 // Cari
 Route::get('/cari-properti', [PencarianController::class, 'index'])->name('cari-properti');
