@@ -9,6 +9,7 @@ use App\Models\Lokasi;
 use App\Models\Member;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\PromoBanner;
 use App\Models\TestimoniBanner;
 
 class BerandaController extends Controller
@@ -20,6 +21,21 @@ class BerandaController extends Controller
         $kelompoks = Kelompok::all();
         // Mengambil semua data TestimoniBanner
         $testimoniBanners = TestimoniBanner::where('status', 'active')->get();
+        $promoBanners = PromoBanner::where('status', 'active')
+            ->where(function ($query) {
+                $now = now();
+                $query->where(function ($q) use ($now) {
+                    // Banner dengan tanggal mulai dan selesai yang valid
+                    $q->where('start_date', '<=', $now)
+                        ->where('end_date', '>=', $now);
+                })->orWhere(function ($q) {
+                    // Banner tanpa batasan waktu (null)
+                    $q->whereNull('start_date')
+                        ->whereNull('end_date');
+                });
+            })
+            ->orderBy('id', 'desc')
+            ->get();
         $kota = Lokasi::all();
         $kategories = Kategori::orderBy('kategori', 'desc')->get();
 
@@ -47,7 +63,8 @@ class BerandaController extends Controller
             'properties',
             'products',
             'members',
-            'testimoniBanners'
+            'testimoniBanners',
+            'promoBanners'
         ));
     }
 }

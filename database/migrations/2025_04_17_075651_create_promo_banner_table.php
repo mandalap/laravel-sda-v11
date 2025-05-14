@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->string('redirect_url');
             $table->date('start_date');
             $table->date('end_date');
             $table->string('slug')->unique();

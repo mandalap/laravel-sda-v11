@@ -64,7 +64,6 @@ class BookingTransactionResource extends Resource
                     ->label('Tanggal Bayar')
                     ->timezone('Asia/Jakarta')
                     ->displayFormat('d M Y H:i')
-                    ->withoutSeconds()
                     ->visible(fn(callable $get) => $get('status') === 'booking')
                     ->required(fn(callable $get) => $get('status') === 'booking')
                     ->default(now()->setTimezone('Asia/Jakarta')),

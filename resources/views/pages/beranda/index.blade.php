@@ -50,18 +50,14 @@
                     </div>
 
                     <!-- Navigation arrows positioned on sides -->
-                    <div
-                        class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
+                    <div class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
                     </div>
-                    <div
-                        class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
+                    <div class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
                     </div>
                 </div>
             </div>
         </section>
     @endif
-
-
 
     <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
 
@@ -342,15 +338,49 @@
     </section>
     {{-- End: Terbaik --}}
 
-    <section id="Promo" class="relative z-10 flex flex-col gap-3 px-4 mt-6 bg-[#F5F6F8]">
-        <h1 class="mt-3 text-sm font-semibold">Special Offers</h1>
-        <a href="#">
-            <div class="w-full aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden mb-5">
-                <img src="{{ asset('assets/images/thumbnails/banner.png') }}" class="object-cover w-full h-full"
-                    alt="promo banner">
+
+    {{-- Promo Banner --}}
+    @if ($promoBanners->isNotEmpty())
+        <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
+
+        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
+            <h2 class="text-sm font-bold">Promo Spesial</h2>
+
+            <!-- Landscape Testimonials -->
+            <div>
+                <div class="testimonial-landscape-container relative">
+                    <div class="testimonial-landscape-swiper overflow-hidden w-full">
+                        <div class="swiper-wrapper">
+                            <!-- Loop untuk Menampilkan Gambar dari Database -->
+                            @foreach ($promoBanners as $banner)
+                                <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
+                                    <a href="{{ $banner->redirect_url }}"
+                                        class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                        <!-- Menampilkan Gambar dari Storage -->
+                                        <img src="{{ asset('storage/' . $banner->image) }}"
+                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                        <!-- Pagination -->
+                        <div class="swiper-pagination"></div>
+
+                    </div>
+
+                    <!-- Navigation arrows positioned on sides -->
+                    <div class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
+                    </div>
+                    <div class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
+                    </div>
+                </div>
             </div>
-        </a>
-    </section>
+        </section>
+    @endif
+    {{-- End Promo Banner --}}
+
+    <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
+
 
     {{-- Rekomendasi --}}
     <section id="Rekomendasi" class="flex flex-col gap-4 mt-[30px] ">
@@ -656,7 +686,7 @@
                     clickable: true,
                     type: 'bullets', // Menggunakan pagination tipe bullets
                     dynamicBullets: true, // Bullets yang dinamis
-                    
+
                 },
                 keyboard: {
                     enabled: true, // Mengaktifkan navigasi dengan keyboard
