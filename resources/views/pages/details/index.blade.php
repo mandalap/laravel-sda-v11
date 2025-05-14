@@ -19,8 +19,8 @@
 
         <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center w-full px-5 z-10">
             <a href="{{ route('lihatkota') }}"
-                class="flex overflow-hidden justify-center items-center w-12 h-12 rounded-full backdrop-blur-sm shrink-0 bg-white/10">
-                <img src="{{ asset('assets/images/icons/arrow-left-transparent.svg') }}" class="w-8 h-8" alt="icon">
+                class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
+                <img src="{{ asset('assets/images/icons/back.svg') }}" alt="icon">
             </a>
             <p class="font-semibold text-white flex-1 text-center">Detail</p>
         </div>
@@ -53,23 +53,23 @@
             <hr class="border-[#F1F2F6] mx-5">
             <div id="Features" class="grid grid-cols-2 gap-x-[10px] gap-y-4 px-5">
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/location.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                    <img src="{{ asset('assets/images/icons/location2.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
                         alt="icon">
                     <p class="text-xs text-grey">{{ $project->lokasi->regency->name }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                    <img src="{{ asset('assets/images/icons/category.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
                         alt="icon">
                     <p class="text-xs text-grey">{{ $project->kategori->kategori }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                    <img src="{{ asset('assets/images/icons/layer.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
                         alt="icon">
                     <p class="text-xs text-grey">Terisa
                         {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/shield-tick.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                    <img src="{{ asset('assets/images/icons/verified.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
                         alt="icon">
                     <p class="text-xs text-grey">Terverikasi</p>
                 </div>

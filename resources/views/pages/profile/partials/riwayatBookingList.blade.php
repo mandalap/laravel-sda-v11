@@ -30,14 +30,14 @@
                         <!-- Info Detail -->
                         <div class="grid grid-cols-1 gap-1 md:gap-[6px]">
                             <div class="flex items-center gap-1 md:gap-[6px]">
-                                <img src="{{ asset('assets/images/icons/location.svg') }}"
+                                <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                     class="w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                 <p class="text-[10px] md:text-xs text-ngekos-grey">
                                     {{ $booking->product->project->lokasi->regency->name }}
                                 </p>
                             </div>
                             <div class="flex items-center gap-1 md:gap-[6px]">
-                                <img src="{{ asset('assets/images/icons/bill.svg') }}"
+                                <img src="{{ asset('assets/images/icons/invoice.svg') }}"
                                     class="w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                 <p class="text-[10px] md:text-xs text-ngekos-grey">{{ $booking->invoice }}</p>
                             </div>

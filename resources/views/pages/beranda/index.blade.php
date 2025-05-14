@@ -154,17 +154,17 @@
                                     <p class="text-sm text-ngekos-grey">{{ $popular->alamat_project }}</p>
                                     <hr class="border-[#F1F2F6]">
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/location.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-xs text-ngekos-grey">{{ $popular->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/category.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-xs text-ngekos-grey">{{ $popular->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/layer.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-xs text-ngekos-grey">Tersisa
                                             {{ $popular->project_product->where('status', 'Tersedia')->count() }} Unit</p>
@@ -276,19 +276,19 @@
 
                             <div class="grid grid-cols-2 md:grid-cols-1 gap-1 md:gap-[6px]">
                                 <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/location.svg') }}"
+                                    <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                         class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                     <p class="text-[12px] md:text-xs text-ngekos-grey">
                                         {{ $kavlingterbaik->lokasi->regency->name }}</p>
                                 </div>
                                 <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/3dcube.svg') }}"
+                                    <img src="{{ asset('assets/images/icons/category.svg') }}"
                                         class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                     <p class="text-[12px] md:text-xs text-ngekos-grey">
                                         {{ $kavlingterbaik->kategori->kategori }}</p>
                                 </div>
                                 <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                                    <img src="{{ asset('assets/images/icons/layer.svg') }}"
                                         class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                     <p class="text-[12px] md:text-xs text-ngekos-grey">Tersisa
                                         {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }}</p>
@@ -424,17 +424,17 @@
                                     <p class="text-sm text-ngekos-grey">{{ $rumahterbaik->alamat_project }}</p>
                                     <hr class="border-[#F1F2F6]">
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/location.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-sm text-ngekos-grey">{{ $rumahterbaik->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/category.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-sm text-ngekos-grey">{{ $rumahterbaik->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/layer.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-sm text-ngekos-grey">Tersisa
                                             {{ $rumahterbaik->project_product->where('status', 'Tersedia')->count() }} Unit
