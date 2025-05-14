@@ -32,7 +32,7 @@
                 <p class="font-semibold text-sm">Nama</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="text" name="nama" value="{{ $member->nama }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
@@ -44,7 +44,7 @@
                 <p class="font-semibold text-sm">Nomor WhatsApp</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
+                    <img src="{{ asset('/assets/images/icons/phone.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                     <input type="number" name="telepon" value="{{ $member->telepon }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Nomor WhatsApp">
@@ -55,7 +55,7 @@
                 <p class="font-semibold text-sm">Jenis Kelamin</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/gender.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <select name="gender" class="w-full pl-8 bg-white text-sm outline-none appearance-none">
                         <option value="" hidden>Pilih Jenis Kelamin</option>
@@ -70,7 +70,7 @@
                 <p class="font-semibold text-sm">Email</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/sms.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
+                    <img src="{{ asset('/assets/images/icons/mail.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                     <input type="text" name="email" value="{{ $member->email }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Email">
@@ -81,7 +81,7 @@
                 <p class="font-semibold text-sm">Tempat Lahir</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="text" name="tempat_lahir" value="{{ $member->tempat_lahir }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
@@ -105,7 +105,7 @@
                 <p class="font-semibold text-sm">Alamat</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="text" name="alamat" value="{{ $member->alamat }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"

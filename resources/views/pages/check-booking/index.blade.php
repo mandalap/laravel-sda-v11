@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Periksa Booking
+    Periksa Booking
 @endsection
 
 @push('prepend-style')
@@ -34,25 +34,13 @@ Periksa Booking
                         <p class="text-sm font-semibold">Booking ID</p>
                         <label
                             class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/note-favorite-grey.svg') }}"
-                                class="flex w-5 h-5 shrink-0" alt="icon">
+                            <img src="{{ asset('assets/images/icons/booking.svg') }}" class="flex w-5 h-5 shrink-0"
+                                alt="icon">
                             <input type="text" name="code_booking" id="code_booking" value="{{ old('code_booking') }}"
                                 class="w-full text-sm  font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                                 placeholder="Masukkan Booking ID">
                         </label>
                     </div>
-                    {{-- <div class="flex flex-col gap-2 w-full">
-                        <p class="text-sm font-semibold">Nomor Telepon</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="tel" name="" id=""
-                                class="w-full text-sm  font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Nomor Telepon">
-                        </label>
-                    </div> --}}
-
                     <button type="submit"
                         class="flex w-full text-sm  justify-center rounded-full p-[10px_20px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white">Lihat
                         Booking Kamu</button>

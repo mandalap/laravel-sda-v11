@@ -37,12 +37,12 @@
                         <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                         <hr class="border-[#F1F2F6]">
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
+                            <img src="{{ asset('assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-sm text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                         </div>
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
+                            <img src="{{ asset('assets/images/icons/category.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-sm text-ngekos-grey">{{ $project->kategori->kategori }}</p>
                         </div>
@@ -75,7 +75,7 @@
             <div class="flex flex-col gap-4 pt-[22px]">
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Nama</p>
                     </div>
@@ -83,14 +83,14 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/sms.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
+                        <img src="{{ asset('assets/images/icons/mail.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
                         <p class="text-ngekos-grey">Email</p>
                     </div>
                     <p class="font-semibold">{{ $email }}</p>
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/call.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Telepon</p>
                     </div>
@@ -110,7 +110,7 @@
             <div class="flex flex-col gap-4 pt-[22px]">
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/clock.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/block.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Nomor Properti</p>
                     </div>
@@ -156,7 +156,7 @@
                             survey lokasi</p>
                         <div class="flex justify-between items-center">
                             <div class="flex gap-3 items-center">
-                                <img src="{{ asset('assets/images/icons/card-tick.svg') }}" class="flex w-6 h-6 shrink-0"
+                                <img src="{{ asset('assets/images/icons/credit.svg') }}" class="flex w-6 h-6 shrink-0"
                                     alt="icon">
                                 <p class="text-ngekos-grey">Jumlah Pembayaran</p>
                             </div>

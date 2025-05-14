@@ -33,7 +33,7 @@
                 <p class="font-semibold">Password Lama</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/security-user.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/password.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="password" name="current_password"
                         class="w-full font-semibold outline-none appearance-none placeholder:text-gray-400 placeholder:font-normal"
@@ -49,7 +49,7 @@
                 <p class="font-semibold">Password Baru</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/security-user.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/password.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="password" name="password"
                         class="w-full font-semibold outline-none appearance-none placeholder:text-gray-400 placeholder:font-normal"
@@ -65,7 +65,7 @@
                 <p class="font-semibold">Konfirmasi Password Baru</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/security-user.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/password.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="password" name="password_confirmation"
                         class="w-full font-semibold outline-none appearance-none placeholder:text-gray-400 placeholder:font-normal"

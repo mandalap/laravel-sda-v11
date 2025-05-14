@@ -41,12 +41,12 @@
                             {{ $booking->product->nama_product }}</p>
                         <hr class="border-[#F1F2F6]">
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
+                            <img src="{{ asset('assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-sm text-ngekos-grey">{{ $booking->product->project->lokasi->regency->name }}</p>
                         </div>
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="flex w-5 h-5 shrink-0"
+                            <img src="{{ asset('assets/images/icons/category.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-sm text-ngekos-grey">{{ $booking->product->project->kategori->kategori }}</p>
                         </div>
@@ -66,7 +66,7 @@
             <div class="flex flex-col gap-4 pt-[22px]">
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Nama</p>
                     </div>
@@ -74,14 +74,14 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/sms.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
+                        <img src="{{ asset('assets/images/icons/mail.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
                         <p class="text-ngekos-grey">Email</p>
                     </div>
                     <p class="font-semibold">{{ $booking->member->email }}</p>
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/call.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Telepon</p>
                     </div>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/timer.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Durasi</p>
                     </div>
@@ -146,7 +146,7 @@
                 </div> --}}
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/arrow-up.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/status_booking.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Status Booking</p>
                     </div>
@@ -163,7 +163,7 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/security-card.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <img src="{{ asset('assets/images/icons/payment_info.svg') }}" class="flex w-6 h-6 shrink-0"
                             alt="icon">
                         <p class="text-ngekos-grey">Status Pembayaran</p>
                     </div>
@@ -178,7 +178,7 @@
                 @if ($booking->payment_method)
                     <div class="flex justify-between items-center">
                         <div class="flex gap-3 items-center">
-                            <img src="{{ asset('assets/images/icons/security-card.svg') }}" class="flex w-6 h-6 shrink-0"
+                            <img src="{{ asset('assets/images/icons/payment_method.svg') }}" class="flex w-6 h-6 shrink-0"
                                 alt="icon">
                             <p class="text-ngekos-grey">Metode Pembayaran</p>
                         </div>
@@ -194,7 +194,7 @@
                 @if ($booking->tanggal_bayar)
                     <div class="flex justify-between items-center">
                         <div class="flex gap-3 items-center">
-                            <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="flex w-6 h-6 shrink-0"
+                            <img src="{{ asset('assets/images/icons/calendar_success.svg') }}" class="flex w-6 h-6 shrink-0"
                                 alt="icon">
                             <p class="text-ngekos-grey">Tanggal Bayar</p>
                         </div>

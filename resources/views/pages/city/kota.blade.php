@@ -74,7 +74,7 @@
                             </div>
                             <div class="flex items-center gap-[2px]">
                                 <div class="flex w-4 h-4 shrink-0">
-                                    <img src="{{ asset('assets/images/icons/location.svg') }}" alt="icon">
+                                    <img src="{{ asset('assets/images/icons/location2.svg') }}" alt="icon">
                                 </div>
                                 <p class="text-sm leading-[21px] text-[#909DBF]">{{ $city->province->name }}</p>
                             </div>

@@ -24,7 +24,7 @@
                         <p class="font-semibold text-sm">Nama Properti</p>
                         <label
                             class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/note-favorite-grey.svg') }}"
+                            <img src="{{ asset('assets/images/icons/layer.svg') }}"
                                 class="flex w-5 h-5 shrink-0" alt="icon">
                             <input type="text" name="nama" id="nama"
                                 value="{{ old('nama', request()->query('nama')) }}"
@@ -36,7 +36,7 @@
                         <p class="font-semibold text-sm">Pilih Lokasi</p>
                         <label
                             class="relative flex items-center w-full rounded-full p-[10px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/location.svg') }}"
+                            <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                 class="flex absolute left-5 top-1/2 w-5 h-5 transform -translate-y-1/2 shrink-0"
                                 alt="icon">
                             <select name="lokasi" id="lokasi"

@@ -55,12 +55,12 @@
                         <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                         <hr class="border-[#F1F2F6]">
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/location.svg') }}" class="flex w-5 h-5 shrink-0"
+                            <img src="{{ asset('assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-xs text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                         </div>
                         <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
+                            <img src="{{ asset('assets/images/icons/layer.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti</p>
                         </div>
@@ -95,7 +95,7 @@
                     <p class="font-semibold">Nama Lengkap</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="flex w-5 h-5 shrink-0"
+                        <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <input type="text" name="nama" id="nama" value="{{ $member->nama }}"
                             class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
@@ -107,7 +107,7 @@
                     <p class="font-semibold">Email</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/sms.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
+                        <img src="{{ asset('assets/images/icons/mail.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                         <input type="email" name="email" id="email" value="{{ $member->email }}"
                             class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                             placeholder="Masukkan Email">
@@ -117,7 +117,7 @@
                     <p class="font-semibold">Telepon</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/call.svg') }}" class="flex w-5 h-5 shrink-0"
+                        <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <input type="number" name="telepon" id="telepon" value="{{ $member->telepon }}"
                             class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
@@ -129,7 +129,7 @@
                     <p class="font-semibold">Kode Refferal</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/movie-tickets.svg') }}" class="flex w-5 h-5 shrink-0"
+                        <img src="{{ asset('assets/images/icons/referall.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <input type="text" name="refferal" id="refferal"
                             class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
@@ -141,7 +141,7 @@
                     <p class="font-semibold">Pilih Properti</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/search-2.svg') }}" class="flex w-5 h-5 shrink-0"
+                        <img src="{{ asset('assets/images/icons/search2.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <input type="text" id="search" placeholder="Cari produk..."
                             class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
