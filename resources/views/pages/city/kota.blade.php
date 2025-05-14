@@ -13,20 +13,19 @@
     <div id="Background"
         class="absolute top-0 w-full h-[100px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
-    <div id="Top-nav" class="flex relative items-center justify-center px-4 pt-5">
-        <!-- Tombol Kembali di Kiri -->
-        <a href="{{ route('beranda') }}" class="absolute left-4">
-            <div class="flex w-10 h-10 shrink-0">
-                <img src="{{ asset('assets/images/icons/back.svg') }}" alt="icon">
-            </div>
+    <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
+        <a href="{{ route('beranda') }}"
+            class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
+            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[28px]" alt="icon">
         </a>
-
         <!-- Judul di Tengah -->
         <div class="flex flex-col text-center">
             <h1 class="font-semibold text-lg leading-[27px] text-white">Lihat Semua Kota</h1>
             <p class="text-sm leading-[21px] text-[#909DBF] text-white">{{ $cities->count() }} Kota Ditemukan</p>
         </div>
+        <div class="flex-none w-10"></div>
     </div>
+
     <section id="Store-list" class="flex flex-col gap-6 px-4 mt-[60px]">
         @php
             // Menghitung jumlah produk Tersedia untuk setiap kota

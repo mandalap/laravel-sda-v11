@@ -35,7 +35,7 @@ Hasil Pencarian
     <div id="Background" class="absolute top-0 w-full h-[300px] rounded-b-[75px] bg-gradient-to-t from-[#a7006d] to-[#d40065]"></div>
     <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
         <a href="{{ route('cari-properti') }}" class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
+            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[28px]" alt="icon">
         </a>
         <p class="font-semibold text-white">Hasil Semua Pencarian</p>
         <div class="w-12 dummy-btn"></div>
