@@ -50,18 +50,14 @@
                     </div>
 
                     <!-- Navigation arrows positioned on sides -->
-                    <div
-                        class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
+                    <div class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
                     </div>
-                    <div
-                        class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
+                    <div class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
                     </div>
                 </div>
             </div>
         </section>
     @endif
-
-
 
     <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
 
@@ -158,17 +154,17 @@
                                     <p class="text-sm text-ngekos-grey">{{ $popular->alamat_project }}</p>
                                     <hr class="border-[#F1F2F6]">
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/location.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-xs text-ngekos-grey">{{ $popular->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/category.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-xs text-ngekos-grey">{{ $popular->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/layer.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-xs text-ngekos-grey">Tersisa
                                             {{ $popular->project_product->where('status', 'Tersedia')->count() }} Unit</p>
@@ -280,19 +276,19 @@
 
                             <div class="grid grid-cols-2 md:grid-cols-1 gap-1 md:gap-[6px]">
                                 <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/location.svg') }}"
+                                    <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                         class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                     <p class="text-[12px] md:text-xs text-ngekos-grey">
                                         {{ $kavlingterbaik->lokasi->regency->name }}</p>
                                 </div>
                                 <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/3dcube.svg') }}"
+                                    <img src="{{ asset('assets/images/icons/category.svg') }}"
                                         class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                     <p class="text-[12px] md:text-xs text-ngekos-grey">
                                         {{ $kavlingterbaik->kategori->kategori }}</p>
                                 </div>
                                 <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                                    <img src="{{ asset('assets/images/icons/layer.svg') }}"
                                         class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                                     <p class="text-[12px] md:text-xs text-ngekos-grey">Tersisa
                                         {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }}</p>
@@ -342,15 +338,49 @@
     </section>
     {{-- End: Terbaik --}}
 
-    <section id="Promo" class="relative z-10 flex flex-col gap-3 px-4 mt-6 bg-[#F5F6F8]">
-        <h1 class="mt-3 text-sm font-semibold">Special Offers</h1>
-        <a href="#">
-            <div class="w-full aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden mb-5">
-                <img src="{{ asset('assets/images/thumbnails/banner.png') }}" class="object-cover w-full h-full"
-                    alt="promo banner">
+
+    {{-- Promo Banner --}}
+    @if ($promoBanners->isNotEmpty())
+        <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
+
+        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
+            <h2 class="text-sm font-bold">Promo Spesial</h2>
+
+            <!-- Landscape Testimonials -->
+            <div>
+                <div class="testimonial-landscape-container relative">
+                    <div class="testimonial-landscape-swiper overflow-hidden w-full">
+                        <div class="swiper-wrapper">
+                            <!-- Loop untuk Menampilkan Gambar dari Database -->
+                            @foreach ($promoBanners as $banner)
+                                <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
+                                    <a href="{{ $banner->redirect_url }}"
+                                        class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                        <!-- Menampilkan Gambar dari Storage -->
+                                        <img src="{{ asset('storage/' . $banner->image) }}"
+                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                        <!-- Pagination -->
+                        <div class="swiper-pagination"></div>
+
+                    </div>
+
+                    <!-- Navigation arrows positioned on sides -->
+                    <div class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
+                    </div>
+                    <div class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
+                    </div>
+                </div>
             </div>
-        </a>
-    </section>
+        </section>
+    @endif
+    {{-- End Promo Banner --}}
+
+    <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
+
 
     {{-- Rekomendasi --}}
     <section id="Rekomendasi" class="flex flex-col gap-4 mt-[30px] ">
@@ -394,17 +424,17 @@
                                     <p class="text-sm text-ngekos-grey">{{ $rumahterbaik->alamat_project }}</p>
                                     <hr class="border-[#F1F2F6]">
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/location.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/location2.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-sm text-ngekos-grey">{{ $rumahterbaik->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/3dcube.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/category.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-sm text-ngekos-grey">{{ $rumahterbaik->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/layer.svg') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-sm text-ngekos-grey">Tersisa
                                             {{ $rumahterbaik->project_product->where('status', 'Tersedia')->count() }} Unit
@@ -656,7 +686,7 @@
                     clickable: true,
                     type: 'bullets', // Menggunakan pagination tipe bullets
                     dynamicBullets: true, // Bullets yang dinamis
-                    
+
                 },
                 keyboard: {
                     enabled: true, // Mengaktifkan navigasi dengan keyboard
