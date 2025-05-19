@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Affiliate\AffiliateController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
@@ -8,6 +9,26 @@ use App\Http\Controllers\DetailsController;
 use App\Http\Controllers\ListCityController;
 use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
+use App\Models\Affiliate;
+
+// Sajada Affiliate
+Route::middleware(['auth:member', 'check.agency.registered'])->group(function () {
+    Route::get('/get-kota', [AffiliateController::class, 'getKota'])->name('get-kota');
+    // Sajada Affiliate
+    Route::prefix('affiliate')->name('affiliate.')->group(function () {
+        Route::get('/', [AffiliateController::class, 'index'])->name('index');
+        Route::get('/daftar', [AffiliateController::class, 'daftar'])->name('daftar');
+        Route::post('/daftar-submit', [AffiliateController::class, 'store'])->name('daftar.store');
+
+        Route::get('/home', [AffiliateController::class, 'home'])->name('home');
+    });
+});
+Route::middleware(['auth:member', 'check.agency'])->group(function () {
+    // Sajada Affiliate
+    Route::prefix('affiliate')->name('affiliate.')->group(function () {
+        Route::get('/home', [AffiliateController::class, 'home'])->name('home');
+    });
+});
 
 // Beranda
 Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
@@ -50,7 +71,6 @@ Route::middleware('auth:member')->group(function () {
     Route::get('/password', [ProfilController::class, 'password'])->name('index.password');
     Route::put('/password-update', [ProfilController::class, 'updatePassword'])->name('update.password');
     Route::get('/riwayat-booking', [ProfilController::class, 'riwayatBooking'])->name('riwayat.booking');
-
 });
 
 
