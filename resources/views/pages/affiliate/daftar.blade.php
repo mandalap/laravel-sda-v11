@@ -80,8 +80,8 @@
         }
 
         /* .select2-container--default .select2-selection__placeholder {
-            margin-left: 40px;
-        } */
+                                    margin-left: 40px;
+                                } */
 
         /* Wrapper kustom untuk Select2 */
         .select2-wrapper {
@@ -156,7 +156,7 @@
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                     <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                    <input type="text" name="nama"
+                    <input type="text" name="nama" value="{{ old('nama') }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Nama">
                 </label>
@@ -185,7 +185,7 @@
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                     <img src="{{ asset('/assets/images/icons/phone.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                    <input type="number" name="telepon"
+                    <input type="number" name="telepon" value="{{ old('telepon') }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Nomor WhatsApp">
                 </label>
@@ -196,7 +196,7 @@
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                     <img src="{{ asset('/assets/images/icons/mail.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                    <input type="text" name="email"
+                    <input type="text" name="email" value="{{ old('email') }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Email">
                 </label>
@@ -225,6 +225,7 @@
                     <img src="{{ asset('/assets/images/icons/calendar.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="date" name="tanggal_lahir" value="{{ $member->tanggal_lahir }}"
+                        value="{{ old('tanggal_lahir') }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Tanggal Lahir">
                 </label>
@@ -244,7 +245,8 @@
                         <select id="kota-select" name="kota_id" class="select2-ajax select2-pl-40">
                             @if (old('kota_id'))
                                 <option value="{{ old('kota_id') }}" selected>
-                                    {{ $lokasi::find(old('kota_id'))?->name }}</option>
+                                    {{ $lokasi->find(old('kota_id'))?->name }}
+                                </option>
                             @endif
                         </select>
 
@@ -261,7 +263,7 @@
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                     <img src="{{ asset('/assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
-                    <input type="text" name="alamat" value="{{ $member->alamat }}"
+                    <input type="text" name="alamat" value="{{ $member->alamat }}" value="{{ old('alamat') }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Alamat">
                 </label>

@@ -36,4 +36,13 @@ class Member extends Authenticatable implements LaratrustUser
         return 'id'; // untuk mengenali ID dari tabel members
     }
 
+    public function bookingTransactions()
+    {
+        return $this->hasMany(BookingTransaction::class);
+    }
+
+    public function agency()
+    {
+        return $this->hasOne(Agency::class);
+    }
 }

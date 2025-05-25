@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Affiliate\AffiliateController;
+use App\Http\Controllers\Affiliate\BookingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
@@ -27,6 +28,13 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
     // Sajada Affiliate
     Route::prefix('affiliate')->name('affiliate.')->group(function () {
         Route::get('/home', [AffiliateController::class, 'home'])->name('home');
+
+        // Booking Affiliate
+        Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
+        Route::get('/booking/{project}', [BookingController::class, 'detail'])->name('booking.detail');
+        Route::post('/booking/checkout/{project}', [BookingController::class, 'checkout'])->name('booking.checkout');
+        Route::post('/booking/checkout/{project}/store', [BookingController::class, 'checkoutStore'])->name('booking.checkout.store');
+        Route::get('/booking/success/{invoice}', [BookingController::class, 'success'])->name('booking.checkout.success');
     });
 });
 

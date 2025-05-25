@@ -87,7 +87,7 @@ class AffiliateController extends Controller
             return redirect()->route('affiliate.home');
         } catch (\Exception $e) {
             // Tangkap error jika ada dan tampilkan pesan error
-            Alert::toast('Terjadi kesalahan saat pendaftaran: ' . $e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
+            Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
             return redirect()->back()->withInput();
         }
     }
