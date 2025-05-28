@@ -29,6 +29,23 @@
         @method('PUT')
         <div class="flex flex-col gap-4 bg-white p-4 rounded-[30px] border border-[#F1F2F6]">
             <div class="flex flex-col w-full gap-2">
+                <p class="font-semibold text-sm">Sapaan</p>
+                <label
+                    class="relative flex items-center w-full rounded-full p-[14px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
+                    <img src="{{ asset('assets/images/icons/user.svg') }}"
+                        class="flex absolute left-5 top-1/2 w-5 h-5 transform -translate-y-1/2 shrink-0" alt="icon">
+                    <select name="sapaan" class="w-full pl-8 bg-white text-sm outline-none appearance-none">
+                        <option value="" hidden>Pilih Sapaan</option>
+                        <option value="Bang" {{ $member->sapaan == 'Bang' ? 'selected' : '' }}>Bang</option>
+                        <option value="Kak" {{ $member->sapaan == 'Kak' ? 'selected' : '' }}>Kak</option>
+                        <option value="Pak" {{ $member->sapaan == 'Pak' ? 'selected' : '' }}>Pak</option>
+                        <option value="Bu" {{ $member->sapaan == 'Bu' ? 'selected' : '' }}>Bu</option>
+                    </select>
+                    <img src="{{ asset('/assets/images/icons/arrow-down.svg') }}" class="w-5 h-5" alt="icon">
+                </label>
+            </div>
+
+            <div class="flex flex-col w-full gap-2">
                 <p class="font-semibold text-sm">Nama</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
