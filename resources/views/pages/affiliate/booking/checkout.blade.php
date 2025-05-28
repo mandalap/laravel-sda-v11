@@ -29,7 +29,7 @@
                         alt="{{ $project->nama_project }}">
                 </div>
                 <div class="flex flex-col w-full gap-3">
-                    <p class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}
+                    <p class="font-semibold text-base leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}
                     </p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
@@ -49,7 +49,7 @@
     <div
         class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
         <label class="relative flex items-center justify-between">
-            <p class="text-lg font-semibold">Marketing</p>
+            <p class="text-base font-semibold">Marketing</p>
             <img src="{{ asset('assets/images/icons/arrow-up.svg') }}"
                 class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300"
                 alt="icon">
@@ -59,23 +59,23 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-ngekos-grey">Nama</p>
+                    <p class="text-sm text-ngekos-grey">Nama</p>
                 </div>
-                <p class="font-semibold">{{ $member->nama }}</p>
+                <p class="text-sm font-semibold">{{ $member->nama }}</p>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-ngekos-grey">Telepon</p>
+                    <p class="text-sm text-ngekos-grey">Telepon</p>
                 </div>
-                <p class="font-semibold">{{ $member->telepon }}</p>
+                <p class="text-sm font-semibold">{{ $member->telepon }}</p>
             </div>
         </div>
     </div>
     <div
         class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
         <label class="relative flex items-center justify-between">
-            <p class="text-lg font-semibold">Pelanggan</p>
+            <p class="text-base font-semibold">Pelanggan</p>
             <img src="{{ asset('assets/images/icons/arrow-up.svg') }}"
                 class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300"
                 alt="icon">
@@ -85,23 +85,23 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-ngekos-grey">Nama</p>
+                    <p class="text-sm text-ngekos-grey">Nama</p>
                 </div>
-                <p class="font-semibold">{{ $nama }}</p>
+                <p class="text-sm font-semibold">{{ $nama }}</p>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-ngekos-grey">Telepon</p>
+                    <p class="text-sm text-ngekos-grey">Telepon</p>
                 </div>
-                <p class="font-semibold">{{ $costumer->telepon }}</p>
+                <p class="text-sm font-semibold">{{ $costumer->telepon }}</p>
             </div>
         </div>
     </div>
     <div
         class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
         <label class="relative flex items-center justify-between">
-            <p class="text-lg font-semibold">Booking</p>
+            <p class="text-base font-semibold">Booking</p>
             <img src="{{ asset('assets/images/icons/arrow-up.svg') }}"
                 class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300"
                 alt="icon">
@@ -111,17 +111,17 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/icons/block.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-ngekos-grey">Nomor Properti</p>
+                    <p class="text-sm text-ngekos-grey">Nomor Properti</p>
                 </div>
-                <p class="font-semibold">{{ $product->nama_product }}</p>
+                <p class="text-sm font-semibold">{{ $product->nama_product }}</p>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="flex w-6 h-6 shrink-0"
                         alt="icon">
-                    <p class="text-ngekos-grey">Tanggal Booking</p>
+                    <p class="text-sm text-ngekos-grey">Tanggal Booking</p>
                 </div>
-                <p class="font-semibold">{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</p>
+                <p class="text-sm font-semibold">{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</p>
             </div>
         </div>
     </div>
@@ -144,7 +144,7 @@
                                 class="absolute w-6 h-6 flex shrink-0 opacity-100 group-has-[:checked]:opacity-0 transition-all duration-300"
                                 alt="icon">
                         </div>
-                        <p class="font-semibold">Pembayaran</p>
+                        <p class="text-base font-semibold">Pembayaran</p>
                     </div>
                     <div
                         class="w-0 mx-auto group-has-[:checked]:ring-1 group-has-[:checked]:ring-[#058E2A] group-has-[:checked]:w-[90%] transition-all duration-300">
@@ -160,9 +160,9 @@
                         <div class="flex items-center gap-3">
                             <img src="{{ asset('assets/images/icons/credit.svg') }}" class="flex w-6 h-6 shrink-0"
                                 alt="icon">
-                            <p class="text-ngekos-grey">Jumlah Pembayaran</p>
+                            <p class="text-sm text-ngekos-grey">Jumlah Pembayaran</p>
                         </div>
-                        <p class="font-semibold">Rp {{ number_format($jumlahBooking) }}</p>
+                        <p class="text-sm font-semibold">Rp {{ number_format($jumlahBooking) }}</p>
                     </div>
                 </div>
 
@@ -177,11 +177,11 @@
                             <!-- Price mengikuti pilihan yang dipilih dan diambil dari text grand total -->
                         </p>
                         <span class="text-sm text-white">Total Pembayaran</span>
-                        <p class="font-bold text-xl leading-[30px] text-white">Rp {{ number_format($jumlahBooking) }}
+                        <p class="font-bold text-base leading-[30px] text-white">Rp {{ number_format($jumlahBooking) }}
                         </p>
                     </div>
                     <button type="submit"
-                        class="flex shrink-0 rounded-full py-[14px] px-5  bg-white   hover:bg-black hover:text-white font-bold text-black">
+                        class="text-sm flex shrink-0 rounded-full py-[14px] px-5 bg-white hover:bg-black hover:text-white font-bold text-black">
                         Bayar Sekarang
                     </button>
                 </div>

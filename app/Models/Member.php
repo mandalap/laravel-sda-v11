@@ -31,6 +31,11 @@ class Member extends Authenticatable implements LaratrustUser
         'thumbnail',
     ];
 
+    protected $hidden = [
+        'password',
+        'recovery_code',
+    ];
+
     public function getAuthIdentifierName()
     {
         return 'id'; // untuk mengenali ID dari tabel members

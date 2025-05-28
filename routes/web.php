@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Affiliate\AffiliasiController;
 use App\Http\Controllers\Affiliate\AffiliateController;
 use App\Http\Controllers\Affiliate\BookingController;
 use App\Http\Controllers\ProfileController;
@@ -10,7 +11,32 @@ use App\Http\Controllers\DetailsController;
 use App\Http\Controllers\ListCityController;
 use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\RegisterController;
 use App\Models\Affiliate;
+
+
+
+
+Route::middleware('guest')->group(function () {
+
+    Route::redirect('/', '/login');
+
+    Route::get('/login', [RegisterController::class, 'login'])
+        ->name('login');
+
+    Route::post('login', [RegisterController::class, 'loginStore'])
+        ->name('store.login');
+
+    // Daftar
+    Route::get('/daftar', [RegisterController::class, 'daftar'])->name('daftar');
+    Route::get('/daftar/{slug}', [RegisterController::class, 'daftarWithReff'])->name('daftar.with.reff');
+    Route::post('/daftar-submit', [RegisterController::class, 'storeRegister'])->name('store.register');
+
+    // Password
+    Route::get('/lupa-password', [RegisterController::class, 'lupaPassword'])->name('lupapassword');
+    Route::post('/reset-password', [RegisterController::class, 'resetpassword'])->name('resetpassword');
+});
+
 
 // Sajada Affiliate
 Route::middleware(['auth:member', 'check.agency.registered'])->group(function () {
@@ -35,6 +61,9 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
         Route::post('/booking/checkout/{project}', [BookingController::class, 'checkout'])->name('booking.checkout');
         Route::post('/booking/checkout/{project}/store', [BookingController::class, 'checkoutStore'])->name('booking.checkout.store');
         Route::get('/booking/success/{invoice}', [BookingController::class, 'success'])->name('booking.checkout.success');
+
+        // Link Affiliasi
+        Route::get('/affiliasi', [AffiliasiController::class, 'index'])->name('affiliasi.index');
     });
 });
 

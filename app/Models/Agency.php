@@ -54,7 +54,7 @@ class Agency extends Model
         });
     }
 
-    public function member(): BelongsTo
+    public function member()
     {
         return $this->belongsTo(Member::class);
     }

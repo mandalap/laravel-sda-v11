@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('agency', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('member_id')->constrained('members')->cascadeOnDelete();
             $table->string('sapaan');
             $table->string('nama');
             $table->string('telepon');
@@ -26,11 +26,14 @@ return new class extends Migration
             $table->text('alamat')->nullable();
             $table->string('photo')->nullable();
             $table->string('status')->default('active');
-            $table->string('agency_code')->nullable();
-            $table->string('slug');
+            $table->string('agency_code')->unique();
+            $table->string('slug')->unique();
 
             $table->softDeletes();
             $table->timestamps();
+
+            // Index untuk performa pencarian berdasarkan agency_code
+            $table->index('agency_code');
         });
     }
 

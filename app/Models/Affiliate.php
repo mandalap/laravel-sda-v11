@@ -15,6 +15,11 @@ class Affiliate extends Model
     protected $fillable = [
         'member_id',
         'agency_id',
+        'joined_at',
+    ];
+
+    protected $casts = [
+        'joined_at' => 'datetime',
     ];
 
     public function member(): BelongsTo
