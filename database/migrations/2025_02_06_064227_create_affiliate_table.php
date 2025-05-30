@@ -11,12 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('affiliate', function (Blueprint $table) {
+        Schema::create('affiliates', function (Blueprint $table) {
             $table->id();
-            $table->integer('member_id');
-            $table->integer('agency_id');
+            $table->foreignId('member_id')->constrained('members')->cascadeOnDelete();
+            $table->foreignId('agency_id')->constrained('agency')->cascadeOnDelete();
+            $table->timestamp('joined_at')->useCurrent();
             $table->softDeletes();
             $table->timestamps();
+
+            // Mencegah duplikasi: satu member hanya bisa di-refer oleh satu agency
+            $table->unique('member_id');
+
+            // Index untuk performa query
+            $table->index(['agency_id', 'created_at']);
         });
     }
 
@@ -25,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('affiliate');
+        Schema::dropIfExists('affiliates');
     }
 };

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('agency_id')->nullable();
+            $table->unsignedBigInteger('agency_id')->nullable();
+            $table->foreign('agency_id')->references('id')->on('agency')->nullOnDelete()->onUpdate('cascade');
+            // $table->string('agency_id')->nullable();
             $table->string('invoice')->nullable();
             $table->unsignedBigInteger('jumlah_uang_booking')->nullable();
             $table->unsignedBigInteger('harga_tanah');

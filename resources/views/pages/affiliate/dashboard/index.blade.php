@@ -14,7 +14,7 @@
         class="absolute top-0 w-full h-[200px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
     <div id="Top-nav" class="relative flex items-center px-4 pt-5">
-        <a href="{{ route ('profil') }}">
+        <a href="{{ route('profil') }}">
             <div class="flex w-10 h-10 shrink-0">
                 <img src="{{ asset('assets/images/icons/back.svg') }}" alt="icon">
             </div>

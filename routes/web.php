@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Affiliate\AffiliasiController;
 use App\Http\Controllers\Affiliate\AffiliateController;
+use App\Http\Controllers\Affiliate\BookingController;
+use App\Http\Controllers\Affiliate\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
@@ -9,7 +12,31 @@ use App\Http\Controllers\DetailsController;
 use App\Http\Controllers\ListCityController;
 use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
-use App\Models\Affiliate;
+use App\Http\Controllers\RegisterController;
+
+
+
+
+Route::middleware('guest')->group(function () {
+
+    Route::redirect('/', '/login');
+
+    Route::get('/login', [RegisterController::class, 'login'])
+        ->name('login');
+
+    Route::post('login', [RegisterController::class, 'loginStore'])
+        ->name('store.login');
+
+    // Daftar
+    Route::get('/daftar', [RegisterController::class, 'daftar'])->name('daftar');
+    Route::get('/daftar/{slug}', [RegisterController::class, 'daftarWithReff'])->name('daftar.with.reff');
+    Route::post('/daftar-submit', [RegisterController::class, 'storeRegister'])->name('store.register');
+
+    // Password
+    Route::get('/lupa-password', [RegisterController::class, 'lupaPassword'])->name('lupapassword');
+    Route::post('/reset-password', [RegisterController::class, 'resetpassword'])->name('resetpassword');
+});
+
 
 // Sajada Affiliate
 Route::middleware(['auth:member', 'check.agency.registered'])->group(function () {
@@ -19,14 +46,23 @@ Route::middleware(['auth:member', 'check.agency.registered'])->group(function ()
         Route::get('/', [AffiliateController::class, 'index'])->name('index');
         Route::get('/daftar', [AffiliateController::class, 'daftar'])->name('daftar');
         Route::post('/daftar-submit', [AffiliateController::class, 'store'])->name('daftar.store');
-
-        Route::get('/home', [AffiliateController::class, 'home'])->name('home');
     });
 });
 Route::middleware(['auth:member', 'check.agency'])->group(function () {
     // Sajada Affiliate
     Route::prefix('affiliate')->name('affiliate.')->group(function () {
-        Route::get('/home', [AffiliateController::class, 'home'])->name('home');
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Booking Affiliate
+        Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
+        Route::get('/booking/{project}', [BookingController::class, 'detail'])->name('booking.detail');
+        Route::post('/booking/checkout/{project}', [BookingController::class, 'checkout'])->name('booking.checkout');
+        Route::post('/booking/checkout/{project}/store', [BookingController::class, 'checkoutStore'])->name('booking.checkout.store');
+        Route::get('/booking/success/{invoice}', [BookingController::class, 'success'])->name('booking.checkout.success');
+
+        // Link Affiliasi
+        Route::get('/affiliasi', [AffiliasiController::class, 'index'])->name('affiliasi.index');
     });
 });
 
