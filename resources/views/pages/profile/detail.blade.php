@@ -17,7 +17,7 @@
     <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[60px]">
         <a href="{{ route('profil') }}"
             class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="assets/images/icons/arrow-left.svg" class="w-[20px] h-[20px]" alt="icon">
+            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[20px]" alt="icon">
         </a>
         <p class="font-semibold text-white">Edit Profil</p>
         <div class="w-10 dummy-btn"></div>
@@ -29,11 +29,27 @@
         @method('PUT')
         <div class="flex flex-col gap-4 bg-white p-4 rounded-[30px] border border-[#F1F2F6]">
             <div class="flex flex-col w-full gap-2">
+                <p class="font-semibold text-sm">Sapaan</p>
+                <label
+                    class="relative flex items-center w-full rounded-full p-[14px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
+                    <img src="{{ asset('assets/images/icons/user.svg') }}"
+                        class="flex absolute left-5 top-1/2 w-5 h-5 transform -translate-y-1/2 shrink-0" alt="icon">
+                    <select name="sapaan" class="w-full pl-8 bg-white text-sm outline-none appearance-none">
+                        <option value="" hidden>Pilih Sapaan</option>
+                        <option value="Bang" {{ $member->sapaan == 'Bang' ? 'selected' : '' }}>Bang</option>
+                        <option value="Kak" {{ $member->sapaan == 'Kak' ? 'selected' : '' }}>Kak</option>
+                        <option value="Pak" {{ $member->sapaan == 'Pak' ? 'selected' : '' }}>Pak</option>
+                        <option value="Bu" {{ $member->sapaan == 'Bu' ? 'selected' : '' }}>Bu</option>
+                    </select>
+                    <img src="{{ asset('/assets/images/icons/arrow-down.svg') }}" class="w-5 h-5" alt="icon">
+                </label>
+            </div>
+
+            <div class="flex flex-col w-full gap-2">
                 <p class="font-semibold text-sm">Nama</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
-                        alt="icon">
+                    <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
                     <input type="text" name="nama" value="{{ $member->nama }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
                         placeholder="Masukkan Nama">
@@ -54,9 +70,9 @@
             <div class="flex flex-col w-full gap-2">
                 <p class="font-semibold text-sm">Jenis Kelamin</p>
                 <label
-                    class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/gender.svg') }}" class="flex w-5 h-5 shrink-0"
-                        alt="icon">
+                    class="relative flex items-center w-full rounded-full p-[14px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
+                    <img src="{{ asset('assets/images/icons/gender.svg') }}"
+                        class="flex absolute left-5 top-1/2 w-5 h-5 transform -translate-y-1/2 shrink-0" alt="icon">
                     <select name="gender" class="w-full pl-8 bg-white text-sm outline-none appearance-none">
                         <option value="" hidden>Pilih Jenis Kelamin</option>
                         <option value="L" {{ $member->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>

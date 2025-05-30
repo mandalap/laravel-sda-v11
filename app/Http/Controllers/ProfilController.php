@@ -84,6 +84,7 @@ class ProfilController extends Controller
         try {
             // Validasi input tanpa unique di telepon (karena akan dicek manual)
             $request->validate([
+                'sapaan' => 'required',
                 'nama' => 'required|string|max:255',
                 'telepon' => 'required|string|max:15',
                 'gender' => 'nullable|in:L,P',
@@ -108,6 +109,7 @@ class ProfilController extends Controller
 
             // Perbarui data member
             $member->update([
+                'sapaan' => $request->sapaan,
                 'nama' => $request->nama,
                 'telepon' => $request->telepon,
                 'gender' => $request->gender,

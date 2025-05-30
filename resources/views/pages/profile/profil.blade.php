@@ -107,7 +107,7 @@
                     </svg>
                 </a>
 
-                <a href="profile.html" class="flex justify-between items-center hover:text-[#d40065]">
+                <a href="{{ route('affiliate.index') }}" class="flex justify-between items-center hover:text-[#d40065]">
                     <div class="flex items-center gap-3">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">

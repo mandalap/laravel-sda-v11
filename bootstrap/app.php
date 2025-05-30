@@ -13,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'check.payment' => \App\Http\Middleware\CheckPaymentSession::class,
+           'check.agency' => \App\Http\Middleware\CheckAgencyRegistration::class,
+           'check.agency.registered' => \App\Http\Middleware\CheckAgencyAlreadyRegistered::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

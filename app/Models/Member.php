@@ -31,9 +31,23 @@ class Member extends Authenticatable implements LaratrustUser
         'thumbnail',
     ];
 
+    protected $hidden = [
+        'password',
+        'recovery_code',
+    ];
+
     public function getAuthIdentifierName()
     {
         return 'id'; // untuk mengenali ID dari tabel members
     }
 
+    public function bookingTransactions()
+    {
+        return $this->hasMany(BookingTransaction::class);
+    }
+
+    public function agency()
+    {
+        return $this->hasOne(Agency::class);
+    }
 }

@@ -163,12 +163,14 @@ class DetailsController extends Controller
             $existingBooking = BookingTransaction::where('product_id', $product->id)
                 ->where(function ($query) {
                     $query->where(function ($q) {
-                        $q->where('status', 'pending')
-                            ->where('is_paid', false)
-                            ->where('snap_token_expiry', '>', now());
+                        $q->where('status', 'pending');
                     })->orWhere(function ($q) {
                         $q->where('status', 'booking')
                             ->where('is_paid', true);
+                    })->orWhere(function ($q) {
+                        $q->where('status', 'pending')
+                            ->where('is_paid', false)
+                            ->where('snap_token_expiry', '>', now());
                     });
                 })
                 ->first();

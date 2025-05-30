@@ -12,17 +12,28 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class BookingTransactionResource extends Resource
 {
     protected static ?string $model = BookingTransaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereIn('status', ['pending', 'booking', 'cancel'])
+            ->whereHas('product', function ($query) {
+                $query->where('status', 'Tersedia');
+            });
+    }
 
     public static function form(Form $form): Form
     {
@@ -73,6 +84,7 @@ class BookingTransactionResource extends Resource
                     ->options([
                         'qris' => 'QRIS',
                         'bank_transfer' => 'Transfer Bank',
+                        'cash' => 'Cash',
                     ])
                     ->required()
             ]);
@@ -138,6 +150,7 @@ class BookingTransactionResource extends Resource
                     ->formatStateUsing(fn($state) => match ($state) {
                         'qris' => 'QRIS',
                         'bank_transfer' => 'Transfer Bank',
+                        'cash' => 'Cash',
                         default => ucfirst($state),  // For other status values, capitalize the first letter
                     }),
 
@@ -156,13 +169,71 @@ class BookingTransactionResource extends Resource
                     ->options([
                         'qris' => 'QRIS',
                         'bank_transfer' => 'Transfer Bank',
+                        'cash' => 'Cash',
                     ]),
                 Tables\Filters\TrashedFilter::make(),
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('konfirmasi')
+                    ->label('Konfirmasi')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn($record) => in_array($record->status, ['pending', 'booking']))
+                    ->requiresConfirmation()
+                    ->modalHeading('Konfirmasi Transaksi')
+                    ->modalDescription(fn($record) => match ($record->status) {
+                        'pending' => 'Isi detail pembayaran sebelum mengubah status menjadi "booking".',
+                        'booking' => 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi.',
+                    })
+                    ->modalButton('Ya, Konfirmasi')
+                    ->form(fn($record) => $record->status === 'pending' ? [
+                        DateTimePicker::make('tanggal_bayar')
+                            ->label('Tanggal Bayar')
+                            ->required()
+                            ->default(now())
+                            ->timezone('Asia/Jakarta'),
+                        Select::make('payment_method')
+                            ->label('Metode Pembayaran')
+                            ->required()
+                            ->options([
+                                'qris' => 'QRIS',
+                                'bank_transfer' => 'Transfer Bank',
+                                'cash' => 'Cash',
+                            ]),
+                    ] : []) // kalau booking → tidak perlu input lagi
+                    ->action(function ($record, array $data) {
+                        if ($record->status === 'pending') {
+                            $record->update([
+                                'status' => 'booking',
+                                'tanggal_bayar' => $data['tanggal_bayar'],
+                                'payment_method' => $data['payment_method'],
+                            ]);
+                        } elseif ($record->status === 'booking') {
+                            $record->product->update(['status' => 'Terjual']);
+                        }
+
+                        Notification::make()
+                            ->title('Transaksi berhasil dikonfirmasi.')
+                            ->success()
+                            ->send();
+                    }),
+
+                Tables\Actions\Action::make('batal')
+                    ->label('Batalkan')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn($record) => in_array($record->status, ['pending', 'booking']))
+                    ->requiresConfirmation()
+                    ->modalHeading('Yakin ingin membatalkan transaksi ini?')
+                    ->modalDescription('Tindakan ini akan mengubah status transaksi menjadi "Cancel" dan produk akan tersedia kembali.')
+                    ->modalButton('Ya, batalkan')
+                    ->action(function ($record) {
+                        $record->update(['status' => 'cancel']);
+                        $record->product->update(['status' => 'Tersedia']);
+                    }),
             ])
+
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);

@@ -6,6 +6,8 @@ use App\Jobs\SendWhatsAppDaftar;
 use App\Jobs\SendWhatsAppResetPassword;
 use Illuminate\Http\Request;
 use App\Models\Member;
+use App\Models\Agency;
+use App\Models\Affiliate;
 use Laratrust\Models\Role;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -13,9 +15,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
-
 
 
 class RegisterController extends Controller
@@ -69,8 +72,38 @@ class RegisterController extends Controller
 
     public function daftar()
     {
-        return view('pages.register.daftar');
+        return view('pages.register.daftar', [
+            'referral_code' => null,
+            'agency_name' => null,
+            'is_referral' => false
+        ]);
     }
+
+
+    /**
+     * Tampilkan form registrasi dengan referral dari slug
+     */
+    public function daftarWithReff($slug)
+    {
+        // Cari agency berdasarkan slug
+        $agency = Agency::where('slug', strtolower($slug))
+            ->where('status', 'active')
+            ->first();
+
+        if (!$agency) {
+            // Jika slug tidak valid, redirect ke form registrasi biasa
+            return redirect()->route('daftar')
+                ->with('error', 'Link referral tidak valid atau sudah tidak aktif.');
+        }
+
+        return view('pages.register.daftar', [
+            'referral_code' => $agency->agency_code, // Gunakan agency_code untuk form
+            'agency_name' => $agency->nama,
+            'is_referral' => true,
+            'referral_link' => $slug
+        ]);
+    }
+
 
     public function storeRegister(Request $request)
     {
@@ -78,13 +111,17 @@ class RegisterController extends Controller
             $request->validate([
                 'sapaan' => ['required'],
                 'nama' => ['required', 'string', 'max:255'],
-                'telepon' => ['required', 'string', 'max:15', 'unique:members,telepon'],
+                'telepon' => ['required', 'string', 'max:15', 'unique:members,telepon', 'regex:/^08[0-9]{8,13}$/'],
+                'referral_code' => ['nullable', 'string', 'exists:agency,agency_code'],
             ], [
-                'sapaan.required' => 'Sapaan harus dipilih.',
-                'nama.required' => 'Nama harus diisi.',
-                'telepon.required' => 'Nomor WhatsApp harus diisi.',
-                'telepon.unique' => 'Nomor Whatsapp sudah terdaftar.',
+                'sapaan.required' => 'Sapaan harus dipilih',
+                'nama.required' => 'Nama harus diisi',
+                'telepon.required' => 'Nomor WhatsApp harus diisi',
+                'telepon.unique' => 'Nomor WhatsApp sudah terdaftar',
+                'referral_code.exists' => 'Kode referral tidak valid',
             ]);
+
+            DB::beginTransaction();
 
             $rd = random_int(10000, 99999);
             $member = Member::create([
@@ -99,14 +136,40 @@ class RegisterController extends Controller
             $memberRole = Role::where('name', 'member')->first();
             $member->addRole($memberRole);
 
+            // Proses kode referral jika ada
+            if ($request->filled('referral_code')) {
+                $agency = Agency::where('agency_code', $request->referral_code)
+                    ->where('status', 'active')
+                    ->first();
+
+                if ($agency) {
+                    // Buat record affiliate
+                    Affiliate::create([
+                        'member_id' => $member->id,
+                        'agency_id' => $agency->id,
+                        'joined_at' => now(),
+                    ]);
+
+                    // Log untuk tracking
+                    Log::info('New affiliate member registered', [
+                        'member_id' => $member->id,
+                        'agency_id' => $agency->id,
+                        'referral_code' => $request->referral_code,
+                    ]);
+                }
+            }
+
+            DB::commit();
 
             // Dispatch job untuk mengirim pesan WhatsApp
             SendWhatsAppDaftar::dispatch($member);
 
-            // redirect jika berhasil membuat akun
-            return redirect()->route('login')->with('success', 'Akun anda berhasil dibuat, silahkan cek WhatsApp untuk melihat password anda.');
+            $message = 'Akun anda berhasil dibuat, silahkan cek WhatsApp untuk melihat password anda.';
+
+            return redirect()->route('login')->with('success', $message);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Menampilkan error validasi sebagai toast
+            DB::rollBack();
+
             $errors = $e->validator->errors()->all();
             foreach ($errors as $error) {
                 Alert::toast($error, 'error')->autoClose(10000)->timerProgressBar();
@@ -114,11 +177,15 @@ class RegisterController extends Controller
 
             return back()->withInput();
         } catch (\Exception $e) {
-            // Menangani error lain
+            DB::rollBack();
+
+            Log::error('Registration error: ' . $e->getMessage());
             Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
+
             return back()->withInput();
         }
     }
+
 
     public function lupapassword()
     {
