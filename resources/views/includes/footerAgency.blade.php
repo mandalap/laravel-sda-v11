@@ -4,7 +4,7 @@
             class="flex items-center justify-center flex-wrap rounded-[40px] bg-gradient-to-r from-[#a7006d] to-[#d40065] py-4 px-3 gap-4 sm:gap-3 md:gap-2">
             <!-- Wrapper div untuk menu dengan jarak antar item yang cukup baik -->
             <div class="flex items-center w-full justify-between space-x-4 sm:space-x-2">
-                <a href="index.html" class="flex flex-col items-center text-center gap-y-0.5 group">
+                <a href="{{ route('affiliate.dashboard') }}" class="flex flex-col items-center text-center gap-y-0.5 group">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 stroke-white group-hover:stroke-black">
                         <path stroke-linecap="round" stroke-linejoin="round"

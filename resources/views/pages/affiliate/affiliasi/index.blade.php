@@ -13,13 +13,92 @@
     <div id="Background"
         class="absolute top-0 w-full h-[230px] rounded-b-[75px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
-    <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
-        <a href="{{ route('affiliate.home') }}"
-            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[20px]" alt="icon">
-        </a>
-        <h3 class="text-lg font-bold text-white">Affiliasi</h3>
-        <div class="w-10 dummy-btn"></div>
+    <div id="TopNav" class="flex relative items-center px-5 pt-5">
+        <!-- Left Section - Back Button -->
+        <div class="flex-1 flex justify-start">
+            <a href="{{ route('affiliate.dashboard') }}"
+                class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
+                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[20px]" alt="icon">
+            </a>
+        </div>
+
+        <!-- Center Section - Title -->
+        <div class="flex-1 flex justify-center">
+            <h3 class="text-lg font-bold text-white">Affiliasi</h3>
+        </div>
+
+        <!-- Right Section - Profile -->
+        <div class="flex-1 flex justify-end">
+            <div class="relative">
+                <button onclick="toggleDropdown()"
+                    class="flex items-center gap-2 bg-white rounded-full px-3 py-2 hover:bg-gray-100">
+                    <!-- Avatar -->
+                    <div class="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full shrink-0">
+                        @if ($agency->photo)
+                            <img src="{{ asset('storage/' . $agency->photo) }}" class="w-full h-full object-cover"
+                                alt="Profile">
+                        @else
+                            <div class="w-full h-full bg-blue-500 flex items-center justify-center">
+                                <span class="text-white font-bold text-xs">
+                                    {{ strtoupper(substr($agency->nama, 0, 1)) }}
+                                </span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Agency Name -->
+                    <span class="text-sm font-medium text-gray-800 max-w-20 truncate">
+                        Profil
+                    </span>
+
+                    <!-- Dropdown Arrow -->
+                    <img src="{{ asset('assets/images/icons/arrow-down.svg') }}" class="w-4 h-4 transition-transform"
+                        id="dropdownArrow" alt="dropdown">
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 hidden">
+
+                    <!-- User Info -->
+                    <div class="px-4 py-2 border-b border-gray-100">
+                        <p class="text-sm font-medium text-gray-900">{{ $agency->nama }}</p>
+                        <p class="text-xs text-gray-500">{{ $agency->telepon }}</p>
+                    </div>
+
+                    <!-- Edit Profile -->
+                    <a href="" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Edit Profil
+                    </a>
+
+                    <!-- Booking History -->
+                    <a href="" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Riwayat Booking
+                    </a>
+
+                    <!-- Logout -->
+                    <div class="border-t border-gray-100 my-1"></div>
+                    <form method="POST" action="">
+                        @csrf
+                        <button type="submit"
+                            class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Keluar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="Header" class="relative items-center justify-between gap-2 px-5 mt-[18px]">
         <!-- Code Refferal -->
@@ -117,10 +196,12 @@
                                             <div class="flex items-center gap-3">
                                                 @if ($affiliate->member->thumbnail)
                                                     <img src="{{ asset('storage/' . $affiliate->member->thumbnail) }}"
-                                                        class="w-8 h-8 rounded-full border border-gray-300" alt="Foto">
+                                                        class="w-8 h-8 rounded-full border border-gray-300"
+                                                        alt="Foto">
                                                 @else
                                                     <img src="{{ asset('/assets/images/icons/profil-default.png') }}"
-                                                        class="w-8 h-8 rounded-full border border-gray-300" alt="Default">
+                                                        class="w-8 h-8 rounded-full border border-gray-300"
+                                                        alt="Default">
                                                 @endif
                                                 <div>
                                                     <p class="text-sm font-medium text-gray-900">
@@ -262,5 +343,31 @@
                 });
             }
         }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            const arrow = document.getElementById('dropdownArrow');
+
+            dropdown.classList.toggle('hidden');
+
+            // Rotate arrow animation
+            if (dropdown.classList.contains('hidden')) {
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const button = event.target.closest('button[onclick="toggleDropdown()"]');
+            const arrow = document.getElementById('dropdownArrow');
+
+            if (!button && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        });
     </script>
 @endpush

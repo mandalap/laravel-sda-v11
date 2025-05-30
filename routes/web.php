@@ -3,6 +3,7 @@
 use App\Http\Controllers\Affiliate\AffiliasiController;
 use App\Http\Controllers\Affiliate\AffiliateController;
 use App\Http\Controllers\Affiliate\BookingController;
+use App\Http\Controllers\Affiliate\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\ListCityController;
 use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\RegisterController;
-use App\Models\Affiliate;
 
 
 
@@ -46,14 +46,13 @@ Route::middleware(['auth:member', 'check.agency.registered'])->group(function ()
         Route::get('/', [AffiliateController::class, 'index'])->name('index');
         Route::get('/daftar', [AffiliateController::class, 'daftar'])->name('daftar');
         Route::post('/daftar-submit', [AffiliateController::class, 'store'])->name('daftar.store');
-
-        Route::get('/home', [AffiliateController::class, 'home'])->name('home');
     });
 });
 Route::middleware(['auth:member', 'check.agency'])->group(function () {
     // Sajada Affiliate
     Route::prefix('affiliate')->name('affiliate.')->group(function () {
-        Route::get('/home', [AffiliateController::class, 'home'])->name('home');
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Booking Affiliate
         Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');

@@ -20,6 +20,7 @@ class AffiliasiController extends Controller
             ->whereHas('agency', function ($query) use ($agency) {
                 $query->where('id', $agency->id);
             })
+            ->orderBy('joined_at', 'desc')
             ->paginate(4);
 
 

@@ -24,7 +24,7 @@ class CheckAgencyAlreadyRegistered
         $isRegistered = Agency::where('member_id', $user->id)->exists();
 
         if ($isRegistered) {
-            return redirect()->route('affiliate.home');
+            return redirect()->route('affiliate.dashboard');
         }
 
         return $next($request);

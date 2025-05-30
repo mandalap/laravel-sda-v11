@@ -84,7 +84,7 @@ class AffiliateController extends Controller
 
             // Setelah berhasil, tampilkan pesan sukses dan arahkan pengguna kembali
             Alert::toast('Anda berhasil melakukan pendaftaran.', 'success')->autoClose(10000)->timerProgressBar();
-            return redirect()->route('affiliate.home');
+            return redirect()->route('affiliate.dashboard');
         } catch (\Exception $e) {
             // Tangkap error jika ada dan tampilkan pesan error
             Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
@@ -92,8 +92,4 @@ class AffiliateController extends Controller
         }
     }
 
-    public function home()
-    {
-        return view('pages.affiliate.home');
-    }
 }

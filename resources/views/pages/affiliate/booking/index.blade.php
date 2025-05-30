@@ -57,7 +57,7 @@
         class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
     <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
-        <a href="{{ route('affiliate.home') }}"
+        <a href="{{ route('affiliate.dashboard') }}"
             class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
             <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[20px]" alt="icon">
         </a>
