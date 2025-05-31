@@ -97,13 +97,13 @@ class ProfilController extends Controller
 
             // Cek apakah telepon sudah digunakan oleh member lain
             if (Member::where('telepon', $request->telepon)->where('id', '!=', $member->id)->exists()) {
-                Alert::toast('Nomor WhatsApp sudah digunakan oleh akun lain.', 'error')->autoClose(10000);
+                Alert::toast('Nomor WhatsApp sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
                 return redirect()->back();
             }
 
             // Cek apakah email sudah digunakan oleh member lain
             if (Member::where('email', $request->email)->where('id', '!=', $member->id)->exists()) {
-                Alert::toast('Email sudah digunakan oleh akun lain.', 'error')->autoClose(10000);
+                Alert::toast('Email sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
                 return redirect()->back();
             }
 

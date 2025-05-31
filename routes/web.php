@@ -13,6 +13,7 @@ use App\Http\Controllers\ListCityController;
 use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Affiliate\ProfileController as AffiliateProfileController;
 
 
 
@@ -54,6 +55,10 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+        // Profile
+        Route::get('/profil', [AffiliateProfileController::class, 'index'])->name('profile.index');
+        Route::put('/profil/update', [AffiliateProfileController::class, 'update'])->name('profile.update');
+
         // Booking Affiliate
         Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
         Route::get('/booking/{project}', [BookingController::class, 'detail'])->name('booking.detail');
@@ -77,7 +82,6 @@ Route::get('/lihat-properti', [ListCityController::class, 'lihatproperti'])->nam
 
 Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');
 Route::get('/properti', [ListCityController::class, 'properti'])->name('properti');
-// Route::post('/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
 
 
 /// Details
