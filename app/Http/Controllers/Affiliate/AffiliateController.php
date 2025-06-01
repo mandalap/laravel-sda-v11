@@ -62,7 +62,11 @@ class AffiliateController extends Controller
 
             // Jika tidak ada agency_code yang diisi, buat kode secara otomatis
             if (!$request->filled('agency_code')) {
-                $agencyData['agency_code'] = strtoupper(Str::random(8)); // Buat kode acak sepanjang 8 karakter
+                // Membuat kode acak yang unik dan memastikan tidak ada duplikasi di database
+                do {
+                    $agencyCode = Str::random(8); // Buat kode acak sepanjang 8 karakter
+                } while (Agency::where('agency_code', $agencyCode)->exists()); // Pastikan kode unik
+                $agencyData['agency_code'] = $agencyCode;
             }
 
             // Ambil member yang sedang login
@@ -91,5 +95,4 @@ class AffiliateController extends Controller
             return redirect()->back()->withInput();
         }
     }
-
 }

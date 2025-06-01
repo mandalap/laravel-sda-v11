@@ -7,17 +7,21 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
-<style>
-    .swiper {
-    display: flex; /* Menggunakan flexbox untuk menjaga posisi item */
-    overflow: hidden; /* Sembunyikan overflow */
-}
+    <style>
+        .swiper {
+            display: flex;
+            /* Menggunakan flexbox untuk menjaga posisi item */
+            overflow: hidden;
+            /* Sembunyikan overflow */
+        }
 
-.swiper-wrapper {
-    display: flex; /* Pastikan wrapper juga menggunakan flex */
-    transition: transform 0.3s ease; /* Tambahkan transisi untuk efek yang lebih halus */
-}
-</style>
+        .swiper-wrapper {
+            display: flex;
+            /* Pastikan wrapper juga menggunakan flex */
+            transition: transform 0.3s ease;
+            /* Tambahkan transisi untuk efek yang lebih halus */
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -87,64 +91,65 @@
             class="relative flex flex-col gap-6 mt-5 pt-5 bg-[#F5F6F8]">
             @csrf
             <div class="flex flex-col gap-[6px] px-5">
-                <h1 class="text-lg font-semibold">Informasi Data Pelanggan </h1>
-                <p class="text-sm text-ngekos-grey">Isi kolom di bawah ini dengan data Anda yang valid</p>
+                <h1 class="text-base font-semibold">Informasi Data Pelanggan </h1>
+                {{-- <p class="text-sm text-ngekos-grey">Isi kolom di bawah ini dengan data Anda yang valid</p> --}}
             </div>
             <div id="InputContainer" class="flex flex-col gap-[18px]">
                 <div class="flex flex-col gap-2 px-5 w-full">
-                    <p class="font-semibold">Nama Lengkap</p>
+                    <p class="text-sm font-semibold">Nama Lengkap</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
                         <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <input type="text" name="nama" id="nama" value="{{ $member->nama }}"
-                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
-                            placeholder="Masukkan Nama Lengkap" required>
+                            class="text-sm w-full bg-white appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
+                            placeholder="Masukkan Nama Lengkap" readonly>
                     </label>
                 </div>
 
-                <div class="flex flex-col gap-2 px-5 w-full">
-                    <p class="font-semibold">Email</p>
+                {{-- <div class="flex flex-col gap-2 px-5 w-full">
+                    <p class="text-sm font-semibold">Email</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/mail.svg') }}" class="flex w-5 h-5 shrink-0" alt="icon">
-                        <input type="email" name="email" id="email" value="{{ $member->email }}"
-                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
+                        <img src="{{ asset('assets/images/icons/mail.svg') }}" class="flex w-5 h-5 shrink-0"
+                            alt="icon">
+                        <input class= "text-sm" type="email" name="email" id="email" value="{{ $member->email }}"
+                            class="w-full appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                             placeholder="Masukkan Email">
                     </label>
-                </div>
+                </div> --}}
                 <div class="flex flex-col gap-2 px-5 w-full">
-                    <p class="font-semibold">Telepon</p>
+                    <p class="text-sm font-semibold">Telepon</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
                         <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
-                        <input type="number" name="telepon" id="telepon" value="{{ $member->telepon }}"
-                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
-                            placeholder="Masukkan Nomor Telepon" required>
+                        <input  type="number" name="telepon" id="telepon" value="{{ $member->telepon }}"
+                            class="text-sm w-full bg-white appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
+                            placeholder="Masukkan Nomor Telepon" readonly>
                     </label>
                 </div>
 
                 <div class="flex flex-col gap-2 px-5 w-full">
-                    <p class="font-semibold">Kode Refferal</p>
+                    <p class="text-sm font-semibold">Kode Refferal (Opsional)</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
                         <img src="{{ asset('assets/images/icons/referall.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
-                        <input type="text" name="refferal" id="refferal"
-                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
+                        <input  type="text" name="refferal" id="refferal"
+                            class="text-sm w-full bg-white appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                             placeholder="Masukkan Kode Refferal">
                     </label>
                 </div>
 
                 <div class="flex flex-col gap-2 px-5 w-full">
-                    <p class="font-semibold">Pilih Properti</p>
+                    <p class="text-sm font-semibold">Pilih Properti</p>
                     <label
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
                         <img src="{{ asset('assets/images/icons/search2.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <input type="text" id="search" placeholder="Cari produk..."
-                            class="w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
+                            class="text-sm w-full font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                             onkeyup="filterProducts()">
                     </label>
                 </div>
@@ -157,11 +162,11 @@
                                         class="relative flex flex-col items-center justify-center w-fit rounded-3xl p-[14px_20px] gap-3 bg-white border border-white hover:border-[#d40065] has-[:checked]:ring-2 has-[:checked]:ring-[#d40065] transition-all duration-300">
                                         <img src="{{ asset('assets/images/icons/real-estate.svg') }}" class="w-8 h-8"
                                             alt="icon">
-                                        <p class="font-semibold text-nowrap">{{ $product->nama_product }}</p>
+                                        <p class="text-sm font-semibold text-nowrap">{{ $product->nama_product }}</p>
                                         <input type="radio" name="product"
                                             class="absolute top-1/2 left-1/2 opacity-0 -z-10"
                                             value="{{ $product->code_product }}"
-                                            onchange="updateCodeProduct('{{ $product->code_product }}')" >
+                                            onchange="updateCodeProduct('{{ $product->code_product }}')">
                                     </label>
                                 </div>
                             @empty
@@ -172,38 +177,38 @@
                 </div>
 
                 <script>
-                function filterProducts() {
-                    const searchInput = document.getElementById('search').value.toLowerCase();
-                    const productItems = document.querySelectorAll('.product-item');
-                    let visibleCount = 0;
+                    function filterProducts() {
+                        const searchInput = document.getElementById('search').value.toLowerCase();
+                        const productItems = document.querySelectorAll('.product-item');
+                        let visibleCount = 0;
 
-                    productItems.forEach(item => {
-                        const productName = item.querySelector('p').textContent.toLowerCase();
-                        if (productName.includes(searchInput)) {
-                            item.style.display = '';
-                            visibleCount++;
+                        productItems.forEach(item => {
+                            const productName = item.querySelector('p').textContent.toLowerCase();
+                            if (productName.includes(searchInput)) {
+                                item.style.display = '';
+                                visibleCount++;
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+
+                        // Jika hanya ada satu item yang terlihat, atur posisi
+                        if (visibleCount === 1) {
+                            const visibleItem = Array.from(productItems).find(item => item.style.display !== 'none');
+                            if (visibleItem) {
+                                // Pusatkan item
+                                const swiperWrapper = document.querySelector('.swiper-wrapper');
+                                const itemWidth = visibleItem.offsetWidth;
+                                const totalWidth = itemWidth * visibleCount; // Total lebar item yang terlihat
+                                const offset = (swiperWrapper.offsetWidth - totalWidth) / 2; // Hitung offset untuk memusatkan
+                                swiperWrapper.style.transform = `translateX(${offset}px)`; // Pusatkan item
+                            }
                         } else {
-                            item.style.display = 'none';
-                        }
-                    });
-
-                    // Jika hanya ada satu item yang terlihat, atur posisi
-                    if (visibleCount === 1) {
-                        const visibleItem = Array.from(productItems).find(item => item.style.display !== 'none');
-                        if (visibleItem) {
-                            // Pusatkan item
+                            // Reset transform jika lebih dari satu item terlihat
                             const swiperWrapper = document.querySelector('.swiper-wrapper');
-                            const itemWidth = visibleItem.offsetWidth;
-                            const totalWidth = itemWidth * visibleCount; // Total lebar item yang terlihat
-                            const offset = (swiperWrapper.offsetWidth - totalWidth) / 2; // Hitung offset untuk memusatkan
-                            swiperWrapper.style.transform = `translateX(${offset}px)`; // Pusatkan item
+                            swiperWrapper.style.transform = 'translateX(0)';
                         }
-                    } else {
-                        // Reset transform jika lebih dari satu item terlihat
-                        const swiperWrapper = document.querySelector('.swiper-wrapper');
-        swiperWrapper.style.transform = 'translateX(0)';
-    }
-}
+                    }
                 </script>
             </div>
 

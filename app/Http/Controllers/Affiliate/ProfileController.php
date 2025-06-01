@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Affiliate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
+use App\Models\BookingTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -42,6 +43,7 @@ class ProfileController extends Controller
                 'email' => 'required|email|max:255',
                 'alamat' => 'required|string|max:255',
                 'kota_id' => 'required|string|max:255',
+                'tanggal_lahir' => 'nullable|date',
                 'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
@@ -65,6 +67,7 @@ class ProfileController extends Controller
                 'gender' => $request->gender,
                 'email' => $request->email,
                 'kota_id' => $request->kota_id,
+                'tanggal_lahir' => $request->tanggal_lahir,
                 'alamat' => $request->alamat,
             ]);
 
@@ -87,5 +90,22 @@ class ProfileController extends Controller
             Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
             return redirect()->back();
         }
+    }
+
+    public function riwayatBooking(Request $request)
+    {
+        $member = Auth::guard('member')->user();
+        $agency = $member->agency;
+
+        // Ambil booking dengan pagination (5 per halaman)
+        $bookings = BookingTransaction::where('agency_id', $agency->id)
+            ->with(['product', 'product.project'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        return view('pages.affiliate.profile.riwayatBooking', [
+            'agency' => $agency,
+            'bookings' => $bookings,
+        ]);
     }
 }

@@ -43,7 +43,7 @@
                 class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                 <input type="text" id="affiliate-code"
                     class="w-full outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal text-sm bg-transparent"
-                    value="{{ $agency->slug }}" readonly>
+                    value="{{ $agency->agency_code }}" readonly>
                 <button type="button" onclick="copyAffiliateCode()"
                     class="w-10 h-10 shrink-0 flex items-center justify-center bg-[#d40065] rounded-full hover:bg-[#a7006d] transition"
                     title="Copy code">

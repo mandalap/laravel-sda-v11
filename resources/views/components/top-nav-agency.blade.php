@@ -64,7 +64,7 @@
                     </a>
 
                     <!-- Booking History -->
-                    <a href="" class="flex items-center px-4 py-2 gap-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <a href="{{ route('affiliate.profile.riwayatBooking') }}" class="flex items-center px-4 py-2 gap-2 text-sm text-gray-700 hover:bg-gray-100">
                         <img src="{{ asset('/assets/images/icons/booking-history.svg') }}" class="w-4 h-4"
                             alt="icon">
                         Riwayat Booking

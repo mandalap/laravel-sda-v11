@@ -13,6 +13,8 @@ use App\Models\Product;
 use App\Models\Project;
 use App\Models\ProjectFasilitas;
 use App\Models\ProjectPhoto;
+use App\Models\Affiliate;
+use App\Models\Agency;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -103,7 +105,6 @@ class DetailsController extends Controller
                     ]);
                 }
 
-                // Sisanya tetap sama seperti sebelumnya...
                 if ($bookingTransaction->status == 'cancel') {
                     Alert::toast('Pembayaran telah dibatalkan, silakan lakukan pembelian lagi.', 'info')->autoClose(10000)->timerProgressBar();
                     return redirect()->back();
@@ -120,7 +121,8 @@ class DetailsController extends Controller
                     'kodeProduct' => $product->code_product,
                     'jumlahBooking' => $bookingTransaction->jumlah_uang_booking,
                     'snapToken' => $bookingTransaction->snap_token,
-                    'booking' => $bookingTransaction
+                    'booking' => $bookingTransaction,
+                    // 'refferalCode' => $referralCode
                 ]);
             }
 
@@ -128,6 +130,58 @@ class DetailsController extends Controller
             if (!$request->has('product') || empty($request->input('product'))) {
                 Alert::toast('Silahkan memilih properti terlebih dahulu', 'info')->autoClose(10000)->timerProgressBar();
                 return redirect()->back();
+            }
+
+            // Validasi kode referral jika diisi
+            $agency = null;
+            $referralCode = $request->input('refferal');
+
+            if (!empty($referralCode)) {
+                $agency = Agency::whereRaw('BINARY agency_code = ?', [$referralCode])->first();
+                // dd($agency, $referralCode);
+
+                if (!$agency) {
+                    Alert::toast('Kode referral tidak valid.', 'error')->autoClose(10000)->timerProgressBar();
+                    return redirect()->back()->withInput();
+                }
+
+                $product = Product::where("code_product", $request->input('product'))->firstOrFail();
+
+                // Validasi kode referral tidak boleh berubah setelah booking
+                $referralCode = $request->input('refferal');
+
+                $existingBookingForProduct = BookingTransaction::where('product_id', $product->id)
+                    ->where('member_id', $user->id)
+                    ->whereIn('status', ['pending', 'booking'])
+                    ->first();
+
+                // dd($existingBookingForProduct, $referralCode);
+
+                if ($existingBookingForProduct && $referralCode) {
+                    // Cek apakah referral sebelumnya di booking sama
+                    $previousAgency = Agency::find($existingBookingForProduct->agency_id);
+
+                    if ($previousAgency && $previousAgency->agency_code !== $referralCode) {
+                        Alert::toast('Kode referral tidak dapat diubah saat melakukan proses booking produk ini.', 'error')
+                            ->autoClose(10000)
+                            ->timerProgressBar();
+                        return redirect()->back()->withInput();
+                    }
+                }
+
+
+                // Cek apakah member sudah terdaftar sebagai affiliate dari agency lain
+                $existingAffiliate = Affiliate::where('member_id', $user->id)->first();
+
+                if (!$existingAffiliate) {
+                    // Jika belum terdaftar sebagai affiliate, tambahkan ke tabel affiliate
+                    Affiliate::create([
+                        'member_id' => $user->id,
+                        'agency_id' => $agency->id,
+                        'joined_at' => now(),
+                    ]);
+                }
+                // Jika sudah terdaftar sebagai affiliate dari agency lain, tetap lanjutkan proses
             }
 
             // Jika bukan dari riwayat booking, lanjutkan dengan logika checkout baru
@@ -193,7 +247,9 @@ class DetailsController extends Controller
                 'email',
                 'telepon',
                 'kodeProduct',
-                'jumlahBooking'
+                'jumlahBooking',
+                'agency',
+                'referralCode'
             ));
         } catch (\Exception $e) {
             Log::error('Error di halaman checkout: ' . $e->getMessage());
@@ -294,6 +350,9 @@ class DetailsController extends Controller
                 ], 409);
             }
 
+            // Tentukan agency_id berdasarkan logika referral
+            $agencyId = $this->determineAgencyIdForBooking($user);
+
             // Jika sudah ada transaksi yang belum dibayar, gunakan invoice lama
             $invoice = $existingBooking ? $existingBooking->invoice : BookingTransaction::generateUniqueTrxId();
 
@@ -301,13 +360,21 @@ class DetailsController extends Controller
             $booking = $existingBooking ?? new BookingTransaction();
             $booking->member_id = $user->id;
             $booking->product_id = $product->id;
-            $booking->agency_id = $product->agency_id;
+            $booking->agency_id = $agencyId;
             $booking->invoice = $invoice;
             $booking->jumlah_uang_booking = request()->input('jumlah_uang_booking', 100000);
             $booking->harga_tanah = $product->harga;
             $booking->total_harga = $product->harga;
             $booking->is_paid = false;
             $booking->status = 'pending';
+
+            log::info('Creating new booking transaction', [
+                'member_id' => $user->id,
+                'product_id' => $product->id,
+                'invoice' => $booking->invoice,
+                'jumlah_uang_booking' => $booking->jumlah_uang_booking,
+                'agency_id' => $booking->agency_id,
+            ]);
 
             // Set Kadaluarsa 24 jam jika belum memilih metode pembayaran
             $expiryTime = request()->input('payment_method') ? $this->getExpiryTime(request()->input('payment_method')) : 1440; // 24 jam default
@@ -367,6 +434,26 @@ class DetailsController extends Controller
                 'project' => $product->project->slug,
             ]);
         }
+    }
+
+    // Fungsi untuk menentukan agency_id berdasarkan referral code
+    private function determineAgencyIdForBooking($user)
+    {
+        // Ambil referral code dari request
+        $referralCode = request()->input('refferal');
+        log::info('Determining agency_id for booking', [
+            'refferal' => $referralCode
+        ]);
+
+        // Jika ada referral code saat checkout
+        if (!empty($referralCode)) {
+            $agency = Agency::where('agency_code', $referralCode)->first();
+            if ($agency) {
+                return $agency->id;
+            }
+        }
+        // Jika tidak ada referral code saat checkout, return null
+        return null;
     }
 
     // Fungsi untuk mendapatkan waktu kadaluarsa berdasarkan metode pembayaran
