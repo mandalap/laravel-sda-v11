@@ -214,6 +214,11 @@ class BookingTransactionResource extends Resource
                                 'status' => 'booking',
                                 'tanggal_bayar' => $data['tanggal_bayar'],
                                 'payment_method' => $data['payment_method'],
+                                'is_paid' => true,
+                            ]);
+                            // Update status produk jadi "Booking"
+                            $record->product->update([
+                                'status' => 'Booking'
                             ]);
                         } elseif ($record->status === 'booking') {
                             $record->product->update(['status' => 'Terjual']);
