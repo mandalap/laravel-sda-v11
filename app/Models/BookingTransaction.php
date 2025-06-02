@@ -29,27 +29,31 @@ class BookingTransaction extends Model
         'snap_token_expiry',
     ];
 
+    protected $casts = [
+        'agency_id' => 'integer',
+    ];
+
     public static function generateUniqueTrxId()
     {
         $prefix = 'SDA';
-        do{
-            $randomSting = $prefix . mt_rand(100000000,999999999);
-        }while(self::where('invoice',$randomSting)->exists());
+        do {
+            $randomSting = $prefix . mt_rand(100000000, 999999999);
+        } while (self::where('invoice', $randomSting)->exists());
 
         return $randomSting;
     }
 
-    public function product() : BelongsTo
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function member() : BelongsTo
+    public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
     }
 
-    public function agency() : BelongsTo
+    public function agency(): BelongsTo
     {
         return $this->belongsTo(Agency::class);
     }
