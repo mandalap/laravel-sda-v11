@@ -31,7 +31,8 @@ class BookingTransactionResource extends Resource
         return parent::getEloquentQuery()
             ->whereIn('status', ['pending', 'booking', 'cancel'])
             ->whereHas('product', function ($query) {
-                $query->where('status', 'Tersedia');
+                $query->where('status', 'Tersedia')
+                      ->orWhere('status', 'Booking');
             });
     }
 
