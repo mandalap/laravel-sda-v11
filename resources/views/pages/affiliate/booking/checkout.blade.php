@@ -127,7 +127,8 @@
     </div>
     <form
         action="{{ route('affiliate.booking.checkout.store', ['project' => $project->slug]) }}?costumer_id={{ $costumer->id }}&product_code={{ $kodeProduct }}"
-        method="POST" class="relative flex flex-col gap-6 pt-5 mt-5">
+        method="POST" onsubmit="this.querySelector('button[type=submit]').disabled = true;"
+        class="relative flex flex-col gap-6 pt-5 mt-5">
         @csrf
         <div id="PaymentOptions" class="flex flex-col rounded-[30px] border border-[#F1F2F6] p-5 gap-4 mx-5">
             <div id="TabButton-Container" class="flex items-center justify-between border-b border-[#F1F2F6] gap-[18px]">
