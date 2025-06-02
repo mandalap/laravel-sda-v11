@@ -31,6 +31,8 @@ class BookingTransaction extends Model
 
     protected $casts = [
         'agency_id' => 'integer',
+        'member_id' => 'integer',
+        'product_id' => 'integer', 
     ];
 
     public static function generateUniqueTrxId()

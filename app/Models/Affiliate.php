@@ -19,6 +19,8 @@ class Affiliate extends Model
     ];
 
     protected $casts = [
+        'member_id' => 'integer',
+        'agency_id' => 'integer',
         'joined_at' => 'datetime',
     ];
 
