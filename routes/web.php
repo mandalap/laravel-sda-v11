@@ -14,9 +14,7 @@ use App\Http\Controllers\PencarianController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Affiliate\ProfileController as AffiliateProfileController;
-
-
-
+use App\Http\Controllers\Affiliate\TransactionController;
 
 Route::middleware('guest')->group(function () {
 
@@ -71,6 +69,11 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
 
         // Link Affiliasi
         Route::get('/affiliasi', [AffiliasiController::class, 'index'])->name('affiliasi.index');
+
+
+        // Transaksi
+        Route::get('/transaksi', [TransactionController::class, 'index'])->name('transaction.index');
+
     });
 });
 
