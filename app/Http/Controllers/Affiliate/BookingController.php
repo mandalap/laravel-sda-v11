@@ -252,7 +252,8 @@ class BookingController extends Controller
                 ->first();
 
             if ($existingBooking) {
-                throw new \Exception('Konsumen sudah memiliki transaksi booking aktif untuk produk ini');
+                Alert::toast('Konsumen sudah memiliki transaksi booking aktif untuk produk ini', 'error')->autoClose(10000)->timerProgressBar();
+                return redirect()->route('affiliate.booking.detail', ['project' => $project->slug]);
             }
 
             // Gunakan transaction dan lock untuk keamanan transaksi
