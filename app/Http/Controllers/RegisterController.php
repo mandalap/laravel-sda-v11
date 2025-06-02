@@ -108,6 +108,10 @@ class RegisterController extends Controller
     public function storeRegister(Request $request)
     {
         try {
+            // Mulai transaksi
+            DB::beginTransaction();
+
+            // Validasi input data
             $request->validate([
                 'sapaan' => ['required'],
                 'nama' => ['required', 'string', 'max:255'],
@@ -121,9 +125,10 @@ class RegisterController extends Controller
                 'referral_code.exists' => 'Kode referral tidak valid',
             ]);
 
-            DB::beginTransaction();
-
+            // Generate recovery code dan password sementara
             $rd = random_int(10000, 99999);
+
+            // Buat member baru
             $member = Member::create([
                 'sapaan' => $request->sapaan,
                 'nama' => $request->nama,
@@ -136,9 +141,9 @@ class RegisterController extends Controller
             $memberRole = Role::where('name', 'member')->first();
             $member->addRole($memberRole);
 
-            // Proses kode referral jika ada
+            // Proses referral jika ada
             if ($request->filled('referral_code')) {
-                $agency = Agency::where('agency_code', $request->referral_code)
+                $agency = Agency::whereRaw('BINARY agency_code = ?', [$request->referral_code])
                     ->where('status', 'active')
                     ->first();
 
@@ -156,18 +161,26 @@ class RegisterController extends Controller
                         'agency_id' => $agency->id,
                         'referral_code' => $request->referral_code,
                     ]);
+                } else {
+                    // Jika referral code tidak valid
+                    DB::rollBack();
+                    Alert::toast('Kode referral tidak valid.', 'error')
+                        ->autoClose(10000)
+                        ->timerProgressBar();
+                    return redirect()->back()->withInput();
                 }
             }
 
+            // Commit transaksi
             DB::commit();
 
             // Dispatch job untuk mengirim pesan WhatsApp
             SendWhatsAppDaftar::dispatch($member);
 
             $message = 'Akun anda berhasil dibuat, silahkan cek WhatsApp untuk melihat password anda.';
-
             return redirect()->route('login')->with('success', $message);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            // Rollback jika validasi gagal
             DB::rollBack();
 
             $errors = $e->validator->errors()->all();
@@ -177,15 +190,14 @@ class RegisterController extends Controller
 
             return back()->withInput();
         } catch (\Exception $e) {
+            // Rollback jika terjadi kesalahan lain
             DB::rollBack();
 
             Log::error('Registration error: ' . $e->getMessage());
             Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
-
             return back()->withInput();
         }
     }
-
 
     public function lupapassword()
     {

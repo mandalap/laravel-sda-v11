@@ -10,6 +10,7 @@ use App\Models\Kategori;
 use App\Models\Member;
 use App\Models\Product;
 use App\Models\Project;
+use App\Models\Affiliate;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -116,8 +117,12 @@ class BookingController extends Controller
 
     public function checkout(Request $request, $project)
     {
+        DB::beginTransaction(); // Memulai transaksi
         try {
             $member = Auth::guard('member')->user(); // Agency yang sedang login
+            $agency = $member->agency;
+
+            // Ambil project berdasarkan slug
             $project = Project::where("slug", $project)->firstOrFail();
 
             // Validasi input
@@ -172,13 +177,28 @@ class BookingController extends Controller
                 }
             }
 
+            // Cek apakah member sudah terdaftar sebagai affiliate dari agency manapun
+            $existingAffiliate = Affiliate::where('member_id', $costumer->id)->first();
+
+            if (!$existingAffiliate) {
+                // Jika member belum terdaftar sebagai affiliate, tambahkan ke tabel affiliate
+                Affiliate::create([
+                    'member_id' => $costumer->id,
+                    'agency_id' => $agency->id,
+                    'joined_at' => now(),
+                ]);
+            }
+
             // Siapkan data untuk dikirim ke view
             $kodeProduct = $product->code_product;
             $jumlahBooking = 100000; // Default jumlah booking
 
+            // Commit transaksi jika semua berjalan lancar
+            DB::commit();
+
             // Return view checkout dengan data yang diperlukan
             return view('pages.affiliate.booking.checkout', [
-                'member' => $member, // Agency
+                'agency' => $agency, // 
                 'costumer' => $costumer, // Konsumen
                 'nama' => $nama,
                 'project' => $project,
@@ -187,6 +207,7 @@ class BookingController extends Controller
                 'jumlahBooking' => $jumlahBooking,
             ]);
         } catch (\Exception $e) {
+            DB::rollBack(); // Rollback transaksi jika terjadi error
             Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
             return redirect()->route('affiliate.booking.detail', ['project' => $project->slug]);
         }

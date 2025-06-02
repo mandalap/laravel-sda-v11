@@ -116,6 +116,12 @@ class BookingTransactionResource extends Resource
                     ->sortable()
                     ->searchable(),
 
+                TextColumn::make('agency.nama')
+                    ->label('Marketing')
+                    ->formatStateUsing(fn($state, $record) => $record->agency->nama ?? '')
+                    ->sortable()
+                    ->searchable(),
+
                 TextColumn::make('jumlah_uang_booking')
                     ->label('Harga Booking')
                     ->sortable()

@@ -56,18 +56,14 @@
     <div id="Background"
         class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
-    <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
-        <a href="{{ route('affiliate.dashboard') }}"
-            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[20px]" alt="icon">
-        </a>
-        <h3 class="text-lg font-bold text-white">Semua Properti</h3>
-        <div class="w-10 dummy-btn"></div>
-    </div>
+    
+    <!-- Top Nav Agency -->
+    <x-top-nav-agency title="Booking Properti" back-route="affiliate.dashboard" />
+
     <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
         <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
     </div>
-    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
+    <div class="flex sticky top-0 z-20 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
 
         <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
 
