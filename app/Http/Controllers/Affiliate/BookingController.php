@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -316,6 +317,9 @@ class BookingController extends Controller
 
         // Ambil agency berdasarkan member yang login
         $agency = $currentUser->agency;
+
+        Log::info('User logged in: ', ['agency_id' => $agency->id]);
+        Log::info('Booking details: ', ['booking_id' => $booking->id, 'agency_id' => $booking->agency_id]);
 
         // Cek apakah user yang login adalah agency yang sesuai
         if (!$agency || $booking->agency_id !== $agency->id) {
