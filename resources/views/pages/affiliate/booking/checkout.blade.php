@@ -61,14 +61,14 @@
                     <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
                     <p class="text-sm text-ngekos-grey">Nama</p>
                 </div>
-                <p class="text-sm font-semibold">{{ $member->nama }}</p>
+                <p class="text-sm font-semibold">{{ $agency->nama }}</p>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
                     <p class="text-sm text-ngekos-grey">Telepon</p>
                 </div>
-                <p class="text-sm font-semibold">{{ $member->telepon }}</p>
+                <p class="text-sm font-semibold">{{ $agency->telepon }}</p>
             </div>
         </div>
     </div>

@@ -63,6 +63,27 @@
                 </div>
             </div>
         </div>
+
+        {{-- Kode Referall --}}
+        @if (isset($referralCode) && !empty($referralCode))
+            <input type="hidden" id="referral_code" value="{{ $referralCode }}">
+
+            <div class="mx-5 mt-5 rounded-[30px] p-5 bg-[#ECFDF5] border border-[#34D399] text-green-800">
+                <div class="flex items-start gap-4">
+                    {{-- <img src="{{ asset('assets/images/icons/referall.svg') }}" class="w-6 h-6 mt-2" alt="Referral Icon"> --}}
+                    <div>
+                        <p class="font-semibold text-base">Anda Menggunakan Kode Referral</p>
+                        <p class="text-sm">
+                            <span class="font-medium">{{ $referralCode }}</span>
+                            @if (isset($agency))
+                                - Agency <span class="font-medium">{{ $agency->nama }}</span>
+                            @endif
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <div
             class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
             <label class="flex relative justify-between items-center">
@@ -80,13 +101,6 @@
                         <p class="text-ngekos-grey">Nama</p>
                     </div>
                     <p class="font-semibold">{{ $nama }}</p>
-                </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex gap-3 items-center">
-                        <img src="{{ asset('assets/images/icons/mail.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Email</p>
-                    </div>
-                    <p class="font-semibold">{{ $email }}</p>
                 </div>
                 <div class="flex justify-between items-center">
                     <div class="flex gap-3 items-center">
@@ -210,6 +224,9 @@
             payButton.disabled = true;
 
             try {
+                const referralInput = document.getElementById('referral_code');
+                const referralCode = referralInput ? referralInput.value : null;
+
                 const response = await fetch('{{ route('getSnapToken') }}', {
                     method: 'POST',
                     headers: {
@@ -218,6 +235,7 @@
                     },
                     body: JSON.stringify({
                         product: '{{ $kodeProduct }}',
+                        refferal: referralCode
                     })
                 });
 
