@@ -30,6 +30,10 @@ class Agency extends Model
         'slug',
     ];
 
+    protected $casts = [
+        'member_id' => 'integer',
+    ];
+
     public function setNameAttribute($value)
     {
         $slug = Str::slug($value);
