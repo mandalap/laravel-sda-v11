@@ -234,12 +234,6 @@ class DetailsController extends Controller
                 return redirect()->back();
             }
 
-            log::info('User melakukan checkout', [
-                'user_id' => $user->id,
-                'member_id' => $existingBooking->member_id,
-                'referral_code' => $referralCode,
-            ]);
-
             $nama = $request->input('nama');
             $email = $request->input('email');
             $telepon = $request->input('telepon');
