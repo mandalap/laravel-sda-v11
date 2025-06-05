@@ -15,7 +15,7 @@
         <div class="p-8 w-full max-w-md bg-white rounded-xl shadow-lg">
             <img src="{{ asset('assets/images/icons/logo.svg') }}" class="mx-auto w-auto h-20" alt="icon">
             <h2 class="mt-4 mb-6 text-2xl font-semibold text-center text-gray-900">Daftar</h2>
-            @if ($is_referral && $agency_name)
+            {{-- @if ($is_referral && $agency_name)
                 <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded-md">
                     <div class="flex">
                         <div class="flex-shrink-0">
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endif --}}
             <form class="space-y-4" method="POST" action="{{ route('store.register') }}">
                 @csrf
                 <div>
@@ -43,8 +43,8 @@
                     <select name="sapaan" required
                         class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]">
                         <option value="" disabled selected>Pilih Sapaan</option>
-                        <option value="Bapak" @if (old('sapaan') == 'Bapak') selected @endif>Bapak</option>
-                        <option value="Ibu" @if (old('sapaan') == 'Ibu') selected @endif>Ibu</option>
+                        <option value="Bapak" @if (old('sapaan') == 'Pak') selected @endif>Pak</option>
+                        <option value="Ibu" @if (old('sapaan') == 'Bu') selected @endif>Bu</option>
                         <option value="Bang" @if (old('sapaan') == 'Bang') selected @endif>Bang</option>
                         <option value="Kak" @if (old('sapaan') == 'Kak') selected @endif>Kak</option>
                     </select>
@@ -97,7 +97,7 @@
                                     Jika Anda memiliki kode referral dari Agency, masukkan di sini.
                                 </p>
                             </div>
-                        @else
+                        {{-- @else
                             <div class="mt-2 p-3 bg-green-50 border-l-4 border-green-400 rounded">
                                 <p class="text-sm text-green-700">
                                     <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -108,7 +108,7 @@
                                     Kode referral sudah otomatis terisi. Anda akan mendapatkan benefit khusus dari
                                     <strong>{{ $agency_name }}</strong>
                                 </p>
-                            </div>
+                            </div> --}}
                         @endif
                     </div>
                 </div>
