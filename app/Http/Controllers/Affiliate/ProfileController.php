@@ -103,6 +103,13 @@ class ProfileController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(5);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('pages.affiliate.profile.partials.riwayatBookingList', compact('bookings'))->render(),
+                'hasMorePages' => $bookings->hasMorePages()
+            ]);
+        }
+
         return view('pages.affiliate.profile.riwayatBooking', [
             'agency' => $agency,
             'bookings' => $bookings,
