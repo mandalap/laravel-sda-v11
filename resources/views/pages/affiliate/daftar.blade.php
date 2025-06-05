@@ -171,8 +171,8 @@
                     <select name="sapaan" value="{{ old('sapaan') }}"
                         class="text-sm pl-8 w-full bg-white appearance-none outline-none">
                         <option value="" hidden>Pilih Sapaan</option>
-                        <option value="Bapak" @if (old('sapaan') == 'Bapak') selected @endif>Bapak</option>
-                        <option value="Ibu" @if (old('sapaan') == 'Ibu') selected @endif>Ibu</option>
+                        <option value="Bapak" @if (old('sapaan') == 'Pak') selected @endif>Pak</option>
+                        <option value="Ibu" @if (old('sapaan') == 'Bu') selected @endif>Bu</option>
                         <option value="Bang" @if (old('sapaan') == 'Bang') selected @endif>Bang</option>
                         <option value="Kak" @if (old('sapaan') == 'Kak') selected @endif>Kak</option>
                     </select>
