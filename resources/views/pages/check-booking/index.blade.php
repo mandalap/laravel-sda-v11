@@ -31,14 +31,16 @@
                 </div>
                 <div id="InputContainer" class="flex flex-col gap-[18px]">
                     <div class="flex flex-col gap-2 w-full">
-                        <p class="text-sm font-semibold">Booking ID</p>
+                        <p class="text-sm font-semibold">Invoice Booking</p>
                         <label
                             class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
                             <img src="{{ asset('assets/images/icons/booking.svg') }}" class="flex w-5 h-5 shrink-0"
                                 alt="icon">
                             <input type="text" name="code_booking" id="code_booking" value="{{ old('code_booking') }}"
                                 class="w-full text-sm  font-semibold appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Booking ID">
+                                placeholder="Masukkan Invoice" required
+                                oninvalid="this.setCustomValidity('Invoice wajib diisi.')"
+                                oninput="this.setCustomValidity('')">
                         </label>
                     </div>
                     <button type="submit"
