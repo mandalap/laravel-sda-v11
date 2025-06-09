@@ -3,7 +3,7 @@
         <form action="{{ route('checkout', $booking->product->project->slug) }}" method="POST" class="card">
             @csrf
             <input type="hidden" name="booking_id" value="{{ $booking->id }}">
-            <button type="submit" class="w-full" @if (in_array($booking->status, ['cancel', 'booking'])) disabled @endif>
+            <button type="submit" class="w-full" @if (in_array($booking->status, ['cancel', 'booking']) || empty($booking->snap_token)) disabled @endif>
                 <div
                     class="flex flex-col md:flex-row rounded-[20px] md:rounded-[30px] border border-[#F1F2F6] p-3 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
 
@@ -70,15 +70,21 @@
                                     class="inline-flex rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px] text-white">
                                     PENDING
                                 </div>
-                                <div class="mt-2 text-[10px] md:text-xs text-gray-700 text-left">
-                                    Silakan lanjutkan pembayaran Anda, batas waktu pembayaran adalah tanggal
-                                    <strong>{{ $expiryGMT7->translatedFormat('d F Y') }}</strong> pukul
-                                    <strong>{{ $expiryGMT7->format('H:i') }} WIB</strong>
-                                </div>
-                                <div class="text-[10px] md:text-xs text-[#d40065] font-medium mt-1">
-                                    Sisa waktu: <span id="countdown-{{ $booking->id }}"
-                                        data-expiry="{{ $booking->snap_token_expiry }}"></span>
-                                </div>
+                                @if ($booking->snap_token)
+                                    <div class="mt-2 text-[10px] md:text-xs text-gray-700 text-left">
+                                        Silakan lanjutkan pembayaran Anda, batas waktu pembayaran adalah tanggal
+                                        <strong>{{ $expiryGMT7->translatedFormat('d F Y') }}</strong> pukul
+                                        <strong>{{ $expiryGMT7->format('H:i') }} WIB</strong>
+                                    </div>
+                                    <div class="text-[10px] md:text-xs text-[#d40065] font-medium mt-1">
+                                        Sisa waktu: <span id="countdown-{{ $booking->id }}"
+                                            data-expiry="{{ $booking->snap_token_expiry }}"></span>
+                                    </div>
+                                @else
+                                    <div class="mt-2 text-[10px] md:text-xs text-[#d40065] text-left">
+                                        Menunggu konfirmasi dari Admin
+                                    </div>
+                                @endif
                             </div>
                         @elseif ($booking->status == 'booking')
                             <div class="flex mt-2">

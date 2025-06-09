@@ -15,7 +15,7 @@
     </div>
 
     <!-- Top Nav Agency -->
-    <x-top-nav-agency title="Affiliasi" back-route="profil" />
+    <x-top-nav-agency title="Affiliasi" back-route="affiliate.dashboard" />
 
     <div id="Header" class="relative items-center justify-between gap-2 px-5 mt-[18px]">
         <!-- Code Refferal -->
