@@ -7,6 +7,7 @@ use App\Models\BookingTransaction;
 use App\Models\Product;
 use App\Models\Member;
 use App\Models\Agency;
+use App\Models\FeeTransaction;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -26,13 +27,20 @@ class BookingTransactionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
+    protected static ?string $navigationLabel = 'Transaksi Booking';
+
+    protected static ?string $navigationGroup = 'Transaksi';
+
+    protected static ?string $pluralModelLabel = 'Transaksi Booking';
+    protected static ?string $modelLabel = 'Transaksi Booking';
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
             ->whereIn('status', ['pending', 'booking', 'cancel'])
             ->whereHas('product', function ($query) {
                 $query->where('status', 'Tersedia')
-                      ->orWhere('status', 'Booking');
+                    ->orWhere('status', 'Booking');
             });
     }
 
@@ -191,24 +199,38 @@ class BookingTransactionResource extends Resource
                     ->modalHeading('Konfirmasi Transaksi')
                     ->modalDescription(fn($record) => match ($record->status) {
                         'pending' => 'Isi detail pembayaran sebelum mengubah status menjadi "booking".',
-                        'booking' => 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi.',
+                        'booking' => $record->agency_id
+                            ? 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi. Silakan masukkan fee marketing.'
+                            : 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi.',
                     })
                     ->modalButton('Ya, Konfirmasi')
-                    ->form(fn($record) => $record->status === 'pending' ? [
-                        DateTimePicker::make('tanggal_bayar')
-                            ->label('Tanggal Bayar')
-                            ->required()
-                            ->default(now())
-                            ->timezone('Asia/Jakarta'),
-                        Select::make('payment_method')
-                            ->label('Metode Pembayaran')
-                            ->required()
-                            ->options([
-                                'qris' => 'QRIS',
-                                'bank_transfer' => 'Transfer Bank',
-                                'cash' => 'Cash',
-                            ]),
-                    ] : []) // kalau booking → tidak perlu input lagi
+                    ->form(fn($record) => match ($record->status) {
+                        'pending' => [
+                            DateTimePicker::make('tanggal_bayar')
+                                ->label('Tanggal Bayar')
+                                ->required()
+                                ->default(now())
+                                ->timezone('Asia/Jakarta'),
+                            Select::make('payment_method')
+                                ->label('Metode Pembayaran')
+                                ->required()
+                                ->options([
+                                    'qris' => 'QRIS',
+                                    'bank_transfer' => 'Transfer Bank',
+                                    'cash' => 'Cash',
+                                ]),
+                        ],
+                        'booking' => $record->agency_id ? [
+                            TextInput::make('jumlah_fee')
+                                ->label('Fee Marketing')
+                                ->prefix('Rp')
+                                ->numeric()
+                                ->required()
+                                ->helperText('Masukkan fee untuk marketing yang menangani transaksi ini')
+                                ->placeholder('0'),
+                        ] : [],
+                        default => []
+                    })
                     ->action(function ($record, array $data) {
                         if ($record->status === 'pending') {
                             $record->update([
@@ -223,6 +245,16 @@ class BookingTransactionResource extends Resource
                             ]);
                         } elseif ($record->status === 'booking') {
                             $record->product->update(['status' => 'Terjual']);
+                            // Simpan fee marketing ke tabel fee_transactions hanya jika ada agency_id
+                            if ($record->agency_id && isset($data['jumlah_fee']) && $data['jumlah_fee'] > 0) {
+                                FeeTransaction::create([
+                                    'booking_transaction_id' => $record->id,
+                                    'jumlah_fee' => $data['jumlah_fee'],
+                                    'status' => 'tersedia',
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]);
+                            }
                         }
 
                         Notification::make()
@@ -243,6 +275,11 @@ class BookingTransactionResource extends Resource
                     ->action(function ($record) {
                         $record->update(['status' => 'cancel']);
                         $record->product->update(['status' => 'Tersedia']);
+
+                        Notification::make()
+                            ->title('Transaksi berhasil dibatalkan.')
+                            ->warning()
+                            ->send();
                     }),
             ])
 
