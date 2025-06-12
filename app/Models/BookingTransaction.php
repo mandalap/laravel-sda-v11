@@ -59,4 +59,8 @@ class BookingTransaction extends Model
     {
         return $this->belongsTo(Agency::class);
     }
+
+    public function feeTransaction() {
+        return $this->hasOne(FeeTransaction::class);
+    }
 }
