@@ -44,11 +44,11 @@
                         </div>
                         <div class="flex flex-col gap-3 w-full">
                             <h3 class="font-semibold text-base sm:text-lg line-clamp-2 text-center sm:text-left">
-                                Sajada Affiliate Membership
+                                Sajada Affiliate Member
                             </h3>
                             <hr class="border-[#F1F2F6]">
                             <p class="text-xs sm:text-sm text-center sm:text-left">
-                                Mendapatkan komisi tambahan sebesar 50Rb s/d 100Rb per transaksi yang
+                                Mendapatkan komisi tambahan sebesar <strong>50Rb s/d 100Rb</strong> per transaksi penjualan yang
                                 terselesaikan dari member yang ditambahkan dari link promosi atau kode referral.
                             </p>
                         </div>
@@ -63,12 +63,12 @@
                         </div>
                         <div class="flex flex-col gap-3 w-full">
                             <h3 class="font-semibold text-base sm:text-lg line-clamp-2 text-center sm:text-left">
-                                Sajada Affiliate Membership
+                                Sajada Affiliate Penjualan
                             </h3>
                             <hr class="border-[#F1F2F6]">
                             <p class="text-xs sm:text-sm text-center sm:text-left">
-                                Mendapatkan komisi tambahan sebesar 50Rb s/d 100Rb per transaksi yang
-                                terselesaikan dari member yang ditambahkan dari link promosi atau kode referral.
+                                Mendapatkan komisi tambahan sebesar <strong>500Rb s/d 2 juta</strong> per transaksi penjualan yang
+                                terselesaikan dari link promosi atau kode referral.
                             </p>
                         </div>
                     </div>
