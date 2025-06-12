@@ -21,7 +21,7 @@
     @if ($transactions->isEmpty())
         @include('components.no-data')
     @else
-        <div class="container px-3 sm:px-5 py-6 sm:py-10 z-50">
+        <div class="container px-3 sm:px-5 py-6 sm:py-10 z-10">
             <!-- Daftar Transaksi -->
             <div class="bg-white shadow-md rounded-[20px] p-3 sm:p-4">
 
