@@ -21,6 +21,7 @@ class TransactionController extends Controller
             $query->where('agency_id', $agency->id);
         })
             ->with(['bookingTransaction', 'bookingTransaction.product.project', 'bookingTransaction.agency', 'bookingTransaction.member'])
+            ->orderBy('created_at', 'desc')
             ->paginate(5);
 
         // Log::info($transactions->toArray());
