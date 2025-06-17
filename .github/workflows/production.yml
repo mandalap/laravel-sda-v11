@@ -1,0 +1,28 @@
+on: 
+  push:
+    branches:
+      - main
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy website
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout the repository
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    
+    # Sync files via FTP (tanpa vendor)
+    - name: 📂 Sync project files (tanpa vendor)
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER_SAJADA }}
+        username: ${{ secrets.FTP_USERNAME_SAJADA }}
+        password: ${{ secrets.FTP_PASSWORD_SAJADA }}
+        server-dir: /home/wablitzc/sajadadigital.com
+        local-dir: ./               # Mengupload dari root repository
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          vendor/**
