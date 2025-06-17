@@ -19,7 +19,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER_SAJADA }}
         username: ${{ secrets.FTP_USERNAME_SAJADA }}
         password: ${{ secrets.FTP_PASSWORD_SAJADA }}
-        server-dir: /home/wablitzc/sajadadigital.com/
+        server-dir: /
         local-dir: ./               # Mengupload dari root repository
         exclude: |
           **/.git*
