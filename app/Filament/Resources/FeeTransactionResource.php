@@ -197,6 +197,86 @@ class FeeTransactionResource extends Resource
                             ->success()
                             ->send();
                     }),
+                Tables\Actions\Action::make('info_bank')
+                    ->label('Info Bank')
+                    ->icon('heroicon-o-credit-card')
+                    ->color('info')
+                    ->visible(function ($record) {
+                        $agency = $record->bookingTransaction->agency ?? null;
+                        return $agency &&
+                            !empty($agency->nomor_rekening) &&
+                            !empty($agency->nama_bank) &&
+                            !empty($agency->nama_pemilik);
+                    })
+                    ->modalHeading(fn($record) => 'Informasi Rekening Bank - ' . ($record->bookingTransaction->agency->nama ?? 'Agency'))
+                    ->modalContent(function ($record) {
+                        $agency = $record->bookingTransaction->agency;
+                        return new \Illuminate\Support\HtmlString('
+            <div class="space-y-4">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                        Informasi Rekening Bank
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="flex items-center border-b border-gray-200 dark:border-gray-700 pb-2">
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-32 flex-shrink-0">
+                                Nama Bank
+                            </span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mx-2">:</span>
+                            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 px-2">
+                                ' . e($agency->nama_bank) . '
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center border-b border-gray-200 dark:border-gray-700 pb-2">
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-32 flex-shrink-0">
+                                Nomor Rekening
+                            </span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mx-2">:</span>
+                            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 px-2">
+                                ' . e($agency->nomor_rekening) . '
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center border-b border-gray-200 dark:border-gray-700 pb-2">
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-32 flex-shrink-0">
+                                Nama Pemilik
+                            </span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mx-2">:</span>
+                            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 px-2">
+                                ' . e($agency->nama_pemilik) . '
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-32 flex-shrink-0">
+                                Nama Agency
+                            </span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 mx-2">:</span>
+                            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 px-2">
+                                ' . e($agency->nama) . '
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                    <div class="flex items-start">
+                        <div>
+                            <p class="text-sm text-blue-800 dark:text-blue-200">
+                                <strong>Catatan:</strong> Pastikan informasi rekening sudah benar sebelum melakukan transfer fee.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ');
+                    })
+                    ->modalWidth('lg')
+                    ->slideOver(false)
+                    ->modalSubmitAction(false)
+                    ->action(null),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -205,6 +285,7 @@ class FeeTransactionResource extends Resource
                 ]),
             ]);
     }
+
 
     public static function getRelations(): array
     {
