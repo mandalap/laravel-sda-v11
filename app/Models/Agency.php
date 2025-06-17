@@ -28,6 +28,9 @@ class Agency extends Model
         'status',
         'agency_code',
         'slug',
+        'nama_bank',
+        'nomor_rekening',
+        'nama_pemilik',
     ];
 
     protected $casts = [

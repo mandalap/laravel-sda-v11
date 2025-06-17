@@ -77,6 +77,10 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
     });
 });
 
+
+// Bank
+Route::get('/bank-search', [AffiliateProfileController::class, 'search'])->name('bank.search');
+
 // Beranda
 Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
 

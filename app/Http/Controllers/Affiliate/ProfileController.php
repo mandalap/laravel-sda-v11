@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Affiliate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
+use App\Models\Bank;
 use App\Models\BookingTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,17 @@ class ProfileController extends Controller
         return view('pages.affiliate.profile.index', [
             'agency' => $agency,
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        $banks = Bank::where('nama_bank', 'like', "%{$request->q}%")
+            ->select('nama_bank')
+            ->distinct()
+            ->limit(10)
+            ->get();
+
+        return response()->json($banks);
     }
 
     /**
@@ -45,18 +57,21 @@ class ProfileController extends Controller
                 'kota_id' => 'required|string|max:255',
                 'tanggal_lahir' => 'nullable|date',
                 'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'nama_bank' => 'required|string|max:255',
+                'nomor_rekening' => 'required|string|max:255',
+                'nama_pemilik' => 'required|string|max:255',
             ]);
 
             // Cek apakah telepon sudah digunakan oleh agency lain
             if (Agency::where('telepon', $request->telepon)->where('id', '!=', $agency->id)->exists()) {
                 Alert::toast('Nomor WhatsApp sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
-                return redirect()->back();
+                return redirect()->back()->with('active_tab', 'profil');
             }
 
             // Cek apakah email sudah digunakan oleh agency lain
             if (Agency::where('email', $request->email)->where('id', '!=', $agency->id)->exists()) {
                 Alert::toast('Email sudah digunakan oleh akun lain.', 'error')->autoClose(10000);
-                return redirect()->back();
+                return redirect()->back()->with('active_tab', 'profil');
             }
 
             // Perbarui data member
@@ -69,6 +84,9 @@ class ProfileController extends Controller
                 'kota_id' => $request->kota_id,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'alamat' => $request->alamat,
+                'nama_bank' => $request->nama_bank,
+                'nomor_rekening' => $request->nomor_rekening,
+                'nama_pemilik' => $request->nama_pemilik,
             ]);
 
             // Jika ada upload foto profil
@@ -81,11 +99,26 @@ class ProfileController extends Controller
                 $agency->save();
             }
 
-
             // Tampilkan pesan sukses
             Alert::toast('Profil berhasil diupdate', 'success')->autoClose(10000)->timerProgressBar();
             // Redirect ke halaman profil
             return redirect()->back();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tentukan tab mana yang berisi error
+            $profilFields = ['sapaan', 'nama', 'telepon', 'gender', 'email', 'alamat', 'kota_id', 'tanggal_lahir', 'photo'];
+            $rekeningFields = ['nama_bank', 'nomor_rekening', 'nama_pemilik'];
+
+            $errorFields = array_keys($e->validator->errors()->toArray());
+            $activeTab = 'profil'; // default tab
+
+            // Cek apakah ada error di tab rekening
+            if (array_intersect($errorFields, $rekeningFields)) {
+                $activeTab = 'rekening';
+            }
+            Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
+
+
+            return redirect()->back()->withErrors($e->validator)->withInput()->with('active_tab', $activeTab);
         } catch (\Exception $e) {
             Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
             return redirect()->back();

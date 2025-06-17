@@ -32,7 +32,7 @@
                             <thead>
                                 <tr class="bg-gray-100 text-left">
                                     <th class="px-3 py-3 font-semibold text-sm">Invoice</th>
-                                    <th class="px-3 py-3 font-semibold text-sm">Product</th>
+                                    <th class="px-3 py-3 font-semibold text-sm">Produk</th>
                                     <th class="px-3 py-3 font-semibold text-sm">Member</th>
                                     <th class="px-3 py-3 font-semibold text-sm">Jumlah Fee</th>
                                     <th class="px-3 py-3 font-semibold text-sm">Status</th>
