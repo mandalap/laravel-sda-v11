@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.9",
         "midtrans/midtrans-php": "^2.6",
         "realrashid/sweet-alert": "^7.3",
-        "santigarcor/laratrust": "^8.4"
+        "santigarcor/laratrust": "^8.4",
+        "spatie/laravel-activitylog": "^4.10"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",
