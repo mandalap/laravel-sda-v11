@@ -48,12 +48,6 @@
                         <div class="swiper-pagination"></div>
 
                     </div>
-
-                    <!-- Navigation arrows positioned on sides -->
-                    <div class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
-                    </div>
-                    <div class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
-                    </div>
                 </div>
             </div>
         </section>
@@ -366,12 +360,6 @@
                         <!-- Pagination -->
                         <div class="swiper-pagination"></div>
 
-                    </div>
-
-                    <!-- Navigation arrows positioned on sides -->
-                    <div class="swiper-button-prev landscape-prev !text-[#d40065]  !left-2 ">
-                    </div>
-                    <div class="swiper-button-next landscape-next !text-[#d40065]  !right-2">
                     </div>
                 </div>
             </div>
