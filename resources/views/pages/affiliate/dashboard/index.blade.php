@@ -135,11 +135,11 @@
     <section class="relative z-10 px-4 mb-6">
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="p-5 border-b border-gray-100">
-                <h3 class="font-semibold text-lg text-gray-800">Menu Utama</h3>
+                <h3 class="font-semibold text-base text-gray-800">Menu Utama</h3>
             </div>
             <div class="p-4">
                 <div class="grid grid-cols-2 gap-4">
-                    <a href="" class="feature-item">
+                    <a href="{{ route('affiliate.booking.index') }}" class="feature-item">
                         <div
                             class="flex flex-col gap-3 items-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
                             <div class="w-14 h-14 bg-orange-600 rounded-full flex items-center justify-center">
@@ -149,11 +149,11 @@
                                     </path>
                                 </svg>
                             </div>
-                            <p class="font-medium text-sm text-gray-700 text-center">Kavling Tersedia</p>
+                            <p class="font-medium text-sm text-gray-700 text-center">Booking Properti</p>
                         </div>
                     </a>
 
-                    <a href="" class="feature-item">
+                    <a href="{{ route('affiliate.affiliasi.index') }}" class="feature-item">
                         <div
                             class="flex flex-col gap-3 items-center p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-lg">
                             <div class="w-14 h-14 bg-teal-600 rounded-full flex items-center justify-center">
@@ -163,11 +163,11 @@
                                     </path>
                                 </svg>
                             </div>
-                            <p class="font-medium text-sm text-gray-700 text-center">Klien Saya</p>
+                            <p class="font-medium text-sm text-gray-700 text-center">Member Saya</p>
                         </div>
                     </a>
 
-                    <a href="" class="feature-item">
+                    <a href="{{ route('affiliate.profile.riwayatBooking') }}" class="feature-item">
                         <div
                             class="flex flex-col gap-3 items-center p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg">
                             <div class="w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center">
@@ -177,7 +177,7 @@
                                     </path>
                                 </svg>
                             </div>
-                            <p class="font-medium text-sm text-gray-700 text-center">Status Booking</p>
+                            <p class="font-medium text-sm text-gray-700 text-center">Riwayat Booking</p>
                         </div>
                     </a>
 
@@ -204,7 +204,7 @@
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="p-5 border-b border-gray-100">
                 <div class="flex items-center justify-between">
-                    <h3 class="font-semibold text-lg text-gray-800">Aktivitas Terbaru</h3>
+                    <h3 class="font-semibold text-base text-gray-800">Aktivitas Terbaru</h3>
                     <a href="" class="text-sm text-blue-600 font-medium">Lihat Semua</a>
                 </div>
             </div>
