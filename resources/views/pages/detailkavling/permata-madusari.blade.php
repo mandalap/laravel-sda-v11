@@ -52,7 +52,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata001') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata001') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="282.53" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -71,7 +71,7 @@
     <text class="cls-4" transform="translate(147.44 306.85)">BLOK A1</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata002') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata002') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="322.26" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -88,7 +88,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata003') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata003') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="361.35" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -104,7 +104,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata004') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata004') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="401.14" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -121,7 +121,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata005') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata005') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="440.94" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -145,7 +145,7 @@
         transform="translate(145.41 465.26)">BLOK A5</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata006') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata006') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="480.02" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -162,7 +162,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata007') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata007') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="519.75" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -180,7 +180,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata008') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata008') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="558.84" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -198,7 +198,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata009') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata009') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="598.63" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -215,7 +215,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata010') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata010') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="638.43" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -240,7 +240,7 @@
     <text class="cls-4" transform="translate(142.95 662.75)">BLOK A10</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata011') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata011') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="673" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -257,7 +257,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata012') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata012') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="712.74" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -275,7 +275,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata013') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata013') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="751.82" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -292,7 +292,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata014') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata014') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="791.62" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -310,7 +310,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata015') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata015') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="831.41" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -335,7 +335,7 @@
     <text class="cls-4" transform="translate(142.96 855.73)">BLOK A15</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata016') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata016') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="870.49" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -352,7 +352,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata017') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata017') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="910.23" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -370,7 +370,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata018') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata018') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="949.31" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -387,7 +387,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata019') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata019') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="989.11" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -404,7 +404,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata020') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata020') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1028.9" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -433,7 +433,7 @@
     <rect class="cls-5" x="493.47" y="17.68" width="22.55" height="2.04" />
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata021') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata021') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1068.6" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -450,7 +450,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata022') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata022') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1108.33" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -467,7 +467,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata023') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata023') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1147.41" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -485,7 +485,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata024') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata024') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1187.21" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -503,7 +503,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata025') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata025') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1227" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -529,7 +529,7 @@
     <text class="cls-4" transform="translate(141.38 1251.33)">BLOK A25</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata026') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata026') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1266.09" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -546,7 +546,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata027') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata027') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1305.82" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -564,7 +564,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata028') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata028') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1344.91" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -581,7 +581,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata029') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata029') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1384.7" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -598,7 +598,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata030') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata030') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1424.49" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -622,7 +622,7 @@
     <text class="cls-4" transform="translate(141.4 1410.01)">BLOK A29</text>
     <text class="cls-4" transform="translate(141.24 1448.82)">BLOK A30</text>
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata031') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata031') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1459.07" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -640,7 +640,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata032') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata032') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1498.8" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -657,7 +657,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata033') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata033') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1537.89" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -675,7 +675,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata034') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata034') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1577.68" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -692,7 +692,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata035') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata035') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1617.48" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -717,7 +717,7 @@
     <text class="cls-4" transform="translate(141.26 1641.8)">BLOK A35</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata036') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata036') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1656.56" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -735,7 +735,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata037') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata037') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1696.29" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -753,7 +753,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata038') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata038') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1735.38" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -771,7 +771,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata039') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata039') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1775.17" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -788,7 +788,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata040') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata040') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="1814.97" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -813,7 +813,7 @@
     <text class="cls-4" transform="translate(140.87 1839.29)">BLOK A40</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata041') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata041') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1854.76" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -831,7 +831,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata042') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata042') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style=" fill:#ffc107;" x="96.28" y="1894.5" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -849,7 +849,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata043') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata043') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1933.58" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -868,7 +868,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata044') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata044') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="1973.37" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -887,7 +887,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata045') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata045') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107; " x="96.28" y="2013.17" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -905,7 +905,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermata046') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermata046') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-3" style="fill:#ffc107;" x="96.28" y="2052.25" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -932,7 +932,7 @@
     <text class="cls-4" transform="translate(140.86 2076.58)">BLOK A46</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB001') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB001') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="282.53" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -950,7 +950,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB002') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB002') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="322.27" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -968,7 +968,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB003') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB003') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="361.35" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -986,7 +986,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB004') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB004') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="401.14" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1004,7 +1004,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB005') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB005') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="440.94" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1029,7 +1029,7 @@
     <text class="cls-4" transform="translate(335.24 465.26)">BLOK B5</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB006') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB006') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="480.02" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1047,7 +1047,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB007') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB007') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="519.76" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1065,7 +1065,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB008') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB008') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="558.84" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1083,7 +1083,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB009') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB009') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="598.64" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1101,7 +1101,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB010') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB010') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="638.43" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1126,7 +1126,7 @@
     <text class="cls-4" transform="translate(332.77 662.75)">BLOK B10</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB011') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB011') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="673.01" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1144,7 +1144,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB012') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB012') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="712.74" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1162,7 +1162,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB013') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB013') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="751.82" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1179,7 +1179,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB014') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB014') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="791.62" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1197,7 +1197,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB015') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB015') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="831.41" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1222,7 +1222,7 @@
     <text class="cls-4" transform="translate(332.79 855.74)">BLOK B15</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB016') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB016') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="870.5" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1240,7 +1240,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB017') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB017') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="910.23" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1258,7 +1258,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB018') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB018') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="949.32" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1276,7 +1276,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB019') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB019') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="989.11" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1294,7 +1294,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB020') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB020') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1028.9" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1319,7 +1319,7 @@
     <text class="cls-4" transform="translate(331.18 1053.23)">BLOK B20</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB021') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB021') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1068.6" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1337,7 +1337,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB022') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB022') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1108.33" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1355,7 +1355,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB023') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB023') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1147.42" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1373,7 +1373,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB024') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB024') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1187.21" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1391,7 +1391,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB025') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB025') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1227.01" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1417,7 +1417,7 @@
     <text class="cls-4" transform="translate(331.2 1251.33)">BLOK B25</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB026') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB026') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1266.09" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1435,7 +1435,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB027') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB027') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1305.82" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1454,7 +1454,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB028') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB028') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1344.91" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1473,7 +1473,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB029') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB029') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1384.7" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1491,7 +1491,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB030') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB030') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1424.5" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1516,7 +1516,7 @@
     <text class="cls-4" transform="translate(331.06 1448.82)">BLOK B30</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB031') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB031') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style=" fill:#ffc107; " x="286.11" y="1459.07" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1534,7 +1534,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB032') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB032') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1498.81" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1552,7 +1552,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB033') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB033') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1537.89" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1571,7 +1571,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB034') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB034') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1577.68" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1589,7 +1589,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB035') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB035') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1617.48" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1614,7 +1614,7 @@
     <text class="cls-4" transform="translate(331.08 1641.8)">BLOK B35</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB036') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB036') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1656.56" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1632,7 +1632,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB037') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB037') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1696.3" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1650,7 +1650,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB038') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB038') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1735.38" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1668,7 +1668,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB039') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB039') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1775.18" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1686,7 +1686,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB040') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB040') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1814.97" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1711,7 +1711,7 @@
     <text class="cls-4" transform="translate(330.69 1839.29)">BLOK B40</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB041') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB041') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1854.77" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1729,7 +1729,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB042') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB042') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1894.5" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1748,7 +1748,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB043') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB043') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="1933.58" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1766,7 +1766,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB044') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB044') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107;" x="286.11" y="1973.38" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1785,7 +1785,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB045') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB045') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="2013.17" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1803,7 +1803,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataB046') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataB046') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-6" style="fill:#ffc107; " x="286.11" y="2052.26" width="155.48" height="39.79" />
         @elseif ($hasil->status == 'Terjual')
@@ -1841,7 +1841,7 @@
         transform="translate(272.46 1872.76) rotate(-90)">Jalan Komplek 5 Meter</text>
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko1') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko1') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107; " x="286.73" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
@@ -1859,7 +1859,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko2') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko2') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107;" x="325.44" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
@@ -1877,7 +1877,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko3') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko3') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107; " x="364.16" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
@@ -1896,7 +1896,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko4') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko4') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107; " x="402.87" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
@@ -1915,7 +1915,7 @@
 
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko5') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko5') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107;" x="96.59" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
@@ -1933,7 +1933,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko6') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko6') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107; " x="135.31" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
@@ -1951,7 +1951,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko7') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko7') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107; " x="174.02" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
@@ -1969,7 +1969,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'madusaripermataRuko8') as $hasil)
+    @forelse ($siteplan->where('code_product', 'madusaripermataRuko8') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect class="cls-7" style="fill:#ffc107; " x="212.74" y="33.98" width="38.71" height="248.55" />
         @elseif ($hasil->status == 'Terjual')
