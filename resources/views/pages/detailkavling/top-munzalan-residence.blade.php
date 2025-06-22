@@ -142,7 +142,7 @@
 
 
     {{-- CLS-4 BLOK A --}}
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA1') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA1') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="206.41" width="93.35"
                 height="39.79" />
@@ -162,7 +162,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA2') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA2') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="246.14" width="93.35"
                 height="39.79" />
@@ -182,7 +182,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA3') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA3') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="285.23" width="93.35"
                 height="39.79" />
@@ -202,7 +202,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA4') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA4') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="325.02" width="93.35"
                 height="39.79" />
@@ -222,7 +222,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA5') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA5') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="364.82" width="93.35"
                 height="39.79" />
@@ -242,7 +242,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA6') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA6') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="403.9" width="93.35"
                 height="39.79" />
@@ -262,7 +262,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA7') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA7') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="443.64" width="93.35"
                 height="39.79" />
@@ -282,7 +282,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA8') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA8') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="482.72" width="93.35"
                 height="39.79" />
@@ -302,7 +302,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA9') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA9') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="522.52" width="93.35"
                 height="39.79" />
@@ -322,7 +322,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA10') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA10') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="562.31" width="93.35"
                 height="39.79" />
@@ -342,7 +342,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA11') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA11') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="596.89" width="93.35"
                 height="39.79" />
@@ -362,7 +362,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA12') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA12') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="636.62" width="93.35"
                 height="39.79" />
@@ -382,7 +382,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA13') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA13') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="675.7" width="93.35"
                 height="39.79" />
@@ -402,7 +402,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA14') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA14') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="715.5" width="93.35"
                 height="39.79" />
@@ -422,7 +422,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokA15') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokA15') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="755.29" width="93.35"
                 height="39.79" />
@@ -483,7 +483,7 @@
     <rect class="cls-1" x="165.02" y="796.43" width="311.32" height="25.23" />
 
     {{-- cls-11 Blok D --}}
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD1') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD1') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="823" width="93.35"
                 height="39.79" />
@@ -504,7 +504,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD2') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD2') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="862.73" width="93.35"
                 height="39.79" />
@@ -524,7 +524,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD3') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD3') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="901.82" width="93.35"
                 height="39.79" />
@@ -544,7 +544,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD4') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD4') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="941.61" width="93.35"
                 height="39.79" />
@@ -564,7 +564,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD5') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD5') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="981.41" width="93.35"
                 height="39.79" />
@@ -584,7 +584,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD6') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD6') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1020.49" width="93.35"
                 height="39.79" />
@@ -604,7 +604,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD7') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD7') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1060.22" width="93.35"
                 height="39.79" />
@@ -624,7 +624,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD8') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD8') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1099.31" width="93.35"
                 height="39.79" />
@@ -644,7 +644,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD9') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD9') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1139.1" width="93.35"
                 height="39.79" />
@@ -664,7 +664,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD10') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD10') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1178.9" width="93.35"
                 height="39.79" />
@@ -684,7 +684,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD11') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD11') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1213.47" width="93.35"
                 height="39.79" />
@@ -704,7 +704,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD12') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD12') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1253.21" width="93.35"
                 height="39.79" />
@@ -724,7 +724,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD13') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD13') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1292.29" width="93.35"
                 height="39.79" />
@@ -744,7 +744,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD14') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD14') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1332.09" width="93.35"
                 height="39.79" />
@@ -764,7 +764,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD15') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD15') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1371.88" width="93.35"
                 height="39.79" />
@@ -784,7 +784,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD16') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD16') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1410.96" width="93.35"
                 height="39.79" />
@@ -804,7 +804,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokD17') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokD17') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="382.99" y="1450.76" width="93.35"
                 height="39.79" />
@@ -846,7 +846,7 @@
     <rect class="cls-1" x="166.02" y="1490.84" width="311.32" height="25.23" />
 
     {{-- cls-12 Blok E --}}
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE1') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE1') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="822.19" width="93.35"
                 height="39.79" />
@@ -866,7 +866,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE2') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE2') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="861.92" width="93.35"
                 height="39.79" />
@@ -886,7 +886,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE3') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE3') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="901.01" width="93.35"
                 height="39.79" />
@@ -906,7 +906,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE4') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE4') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="940.8" width="93.35"
                 height="39.79" />
@@ -926,7 +926,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE5') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE5') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="980.6" width="93.35"
                 height="39.79" />
@@ -946,7 +946,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE6') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE6') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1019.68" width="93.35"
                 height="39.79" />
@@ -966,7 +966,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE7') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE7') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1059.42" width="93.35"
                 height="39.79" />
@@ -986,7 +986,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE8') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE8') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1098.5" width="93.35"
                 height="39.79" />
@@ -1006,7 +1006,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE9') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE9') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1138.3" width="93.35"
                 height="39.79" />
@@ -1026,7 +1026,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE10') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE10') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1178.09" width="93.35"
                 height="39.79" />
@@ -1046,7 +1046,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE11') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE11') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1212.67" width="93.35"
                 height="39.79" />
@@ -1066,7 +1066,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE12') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE12') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1252.4" width="93.35"
                 height="39.79" />
@@ -1086,7 +1086,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE13') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE13') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1291.48" width="93.35"
                 height="39.79" />
@@ -1106,7 +1106,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE14') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE14') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1331.28" width="93.35"
                 height="39.79" />
@@ -1126,7 +1126,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE15') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE15') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1371.07" width="93.35"
                 height="39.79" />
@@ -1146,7 +1146,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokE16') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokE16') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="264.14" y="1410.16" width="93.35"
                 height="39.79" />
@@ -1185,7 +1185,7 @@
     {{-- cls-12 Blok E end --}}
 
     {{-- cls-13 Blok F --}}
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF1') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF1') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="822.47" width="93.35"
                 height="39.79" />
@@ -1206,7 +1206,7 @@
     @endforelse
 
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF2') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF2') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="862.21" width="93.35"
                 height="39.79" />
@@ -1226,7 +1226,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF3') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF3') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="901.29" width="93.35"
                 height="39.79" />
@@ -1246,7 +1246,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF4') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF4') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="941.09" width="93.35"
                 height="39.79" />
@@ -1266,7 +1266,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF5') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF5') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="980.88" width="93.35"
                 height="39.79" />
@@ -1286,7 +1286,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF6') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF6') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1019.97" width="93.35"
                 height="39.79" />
@@ -1306,7 +1306,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF7') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF7') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1059.7" width="93.35"
                 height="39.79" />
@@ -1326,7 +1326,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF8') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF8') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1098.78" width="93.35"
                 height="39.79" />
@@ -1346,7 +1346,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF9') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF9') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1138.58" width="93.35"
                 height="39.79" />
@@ -1366,7 +1366,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF10') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF10') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1178.37" width="93.35"
                 height="39.79" />
@@ -1386,7 +1386,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF11') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF11') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1212.95" width="93.35"
                 height="39.79" />
@@ -1406,7 +1406,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF12') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF12') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1252.68" width="93.35"
                 height="39.79" />
@@ -1426,7 +1426,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF13') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF13') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1291.76" width="93.35"
                 height="39.79" />
@@ -1446,7 +1446,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF14') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF14') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1331.56" width="93.35"
                 height="39.79" />
@@ -1466,7 +1466,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF15') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF15') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1371.35" width="93.35"
                 height="39.79" />
@@ -1486,7 +1486,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanblokF16') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanblokF16') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="170.06" y="1410.44" width="93.35"
                 height="39.79" />
@@ -1529,7 +1529,7 @@
     <text class="cls-15" transform="translate(236.91 1475.08)">FASUM</text>
 
     {{-- cls-16 Ruko --}}
-    @forelse ($siteplan->where('kode_kavling', 'munzalanruko6') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanruko6') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="144.03" y="34.79" width="27.63"
                 height="146.09" />
@@ -1549,7 +1549,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanruko5') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanruko5') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="171.38" y="34.79" width="27.63"
                 height="146.09" />
@@ -1569,7 +1569,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanruko4') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanruko4') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="199.01" y="34.79" width="27.63"
                 height="146.09" />
@@ -1589,7 +1589,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanruko3') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanruko3') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="226.36" y="34.79" width="27.63"
                 height="146.09" />
@@ -1609,7 +1609,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanruko2') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanruko2') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="253.99" y="34.79" width="27.63"
                 height="146.09" />
@@ -1629,7 +1629,7 @@
         </a>
     @endforelse
 
-    @forelse ($siteplan->where('kode_kavling', 'munzalanruko1') as $hasil)
+    @forelse ($siteplan->where('code_product', 'munzalanruko1') as $hasil)
         @if ($hasil->status == 'Booking' or $hasil->status == 'Pending' or $hasil->status == 'Pending')
             <rect style="fill:#ffc107; stroke:#000000;stroke-miterlimit:10;" x="281.34" y="34.79" width="27.63"
                 height="146.09" />
