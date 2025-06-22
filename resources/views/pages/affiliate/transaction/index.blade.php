@@ -12,7 +12,7 @@
 
 @section('content')
     <div id="Background"
-        class="absolute top-0 w-full h-[280px] rounded-bl-[75px] rounded-br-[75px] bg-gradient-to-t from-[#a7006d] to-[#d40065]">
+        class="absolute top-0 w-full h-[200px] rounded-bl-[75px] rounded-br-[75px] bg-gradient-to-t from-[#a7006d] to-[#d40065]">
     </div>
 
     <!-- Top Nav Agency -->
@@ -146,9 +146,8 @@
                 </div>
             </div>
         </div>
-
-        @include('includes.footerAgency')
     @endif
+    @include('includes.footerAgency')
 @endsection
 
 @push('addon-script')

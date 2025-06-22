@@ -17,50 +17,54 @@
     <!-- Top Nav Agency -->
     <x-top-nav-agency title="Riwayat Booking" back-route="affiliate.dashboard" />
 
-    <div id="booking-list" class="container mt-5">
-        @include('pages.affiliate.profile.partials.riwayatBookingList')
-    </div>
+    @if ($bookings->isEmpty())
+        @include('components.no-data')
+    @else
+        <div id="booking-list" class="container mt-5">
+            @include('pages.affiliate.profile.partials.riwayatBookingList')
+        </div>
 
-    <div id="loading" class="hidden">
-        <!-- Skeleton loader cards -->
-        <section class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
-            <div class="card w-full">
-                <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white">
-                    <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] skeleton"></div>
-                    <div class="flex flex-col gap-3 text-left w-full">
-                        <div class="skeleton h-6 rounded-md w-3/4"></div>
-                        <div class="skeleton h-4 rounded-md w-1/2"></div>
-                        <div class="skeleton h-4 rounded-md w-2/3"></div>
-                        <hr class="border-[#F1F2F6]">
-                        <div class="flex items-start gap-[6px]">
-                            <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
-                            <div class="skeleton h-4 rounded-md w-1/3"></div>
-                        </div>
-                        <div class="flex items-start gap-[6px]">
-                            <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
-                            <div class="skeleton h-4 rounded-md w-2/5"></div>
-                        </div>
-                        <div class="flex items-start gap-[6px]">
-                            <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
-                            <div class="skeleton h-4 rounded-md w-1/4"></div>
-                        </div>
-                        <hr class="border-[#F1F2F6]">
-                        <div class="flex">
-                            <div class="skeleton h-6 rounded-md w-1/3"></div>
-                        </div>
-                        <div class="flex">
-                            <div class="skeleton h-6 rounded-full w-1/4"></div>
+        <div id="loading" class="hidden">
+            <!-- Skeleton loader cards -->
+            <section class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
+                <div class="card w-full">
+                    <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white">
+                        <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] skeleton"></div>
+                        <div class="flex flex-col gap-3 text-left w-full">
+                            <div class="skeleton h-6 rounded-md w-3/4"></div>
+                            <div class="skeleton h-4 rounded-md w-1/2"></div>
+                            <div class="skeleton h-4 rounded-md w-2/3"></div>
+                            <hr class="border-[#F1F2F6]">
+                            <div class="flex items-start gap-[6px]">
+                                <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
+                                <div class="skeleton h-4 rounded-md w-1/3"></div>
+                            </div>
+                            <div class="flex items-start gap-[6px]">
+                                <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
+                                <div class="skeleton h-4 rounded-md w-2/5"></div>
+                            </div>
+                            <div class="flex items-start gap-[6px]">
+                                <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
+                                <div class="skeleton h-4 rounded-md w-1/4"></div>
+                            </div>
+                            <hr class="border-[#F1F2F6]">
+                            <div class="flex">
+                                <div class="skeleton h-6 rounded-md w-1/3"></div>
+                            </div>
+                            <div class="flex">
+                                <div class="skeleton h-6 rounded-full w-1/4"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <!-- Second skeleton card -->
+            </section>
+            <!-- Second skeleton card -->
 
-    </div>
+        </div>
 
-    <!-- Observer target untuk infinite scroll -->
-    <div id="observer-target" class="h-10"></div>
+        <!-- Observer target untuk infinite scroll -->
+        <div id="observer-target" class="h-10"></div>
+    @endif
 @endsection
 
 @push('addon-script')
