@@ -243,6 +243,11 @@ class ListCityController extends Controller
             ->where('projects.is_approved', 'Diterima')
             ->where('projects.status', 'tampil');
 
+        // Apply kategori filter jika kategori selain 'all'
+        if ($kat != 'all') {
+            $query->where('projects.kategori_id', $kategori->id);
+        }
+
         // Apply the search filter
         if ($cari) {
             $query->where(function ($q) use ($cari) {
