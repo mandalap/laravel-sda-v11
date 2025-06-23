@@ -45,6 +45,52 @@ class BerandaController extends Controller
                 $query->where('status', 'Tersedia');
             })->take(5)->get();
 
+        // Query untuk project tanah kavling dengan kelompok terbaik
+        $tanahKavlingTerbaik = Project::where('status', 'tampil')
+            ->where('is_approved', 'Diterima')
+            ->whereHas('project_product', function ($query) {
+                $query->where('status', 'Tersedia');
+            })
+            ->whereHas('kategori', function ($query) {
+                $query->where('kategori', 'LIKE', '%tanah kavling%');
+            })
+            ->whereHas('kelompok', function ($query) {
+                $query->where('kelompok', 'LIKE', '%terbaik%');
+            })
+            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer']) // Eager loading
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        $hunianRekomendasi = Project::where('status', 'tampil')
+            ->where('is_approved', 'Diterima')
+            ->whereHas('project_product', function ($query) {
+                $query->where('status', 'Tersedia');
+            })
+            ->whereHas('kategori', function ($query) {
+                $query->where('kategori', 'LIKE', '%rumah%');
+            })
+            ->whereHas('kelompok', function ($query) {
+                $query->where('kelompok', 'LIKE', '%rekomendasi%');
+            })
+            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer']) // Eager loading
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        $listingTerbaru = Project::where('status', 'tampil')
+            ->where('is_approved', 'Diterima')
+            ->whereHas('project_product', function ($query) {
+                $query->where('status', 'Tersedia');
+            })
+            ->whereHas('kelompok', function ($query) {
+                $query->where('kelompok', 'LIKE', '%terbaru%');
+            })
+            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer']) // Eager loading
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
         $cities = Lokasi::limit(6)->inRandomOrder()->get();
 
         $agency     = Agency::count();
@@ -64,7 +110,10 @@ class BerandaController extends Controller
             'products',
             'members',
             'testimoniBanners',
-            'promoBanners'
+            'promoBanners',
+            'tanahKavlingTerbaik',
+            'hunianRekomendasi',
+            'listingTerbaru'
         ));
     }
 }
