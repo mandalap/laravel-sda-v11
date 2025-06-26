@@ -20,6 +20,8 @@ class JenisResource extends Resource
     protected static ?string $model = Jenis::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
+    protected static ?string $navigationGroup = 'Data Master';
+
 
     public static function form(Form $form): Form
     {

@@ -11,6 +11,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\Navigation\NavigationGroup;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -28,6 +29,16 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->navigationGroups([
+                NavigationGroup::make('Data Master')
+                    ->collapsible(),
+                NavigationGroup::make('Transaksi')
+                    ->collapsible(),
+                NavigationGroup::make('Lainnya')
+                    ->collapsible(),
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->collapsedSidebarWidth('9rem')
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -57,6 +68,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandName('Dashboard Sajada')
             ->brandLogoHeight('2rem')
-            ;
+        ;
     }
 }

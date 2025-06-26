@@ -24,6 +24,8 @@ class TestimoniBannerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-video-camera';
 
+    protected static ?string $navigationGroup = 'Lainnya';
+
     public static function form(Form $form): Form
     {
         return $form
