@@ -26,6 +26,8 @@ class AgencyResource extends Resource
 
     protected static ?string $navigationLabel = 'Agency';
     protected static ?string $title = 'Agency';
+    protected static ?string $navigationGroup = 'Data Master';
+
 
     public static function form(Form $form): Form
     {

@@ -12,6 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -50,18 +51,68 @@ class BookingTransactionResource extends Resource
             ->schema([
                 TextInput::make('invoice')
                     ->label('Invoice')
-                    ->required(),
+                    ->disabled()
+                    ->dehydrated(true)
+                    ->default(fn() => BookingTransaction::generateUniqueTrxId())
+                    ->helperText('Invoice akan dibuat secara otomatis'),
 
                 Select::make('product_id')
                     ->label('Product')
-                    ->options(Product::all()->pluck('nama_product', 'id'))
+                    ->options(function () {
+                        return Product::with('project')
+                            ->whereIn('status', ['Tersedia', 'Booking'])
+                            ->get()
+                            ->mapWithKeys(function ($product) {
+                                $productName = $product->nama_product ?? 'No Product';
+                                $projectName = $product->project->nama_project ?? 'No Project';
+                                return [$product->id => "{$productName} - {$projectName}"];
+                            });
+                    })
                     ->searchable()
-                    ->required(),
+                    ->required()
+                    ->preload(),
 
                 Select::make('member_id')
                     ->label('Member')
-                    ->options(Member::all()->pluck('nama', 'id'))
+                    ->options(function () {
+                        return Member::all()->mapWithKeys(function ($member) {
+                            $nama = $member->nama ?? 'No Name';
+                            $telepon = $member->telepon ?? 'No Phone';
+                            return [$member->id => "{$nama} - {$telepon}"];
+                        });
+                    })
                     ->searchable()
+                    ->required()
+                    ->preload(),
+
+                Select::make('agency_id')
+                    ->label('Agency')
+                    ->options(function () {
+                        return Agency::all()->mapWithKeys(function ($agency) {
+                            $nama = $agency->nama ?? 'No Name';
+                            $telepon = $agency->telepon ?? 'No Phone';
+                            return [$agency->id => "{$nama} - {$telepon}"];
+                        });
+                    })
+                    ->searchable()
+                    ->preload(),
+
+                TextInput::make('harga_tanah')
+                    ->prefix('Rp')
+                    ->label('Harga Tanah')
+                    ->numeric()
+                    ->required(),
+
+                TextInput::make('diskon')
+                    ->prefix('Rp')
+                    ->label('Diskon')
+                    ->numeric()
+                    ->default(0),
+
+                TextInput::make('total_harga')
+                    ->prefix('Rp')
+                    ->label('Total Harga')
+                    ->numeric()
                     ->required(),
 
                 TextInput::make('jumlah_uang_booking')
@@ -77,7 +128,7 @@ class BookingTransactionResource extends Resource
                         'cancel' => 'Cancel',
                         'booking' => 'Booking',
                     ])
-                    ->required()
+                    ->visible(fn($record) => $record !== null)
                     ->default('pending'),
 
                 DateTimePicker::make('tanggal_bayar')
@@ -95,7 +146,11 @@ class BookingTransactionResource extends Resource
                         'bank_transfer' => 'Transfer Bank',
                         'cash' => 'Cash',
                     ])
-                    ->required()
+                    ->visible(fn($record) => $record !== null),
+
+                Hidden::make('is_paid')
+                    ->default(false)
+
             ]);
     }
 
@@ -281,8 +336,9 @@ class BookingTransactionResource extends Resource
                             ->warning()
                             ->send();
                     }),
-            ])
+                Tables\Actions\EditAction::make(),
 
+            ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
