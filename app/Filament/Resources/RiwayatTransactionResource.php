@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -80,6 +81,21 @@ class RiwayatTransactionResource extends Resource
                     ->sortable()
                     ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.')),
 
+                TextColumn::make('harga_tanah')
+                    ->label('Harga')
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.')),
+
+                TextColumn::make('diskon')
+                    ->label('Diskon')
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.')),
+
+                TextColumn::make('total_harga')
+                    ->label('Total Harga')
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.')),
+
                 TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
@@ -122,7 +138,22 @@ class RiwayatTransactionResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'cancel' => 'Cancel',
+                        'booking' => 'Booking',
+                    ]),
+                SelectFilter::make('payment_method')
+                    ->label('Metode Pembayaran')
+                    ->options([
+                        'qris' => 'QRIS',
+                        'bank_transfer' => 'Transfer Bank',
+                        'cash' => 'Cash',
+                    ]),
+                Tables\Filters\TrashedFilter::make(),
+
             ])
             ->actions([])
             ->bulkActions([]);
