@@ -8,6 +8,12 @@
 @endpush
 @push('addon-style')
     <link href="{{ asset('counter.css') }}" rel="stylesheet">
+    <style>
+        .swiper-pagination-bullet-active {
+            background: white !important;
+            transform: scale(1.2);
+        }
+    </style>
 @endpush
 
 @section('content')
