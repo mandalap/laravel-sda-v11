@@ -7,6 +7,77 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
+    <style>
+        .swiper-pagination-bullet {
+            background: rgba(255, 255, 255, 0.5) !important;
+            opacity: 1 !important;
+            width: 12px !important;
+            height: 12px !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: white !important;
+            transform: scale(1.2);
+        }
+
+        /* Gallery responsive styles */
+        .gallery-container {
+            /* Mobile first: aspect ratio yang sesuai dengan foto 500x390 */
+            aspect-ratio: 500/390;
+            min-height: 200px;
+            max-height: 350px;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-container {
+                /* Tablet: tinggi yang lebih besar */
+                min-height: 300px;
+                max-height: 400px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-container {
+                /* Desktop: tinggi maksimal untuk laptop */
+                min-height: 350px;
+                max-height: 450px;
+            }
+        }
+
+        .gallery-slide-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* Pastikan pagination terlihat di atas gambar */
+        .swiper-pagination {
+            bottom: 60px !important;
+            z-index: 50 !important;
+            position: absolute !important;
+        }
+
+        .swiper-pagination-bullet {
+            background: rgba(255, 255, 255, 0.7) !important;
+            opacity: 1 !important;
+            width: 12px !important;
+            height: 12px !important;
+            margin: 0 4px !important;
+        }
+
+        /* Gradient overlay untuk readability - dikurangi opacity */
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
+            z-index: 25;
+            pointer-events: none;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -14,38 +85,44 @@
         class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
 
         <div id="ForegroundFade"
-            class="absolute top-0 w-full h-[143px] bg-[linear-gradient(180deg,#070707_0%,rgba(7,7,7,0)_100%)] z-10">
+            class="absolute top-0 w-full h-[143px] bg-[linear-gradient(180deg,#070707_0%,rgba(7,7,7,0)_100%)] z-40">
         </div>
 
-        <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center w-full px-5 z-10">
+        <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center w-full px-5 z-50">
             <a href="{{ route('lihatkota') }}"
                 class="flex overflow-hidden justify-center items-center w-10 h-10 bg-white rounded-full shrink-0">
                 <img src="{{ asset('assets/images/icons/back.svg') }}" alt="icon">
             </a>
-            <p class="font-semibold text-white flex-1 text-center">Detail</p>
         </div>
 
-        <div id="Gallery" class="swiper-gallery w-full overflow-x-hidden -mb-[38px]">
+        <!-- Fixed Gallery dengan ukuran responsif -->
+        <div id="Gallery" class="swiper-gallery w-full relative gallery-container">
             <div class="swiper-wrapper">
                 @forelse ($photos as $photo)
-                    <div class="swiper-slide !w-fit">
-                        <div class="flex shrink-0 w-[320px] h-[430px] overflow-hidden">
-                            <img src="{{ asset('storage/' . $photo->photo) }}" class="object-cover w-full h-full"
+                    <div class="swiper-slide">
+                        <div class="relative w-full h-full">
+                            <img src="{{ asset('storage/' . $photo->photo) }}" class="gallery-slide-image"
                                 alt="gallery thumbnails">
                         </div>
                     </div>
                 @empty
-                    <div class="swiper-slide !w-fit">
-                        <div class="flex shrink-0 w-[320px] h-[430px] overflow-hidden">
-                            <img src="" class="object-cover w-full h-full" alt="gallery thumbnails">
+                    <!-- Placeholder jika tidak ada foto -->
+                    <div class="swiper-slide">
+                        <div class="relative w-full h-full bg-gray-200 flex items-center justify-center">
+                            <p class="text-gray-500">Tidak ada foto</p>
                         </div>
                     </div>
                 @endforelse
-
             </div>
+
+            <!-- Pagination dengan styling yang diperkuat -->
+            <div class="swiper-pagination"
+                style="position: absolute !important; bottom: 50px !important; z-index: 60 !important;"></div>
+
         </div>
 
-        <main id="Details" class="relative flex flex-col rounded-t-[40px] py-5 pb-[10px] gap-4 bg-white z-10">
+        <!-- Main content dengan margin top yang sesuai -->
+        <main id="Details" class="relative flex flex-col rounded-t-[40px] py-5 pb-[10px] gap-4 bg-white z-30 -mt-8">
             <div id="Title" class="flex flex-col gap-2 px-5">
                 <h2 class="text-sm font-bold">{{ $project->nama_project }}</h2>
                 <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
@@ -123,7 +200,7 @@
                                 </div>
                                 <div>
                                     <p class="font-semibold">{{ $facility->fasilitas }}</p>
-                                    <p class="text-sm text-ngekos-grey">Faslitas</p>
+                                    <p class="text-sm text-ngekos-grey">Fasilitas</p>
                                 </div>
                             </div>
                         @empty
@@ -139,10 +216,8 @@
                                 </div>
                             </div>
                         @endforelse
-
                     </div>
                 </div>
-
 
                 <div id="Testimonials-Tab" class="hidden flex-col gap-5 tab-content">
                     <div class="flex flex-col gap-4">
@@ -152,7 +227,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div id="Rules-Tab" class="hidden flex-col gap-5 tab-content">
                     Brosur
@@ -171,7 +245,6 @@
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
-
         </main>
 
         <div id="BottomNav" class="relative flex w-full h-[138px] shrink-0">
@@ -204,19 +277,61 @@
 
 @push('addon-script')
     <script>
-        const swiperCategories = new Swiper('.swiper-choose', {
-            direction: 'horizontal',
-            spaceBetween: 14,
-            slidesOffsetBefore: 16,
-            slidesOffsetAfter: 16,
-            slidesPerView: 'auto',
-        });
-        const swiperPopular = new Swiper('.swiper-popular', {
-            direction: 'horizontal',
-            spaceBetween: 16,
-            slidesOffsetBefore: 16,
-            slidesOffsetAfter: 16,
-            slidesPerView: 'auto',
+        document.addEventListener('DOMContentLoaded', function() {
+            var swiperProjectGallery = new Swiper('.swiper-gallery', {
+                direction: 'horizontal',
+                spaceBetween: 0,
+                grabCursor: true,
+                slidesPerView: 1,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    type: 'bullets',
+                    dynamicBullets: true,
+                },
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                // Callback untuk memastikan tinggi gallery sesuai
+                on: {
+                    init: function() {
+                        console.log('Gallery initialized with proper sizing');
+                        // Force pagination to show
+                        setTimeout(() => {
+                            const pagination = document.querySelector('.swiper-pagination');
+                            if (pagination) {
+                                pagination.style.display = 'block';
+                                pagination.style.zIndex = '60';
+                                pagination.style.position = 'absolute';
+                                pagination.style.bottom = '20px';
+                                console.log('Pagination forced to show');
+                            }
+                        }, 100);
+                    },
+                    resize: function() {
+                        this.update();
+                    }
+                }
+            });
+
+            // Tab functionality (jika belum ada)
+            const swiperCategories = new Swiper('.swiper-choose', {
+                direction: 'horizontal',
+                spaceBetween: 14,
+                slidesOffsetBefore: 16,
+                slidesOffsetAfter: 16,
+                slidesPerView: 'auto',
+            });
+
+            const swiperPopular = new Swiper('.swiper-popular', {
+                direction: 'horizontal',
+                spaceBetween: 16,
+                slidesOffsetBefore: 16,
+                slidesOffsetAfter: 16,
+                slidesPerView: 'auto',
+            });
         });
     </script>
 @endpush
