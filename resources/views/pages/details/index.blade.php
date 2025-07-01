@@ -311,7 +311,7 @@
         </main>
 
         <div id="BottomNav" class="relative flex w-full h-[138px] shrink-0">
-            <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
+            <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-50">
                 <div
                     class="flex items-center justify-between rounded-[40px] py-4 px-6 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
                     <div class="flex flex-col gap-[2px]">
