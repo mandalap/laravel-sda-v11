@@ -49,11 +49,13 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
+            cursor: pointer;
+            /* Menunjukkan bahwa gambar bisa diklik */
         }
 
         /* Pastikan pagination terlihat di atas gambar */
         .swiper-pagination {
-            bottom: 60px !important;
+            bottom: 40px !important;
             z-index: 50 !important;
             position: absolute !important;
         }
@@ -77,6 +79,39 @@
             z-index: 25;
             pointer-events: none;
         }
+
+        /* Custom lightbox overlay untuk menunjukkan foto bisa diklik */
+        .photo-clickable-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 500;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            backdrop-filter: blur(10px);
+        }
+
+        .expand-icon {
+            width: 12px;
+            height: 12px;
+            fill: currentColor;
+        }
+
+        /* Fancybox customization */
+        .fancybox-button {
+            background: rgba(0, 0, 0, 0.8) !important;
+        }
+
+        .fancybox-toolbar {
+            background: rgba(0, 0, 0, 0.8) !important;
+        }
     </style>
 @endpush
 
@@ -98,11 +133,23 @@
         <!-- Fixed Gallery dengan ukuran responsif -->
         <div id="Gallery" class="swiper-gallery w-full relative gallery-container">
             <div class="swiper-wrapper">
-                @forelse ($photos as $photo)
+                @forelse ($photos as $index => $photo)
                     <div class="swiper-slide">
                         <div class="relative w-full h-full">
-                            <img src="{{ asset('storage/' . $photo->photo) }}" class="gallery-slide-image"
-                                alt="gallery thumbnails">
+                            <a href="{{ asset('storage/' . $photo->photo) }}" data-fancybox="gallery"
+                                data-caption="Foto {{ $index + 1 }} - {{ $project->nama_project }}">
+                                <img src="{{ asset('storage/' . $photo->photo) }}" class="gallery-slide-image"
+                                    alt="gallery thumbnails">
+                            </a>
+
+                            <!-- Overlay untuk menunjukkan foto bisa diklik -->
+                            <div class="photo-clickable-overlay">
+                                <svg class="expand-icon" viewBox="0 0 24 24">
+                                    <path
+                                        d="M9,9H15V15H9V9M11,11V13H13V11H11M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z" />
+                                </svg>
+                                Lihat Foto
+                            </div>
                         </div>
                     </div>
                 @empty
@@ -276,12 +323,13 @@
 @endsection
 
 @push('addon-script')
+    <script src="{{ asset('vendor/fancybox/fancybox.umd.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Swiper Gallery
             var swiperProjectGallery = new Swiper('.swiper-gallery', {
                 direction: 'horizontal',
                 spaceBetween: 0,
-                grabCursor: true,
                 slidesPerView: 1,
                 pagination: {
                     el: '.swiper-pagination',
@@ -294,27 +342,15 @@
                     delay: 3000,
                     disableOnInteraction: false,
                 },
-                // Callback untuk memastikan tinggi gallery sesuai
-                on: {
-                    init: function() {
-                        console.log('Gallery initialized with proper sizing');
-                        // Force pagination to show
-                        setTimeout(() => {
-                            const pagination = document.querySelector('.swiper-pagination');
-                            if (pagination) {
-                                pagination.style.display = 'block';
-                                pagination.style.zIndex = '60';
-                                pagination.style.position = 'absolute';
-                                pagination.style.bottom = '20px';
-                                console.log('Pagination forced to show');
-                            }
-                        }, 100);
-                    },
-                    resize: function() {
-                        this.update();
-                    }
-                }
             });
+
+            Fancybox.bind('[data-fancybox="gallery"]', {
+                l10n: {
+                    NEXT: "Foto Selanjutnya",
+                    PREV: "Foto Sebelumnya",
+                },
+            });
+
 
             // Tab functionality (jika belum ada)
             const swiperCategories = new Swiper('.swiper-choose', {
