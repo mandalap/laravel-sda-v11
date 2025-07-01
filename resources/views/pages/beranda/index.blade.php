@@ -76,7 +76,7 @@
             @empty
             @endforelse
 
-            <a href="list-city.html">
+            <a href="">
                 <div class="flex flex-col gap-2 items-center">
                     <div class="w-[40px] h-[40px] flex shrink-0">
                         <img src="{{ asset('assets/images/icons/folder.svg') }}" class="object-cover" alt="icon">
@@ -84,7 +84,7 @@
                     <p class="font-medium text-center  text-xs text-[#757C98] leading-[21px]">Validasi Berkas</p>
                 </div>
             </a>
-            <a href="list-city.html">
+            <a href="">
                 <div class="flex flex-col gap-2 items-center">
                     <div class="w-[40px] h-[40px] flex shrink-0">
                         <img src="{{ asset('assets/images/icons/farmer.svg') }}" class="object-cover" alt="icon">
@@ -92,7 +92,7 @@
                     <p class="font-medium text-center  text-xs text-[#757C98] leading-[21px]">Kelola Lahan</p>
                 </div>
             </a>
-            <a href="list-city.html">
+            <a href="{{ route('affiliate.index') }}">
                 <div class="flex flex-col gap-2 items-center">
                     <div class="w-[40px] h-[40px] flex shrink-0">
                         <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
@@ -100,7 +100,7 @@
                     <p class="font-medium text-center  text-xs text-[#757C98] leading-[21px]">Daftar Agen</p>
                 </div>
             </a>
-            <a href="list-city.html">
+            <a href="">
                 <div class="flex flex-col gap-2 items-center">
                     <div class="w-[40px] h-[40px] flex shrink-0">
                         <img src="{{ asset('assets/images/icons/handshake.svg') }}" class="object-cover" alt="icon">
