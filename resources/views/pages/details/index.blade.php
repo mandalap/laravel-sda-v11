@@ -8,6 +8,19 @@
 @endpush
 @push('addon-style')
     <style>
+        /* Hapus semua spacing default Swiper */
+        .swiper-gallery .swiper-wrapper {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .swiper-gallery .swiper-slide {
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            outline: none !important;
+        }
+
         .swiper-pagination-bullet {
             background: rgba(255, 255, 255, 0.5) !important;
             opacity: 1 !important;
@@ -26,6 +39,8 @@
             aspect-ratio: 500/390;
             min-height: 200px;
             max-height: 350px;
+            overflow: hidden;
+            /* Pastikan tidak ada overflow */
         }
 
         @media (min-width: 768px) {
@@ -50,10 +65,12 @@
             object-fit: cover;
             object-position: center;
             cursor: pointer;
-            /* Menunjukkan bahwa gambar bisa diklik */
+            display: block;
+            /* Pastikan tidak ada spacing inline */
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        /* Pastikan pagination terlihat di atas gambar */
         .swiper-pagination {
             bottom: 40px !important;
             z-index: 50 !important;
@@ -163,8 +180,7 @@
             </div>
 
             <!-- Pagination dengan styling yang diperkuat -->
-            <div class="swiper-pagination"
-                style="position: absolute !important; bottom: 50px !important; z-index: 60 !important;"></div>
+            <div class="swiper-pagination"></div>
 
         </div>
 
@@ -342,6 +358,20 @@
                     delay: 3000,
                     disableOnInteraction: false,
                 },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 0,
+                    },
+                    768: {
+                        slidesPerView: 1,
+                        spaceBetween: 0,
+                    },
+                    1024: {
+                        slidesPerView: 1,
+                        spaceBetween: 0,
+                    },
+                }
             });
 
             Fancybox.bind('[data-fancybox="gallery"]', {
