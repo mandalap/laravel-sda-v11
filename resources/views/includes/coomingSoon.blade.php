@@ -6,8 +6,6 @@
 
     <!-- Konten Full Screen -->
     <div class="relative z-10 flex flex-col h-full">
-        <!-- Top Nav -->
-        <x-top-nav-agency title="Transaksi" back-route="affiliate.dashboard" />
 
         <!-- Coming Soon Section -->
         <div class="flex-1 flex flex-col items-center justify-center text-center px-5">
@@ -19,7 +17,5 @@
             <p class="text-md text-gray mb-8">Tunggu sebentar, kami akan segera meluncurkannya!</p>
         </div>
 
-        <!-- Bottom Navigation -->
-        @include('includes.footerAgency')
     </div>
 </div>
