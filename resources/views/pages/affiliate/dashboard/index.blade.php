@@ -35,7 +35,7 @@
     </div>
 
     <!-- Top Nav Agency -->
-    <x-top-nav-agency title="Dashboard" back-route="affiliate.dashboard" />
+    <x-top-nav-agency title="Dashboard" back-route="profil" />
 
     <!-- Welcome Section -->
     <div class="relative z-10 mt-5 mb-7 px-5">
@@ -81,55 +81,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Quick Actions -->
-    {{-- <div class="relative z-10 px-4 mb-6">
-        <div class="bg-white p-5 rounded-xl shadow-lg">
-            <h3 class="font-semibold text-lg text-gray-800 mb-4">Aksi Cepat</h3>
-            <div class="grid grid-cols-3 gap-4">
-                <a href="" class="feature-item">
-                    <div
-                        class="flex flex-col gap-2 items-center p-3 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
-                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                        </div>
-                        <p class="font-medium text-xs text-gray-700 text-center leading-tight">Booking Baru</p>
-                    </div>
-                </a>
-
-                <a href="" class="feature-item">
-                    <div class="flex flex-col gap-2 items-center p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
-                                </path>
-                            </svg>
-                        </div>
-                        <p class="font-medium text-xs text-gray-700 text-center leading-tight">Link Referral</p>
-                    </div>
-                </a>
-
-                <a href="" class="feature-item">
-                    <div
-                        class="flex flex-col gap-2 items-center p-3 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
-                        <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                </path>
-                            </svg>
-                        </div>
-                        <p class="font-medium text-xs text-gray-700 text-center leading-tight">Riwayat Komisi</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div> --}}
-
 
     <!-- Main Features -->
     <section class="relative z-10 px-4 mb-6">
