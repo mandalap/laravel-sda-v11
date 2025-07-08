@@ -104,10 +104,11 @@
             font-size: 14px;
             color: #5E6F76;
         }
-/* 
-        .select2-container--default .select2-selection__placeholder {
-            margin-left: 40px;
-        } */
+
+        /*
+                        .select2-container--default .select2-selection__placeholder {
+                            margin-left: 40px;
+                        } */
 
         /* Wrapper kustom untuk Select2 */
         .select2-wrapper {
@@ -295,6 +296,35 @@
                         </label>
                     </div>
 
+                    <div class="flex flex-col w-full gap-2">
+                        <p class="font-semibold text-sm">Kode Referral</p>
+
+                        <label
+                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
+                            <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
+                                alt="icon">
+
+                            <input type="text" name="agency_code" value="{{ $agency->agency_code }}"
+                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
+                                placeholder="Masukkan Kode Referral"
+                                {{ $agency->referral_code_edited ? 'disabled' : '' }}>
+                        </label>
+
+
+                        <!-- Info tambahan -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                            <div class="flex items-start gap-2">
+                                <img src="{{ asset('/assets/images/icons/info.svg') }}" class="w-4 h-4 shrink-0"
+                                    alt="info">
+                                <div class="text-xs text-blue-700">
+                                    <p>Kode referral hanya bisa diganti sebanyak 1 kali.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
                     <label class="text-sm font-semibold">Foto Profil</label>
                     <div class="flex flex-col w-full gap-5">
                         <div>
@@ -316,20 +346,6 @@
             <!-- Tab 2: Informasi Rekening -->
             <div id="rekening-tab" class="tab-content">
                 <div class="flex flex-col gap-4">
-                    {{-- <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Nama Bank</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/bank.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <select id="nama_bank" name="nama_bank" class="select2-ajax select2-pl-40">
-                                @if ($agency && $agency->nama_bank)
-                                    <option value="{{ $agency->nama_bank }}" selected>{{ $agency->nama_bank }}</option>
-                                @endif
-                            </select>
-                        </label>
-                    </div> --}}
-
                     <div class="flex flex-col gap-2 w-full">
                         <p class="font-semibold text-sm">Nama Bank</p>
                         <div class="relative w-full">

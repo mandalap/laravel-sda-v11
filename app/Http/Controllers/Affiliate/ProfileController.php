@@ -99,6 +99,28 @@ class ProfileController extends Controller
                 $agency->save();
             }
 
+            // validasi agency_code
+            if ($request->has('agency_code')) {
+                // Cek apakah sudah pernah edit
+                if ($agency->referral_code_edited) {
+                    Alert::toast('Kode referral hanya bisa diubah sekali.', 'error')->autoClose(10000)->timerProgressBar();
+                    return redirect()->back()->with('active_tab', 'profil');
+                }
+
+                // Cek apakah agency_code-nya memang berubah
+                if ($request->agency_code !== $agency->agency_code) {
+                    // Validasi agency_code
+                    $request->validate([
+                        'agency_code' => 'required|string|unique:agency,agency_code,' . $agency->id,
+                    ]);
+
+                    // Update kode agency dan tandai sudah diedit
+                    $agency->agency_code = $request->agency_code;
+                    $agency->referral_code_edited = true;
+                    $agency->save();
+                }
+            }
+
             // Tampilkan pesan sukses
             Alert::toast('Profil berhasil diupdate', 'success')->autoClose(10000)->timerProgressBar();
             // Redirect ke halaman profil

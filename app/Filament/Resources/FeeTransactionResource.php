@@ -168,13 +168,14 @@ class FeeTransactionResource extends Resource
                         'tersedia' => 'Tersedia',
                         'diambil' => 'Diambil',
                     ]),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('tandai_diambil')
                     ->label('Tandai Diambil')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-                    ->visible(fn($record) => $record->status === 'tersedia')
+                    ->visible(fn($record) => $record->status === 'tersedia' && !empty($record->bookingTransaction->agency->nomor_rekening))
                     ->requiresConfirmation()
                     ->modalHeading('Konfirmasi Pengambilan Fee')
                     ->modalDescription('Tandai fee ini sebagai sudah diambil oleh marketing?')
@@ -197,6 +198,17 @@ class FeeTransactionResource extends Resource
                             ->success()
                             ->send();
                     }),
+                Tables\Actions\Action::make('nomor_rekening_kosong')
+                    ->label('Agency belum menambahkan nomor rekening')
+                    ->icon('heroicon-o-exclamation-triangle')
+                    ->color('warning')
+                    ->disabled()
+                    ->visible(
+                        fn($record) =>
+                        $record->status === 'tersedia' &&
+                            $record->bookingTransaction->agency &&
+                            empty($record->bookingTransaction->agency->nomor_rekening)
+                    ),
                 Tables\Actions\Action::make('info_bank')
                     ->label('Info Bank')
                     ->icon('heroicon-o-credit-card')
@@ -278,10 +290,12 @@ class FeeTransactionResource extends Resource
                     ->modalSubmitAction(false)
                     ->action(null),
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
+            ]) 
+             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
