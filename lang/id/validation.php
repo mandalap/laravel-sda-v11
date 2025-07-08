@@ -147,7 +147,7 @@ return [
     'string'                 => ':Attribute harus berupa string.',
     'timezone'               => ':Attribute harus berisi zona waktu yang valid.',
     'ulid'                   => ':Attribute harus merupakan ULID yang valid.',
-    'unique'                 => ':Attribute sudah ada sebelumnya.',
+    'unique'                 => ':Attribute sudah digunakan pada pengguna lain.',
     'uploaded'               => ':Attribute gagal diunggah.',
     'uppercase'              => ':Attribute harus berupa huruf kapital.',
     'url'                    => 'Format :attribute tidak valid.',
@@ -157,5 +157,6 @@ return [
         'nama' => 'Nama Lengkap',
         'telepon' => 'Nomor Whatsapp',
         'product_id' => 'Produk',
+        'agency_code' => 'Kode Referral',
     ],
 ];
