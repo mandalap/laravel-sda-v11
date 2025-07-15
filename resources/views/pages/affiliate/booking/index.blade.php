@@ -54,7 +54,7 @@
 
 @section('content')
     <div id="Background"
-        class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
+        class="absolute top-0 w-full h-[220px] rounded-bl-[10px] rounded-br-[10px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
     </div>
     
     <!-- Top Nav Agency -->
@@ -63,7 +63,7 @@
     <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
         <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
     </div>
-    <div class="flex sticky top-0 z-20 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
+    <div class="flex sticky top-0 z-20 gap-4 items-center px-5 py-2 mt-6 w-full">
 
         <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
 
