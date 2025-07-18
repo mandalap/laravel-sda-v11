@@ -21,6 +21,10 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use App\Jobs\WhatsAppBookingMemberTransaction;
+use App\Jobs\WhatsAppBookingAgencyTransaction;
+use App\Jobs\WhatsAppClosingMemberTransaction;
+use App\Jobs\WhatsAppClosingAgencyTransaction;
 
 class BookingTransactionResource extends Resource
 {
@@ -298,6 +302,13 @@ class BookingTransactionResource extends Resource
                             $record->product->update([
                                 'status' => 'Booking'
                             ]);
+                            // Validasi berdasarkan agency_id
+                            if ($record->agency_id) {
+                                WhatsAppBookingMemberTransaction::dispatch($record);
+                                WhatsAppBookingAgencyTransaction::dispatch($record);
+                            } else {
+                                WhatsAppBookingMemberTransaction::dispatch($record);
+                            }
                         } elseif ($record->status === 'booking') {
                             $record->product->update(['status' => 'Terjual']);
                             // Simpan fee marketing ke tabel fee_transactions hanya jika ada agency_id
@@ -309,7 +320,9 @@ class BookingTransactionResource extends Resource
                                     'created_at' => now(),
                                     'updated_at' => now(),
                                 ]);
+                                WhatsAppClosingAgencyTransaction::dispatch($record);
                             }
+                            WhatsAppClosingMemberTransaction::dispatch($record);
                         }
 
                         Notification::make()
