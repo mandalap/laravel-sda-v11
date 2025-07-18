@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\WhatsAppPendingAgencyTransaction;
+use App\Jobs\WhatsAppPendingMemberTransaction;
 use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
@@ -289,12 +291,13 @@ class BookingController extends Controller
                 $transaction->is_paid = false;
                 $transaction->status = 'pending';
 
-                // dd($transaction);
-
                 $transaction->save();
 
                 return $transaction;
             }, 3); // 3 kali percobaan jika terjadi deadlock
+
+            WhatsAppPendingAgencyTransaction::dispatch($bookingTransaction);
+            WhatsAppPendingMemberTransaction::dispatch($bookingTransaction);
 
             // Redirect ke halaman sukses dengan pesan alert
             Alert::toast('Booking berhasil dilakukan. Menunggu admin untuk memverifikasi transaksi anda', 'success')->autoClose(10000)->timerProgressBar();
