@@ -11,7 +11,7 @@
 
 @section('content')
     <div class="flex justify-center items-center p-4 min-h-screen bg-gradient-to-t from-[#AE1679] to-[#D81D76]"> 
-        <div class="relative p-6 sm:p-8 w-full max-w-sm sm:max-w-md bg-white rounded-xl shadow-lg">
+        <div class="relative p-6 sm:p-8 w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-lg">
             <a href="{{ route('beranda') }}"
                 class="absolute top-4 right-4 flex items-center gap-1 text-sm sm:text-sm text-primary hover:text-black transition-colors z-10">
                 Lewati
@@ -25,7 +25,7 @@
                     @csrf
                     <!-- Nomor WhatsApp -->
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Nomor WhatsApp</label>
+                        <label class="block mb-1 text-sm font-medium text-grey">Nomor WhatsApp</label>
                         <input type="text" name="telepon" value="{{ old('telepon') }}"
                             class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
                             placeholder="Masukkan Nomor WhatsApp" required />
@@ -34,7 +34,7 @@
                         @enderror
                     </div>
                     <div class="relative">
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Password</label>
+                        <label class="block mb-1 text-sm font-medium text-grey">Password</label>
                         <input type="password" name="password"
                             class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
                             placeholder="••••••••" id="password-field" required />
