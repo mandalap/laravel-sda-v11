@@ -77,17 +77,17 @@ class Project extends Model
         });
     }
 
-    public function project_photos()
+    public function projectPhotos()
     {
         return $this->hasMany(ProjectPhoto::class);
     }
 
-    public function project_fasilitas()
+    public function projectFasilitas()
     {
         return $this->hasMany(ProjectFasilitas::class);
     }
 
-    public function project_keterangan()
+    public function projectKeterangan()
     {
         return $this->hasMany(ProjectKeterangan::class);
     }

@@ -165,6 +165,7 @@ class ProductResource extends Resource
             ->filters([
                 SelectFilter::make('project_id')
                     ->label('project')
+                    ->searchable()
                     ->relationship('project', 'nama_project'),
 
                 SelectFilter::make('status')

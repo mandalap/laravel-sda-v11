@@ -90,11 +90,11 @@ class ProjectResource extends Resource
                     ->maxLength(255)
                     ->required(),
 
-                    TextInput::make('video')
+                    TextInput::make('url_video')
                     ->label('Link Video')
                     ->nullable(),
 
-                    TextInput::make('google_maps')
+                    TextInput::make('google_map')
                     ->label('Link Google Maps')
                     ->nullable(),
 
@@ -148,7 +148,7 @@ class ProjectResource extends Resource
                 ->schema([
 
                     Forms\Components\Repeater::make('photos')
-                    ->relationship('project_photos')
+                    ->relationship('projectPhotos')
                     ->schema([
                         FileUpload::make('photo')
                         ->nullable()
@@ -162,7 +162,7 @@ class ProjectResource extends Resource
                 ->schema([
 
                     Forms\Components\Repeater::make('fasilitas')
-                    ->relationship('project_fasilitas')
+                    ->relationship('projectFasilitas')
                     ->schema([
                         TextInput::make('fasilitas')->nullable(),
                     ]),

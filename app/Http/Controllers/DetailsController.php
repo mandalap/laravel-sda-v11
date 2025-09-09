@@ -30,13 +30,18 @@ class DetailsController extends Controller
     public function index($jenis, $kategori, $project)
     {
         $jenis = Jenis::where('slug', $jenis)->firstOrFail();
-
         $kategori = Kategori::where('slug', $kategori)->firstOrFail();
 
-        $project = Project::where("slug", $project)->firstOrFail();
-        $facilities = ProjectFasilitas::where('project_id', $project->id)->get();
-        $photos = ProjectPhoto::where('project_id', $project->id)->get();
-        $siteplan = Product::get();
+        $project = Project::with([
+            'projectFasilitas',
+            'projectPhotos',
+            'products'
+        ])->where("slug", $project)->firstOrFail();
+
+        // Ambil relasi yang sudah di-load
+        $facilities = $project->projectFasilitas;
+        $photos = $project->projectPhotos;
+        $siteplan = $project->products;
 
         return view("pages.details.index", compact('project', 'photos', 'facilities', 'kategori', 'siteplan'));
     }
