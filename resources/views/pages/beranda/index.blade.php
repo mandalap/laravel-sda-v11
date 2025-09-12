@@ -549,28 +549,28 @@
         </div>
         <div class="overflow-x-hidden w-full swiper">
             <div class="swiper-wrapper">
-                @forelse ($listingTerbaru as $listingTerbaru)
-                    <div class="swiper-slide !w-fit pb-[30px]">
-                        <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
-                            class="card">
-                            <div
-                                class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-[#d40065]">
-                                <div class="flex shrink-0 overflow-hidden rounded-[30px]">
-                                    <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
-                                        class="object-cover w-full h-full" alt="thumbnail">
-                                </div>
-                                <div class="flex flex-col gap-[2px]">
-                                    <h3 class="font-semibold text-sm">{{ $listingTerbaru->nama_project }}</h3>
-                                    <p class="text-xs text-ngekos-grey">{{ $listingTerbaru->lokasi->regency->name }}</p>
-                                </div>
-                            </div>
-                        </a>
+            @forelse ($listingTerbaru as $listingTerbaru)
+                <div class="swiper-slide !w-fit pb-[30px]">
+                <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
+                    class="card">
+                    <div
+                    class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-[#d40065]">
+                    <div class="flex shrink-0 overflow-hidden rounded-[30px] w-[140px] h-[100px] bg-[#F5F6F8]">
+                        <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
+                        class="object-cover w-full h-full" alt="thumbnail">
                     </div>
-                @empty
-                    <div class="flex justify-between items-center px-5">
-                        <h2 class="text-sm">Properti belum tersedia</h2>
+                    <div class="flex flex-col gap-[2px]">
+                        <h3 class="font-semibold text-sm">{{ $listingTerbaru->nama_project }}</h3>
+                        <p class="text-xs text-ngekos-grey">{{ $listingTerbaru->lokasi->regency->name }}</p>
                     </div>
-                @endforelse
+                    </div>
+                </a>
+                </div>
+            @empty
+                <div class="flex justify-between items-center px-5">
+                <h2 class="text-sm">Properti belum tersedia</h2>
+                </div>
+            @endforelse
             </div>
         </div>
     </section>

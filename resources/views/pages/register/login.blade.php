@@ -10,7 +10,7 @@
 @endpush
 
 @section('content')
-    <div class="flex justify-center items-center p-4 min-h-screen bg-gradient-to-t from-[#AE1679] to-[#D81D76]"> 
+    <div class="flex justify-center items-center p-4 min-h-screen bg-gradient-to-t from-[#AE1679] to-[#D81D76]">
         <div class="relative p-6 sm:p-8 w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-lg">
             <a href="{{ route('beranda') }}"
                 class="absolute top-4 right-4 flex items-center gap-1 text-sm sm:text-sm text-primary hover:text-black transition-colors z-10">
@@ -57,16 +57,19 @@
                             <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
                         </label>
                         <a href="{{ route('lupapassword') }}" class="text-sm text-primary hover:text-black">Lupa
-                            Password?</a>
+                            Kata Sandi?</a>
                     </div>
 
-                    <button
-                        class="py-2.5 w-full font-medium text-white  bg-primary hover:bg-black  rounded-lg transition-colors">
+                    {{-- <button
+                        class="w-full h-[40px] font-medium text-white bg-primary hover:bg-black  rounded-lg transition-colors">
                         Masuk
-                    </button>
+                    </button> --}}
+                    <x-button-primary type="submit" :full-width="true">
+                        Masuk
+                    </x-button-primary>
                 </form>
 
-                <div class="mt-6 text-sm text-center text-gray-600">
+                <div class="mt-4 text-sm text-center text-gray-600">
                     Belum punya akun?
                     <a href="{{ route('daftar') }}" class="text-primary hover:text-black">Daftar</a>
                 </div>

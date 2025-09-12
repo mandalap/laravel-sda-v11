@@ -426,7 +426,7 @@
                 <div id="Rewards-Tab" class="hidden flex-col gap-5 tab-content">
                     <div class="flex flex-col gap-4">
                         <div
-                            class="bonus-card flex flex-col rounded-[22px] border border-[#F1F2F6] p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
+                            class="bonus-card flex flex-col rounded-[22px] border border-[#F1F2F6] p-4 gap-3 bg-white hover:border-primary transition-all duration-300">
                             @if ($project->latlang)
                                 @php
                                     // Parse latitude and longitude

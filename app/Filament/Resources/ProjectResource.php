@@ -140,6 +140,12 @@ class ProjectResource extends Resource
                         'Pending' => 'Pending',
                         'Diterima' => 'Diterima',
                         'Ditolak' => 'Ditolak',
+                    ]),
+
+                    Select::make('status')
+                    ->options([
+                        'tampil' => 'Tampil',
+                        'arsip' => 'Arsip',
                     ])
                     ->required(),
                 ]),

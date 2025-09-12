@@ -124,7 +124,7 @@
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
                         <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
-                        <input  type="number" name="telepon" id="telepon" value="{{ $member->telepon }}"
+                        <input type="number" name="telepon" id="telepon" value="{{ $member->telepon }}"
                             class="text-sm w-full bg-white appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                             placeholder="Masukkan Nomor Telepon" readonly>
                     </label>
@@ -136,7 +136,7 @@
                         class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
                         <img src="{{ asset('assets/images/icons/referall.svg') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
-                        <input  type="text" name="refferal" id="refferal"
+                        <input type="text" name="refferal" id="refferal"
                             class="text-sm w-full bg-white appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
                             placeholder="Masukkan Kode Refferal">
                     </label>
@@ -166,12 +166,14 @@
                                         <input type="radio" name="product"
                                             class="absolute top-1/2 left-1/2 opacity-0 -z-10"
                                             value="{{ $product->code_product }}"
+                                            @if ($selectedProduct && $selectedProduct->code_product === $product->code_product) checked @endif
                                             onchange="updateCodeProduct('{{ $product->code_product }}')">
                                     </label>
                                 </div>
                             @empty
                                 <p>Tidak ada produk tersedia.</p>
                             @endforelse
+
                         </div>
                     </div>
                 </div>
