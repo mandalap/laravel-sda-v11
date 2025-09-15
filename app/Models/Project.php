@@ -96,6 +96,11 @@ class Project extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function projectsBrosur()
+    {
+        return $this->hasMany(ProjectBrosur::class);
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class);

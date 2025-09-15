@@ -35,6 +35,7 @@ class DetailsController extends Controller
         $project = Project::with([
             'projectFasilitas',
             'projectPhotos',
+            'projectsBrosur',
             'products'
         ])->where("slug", $project)->firstOrFail();
 
@@ -42,8 +43,9 @@ class DetailsController extends Controller
         $facilities = $project->projectFasilitas;
         $photos = $project->projectPhotos;
         $siteplan = $project->products;
+        $brosurs = $project->projectsBrosur;
 
-        return view("pages.details.index", compact('project', 'photos', 'facilities', 'kategori', 'siteplan'));
+        return view("pages.details.index", compact('project', 'photos', 'facilities', 'brosurs', 'kategori', 'siteplan'));
     }
 
     public function custinfo($jenis, $kategori, $project)
