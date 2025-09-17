@@ -113,7 +113,7 @@ class RegisterController extends Controller
 
             // Validasi input data
             $request->validate([
-                'sapaan' => ['required'],
+                'sapaan' => ['required', 'in:Pak,Bu,Bang,Kak'],
                 'nama' => ['required', 'string', 'max:255'],
                 'telepon' => ['required', 'string', 'max:15', 'unique:members,telepon', 'regex:/^08[0-9]{8,13}$/'],
                 'referral_code' => ['nullable', 'string', 'exists:agency,agency_code'],

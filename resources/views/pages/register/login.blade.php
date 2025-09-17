@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('title')
-    Login
+    Masuk
 @endsection
 
 @push('prepend-style')
@@ -25,27 +25,22 @@
                     @csrf
                     <!-- Nomor WhatsApp -->
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-grey">Nomor WhatsApp</label>
-                        <input type="text" name="telepon" value="{{ old('telepon') }}"
-                            class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
-                            placeholder="Masukkan Nomor WhatsApp" required />
-                        @error('telepon')
-                            <p class="text-sm text-red-500">{{ $message }}</p>
-                        @enderror
+                        <x-input-field label="Nomor WhatsApp" type="tel" name="telepon"
+                            placeholder="Masukkan Nomor WhatsApp" value="{{ old('telepon') }}" required />
                     </div>
                     <div class="relative">
-                        <label class="block mb-1 text-sm font-medium text-grey">Password</label>
+                        <label class="block mb-1 text-sm font-medium text-custom-gray">Kata Sandi</label>
                         <input type="password" name="password"
-                            class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
+                            class="px-4 py-2 w-full rounded-md border border-custom-gray-50 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
                             placeholder="••••••••" id="password-field" required />
-                        <!-- Show/Hide Password Icon (SVG) -->
+                        <!-- Show/Hide Password-->
                         <span class="absolute right-3 top-9 cursor-pointer" onclick="togglePassword()">
-                            <!-- Icon untuk Password Tersembunyi (Disable Eye) -->
-                            <img id="eye-disabled" src="{{ asset('assets/images/icons/hide.svg') }}" alt="Eye Disabled"
-                                class="w-6 h-6 text-gray-600 hover:text-black" />
-                            <!-- Icon untuk Password Terlihat (Enable Eye) -->
-                            <img id="eye-enabled" src="{{ asset('assets/images/icons/enabled.svg') }}" alt="Eye Enabled"
-                                class="w-6 h-6 text-gray-600 hover:text-black hidden" />
+
+                            <img id="eye-disabled" src="{{ asset('assets/images/icons/hide.png') }}" alt="Eye Disabled"
+                                class="w-6 h-6 text-custom-gray-70 hover:text-black" />
+
+                            <img id="eye-enabled" src="{{ asset('assets/images/icons/enabled.png') }}" alt="Eye Enabled"
+                                class="w-6 h-6 text-custom-gray-70 hover:text-black hidden" />
                         </span>
                         @error('password')
                             <p class="text-sm text-red-500">{{ $message }}</p>
@@ -54,22 +49,17 @@
                     <div class="flex justify-between items-center">
                         <label class="flex items-center">
                             <input type="checkbox" class="text-primary rounded border-gray-100 focus:ring-primary" />
-                            <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+                            <span class="ml-2 text-sm text-custom-gray-100">Ingat saya</span>
                         </label>
                         <a href="{{ route('lupapassword') }}" class="text-sm text-primary hover:text-black">Lupa
                             Kata Sandi?</a>
                     </div>
-
-                    {{-- <button
-                        class="w-full h-[40px] font-medium text-white bg-primary hover:bg-black  rounded-lg transition-colors">
-                        Masuk
-                    </button> --}}
                     <x-button-primary type="submit" :full-width="true">
                         Masuk
                     </x-button-primary>
                 </form>
 
-                <div class="mt-4 text-sm text-center text-gray-600">
+                <div class="mt-4 text-sm text-center text-custom-gray-100">
                     Belum punya akun?
                     <a href="{{ route('daftar') }}" class="text-primary hover:text-black">Daftar</a>
                 </div>

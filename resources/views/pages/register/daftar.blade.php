@@ -18,43 +18,47 @@
             <form class="space-y-4" method="POST" action="{{ route('store.register') }}">
                 @csrf
                 <div>
-                    <label class="block mb-1 text-sm font-medium text-grey">Sapaan</label>
-                    <select name="sapaan" required
-                        class="px-3 py-2 w-full rounded-lg border border-gray-50 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary">
-                        <option value="" disabled selected>Pilih Sapaan</option>
-                        <option value="Bapak" @if (old('sapaan') == 'Pak') selected @endif>Pak</option>
-                        <option value="Ibu" @if (old('sapaan') == 'Bu') selected @endif>Bu</option>
-                        <option value="Bang" @if (old('sapaan') == 'Bang') selected @endif>Bang</option>
-                        <option value="Kak" @if (old('sapaan') == 'Kak') selected @endif>Kak</option>
-                    </select>
+                    <label class="block mb-1 text-sm font-medium text-custom-gray">Sapaan</label>
+                    <div class="relative">
+                        <select name="sapaan" required
+                            class="appearance-none px-3 py-2 w-full rounded-lg border border-custom-gray-50 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary">
+                            <option value="" disabled selected class="text-custom-gray-70">Pilih Sapaan</option>
+                            <option value="Pak" @if (old('sapaan') == 'Pak') selected @endif>Pak</option>
+                            <option value="Bu" @if (old('sapaan') == 'Bu') selected @endif>Bu</option>
+                            <option value="Bang" @if (old('sapaan') == 'Bang') selected @endif>Bang</option>
+                            <option value="Kak" @if (old('sapaan') == 'Kak') selected @endif>Kak</option>
+                        </select>
+
+                        <!-- Custom Icon -->
+                        <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center">
+                            <!-- Ganti SVG-nya sesuai kebutuhan -->
+                            <svg class="w-4 h-4 text-custom-gray-90" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <label class="block mb-1 text-sm font-medium text-grey">Nama Lengkap</label>
-                    <input type="text" name="nama" value="{{ old('nama') }}"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-50 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
-                        placeholder="Masukkan Nama Lengkap" required />
+                    <x-input-field label="Nama Lengkap" type="text" name="nama" placeholder="Masukkan Nama Lengkap"
+                        value="{{ old('nama') }}" required />
                 </div>
 
                 <div>
-                    <label class="block mb-1 text-sm font-medium text-grey">Nomor WhatsApp</label>
-                    <input type="tel" name="telepon" value="{{ old('telepon') }}" required
-                        class="px-4 py-2 w-full rounded-lg border border-gray-50 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
-                        placeholder="Masukkan Nomor WhatsApp" />
-                    @error('telepon')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-input-field label="Nomor WhatsApp" type="tel" name="telepon"
+                        placeholder="Masukkan Nomor WhatsApp" value="{{ old('telepon') }}" required />
                 </div>
 
                 <!-- Kode Referral -->
                 <div class="bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border border-green-200">
-                    <h4 class="text-sm font-medium text-grey mb-3">
+                    <h4 class="text-sm font-medium text-gray-90 mb-3">
                         Kode Referral {{ $is_referral ? '' : '(Opsional)' }}
                     </h4>
 
                     <div>
                         <input type="text" name="referral_code" id="referral_code"
                             value="{{ old('referral_code', $referral_code) }}" {{ $is_referral ? 'readonly' : '' }}
-                            class="mt-1 block w-full px-3 py-2 border border-gray-40 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 {{ $is_referral ? 'bg-gray-100 cursor-not-allowed' : '' }}"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-40 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 {{ $is_referral ? 'bg-gray-100 cursor-not-allowed' : '' }} placeholder-custom-gray-70"
                             placeholder="{{ $is_referral ? 'Kode referral otomatis terisi' : 'Masukkan kode referral' }}">
 
                         @error('referral_code')
@@ -63,26 +67,23 @@
 
                         @if (!$is_referral)
                             <div class="mt-2">
-                                <p class="text-sm text-danger-main">
-                                    {{-- <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                            clip-rule="evenodd"></path>
-                                    </svg> --}}
-                                    Jika Anda memiliki kode referral dari Agency, masukkan di sini.
+                                <p class="text-xs text-danger-main">
+                                    Jika Anda memiliki kode referral dari Agency kami, silahkan ketikkan kodenya di sini.
                                 </p>
                             </div>
                         @endif
                     </div>
                 </div>
-
-                <button type="submit"
+                {{-- <button type="submit"
                     class="py-2.5 w-full font-medium text-white bg-primary hover:bg-black  rounded-lg transition-colors">
                     Daftar Sekarang
-                </button>
+                </button> --}}
+                <x-button-primary type="submit" :full-width="true">
+                    Daftar
+                </x-button-primary>
             </form>
 
-            <div class="mt-4 text-sm text-center text-gray-600">
+            <div class="mt-4 text-sm text-center text-custom-gray-100">
                 Sudah punya akun?
                 <a href="{{ route('login') }}" class="text-primary hover:text-black">Masuk</a>
             </div>

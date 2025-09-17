@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('title')
-    Lupa Password
+    Lupa Kata Sandi
 @endsection
 
 @push('prepend-style')
@@ -14,26 +14,25 @@
     <div class="flex justify-center items-center p-4 min-h-screen bg-gradient-to-t from-[#AE1679] to-[#D81D76]">
         <div class="p-8 w-full max-w-md bg-white rounded-xl shadow-lg">
             <img src="{{ asset('assets/images/icons/logo.svg') }}" class="mx-auto w-auto h-24" alt="icon">
-            <h2 class="mt-3 text-2xl font-semibold text-center text-gray-100">Reset Kata Sandi</h2>
+            <h2 class="mt-3 text-2xl font-semibold text-center text-custom-gray-100">Lupa Kata Sandi</h2>
 
-            <p class="mt-3 text-sm text-center text-gray-80">Masukkan nomor whatsapp <br>Kami akan mengirim password terbaru</p>
+            <p class="mt-3 text-sm text-center text-custom-gray-80">Masukkan nomor whatsapp Kamu<br>Kami akan mengirim sandi
+                terbaru
+            </p>
 
-            <form class="space-y-4" action="{{ route('resetpassword') }}" method="POST" >
+            <form class="space-y-4" action="{{ route('resetpassword') }}" method="POST">
                 @csrf
                 <div>
-                    <label class="block mb-1 text-sm font-medium text-grey">Nomor WhatsApp</label>
-                    <input type="number"
-                        class="px-4 py-2 w-full rounded-lg border border-gray-300 transition-all outline-none focus:ring-2 focus:ring-[#d40065] focus:border-[#d40065]"
-                        placeholder="Masukkan Nomor WhatsApp" name="telepon" />
+                    <x-input-field label="Nomor WhatsApp" type="tel" name="telepon"
+                        placeholder="Masukkan Nomor WhatsApp" value="{{ old('telepon') }}" required />
                 </div>
 
-                <button type="submit"
-                    class="w-full h-[40px] font-medium text-white bg-primary hover:bg-black  rounded-lg transition-colors">
-                    Kirim Password
-                </button>
+                <x-button-primary type="submit" :full-width="true">
+                    Kirim Sandi
+                </x-button-primary>
             </form>
 
-            <div class="mt-4 text-sm text-center text-gray-600">
+            <div class="mt-4 text-sm text-center text-custom-gray-100">
                 Sudah punya akun?
                 <a href="{{ route('login') }}" class="text-primary hover:text-black">Masuk</a>
             </div>
