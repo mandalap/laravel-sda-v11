@@ -17,33 +17,29 @@
 @endpush
 
 @section('content')
-    <div id="Background"
-        class="absolute top-0 w-full h-[180px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-    </div>
+    <div id="Background" class="absolute top-0 w-full h-[190px] bg-gradient-to-t from-secondary to-primary"></div>
 
     <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
         <div class="flex flex-col gap-1 text-white">
-            <p>Halo Sahabat Investa,</p>
-            <h1 class="font-bold text-sm leading-[20px] ">Temukan Property Impian Kamu</h1>
+            <h1 class="text-xl font-semibold">Halo Sahabat Investa,</h1>
+            <h1 class="text-sm leading-[20px]">Temukan Property Impian Kamu</h1>
         </div>
-        <a href="#" class="flex justify-center items-center w-20 h-20 overflow-hidden rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[60px] h-[60px]" alt="icon">
+        <a href="#" class="flex justify-center items-center h-19 overflow-hidden rounded-full shrink-0">
+            <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[48px] h-[54px]" alt="icon">
         </a>
     </div>
 
+
     @if ($testimoniBanners->isNotEmpty())
-        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
-            <!-- Landscape Testimonials -->
+        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px]">
             <div>
                 <div class="testimonial-landscape-container relative">
                     <div class="testimonial-landscape-swiper overflow-hidden w-full">
                         <div class="swiper-wrapper">
-                            <!-- Loop untuk Menampilkan Gambar dari Database -->
                             @foreach ($testimoniBanners as $banner)
-                                <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
+                                <div class="swiper-slide flex shrink-0 rounded-[20px] overflow-hidden w-[353px] h-[171px]">
                                     <div
-                                        class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
-                                        <!-- Menampilkan Gambar dari Storage -->
+                                        class="w-full h-full rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
                                         <img src="{{ asset('storage/' . $banner->image) }}"
                                             class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
                                     </div>
@@ -52,24 +48,23 @@
                         </div>
                         <!-- Pagination -->
                         <div class="swiper-pagination"></div>
-
                     </div>
                 </div>
             </div>
         </section>
     @endif
 
-    <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
 
-    <div id="Feature" class="px-[18px] relative z-10">
-        <div class="bg-white p-[18px_16px] rounded-xl overflow-hidden grid grid-cols-4 gap-[27px]">
+    <div id="Feature" class="px-[20px] mt-[18px] relative z-10">
+        <div class="bg-white p-4 rounded-2xl border border-custom-gray-40 overflow-hidden grid grid-cols-4 gap-x-3 gap-y-4">
             @forelse ($kategories as $kategori)
                 <a href="{{ route('kategori', $kategori->slug) }}">
-                    <div class="flex flex-col gap-2 items-center">
-                        <div class="w-[40px] h-[40px] flex shrink-0">
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="w-[52px] h-[52px] flex shrink-0">
                             <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt="icon">
                         </div>
-                        <p class="font-medium text-center  text-xs text-[#757C98] leading-[21px]">{{ $kategori->kategori }}
+                        <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">
+                            {{ $kategori->kategori }}
                         </p>
                     </div>
                 </a>
@@ -77,52 +72,50 @@
             @endforelse
 
             <a href="">
-                <div class="flex flex-col gap-2 items-center">
-                    <div class="w-[40px] h-[40px] flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/folder.svg') }}" class="object-cover" alt="icon">
+                <div class="flex flex-col items-center gap-1">
+                    <div class="w-[52px] h-[52px] flex shrink-0">
+                        <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center  text-xs text-[#757C98] leading-[21px]">Validasi Berkas</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">SAJADA BERDASI</p>
                 </div>
             </a>
             <a href="">
-                <div class="flex flex-col gap-2 items-center">
-                    <div class="w-[40px] h-[40px] flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/farmer.svg') }}" class="object-cover" alt="icon">
+                <div class="flex flex-col items-center gap-1">
+                    <div class="w-[52px] h-[52px] flex shrink-0">
+                        <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center  text-xs text-[#757C98] leading-[21px]">Kelola Lahan</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">SAJADA JAKSEL</p>
                 </div>
             </a>
             <a href="{{ route('affiliate.index') }}">
-                <div class="flex flex-col gap-2 items-center">
-                    <div class="w-[40px] h-[40px] flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
+                <div class="flex flex-col items-center gap-1">
+                    <div class="w-[52px] h-[52px] flex shrink-0">
+                        <img src="{{ asset('assets/images/icons/agen.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center  text-xs text-[#757C98] leading-[21px]">Daftar Agen</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Daftar Agen</p>
                 </div>
             </a>
             <a href="">
-                <div class="flex flex-col gap-2 items-center">
-                    <div class="w-[40px] h-[40px] flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/handshake.svg') }}" class="object-cover" alt="icon">
+                <div class="flex flex-col items-center gap-1">
+                    <div class="w-[52px] h-[52px] flex shrink-0">
+                        <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center text-xs text-[#757C98] leading-[21px]">Kerja Sama</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kerja Sama</p>
                 </div>
             </a>
         </div>
     </div>
 
-    <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
-
     {{-- Popular --}}
-    <section id="Popular" class="flex flex-col gap-4">
-        <div class="flex justify-between items-center px-5 mt-5">
-            <h2 class="text-sm font-bold">Properti Popular</h2>
+    <section id="Popular" class="flex flex-col mt-5 gap-3">
+        <div class="flex justify-between items-center px-5">
+            <h2 class="text-base font-semibold text-custom-gray-100">Properti Populer</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'popular')->first())
                 <a
                     href="{{ route('lihatsemua', ['propertiType' => $popularKelompok->slug, 'propertiKategori' => 'all', 'filter' => 'none']) }}">
                     <div class="flex gap-1 items-center">
-                        <span class="text-xs md:text-sm">Lihat Semua</span>
-                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <span class="text-sm text-primary">Lihat Semua</span>
+                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
                             alt="icon">
                     </div>
                 </a>
@@ -131,57 +124,60 @@
 
         <div class="overflow-x-hidden gap-4 w-full swiper">
             <div class="swiper-wrapper">
-                @forelse ($projects->filter(function($project) { return $project->kelompok->slug === 'popular'; }) as $popular)
+                @forelse ($projects->filter(fn($project) => $project->kelompok->slug === 'popular') as $popular)
                     <div class="swiper-slide !w-fit">
                         <a href="{{ route('detailproject', [$popular->jenis->slug, $popular->kategori->slug, $popular->slug]) }}"
                             class="card">
                             <div
-                                class="flex flex-col w-[250px] shrink-0 rounded-[30px] border border-[#F1F2F6] p-4 pb-5 gap-[10px] hover:border-[#d40065] text-black transition-all duration-300">
+                                class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
                                 <div class="relative">
-                                    <button
-                                        class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
+                                    {{-- <button
+                                        class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-primary text-white text-[0.625rem]">
                                         Turun Harga
-                                    </button>
-                                    <div class="flex w-full h-[150px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
+                                    </button> --}}
+                                    <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
                                         <img src="{{ asset('storage/' . $popular->thumbnail) }}"
                                             class="object-cover w-full h-full"
                                             alt="{{ $popular->jenis->jenis }} {{ $popular->kategori->kategori }} {{ $popular->nama_project }} di {{ $popular->alamat_project }} - {{ $popular->lokasi->regency->name }}">
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col gap-3">
-                                    <h3 class="text-sm font-semibold">{{ $popular->nama_project }}</h3>
-                                    <p class="text-sm text-ngekos-grey">{{ $popular->alamat_project }}</p>
-                                    <hr class="border-[#F1F2F6]">
-                                    <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/location2.svg') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-ngekos-grey">{{ $popular->lokasi->regency->name }}</p>
-                                    </div>
-                                    <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/category.svg') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-ngekos-grey">{{ $popular->kategori->kategori }}</p>
-                                    </div>
-                                    <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/layer.svg') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-ngekos-grey">Tersisa
-                                            {{ $popular->project_product->where('status', 'Tersedia')->count() }} Unit</p>
-                                    </div>
+                                <div class="flex flex-col gap-1">
+                                    <h3 class="text-sm font-medium text-custom-gray-100">{{ $popular->nama_project }}</h3>
+                                    <p class="text-xs text-custom-gray-70">
+                                        {{ \Illuminate\Support\Str::limit($popular->alamat_project, 35) }}</p>
+                                </div>
 
-                                    @php
-                                        $harga = $popular->project_product->min('harga');
-                                        $diskon = $popular->project_product->min('discount'); // Asumsi diskon dalam persen
-                                        $harga_setelah_diskon = $harga - $diskon;
-                                    @endphp
+                                <hr class="border-custom-gray-30">
 
-                                    <hr class="border-[#F1F2F6]">
-                                    <div class="flex">
-                                        <p class="text-sm lg:text-sm font-semibold text-[#d40065]">Rp
-                                            {{ number_format($harga_setelah_diskon) }}</p>
-                                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp
-                                            {{ number_format($harga) }}</p>
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="flex items-center gap-[6px]">
+                                        <img src="{{ asset('assets/images/icons/location2.png') }}"
+                                            class="flex w-5 h-5 shrink-0" alt="icon">
+                                        <p class="text-xs text-custom-gray-70">{{ $popular->lokasi->regency->name }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-[6px]">
+                                        <img src="{{ asset('assets/images/icons/category.png') }}"
+                                            class="flex w-5 h-5 shrink-0" alt="icon">
+                                        <p class="text-xs text-custom-gray-70">{{ $popular->kategori->kategori }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-[6px]">
+                                        <img src="{{ asset('assets/images/icons/layer.png') }}"
+                                            class="flex w-5 h-5 shrink-0" alt="icon">
+                                        <p class="text-xs text-custom-gray-70">
+                                            Tersisa {{ $popular->project_product->where('status', 'Tersedia')->count() }}
+                                            Unit
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <hr class="border-custom-gray-30">
+
+                                <div class="flex">
+                                    <div class="flex items-center">
+                                        <div>
+                                            {!! $popular->getPriceDisplay() !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -192,140 +188,128 @@
                         <h2 class="text-sm">Properti belum tersedia</h2>
                     </div>
                 @endforelse
-
             </div>
         </div>
     </section>
     {{-- End Popular --}}
 
-    <section id="Cities" class="flex flex-col p-5 gap-4 bg-[#F5F6F8] mt-[30px]">
+    {{-- Lokasi Project --}}
+    <section id="Cities" class="flex flex-col p-5 gap-3 mt-5">
         <div class="flex justify-between items-center">
-            <h2 class="text-sm font-bold">Pilihan Lokasi</h2>
+            <h2 class="text-base font-semibold text-custom-gray-100">Pilihan Lokasi</h2>
             <a href="{{ route('lihatkota') }}">
                 <div class="flex gap-1 items-center">
-                    <span class="text-xs md:text-sm">Lihat Semua</span>
-                    <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-6 h-6 shrink-0"
+                    <span class="text-sm text-primary">Lihat Semua</span>
+                    <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
                         alt="icon">
                 </div>
             </a>
         </div>
-        <div class="grid grid-cols-2 gap-4">
+
+        <!-- Grid dengan gap 20px -->
+        <div class="grid grid-cols-2 gap-5">
             @forelse ($cities as $city)
                 <a href="{{ route('lihatproperti', ['propertiKategori' => 'all', 'propertiCity' => $city->slug, 'filter' => 'none']) }}"
                     class="card">
                     <div
-                        class="flex items-center rounded-[22px] p-[10px] gap-3 bg-white border border-white overflow-hidden hover:border-emerald-text-emerald-600 transition-all duration-300 hover:border-[#d40065] ">
-                        <div
-                            class="w-[55px] h-[55px] flex shrink-0 rounded-full border-4 border-white ring-1 ring-[#F1F2F6] overflow-hidden">
+                        class="flex items-center rounded-lg p-2 gap-1.5 bg-white border border-custom-gray-40 overflow-hidden transition-all duration-300 hover:border-primary">
+                        <div class="w-[47px] h-[47px] flex shrink-0 rounded-[4px] overflow-hidden">
                             <img src="{{ asset('storage/' . $city->thumbnail) }}" class="object-cover w-full h-full"
                                 alt="icon">
                         </div>
-                        <div class="flex flex-col gap-[1px]">
-                            <h3 class="text-xs"> {{ $city->regency->name }}</h3>
-                            <p class="text-xs text-ngekos-grey"> {{ $city->project->count() }} Properti</p>
+                        <div class="flex flex-col">
+                            <h3 class="font-medium text-xs">{{ $city->regency->name }}</h3>
+                            <p class="text-[10px] text-custom-gray-70">{{ $city->project->count() }} Properti</p>
                         </div>
                     </div>
                 </a>
             @empty
                 <div class="card">
-                    <p class="text-center">Data belum Tersedia</p>
+                    <p class="text-center">Data belum tersedia</p>
                 </div>
             @endforelse
-
         </div>
     </section>
+    {{-- End Lokasi Project --}}
 
     {{-- Terbaik --}}
     <section id="Best" class="flex flex-col gap-4">
         <div class="flex justify-between items-center px-5 mt-5">
-            <h2 class="text-sm font-bold">Kavling Terbaik</h2>
+            <h2 class="text-base font-semibold text-custom-gray-100">Kavling Terbaik</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'terbaik')->first())
                 <a
                     href="{{ route('lihatsemua', ['propertiType' => $popularKelompok->slug, 'propertiKategori' => 'tanah-kavling', 'filter' => 'none']) }}">
                     <div class="flex gap-1 items-center">
-                        <span class="text-xs md:text-sm">Lihat Semua</span>
-                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}"
-                            class="flex w-5 h-5 md:w-6 md:h-6 shrink-0" alt="icon">
+                        <span class="text-sm text-primary">Lihat Semua</span>
+                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
+                            alt="icon">
                     </div>
                 </a>
             @endif
         </div>
-        <div class="flex flex-col gap-4">
+
+        <div class="flex flex-col gap-3 px-4">
             @forelse ($tanahKavlingTerbaik as $kavlingterbaik)
                 <a href="{{ route('detailproject', [$kavlingterbaik->jenis->slug, $kavlingterbaik->kategori->slug, $kavlingterbaik->slug]) }}"
                     class="card">
                     <div
-                        class="flex flex-col md:flex-row rounded-[20px] md:rounded-[30px] border border-[#F1F2F6] mx-4 p-2 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
+                        class="flex flex-row gap-[10px] rounded-[8px] border border-custom-gray-40 p-3 bg-white hover:border-[#d40065] transition-all duration-300 items-center">
+
+                        <!-- Gambar -->
                         <div
-                            class="relative w-full md:w-[500px] h-auto md:h-auto aspect-auto md:aspect-[250/183] rounded-[20px] md:rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                            <button
-                                class="absolute top-2 right-2 md:top-4 md:right-4 w-max rounded-full p-1 md:p-1.5 bg-[#d40065] text-white text-[0.625rem]">
-                                Turun Harga
-                            </button>
+                            class="w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded-[4px] overflow-hidden bg-custom-gray-10">
                             <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}"
-                                class="object-cover w-full h-full"
-                                alt="{{ $kavlingterbaik->jenis->jenis }} {{ $kavlingterbaik->kategori->kategori }} {{ $kavlingterbaik->nama_project }} di {{ $kavlingterbaik->alamat_project }} - {{ $kavlingterbaik->lokasi->regency->name }}">
+                                class="w-full h-full object-contain" alt="{{ $kavlingterbaik->nama_project }}">
                         </div>
-                        <div class="flex flex-col gap-2 md:gap-3 w-full p-2 md:p-0">
-                            <div class="flex flex-col">
-                                <h3 class="text-sm md:text-base font-semibold">{{ $kavlingterbaik->nama_project }}</h3>
-                                <p class="text-xs md:text-sm text-ngekos-grey">{{ $kavlingterbaik->alamat_project }}</p>
+
+                        <!-- Deskripsi -->
+                        <div class="flex flex-col flex-1 min-h-0">
+                            <!-- Nama & Alamat -->
+                            <div class="flex flex-col gap-[4px]">
+                                <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
+                                    {{ $kavlingterbaik->nama_project }}
+                                </h3>
+                                <p class="text-xs text-custom-gray-70 line-clamp-1">{{ $kavlingterbaik->alamat_project }}
+                                </p>
                             </div>
 
-                            <hr class="border-[#F1F2F6]">
+                            <hr class="border-custom-gray-30 my-[4px]">
 
-                            <div class="grid grid-cols-2 md:grid-cols-1 gap-1 md:gap-[6px]">
-                                <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/location2.svg') }}"
-                                        class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
-                                    <p class="text-[12px] md:text-xs text-ngekos-grey">
-                                        {{ $kavlingterbaik->lokasi->regency->name }}</p>
+                            <!-- Detail Lokasi -->
+                            <div class="flex flex-col gap-[6px]">
+                                <div class="flex items-center gap-[6px]">
+                                    <img src="{{ asset('assets/images/icons/location2.png') }}"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                    <p class="text-xs text-custom-gray-70 truncate">
+                                        {{ $kavlingterbaik->lokasi->regency->name }}
+                                    </p>
                                 </div>
-                                <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/category.svg') }}"
-                                        class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
-                                    <p class="text-[12px] md:text-xs text-ngekos-grey">
+                                <div class="flex items-center gap-[6px]">
+                                    <img src="{{ asset('assets/images/icons/category.png') }}"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                    <p class="text-xs text-custom-gray-70 truncate">
                                         {{ $kavlingterbaik->kategori->kategori }}</p>
                                 </div>
-                                <div class="flex items-center gap-1 md:gap-[6px]">
-                                    <img src="{{ asset('assets/images/icons/layer.svg') }}"
-                                        class="flex w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
-                                    <p class="text-[12px] md:text-xs text-ngekos-grey">Tersisa
-                                        {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }}</p>
+                                <div class="flex items-center gap-[6px]">
+                                    <img src="{{ asset('assets/images/icons/layer.png') }}"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                    <p class="text-xs text-custom-gray-70 truncate">
+                                        Tersisa
+                                        {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }} Unit
+                                    </p>
                                 </div>
                             </div>
 
-                            <hr class="border-[#F1F2F6]">
+                            <hr class="border-custom-gray-30 my-[4px]">
 
-                            @php
-                                $harga = $kavlingterbaik->project_product->min('harga');
-                                $diskon = $kavlingterbaik->project_product->min('discount'); // Asumsi diskon dalam persen
-                                $harga_setelah_diskon = $harga - $diskon;
-
-                                $hargaX = $kavlingterbaik->project_product->max('harga');
-                                $diskonX = $kavlingterbaik->project_product->max('discount'); // Asumsi diskon dalam persen
-                                $harga_setelah_diskonX = $hargaX - $diskonX;
-                            @endphp
-
-                            <div class="mt-1">
-                                @if ($kavlingterbaik->kategori->slug == 'tanah-kavling')
-                                    <div class="flex items-center">
-                                        <p class="text-sm md:text-lg font-semibold text-[#d40065]">
-                                            {{ number_format($harga_setelah_diskon) }}</p>
-                                        <p class="px-1"> - </p>
-                                        <p class="text-sm md:text-lg font-semibold text-[#d40065]">
-                                            {{ number_format($harga_setelah_diskonX) }}</p>
-                                    </div>
-                                @else
-                                    <div class="flex items-center">
-                                        <p class="text-sm md:text-lg font-semibold text-[#d40065]">
-                                            {{ number_format($harga_setelah_diskon) }}</p>
-                                        <p
-                                            class="ml-1 md:ml-2 text-[10px] md:text-xs font-semibold text-gray-500 line-through">
-                                            {{ number_format($harga) }}</p>
-                                    </div>
-                                @endif
-                            </div>
+                            <!-- Harga -->
+                            @if ($kavlingterbaik->kategori->slug == 'tanah-kavling')
+                                <div class="flex items-center">
+                                    <p class="text-sm font-semibold text-[#d40065]">
+                                        {!! $kavlingterbaik->getPriceDisplay() !!}
+                                    </p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </a>
@@ -337,7 +321,6 @@
         </div>
     </section>
     {{-- End: Terbaik --}}
-
 
     {{-- Promo Banner --}}
     @if ($promoBanners->isNotEmpty())
@@ -373,82 +356,80 @@
     @endif
     {{-- End Promo Banner --}}
 
-    <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
-
-
     {{-- Rekomendasi --}}
-    <section id="Rekomendasi" class="flex flex-col gap-4 mt-[30px] ">
+    <section id="Rekomendasi" class="flex flex-col mt-5 gap-3">
         <div class="flex justify-between items-center px-5">
-            <h2 class="text-sm font-bold">Hunian Rekomendasi</h2>
+            <h2 class="text-base font-semibold text-custom-gray-100">Hunian Rekomendasi</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'rekomendasi')->first())
                 <a
                     href="{{ route('lihatsemua', ['propertiType' => $popularKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
                     <div class="flex gap-1 items-center">
-                        <span class="text-xs md:text-sm">Lihat Semua</span>
-                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <span class="text-sm text-primary">Lihat Semua</span>
+                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
                             alt="icon">
                     </div>
                 </a>
             @endif
         </div>
-        <div class="overflow-x-hidden w-full swiper">
+        <div class="overflow-x-hidden gap-4 w-full swiper">
             <div class="swiper-wrapper">
                 @forelse ($hunianRekomendasi as $hunianRekomendasi)
                     <div class="swiper-slide !w-fit">
                         <a href="{{ route('detailproject', [$hunianRekomendasi->jenis->slug, $hunianRekomendasi->kategori->slug, $hunianRekomendasi->slug]) }}"
                             class="card">
                             <div
-                                class="flex flex-col w-[250px] shrink-0 rounded-[30px] border border-[#F1F2F6] p-4 pb-5 gap-[10px] hover:border-[#d40065] text-black transition-all duration-300">
+                                class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
                                 <div class="relative">
-                                    <button
+                                    {{-- <button
                                         class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
                                         Turun Harga
-                                    </button>
-                                    <div
-                                        class="flex w-full h-[150px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
+                                    </button> --}}
+                                    <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
                                         <img src="{{ asset('storage/' . $hunianRekomendasi->thumbnail) }}"
                                             class="object-cover w-full h-full"
                                             alt="{{ $hunianRekomendasi->jenis->jenis }} {{ $hunianRekomendasi->kategori->kategori }} {{ $hunianRekomendasi->nama_project }} di {{ $hunianRekomendasi->alamat_project }} - {{ $hunianRekomendasi->lokasi->regency->name }}">
                                     </div>
                                 </div>
+                                <div class="flex flex-col gap-1">
+                                    <h3 class="text-sm font-medium text-custom-gray-100">
+                                        {{ $hunianRekomendasi->nama_project }}</h3>
+                                    <p class="text-xs text-custom-gray-70">
+                                        {{ \Illuminate\Support\Str::limit($hunianRekomendasi->alamat_project, 35) }}</p>
+                                </div>
 
-                                <div class="flex flex-col gap-3">
-                                    <h3 class="text-sm font-semibold">{{ $hunianRekomendasi->nama_project }}</h3>
-                                    <p class="text-sm text-ngekos-grey">{{ $hunianRekomendasi->alamat_project }}</p>
-                                    <hr class="border-[#F1F2F6]">
+                                <hr class="border-custom-gray-30">
+
+                                <div class="flex flex-col gap-1.5">
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/location2.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/location2.png') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-ngekos-grey">
+                                        <p class="text-xs text-custom-gray-70">
                                             {{ $hunianRekomendasi->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/category.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/category.png') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-ngekos-grey">{{ $hunianRekomendasi->kategori->kategori }}
-                                        </p>
+                                        <p class="text-xs text-custom-gray-70">
+                                            {{ $hunianRekomendasi->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/layer.svg') }}"
+                                        <img src="{{ asset('assets/images/icons/layer.png') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-ngekos-grey">Tersisa
+                                        <p class="text-xs text-custom-gray-70">
+                                            Tersisa
                                             {{ $hunianRekomendasi->project_product->where('status', 'Tersedia')->count() }}
                                             Unit
                                         </p>
                                     </div>
+                                </div>
 
-                                    @php
-                                        $harga = $hunianRekomendasi->project_product->min('harga');
-                                        $diskon = $hunianRekomendasi->project_product->min('discount'); // Asumsi diskon dalam persen
-                                        $harga_setelah_diskon = $harga - $diskon;
-                                    @endphp
+                                <hr class="border-custom-gray-30">
 
-                                    <hr class="border-[#F1F2F6]">
-                                    <div class="flex">
-                                        <p class="text-sm lg:text-sm font-semibold text-[#d40065]">Rp
-                                            {{ number_format($harga_setelah_diskon) }}</p>
-                                        <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp
-                                            {{ number_format($harga) }}</p>
+                                <div class="flex">
+                                    <div class="flex items-center">
+                                        <div>
+                                            {!! $hunianRekomendasi->getPriceDisplay() !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -465,83 +446,81 @@
     {{-- End: Rekomendasi --}}
 
     {{-- Counter --}}
-    <section id="Counter" class="flex flex-cols p-5 gap-4 bg-[#F5F6F8] mt-[30px] justify-between">
-        <!-- Block #1 -->
-        <article class="flex flex-col items-center">
-            <div class="flex justify-center items-center mb-6 w-14 h-14">
-                <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="icon">
-            </div>
-            <h2 class="text-center">
-                <span
-                    class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]"
-                    x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $properties }}]'">
-                    <span class="supports-[counter-set]:sr-only">{{ $properties }}</span>+
-                </span>
-                <span
-                    class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Projects</span>
-            </h2>
-        </article>
-        <!-- Block #2 -->
-        <article class="flex flex-col items-center">
-            <div class="flex justify-center items-center mb-6 w-14 h-14">
-                <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="icon">
-            </div>
-            <h2 class="text-center">
-                <span
-                    class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]"
-                    x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $products }}]'">
-                    <span class="supports-[counter-set]:sr-only">{{ $products }}</span>+
-                </span>
-                <span
-                    class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Properties</span>
-            </h2>
-        </article>
-        <!-- Block #3 -->
-        <article>
-            <div class="flex justify-center items-center mb-6 w-14 h-14">
-                <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
-            </div>
-            <h2>
-                <span
-                    class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]"
-                    x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $agency }}]'">
-                    <span class="supports-[counter-set]:sr-only">{{ $agency }}</span>+
-                </span>
-                <span
-                    class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Agent</span>
-            </h2>
+    <div class="counter-wrapper mt-5">
+        <section id="Counter" class="flex flex-cols p-5 gap-3 justify-between bg-gray-100">
+            <!-- Block #1 -->
+            <article class="flex flex-col items-center">
+                <div class="flex justify-center items-center mb-6 w-14 h-14">
+                    <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="icon">
+                </div>
+                <h2 class="text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <span class="tabular-nums text-secondary text-base font-bold counter-number"
+                            data-target="{{ $properties }}">0</span>
+                        <span class="text-secondary text-base font-bold">+</span>
+                    </div>
+                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Proyek</span>
+                </h2>
+            </article>
 
-        </article>
-        <!-- Block #4 -->
-        <article>
-            <div class="flex justify-center items-center mb-6 w-14 h-14">
-                <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="icon">
-            </div>
-            <h2>
-                <span
-                    class="flex tabular-nums text-slate-900 text-2xl font-extrabold mb-2 transition-[_--num] duration-[3s] ease-out [counter-set:_num_var(--num)] supports-[counter-set]:before:content-[counter(num)]"
-                    x-data="{ shown: false }" x-intersect="shown = true" :class="shown && '[--num:{{ $members }}]'">
-                    <span class="supports-[counter-set]:sr-only">{{ $members }}</span>+
-                </span>
-                <span
-                    class="inline-flex mb-2 font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-300">Users</span>
-            </h2>
+            <!-- Block #2 -->
+            <article class="flex flex-col items-center">
+                <div class="flex justify-center items-center mb-6 w-14 h-14">
+                    <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="icon">
+                </div>
+                <h2 class="text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <span class="tabular-nums text-secondary text-base font-bold counter-number"
+                            data-target="{{ $products }}">0</span>
+                        <span class="text-secondary text-base font-bold">+</span>
+                    </div>
+                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Properti</span>
+                </h2>
+            </article>
 
-        </article>
-        <!-- End: Animated Number Counter -->
-    </section>
+            <!-- Block #3 -->
+            <article class="flex flex-col items-center">
+                <div class="flex justify-center items-center mb-6 w-14 h-14">
+                    <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
+                </div>
+                <h2 class="text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <span class="tabular-nums text-secondary text-base font-bold counter-number"
+                            data-target="{{ $agency }}">0</span>
+                        <span class="text-secondary text-base font-bold">+</span>
+                    </div>
+                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Agen</span>
+                </h2>
+            </article>
+
+            <!-- Block #4 -->
+            <article class="flex flex-col items-center">
+                <div class="flex justify-center items-center mb-6 w-14 h-14">
+                    <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="icon">
+                </div>
+                <h2 class="text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <span class="tabular-nums text-secondary text-base font-bold counter-number"
+                            data-target="{{ $members }}">0</span>
+                        <span class="text-secondary text-base font-bold">+</span>
+                    </div>
+                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Pengguna</span>
+                </h2>
+            </article>
+        </section>
+    </div>
     {{-- End: Counter --}}
 
     {{-- Terbaru --}}
-    <section id="Terbaru" class="flex flex-col gap-4 mt-[30px] ">
+    <section id="Terbaru" class="flex flex-col gap-4 mt-5">
         <div class="flex justify-between items-center px-5">
-            <h2 class="text-sm font-bold">Listing Terbaru</h2>
+            <h2 class="text-base font-semibold text-custom-gray-100">Listing Terbaru</h2>
             @if ($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
                 <a
                     href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
                     <div class="flex gap-1 items-center">
-                        <span class="text-xs md:text-sm">Lihat Semua</span>
-                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-6 h-6 shrink-0"
+                        <span class="text-sm text-primary">Lihat Semua</span>
+                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
                             alt="icon">
                     </div>
                 </a>
@@ -549,28 +528,28 @@
         </div>
         <div class="overflow-x-hidden w-full swiper">
             <div class="swiper-wrapper">
-            @forelse ($listingTerbaru as $listingTerbaru)
-                <div class="swiper-slide !w-fit pb-[30px]">
-                <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
-                    class="card">
-                    <div
-                    class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-[#d40065]">
-                    <div class="flex shrink-0 overflow-hidden rounded-[30px] w-[140px] h-[100px] bg-[#F5F6F8]">
-                        <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
-                        class="object-cover w-full h-full" alt="thumbnail">
+                @forelse ($listingTerbaru as $listingTerbaru)
+                    <div class="swiper-slide !w-fit pb-[30px]">
+                        <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
+                            class="card">
+                            <div
+                                class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-[#d40065]">
+                                <div class="flex shrink-0 overflow-hidden rounded-[30px] w-[140px] h-[100px] bg-[#F5F6F8]">
+                                    <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
+                                        class="object-cover w-full h-full" alt="thumbnail">
+                                </div>
+                                <div class="flex flex-col gap-[2px]">
+                                    <h3 class="font-semibold text-sm">{{ $listingTerbaru->nama_project }}</h3>
+                                    <p class="text-xs text-ngekos-grey">{{ $listingTerbaru->lokasi->regency->name }}</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                    <div class="flex flex-col gap-[2px]">
-                        <h3 class="font-semibold text-sm">{{ $listingTerbaru->nama_project }}</h3>
-                        <p class="text-xs text-ngekos-grey">{{ $listingTerbaru->lokasi->regency->name }}</p>
+                @empty
+                    <div class="flex justify-between items-center px-5">
+                        <h2 class="text-sm">Properti belum tersedia</h2>
                     </div>
-                    </div>
-                </a>
-                </div>
-            @empty
-                <div class="flex justify-between items-center px-5">
-                <h2 class="text-sm">Properti belum tersedia</h2>
-                </div>
-            @endforelse
+                @endforelse
             </div>
         </div>
     </section>
@@ -579,7 +558,7 @@
 @endsection
 
 @push('addon-script')
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
@@ -642,6 +621,49 @@
 
             // Tambahkan A11y untuk aksesibilitas
             landscapeSwiper.a11y.enable();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Counter Animation Function
+            function animateCounter(element, target) {
+                let current = 0;
+                const increment = target / 100; // Adjust speed by changing divisor
+                const duration = 2000; // 2 seconds
+                const stepTime = duration / 100;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current);
+                }, stepTime);
+            }
+
+            // Intersection Observer for triggering animation when visible
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = parseInt(entry.target.getAttribute('data-target'));
+                        animateCounter(entry.target, target);
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all counter elements
+            const counters = document.querySelectorAll('.counter-number');
+            counters.forEach(counter => {
+                observer.observe(counter);
+            });
         });
     </script>
 @endpush

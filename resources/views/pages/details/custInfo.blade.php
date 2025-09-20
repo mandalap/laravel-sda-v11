@@ -68,18 +68,14 @@
                                 alt="icon">
                             <p class="text-xs text-ngekos-grey">Tersedia - {{ $jumlahProdukTersedia }} Properti</p>
                         </div>
-                        @php
-                            $harga = $project->project_product->min('harga');
-                            $diskon = $project->project_product->min('discount'); // Asumsi diskon dalam persen
-                            $harga_setelah_diskon = $harga - $diskon;
-                        @endphp
 
                         <hr class="border-[#F1F2F6]">
                         <div class="flex">
-                            <p class="text-sm lg:text-lg font-semibold text-[#d40065]">Rp
-                                {{ number_format($harga_setelah_diskon) }}</p>
-                            <p class="ml-2 text-xs font-semibold text-gray-500 line-through">Rp {{ number_format($harga) }}
-                            </p>
+                            <div class="flex items-center">
+                                <p class="text-sm md:text-lg font-semibold text-[#d40065]">
+                                    {!! $project->getPriceDisplay() !!}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,18 +102,6 @@
                             placeholder="Masukkan Nama Lengkap" readonly>
                     </label>
                 </div>
-
-                {{-- <div class="flex flex-col gap-2 px-5 w-full">
-                    <p class="text-sm font-semibold">Email</p>
-                    <label
-                        class="flex items-center w-full rounded-full p-[10px_20px] gap-3 bg-white focus-within:ring-1 focus-within:ring-[#d40065] transition-all duration-300">
-                        <img src="{{ asset('assets/images/icons/mail.svg') }}" class="flex w-5 h-5 shrink-0"
-                            alt="icon">
-                        <input class= "text-sm" type="email" name="email" id="email" value="{{ $member->email }}"
-                            class="w-full appearance-none outline-none placeholder:text-ngekos-grey placeholder:font-normal"
-                            placeholder="Masukkan Email">
-                    </label>
-                </div> --}}
                 <div class="flex flex-col gap-2 px-5 w-full">
                     <p class="text-sm font-semibold">Telepon</p>
                     <label
