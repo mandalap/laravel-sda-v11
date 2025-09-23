@@ -1,7 +1,7 @@
 on: 
   push:
     branches:
-      - main
+      - staging
 name: 🚀 Deploy website on push
 jobs:
   web-deploy:
@@ -11,18 +11,28 @@ jobs:
     # Checkout the repository
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
+      
+    # Setup Node.js environment
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    # Install dependencies
+    - name: 📦 Install dependencies
+      run: npm ci
+    
+    # Build the project
+    - name: 🔨 Build project
+      run: npm run build
     
     # Sync files via FTP (tanpa vendor)
     - name: 📂 Sync project files (tanpa vendor)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /   # Path ke domain wablitz.com
-        local-dir: ./               # Mengupload dari root repository
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          vendor/**
+        server: ${{ secrets.FTP_SERVER_STAGING }}
+        username: ${{ secrets.FTP_USERNAME_STAGING }}
+        password: ${{ secrets.FTP_PASSWORD_STAGING }}
+        server-dir: /
+        local-dir: ./
