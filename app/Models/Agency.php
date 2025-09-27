@@ -28,6 +28,7 @@ class Agency extends Model
         'status',
         'agency_code',
         'slug',
+        'referral_code_edited',
         'nama_bank',
         'nomor_rekening',
         'nama_pemilik',

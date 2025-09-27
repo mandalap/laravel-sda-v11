@@ -30,36 +30,56 @@ class DetailsController extends Controller
     public function index($jenis, $kategori, $project)
     {
         $jenis = Jenis::where('slug', $jenis)->firstOrFail();
-
         $kategori = Kategori::where('slug', $kategori)->firstOrFail();
 
-        $project = Project::where("slug", $project)->firstOrFail();
-        $facilities = ProjectFasilitas::where('project_id', $project->id)->get();
-        $photos = ProjectPhoto::where('project_id', $project->id)->get();
-        $siteplan = Product::get();
+        $project = Project::with([
+            'projectFasilitas',
+            'projectPhotos',
+            'projectsBrosur',
+            'products'
+        ])->where("slug", $project)->firstOrFail();
 
-        return view("pages.details.index", compact('project', 'photos', 'facilities', 'kategori', 'siteplan'));
+        // Ambil relasi yang sudah di-load
+        $facilities = $project->projectFasilitas;
+        $photos = $project->projectPhotos;
+        $siteplan = $project->products;
+        $brosurs = $project->projectsBrosur;
+
+        return view("pages.details.index", compact('project', 'photos', 'facilities', 'brosurs', 'kategori', 'siteplan'));
     }
 
     public function custinfo($jenis, $kategori, $project)
     {
         $member = Auth::guard('member')->user();
+
+        // Menggunakan eager loading untuk memuat relasi
         $jenis = Jenis::where('slug', $jenis)->firstOrFail();
         $kategori = Kategori::where('slug', $kategori)->firstOrFail();
-        $project = Project::where("slug", $project)->firstOrFail();
-        $products = Product::where('project_id', $project->id)
-            ->where('status', 'Tersedia')
-            ->get();
 
-        // Mengurutkan di level aplikasi
+        // Ambil project dengan eager loading untuk memuat relasi kategori dan jenis
+        $project = Project::with(['kategori', 'jenis', 'project_product']) // Menggunakan eager loading untuk kategori, jenis dan produk terkait
+            ->where("slug", $project)
+            ->firstOrFail();
+
+        // Ambil produk terkait untuk project yang dipilih dengan status 'Tersedia'
+        $products = $project->project_product()->where('status', 'Tersedia')->get();
+
+        // Validasi jika kategori adalah 'rumah' atau hanya ada satu produk
+        $selectedProduct = null;
+        if ($kategori->slug === 'rumah' && $products->count() === 1) {
+            $selectedProduct = $products->first();  // Pilih produk pertama jika kategori rumah atau hanya ada satu produk
+        }
+
+        // Mengurutkan produk berdasarkan nama (huruf dan angka)
         $products = $products->sortBy(function ($product) {
             preg_match('/([A-Za-z]+)([0-9]+)/', $product->nama_product, $matches);
-            return isset($matches[1]) ? [$matches[1], (int)($matches[2] ?? 0)] : [$product->nama_product, 0]; // Urutkan berdasarkan huruf dan angka
-        })->values(); // Mengembalikan koleksi yang terurut
+            return isset($matches[1]) ? [$matches[1], (int)($matches[2] ?? 0)] : [$product->nama_product, 0];
+        })->values();
 
-
-        return view("pages.details.custInfo", compact('project', 'products', 'kategori', 'member'));
+        // Mengirimkan data ke view
+        return view("pages.details.custInfo", compact('project', 'products', 'kategori', 'member', 'selectedProduct'));
     }
+
 
     public function checkout(Request $request, $project)
     {

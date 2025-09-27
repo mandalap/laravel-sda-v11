@@ -27,6 +27,8 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
+    protected static ?string $navigationGroup = 'Data Master';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -38,7 +40,7 @@ class ProductResource extends Resource
                     ->searchable()
                     ->required(),
 
-                    TextInput::make('code_product')
+                TextInput::make('code_product')
                     ->label('ID Product')
                     ->helperText('ID Product Harus Unik')
                     ->required()
@@ -49,7 +51,7 @@ class ProductResource extends Resource
                                 $random = 'SDA-' . strtoupper(substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10));
                                 $set('code_product', $random);
                             })
-                        ),
+                    ),
 
                 TextInput::make('nama_product')
                     ->label('Nama Product')
@@ -122,57 +124,58 @@ class ProductResource extends Resource
             ->columns([
                 //
                 TextColumn::make('project.developer.nama')
-                ->label('Developer')
-                ->formatStateUsing(fn ($state, $record) => $record->project->developer->nama ?? 'No Developer')
-                ->sortable()
-                ->searchable(),
+                    ->label('Developer')
+                    ->formatStateUsing(fn($state, $record) => $record->project->developer->nama ?? 'No Developer')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('project.nama_project')
-                ->label('Project')
-                ->formatStateUsing(fn ($state, $record) => $record->project->nama_project ?? 'No Project')
-                ->sortable()
-                ->searchable(),
+                    ->label('Project')
+                    ->formatStateUsing(fn($state, $record) => $record->project->nama_project ?? 'No Project')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('project.kategori.kategori')
-                ->label('Kategori')
-                ->formatStateUsing(fn ($state, $record) => $record->project->kategori->kategori ?? 'No Kategori')
-                ->sortable()
-                ->searchable(),
+                    ->label('Kategori')
+                    ->formatStateUsing(fn($state, $record) => $record->project->kategori->kategori ?? 'No Kategori')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('nama_product')
-                ->label('Nama Product')
-                ->formatStateUsing(fn ($state, $record) => $record->nama_product ?? 'No Nama Product')
-                ->searchable(),
+                    ->label('Nama Product')
+                    ->formatStateUsing(fn($state, $record) => $record->nama_product ?? 'No Nama Product')
+                    ->searchable(),
 
                 TextColumn::make('status')
-                ->label('Status')
-                ->formatStateUsing(fn ($state, $record) => $record->status ?? 'No Status')
-                ->sortable()
-                ->searchable(),
+                    ->label('Status')
+                    ->formatStateUsing(fn($state, $record) => $record->status ?? 'No Status')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('harga')
-                ->label('Harga')
-                ->formatStateUsing(fn ($state, $record) =>
+                    ->label('Harga')
+                    ->formatStateUsing(fn($state, $record) =>
                     $record->harga && $record->diskon
                         ? number_format($record->harga - $record->diskon, 0, ',', '.')
                         : ($record->harga
                             ? number_format($record->harga, 0, ',', '.')
                             : 'No Harga'))
-                ->searchable(),
+                    ->searchable(),
             ])
             ->filters([
                 SelectFilter::make('project_id')
-                ->label('project')
-                ->relationship('project', 'nama_project'),
+                    ->label('project')
+                    ->searchable()
+                    ->relationship('project', 'nama_project'),
 
                 SelectFilter::make('status')
-                ->label('Status')
-                ->options([
-                    'Tersedia' => 'Tersedia',
-                    'Booking' => 'Booking',
-                    'Pending' => 'Pending',
-                    'Terjual' => 'Terjual',
-                ]),
+                    ->label('Status')
+                    ->options([
+                        'Tersedia' => 'Tersedia',
+                        'Booking' => 'Booking',
+                        'Pending' => 'Pending',
+                        'Terjual' => 'Terjual',
+                    ]),
 
                 // SelectFilter::make('project.developer_id')
                 // ->label('Developer')

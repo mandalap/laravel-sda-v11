@@ -11,9 +11,12 @@
     <!-- FavIcon -->
     <link rel="icon" href="{{ asset('assets/images/icons/logo.svg') }}" type="image/png">
 
+    <link rel="stylesheet" href="{{ asset('vendor/fancybox/fancybox.css') }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link href="{{ asset('vendor/select2/css/select2.min.css') }}" rel="stylesheet">
+
 
     @stack('prepend-style')
     @include('includes.style')

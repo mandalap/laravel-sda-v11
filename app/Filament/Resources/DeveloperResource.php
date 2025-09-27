@@ -26,6 +26,8 @@ class DeveloperResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
 
     protected static ?string $navigationLabel = 'Developer';
+    protected static ?string $navigationGroup = 'Data Master';
+
 
     public static function form(Form $form): Form
     {

@@ -16,4 +16,9 @@ class ProjectFasilitas extends Model
         'project_id',
         'fasilitas',
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

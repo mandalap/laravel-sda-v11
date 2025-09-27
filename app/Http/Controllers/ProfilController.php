@@ -66,9 +66,12 @@ class ProfilController extends Controller
 
             SendWhatsAppSuccessChange::dispatch($member);
             // Flash message ke session
-            Alert::toast('Password berhasil diubah.', 'success')->autoClose(5000);
+            Alert::toast('Password berhasil diubah.', 'success')->autoClose(10000);
+        } catch (ValidationException $e) {
+            Alert::toast($e->getMessage(), 'error')->autoClose(10000);
+            return redirect()->back()->withInput()->withErrors($e->validator->errors());
         } catch (\Exception $e) {
-            Alert::toast('Terjadi kesalahan: ' . $e->getMessage(), 'error')->autoClose(5000);
+            Alert::toast('Terjadi kesalahan: ' . $e->getMessage(), 'error')->autoClose(10000);
         }
 
         return redirect()->back();
@@ -92,7 +95,7 @@ class ProfilController extends Controller
                 'tempat_lahir' => 'nullable|string|max:255',
                 'tanggal_lahir' => 'nullable|date',
                 'alamat' => 'nullable|string|max:255',
-                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
 
             // Cek apakah telepon sudah digunakan oleh member lain

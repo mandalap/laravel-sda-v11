@@ -24,68 +24,72 @@ class MemberResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    protected static ?string $navigationGroup = 'Data Master';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 //
                 Select::make('sapaan')
-                ->options([
-                    'Pak' => 'Pak',
-                    'Bu' => 'Bu',
-                    'Bang' => 'Bang',
-                    'Kak' => 'Kak',
-                ]),
+                    ->options([
+                        'Pak' => 'Pak',
+                        'Bu' => 'Bu',
+                        'Bang' => 'Bang',
+                        'Kak' => 'Kak',
+                    ]),
 
                 Forms\Components\TextInput::make('nama')
-                ->required()
-                ->maxLength(255),
+                    ->required()
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('email')
-                ->nullable()
-                ->email()
-                ->unique(ignoreRecord: true)
-                ->maxLength(255),
+                    ->nullable()
+                    ->email()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('telepon')
-                ->required()
-                ->numeric()
-                ->unique(ignoreRecord: true)
-                ->maxLength(255),
+                    ->required()
+                    ->numeric()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('password')
-                ->required()
-                ->password()
-                ->maxLength(255),
+                    ->required()
+                    ->password()
+                    ->maxLength(255)
+                    ->dehydrateStateUsing(fn($state) => bcrypt($state))
+                    ->visibleOn('create'),
 
                 Radio::make('gender')
-                ->options([
-                    'L' => 'Laki-Laki',
-                    'P' => 'Perempuan',
-                ])
-                ->required(),
+                    ->options([
+                        'L' => 'Laki-Laki',
+                        'P' => 'Perempuan',
+                    ])
+                    ->required(),
 
                 Forms\Components\TextInput::make('tempat_lahir')
-                ->nullable()
-                ->maxLength(255),
+                    ->nullable()
+                    ->maxLength(255),
 
                 DatePicker::make('tanggal_lahir')
-                ->native(false)
-                ->displayFormat('d/m/Y'),
+                    ->native(false)
+                    ->displayFormat('d/m/Y'),
 
                 Forms\Components\TextInput::make('kota_id')
-                ->nullable()
-                ->label(__('Domisili'))
-                ->maxLength(255),
+                    ->nullable()
+                    ->label(__('Domisili'))
+                    ->maxLength(255),
 
                 Forms\Components\Textarea::make('alamat')
-                ->nullable()
-                ->maxLength(255),
+                    ->nullable()
+                    ->maxLength(255),
 
                 Forms\Components\FileUpload::make('thumbnail')
-                ->nullable()
-                ->image()
-                ->optimize('webp'),
+                    ->nullable()
+                    ->image()
+                    ->optimize('webp'),
             ]);
     }
 
@@ -97,37 +101,37 @@ class MemberResource extends Resource
                 TextColumn::make('sapaan'),
 
                 TextColumn::make('nama')
-                ->sortable()
-                ->searchable(),
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('email')
-                ->icon('heroicon-m-envelope')
-                ->searchable(),
+                    ->icon('heroicon-m-envelope')
+                    ->searchable(),
 
                 TextColumn::make('telepon')
-                ->copyable()
-                ->copyMessage('Telepon copied')
-                ->copyMessageDuration(1500)
-                ->icon('heroicon-m-phone')
-                ->searchable(),
+                    ->copyable()
+                    ->copyMessage('Telepon copied')
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-m-phone')
+                    ->searchable(),
 
                 TextColumn::make('status')
-                ->searchable(),
+                    ->searchable(),
 
                 TextColumn::make('gender')
-                ->searchable(),
+                    ->searchable(),
 
                 TextColumn::make('tempat_lahir')
-                ->searchable(),
+                    ->searchable(),
 
                 TextColumn::make('tanggal_lahir')
-                ->searchable(),
+                    ->searchable(),
 
                 TextColumn::make('kota_id')
-                ->searchable(),
+                    ->searchable(),
 
                 TextColumn::make('alamat')
-                ->searchable(),
+                    ->searchable(),
 
                 ImageColumn::make('thumbnail'),
 
