@@ -44,7 +44,7 @@ class ButtonPrimary extends Component
      */
     public function getClasses(): string
     {
-        $baseClasses = 'font-medium text-white bg-primary hover:bg-black rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#D81D76] focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed';
+        $baseClasses = 'h-11 font-medium text-sm text-white bg-primary hover:bg-black rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed';
 
         // Size classes
         $sizeClasses = match ($this->size) {

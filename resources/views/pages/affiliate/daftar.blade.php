@@ -238,7 +238,7 @@
                     <div
                         class="select2-wrapper ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] rounded-full transition-all duration-300">
                         <!-- Ikon kiri (lokasi) -->
-                        <img src="{{ asset('assets/images/icons/location2.svg') }}" class="select2-icon-left"
+                        <img src="{{ asset('assets/images/icons/location2.png') }}" class="select2-icon-left"
                             alt="icon">
 
                         <!-- Select2 field -->
@@ -261,7 +261,7 @@
                 <p class="font-semibold text-sm">Alamat</p>
                 <label
                     class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                    <img src="{{ asset('/assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
+                    <img src="{{ asset('/assets/images/icons/location2.png') }}" class="flex w-5 h-5 shrink-0"
                         alt="icon">
                     <input type="text" name="alamat" value="{{ $member->alamat }}" value="{{ old('alamat') }}"
                         class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"

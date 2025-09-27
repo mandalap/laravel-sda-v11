@@ -33,12 +33,12 @@
                     </p>
                     <hr class="border-[#F1F2F6]">
                     <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
+                        <img src="{{ asset('assets/images/icons/location2.png') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location2.svg') }}" class="flex w-5 h-5 shrink-0"
+                        <img src="{{ asset('assets/images/icons/location2.png') }}" class="flex w-5 h-5 shrink-0"
                             alt="icon">
                         <p class="text-sm text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
                     </div>

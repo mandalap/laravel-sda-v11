@@ -183,17 +183,17 @@
             <hr class="border-[#F1F2F6] mx-5">
             <div id="Features" class="grid grid-cols-2 gap-x-[10px] gap-y-4 px-5">
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/location2.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                    <img src="{{ asset('assets/images/icons/location2.png') }}" class="w-[26px] h-[26px] flex shrink-0"
                         alt="icon">
                     <p class="text-xs text-grey">{{ $project->lokasi->regency->name }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/category.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                    <img src="{{ asset('assets/images/icons/category.png') }}" class="w-[26px] h-[26px] flex shrink-0"
                         alt="icon">
                     <p class="text-xs text-grey">{{ $project->kategori->kategori }}</p>
                 </div>
                 <div class="flex items-center gap-[6px]">
-                    <img src="{{ asset('assets/images/icons/layer.svg') }}" class="w-[26px] h-[26px] flex shrink-0"
+                    <img src="{{ asset('assets/images/icons/layer.png') }}" class="w-[26px] h-[26px] flex shrink-0"
                         alt="icon">
                     <p class="text-xs text-grey">Tersisa
                         {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit</p>

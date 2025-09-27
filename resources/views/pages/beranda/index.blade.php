@@ -39,7 +39,7 @@
                             @foreach ($testimoniBanners as $banner)
                                 <div class="swiper-slide flex shrink-0 rounded-[20px] overflow-hidden w-[353px] h-[171px]">
                                     <div
-                                        class="w-full h-full rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                        class="w-full h-full rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
                                         <img src="{{ asset('storage/' . $banner->image) }}"
                                             class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
                                     </div>
@@ -71,7 +71,7 @@
             @empty
             @endforelse
 
-            <a href="">
+            <a href="{{ route('sajada.berdasi') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-[52px] h-[52px] flex shrink-0">
                         <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt="icon">
@@ -79,7 +79,7 @@
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">SAJADA BERDASI</p>
                 </div>
             </a>
-            <a href="">
+            <a href="{{ route('sajada.jaksel') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-[52px] h-[52px] flex shrink-0">
                         <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt="icon">
@@ -95,7 +95,7 @@
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Daftar Agen</p>
                 </div>
             </a>
-            <a href="">
+            <a href="{{ route('developer.index') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-[52px] h-[52px] flex shrink-0">
                         <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="icon">
@@ -131,10 +131,6 @@
                             <div
                                 class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
                                 <div class="relative">
-                                    {{-- <button
-                                        class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-primary text-white text-[0.625rem]">
-                                        Turun Harga
-                                    </button> --}}
                                     <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
                                         <img src="{{ asset('storage/' . $popular->thumbnail) }}"
                                             class="object-cover w-full h-full"
@@ -253,11 +249,11 @@
                 <a href="{{ route('detailproject', [$kavlingterbaik->jenis->slug, $kavlingterbaik->kategori->slug, $kavlingterbaik->slug]) }}"
                     class="card">
                     <div
-                        class="flex flex-row gap-[10px] rounded-[8px] border border-custom-gray-40 p-3 bg-white hover:border-[#d40065] transition-all duration-300 items-center">
+                        class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
 
                         <!-- Gambar -->
                         <div
-                            class="w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded-[4px] overflow-hidden bg-custom-gray-10">
+                            class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                             <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}"
                                 class="w-full h-full object-contain" alt="{{ $kavlingterbaik->nama_project }}">
                         </div>
@@ -265,7 +261,7 @@
                         <!-- Deskripsi -->
                         <div class="flex flex-col flex-1 min-h-0">
                             <!-- Nama & Alamat -->
-                            <div class="flex flex-col gap-[4px]">
+                            <div class="flex flex-col gap-1">
                                 <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
                                     {{ $kavlingterbaik->nama_project }}
                                 </h3>
@@ -273,7 +269,7 @@
                                 </p>
                             </div>
 
-                            <hr class="border-custom-gray-30 my-[4px]">
+                            <hr class="border-custom-gray-30 my-1">
 
                             <!-- Detail Lokasi -->
                             <div class="flex flex-col gap-[6px]">
@@ -300,12 +296,12 @@
                                 </div>
                             </div>
 
-                            <hr class="border-custom-gray-30 my-[4px]">
+                            <hr class="border-custom-gray-30 my-1">
 
                             <!-- Harga -->
                             @if ($kavlingterbaik->kategori->slug == 'tanah-kavling')
                                 <div class="flex items-center">
-                                    <p class="text-sm font-semibold text-[#d40065]">
+                                    <p class="text-sm font-semibold text-primary">
                                         {!! $kavlingterbaik->getPriceDisplay() !!}
                                     </p>
                                 </div>
@@ -338,7 +334,7 @@
                             @foreach ($promoBanners as $banner)
                                 <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
                                     <a href="{{ $banner->redirect_url }}"
-                                        class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-[#d40065] transition-all duration-300">
+                                        class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
                                         <!-- Menampilkan Gambar dari Storage -->
                                         <img src="{{ asset('storage/' . $banner->image) }}"
                                             class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
@@ -381,7 +377,7 @@
                                 class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
                                 <div class="relative">
                                     {{-- <button
-                                        class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
+                                        class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-primary text-white text-[0.625rem]">
                                         Turun Harga
                                     </button> --}}
                                     <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
@@ -533,7 +529,7 @@
                         <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
                             class="card">
                             <div
-                                class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-[#d40065]">
+                                class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-primary">
                                 <div class="flex shrink-0 overflow-hidden rounded-[30px] w-[140px] h-[100px] bg-[#F5F6F8]">
                                     <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
                                         class="object-cover w-full h-full" alt="thumbnail">

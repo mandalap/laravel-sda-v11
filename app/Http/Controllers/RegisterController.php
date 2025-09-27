@@ -17,8 +17,9 @@ use Illuminate\Validation\Rules;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class RegisterController extends Controller
@@ -44,29 +45,37 @@ class RegisterController extends Controller
 
     public function loginStore(Request $request): RedirectResponse
     {
-        $request->validate([
-            'telepon' => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ]);
+        try {
+            $request->validate([
+                'telepon' => ['required', 'string'],
+                'password' => ['required', 'string'],
+            ]);
 
-        if (Auth::guard('member')->attempt($request->only('telepon', 'password'), $request->boolean('remember'))) {
-            $request->session()->regenerate();
+            if (Auth::guard('member')->attempt($request->only('telepon', 'password'), $request->boolean('remember'))) {
+                $request->session()->regenerate();
 
-            // Ambil user yang sedang login
-            $user = Auth::guard('member')->user();
+                // Ambil user yang sedang login
+                $user = Auth::guard('member')->user();
 
-            // Cek apakah user memiliki role "member"
-            if (!$user->hasRole('member')) {
-                Auth::guard('member')->logout(); // Logout user jika tidak memiliki role
-                Alert::toast('Akun Anda tidak memiliki akses.', 'error')->autoClose(10000)->timerProgressBar();
-                return back();
+                // Cek apakah user memiliki role "member"
+                if (!$user->hasRole('member')) {
+                    Auth::guard('member')->logout(); // Logout user jika tidak memiliki role
+                    Alert::toast('Akun Anda tidak memiliki akses.', 'error')->autoClose(10000)->timerProgressBar();
+                    return back();
+                }
+
+                return redirect()->intended(RouteServiceProvider::HOME);
             }
 
-            return redirect()->intended(RouteServiceProvider::HOME);
+            Alert::toast('Nomor telepon atau password anda salah.', 'error')->autoClose(10000)->timerProgressBar();
+            return back()->withInput();
+        } catch (ValidationException $e) {
+            Alert::toast('Data tidak valid: ' . $e->getMessage(), 'error')->autoClose(10000);
+            return redirect()->back()->withInput()->withErrors($e->validator->errors());
+        } catch (\Exception $e) {
+            Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
+            return back()->withInput();
         }
-
-        Alert::toast('Nomor telepon atau password anda salah.', 'error')->autoClose(10000)->timerProgressBar();
-        return back()->withInput();
     }
 
 

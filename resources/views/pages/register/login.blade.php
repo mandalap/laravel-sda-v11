@@ -10,7 +10,7 @@
 @endpush
 
 @section('content')
-    <div class="flex justify-center items-center p-4 min-h-screen bg-gradient-to-t from-[#AE1679] to-[#D81D76]">
+    <div class="flex justify-center items-center p-4 min-h-screen bg-gradient-to-t from-secondary to-primary">
         <div class="relative p-6 sm:p-8 w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-lg">
             <a href="{{ route('beranda') }}"
                 class="absolute top-4 right-4 flex items-center gap-1 text-sm sm:text-sm text-primary hover:text-black transition-colors z-10">
