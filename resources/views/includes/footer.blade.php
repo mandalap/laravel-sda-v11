@@ -1,32 +1,59 @@
 <div id="BottomNav" class="relative flex w-full h-[138px] shrink-0">
     <nav class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
-        <div class="grid grid-cols-4 h-fit rounded-[40px] justify-between py-4 px-5 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
+        <div
+            class="grid grid-cols-4 h-fit rounded-[40px] justify-between py-4 px-5 bg-gradient-to-t from-secondary to-primary">
+            <!-- Beranda -->
             <a href="{{ route('beranda') }}" class="flex flex-col gap-2 items-center text-center group">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 stroke-white group-hover:stroke-black">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                  </svg>
-                <span class="text-xs font-semibold text-white group-hover:text-black">Beranda</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none"
+                    class="{{ request()->routeIs('beranda') ? 'text-white' : 'text-custom-gray-10 opacity-50 group-hover:text-black' }}">
+                    <path
+                        d="M3.125 9L12.125 2L21.125 9V20C21.125 20.5304 20.9143 21.0391 20.5392 21.4142C20.1641 21.7893 19.6554 22 19.125 22H5.125C4.59457 22 4.08586 21.7893 3.71079 21.4142C3.33571 21.0391 3.125 20.5304 3.125 20V9Z"
+                        stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9.125 22V12H15.125V22" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span
+                    class="text-xs {{ request()->routeIs('beranda') ? 'font-bold text-white' : 'text-custom-gray-10 opacity-50 font-medium group-hover:text-black' }}">Beranda</span>
             </a>
-            <a href="{{ route('check-booking') }}" class="flex flex-col gap-2 items-center text-center group">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 stroke-white group-hover:stroke-black">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
-                  </svg>
-                <span class="text-xs font-semibold text-white group-hover:text-black">Booking</span>
-            </a>
-            <a href="{{ route('cari-properti') }}" class="flex flex-col gap-2 items-center text-center group">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 stroke-white group-hover:stroke-black">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                  </svg>
 
-                <span class="text-xs font-semibold text-white group-hover:text-black">Cari</span>
+            <!-- Booking -->
+            <a href="{{ route('check-booking') }}" class="flex flex-col gap-2 items-center text-center group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none"
+                    class="{{ request()->routeIs('check-booking') ? 'text-white' : 'text-custom-gray-10 opacity-50 group-hover:text-black' }}">
+                    <path
+                        d="M20.5858 13.9952V2.98705C20.5858 2.98705 20.5715 2.33551 20.1611 1.92487C19.7507 1.51423 19.0996 1.5 19.0996 1.5H6.36115C6.36115 1.5 5.71 1.51423 5.29961 1.92487C4.88923 2.33551 4.875 2.98705 4.875 2.98705V21.0441L7.21038 18.2824L9.54576 21.0441L12.0935 18.2824L14.2165 21.0441L15.576 19.4375M23.2396 22L21.2418 20.001M21.2418 20.001C21.5835 19.6591 21.8546 19.2532 22.0395 18.8064C22.2245 18.3596 22.3197 17.8808 22.3197 17.3972C22.3197 16.9137 22.2245 16.4348 22.0396 15.9881C21.8546 15.5413 21.5835 15.1354 21.2418 14.7935C20.9001 14.4515 20.4944 14.1803 20.0479 13.9952C19.6014 13.8102 19.1229 13.7149 18.6396 13.7149C18.1563 13.7149 17.6778 13.8102 17.2313 13.9952C16.7848 14.1803 16.3791 14.4515 16.0374 14.7935C15.3472 15.484 14.9595 16.4206 14.9595 17.3972C14.9595 18.1286 15.1769 18.8375 15.576 19.4375M21.2418 20.001C20.5517 20.6916 19.6156 21.0795 18.6396 21.0795C17.6636 21.0795 16.7275 20.6916 16.0374 20.001C15.8641 19.8276 15.7098 19.6387 15.576 19.4375M8.42972 7.23133H16.6198M8.42972 11.272H12.6759"
+                        stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span
+                    class="text-xs {{ request()->routeIs('check-booking') ? 'font-bold text-white' : 'font-medium text-custom-gray-10 opacity-50 group-hover:text-black' }}">Booking</span>
+            </a>
+
+            <!-- Cari Properti -->
+            <a href="{{ route('cari-properti') }}" class="flex flex-col gap-2 items-center text-center group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none"
+                    class="{{ request()->routeIs('cari-properti') ? 'text-white' : 'text-custom-gray-10 opacity-50 group-hover:text-black' }}">
+                    <path
+                        d="M11.625 19C16.0433 19 19.625 15.4183 19.625 11C19.625 6.58172 16.0433 3 11.625 3C7.20672 3 3.625 6.58172 3.625 11C3.625 15.4183 7.20672 19 11.625 19Z"
+                        stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M21.6249 21L17.2749 16.65" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span
+                    class="text-xs {{ request()->routeIs('cari-properti') ? 'font-bold text-white' : 'font-medium text-custom-gray-10 opacity-50 group-hover:text-black' }}">Cari</span>
             </a>
             <a href="{{ route('profil') }}" class="flex flex-col gap-2 items-center text-center group">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 stroke-white group-hover:stroke-black">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none"
+                    class=" {{ request()->routeIs('profil') ? 'text-white' : 'text-custom-gray-10 opacity-50 group-hover:text-black' }}">
+                    <path
+                        d="M20.875 21V19C20.875 17.9391 20.4536 16.9217 19.7034 16.1716C18.9533 15.4214 17.9359 15 16.875 15H8.875C7.81413 15 6.79672 15.4214 6.04657 16.1716C5.29643 16.9217 4.875 17.9391 4.875 19V21"
+                        stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M12.875 11C15.0841 11 16.875 9.20914 16.875 7C16.875 4.79086 15.0841 3 12.875 3C10.6659 3 8.875 4.79086 8.875 7C8.875 9.20914 10.6659 11 12.875 11Z"
+                        stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
 
-                <span class="text-xs font-semibold text-white group-hover:text-black">Akun</span>
+                <span
+                    class="text-xs {{ request()->routeIs('profil') ? 'font-bold text-white' : 'font-medium text-custom-gray-10 opacity-50 group-hover:text-black' }}">Akun</span>
             </a>
         </div>
     </nav>

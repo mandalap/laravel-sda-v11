@@ -31,65 +31,94 @@
 @endpush
 
 @section('content')
-    <div id="Background"
-        class="absolute top-0 w-full h-[280px] rounded-bl-[75px] rounded-br-[75px] bg-gradient-to-t from-[#a7006d] to-[#d40065]">
-    </div>
-
-    <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[60px]">
-        <a href="{{ route('profil') }}"
-            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="{{ asset('/assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[20px]" alt="icon">
-        </a>
-        <p class="font-semibold text-white">Riwayat Booking</p>
-        <div class="w-12 dummy-btn"></div>
-    </div>
+    <x-navigation-route title="Riwayat Booking" backRoute="{{ route('profil') }}" textColor="text-custom-gray-10"
+        :showBackground="true" />
 
     @if ($bookings->isEmpty())
         @include('components.no-data')
     @else
         <div class="container">
-            <h2 class="mb-4">Riwayat Booking Saya</h2>
-
             <div id="booking-list">
                 @include('pages.profile.partials.riwayatBookingList')
             </div>
 
             <div id="loading" class="hidden">
                 <!-- Skeleton loader cards -->
-                <section class="flex relative flex-col gap-4 px-5 mt-5 mb-3">
-                    <div class="card w-full">
-                        <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white">
-                            <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] skeleton"></div>
-                            <div class="flex flex-col gap-3 text-left w-full">
-                                <div class="skeleton h-6 rounded-md w-3/4"></div>
-                                <div class="skeleton h-4 rounded-md w-1/2"></div>
-                                <div class="skeleton h-4 rounded-md w-2/3"></div>
-                                <hr class="border-[#F1F2F6]">
-                                <div class="flex items-start gap-[6px]">
-                                    <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
-                                    <div class="skeleton h-4 rounded-md w-1/3"></div>
+                @for ($i = 0; $i < 3; $i++)
+                    <section class="relative px-5 mb-3">
+                        <div class="card w-full">
+                            <div class="flex flex-col rounded-2xl border border-custom-gray-40 p-3 bg-white gap-3">
+
+                                <!-- Bagian 1: Invoice & Status Skeleton -->
+                                <div class="flex justify-between items-center">
+                                    <!-- Invoice Skeleton -->
+                                    <div class="flex items-center gap-2">
+                                        <div class="skeleton w-5 h-5 rounded shrink-0"></div>
+                                        <div class="skeleton h-5 rounded-md w-24"></div>
+                                    </div>
+
+                                    <!-- Status Badge Skeleton -->
+                                    <div class="skeleton h-6 rounded w-16"></div>
                                 </div>
-                                <div class="flex items-start gap-[6px]">
-                                    <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
-                                    <div class="skeleton h-4 rounded-md w-2/5"></div>
+
+                                <!-- Garis Pembatas 1 -->
+                                <div class="border-t border-custom-gray-40"></div>
+
+                                <!-- Bagian 2: Gambar dan Informasi Booking Skeleton -->
+                                <div class="flex flex-row gap-2 items-center">
+                                    <!-- Gambar Skeleton -->
+                                    <div class="w-20 sm:w-24 md:w-40 h-16 sm:h-20 md:h-24 flex-shrink-0 rounded skeleton">
+                                    </div>
+
+                                    <!-- Konten Skeleton -->
+                                    <div class="flex flex-col flex-1 min-w-0 gap-1">
+                                        <!-- Nama Project -->
+                                        <div class="skeleton h-4 rounded-md w-full"></div>
+                                        <!-- Nama Product -->
+                                        <div class="skeleton h-3 rounded-md w-3/4"></div>
+                                        <!-- Alamat -->
+                                        <div class="skeleton h-3 rounded-md w-5/6"></div>
+
+                                        <!-- Lokasi dengan Icon -->
+                                        <div class="flex items-center gap-1">
+                                            <div class="skeleton w-3 h-3 sm:w-4 sm:h-4 rounded shrink-0"></div>
+                                            <div class="skeleton h-3 rounded-md w-1/2"></div>
+                                        </div>
+
+                                        <!-- Harga dengan Icon -->
+                                        <div class="flex items-center gap-1">
+                                            <div class="skeleton w-3 h-3 sm:w-4 sm:h-4 rounded shrink-0"></div>
+                                            <div class="skeleton h-3 rounded-md w-2/5"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="flex items-start gap-[6px]">
-                                    <div class="skeleton w-5 h-5 rounded-full shrink-0"></div>
-                                    <div class="skeleton h-4 rounded-md w-1/4"></div>
+
+                                <!-- Garis Pembatas 2 -->
+                                <div class="border-t border-custom-gray-40"></div>
+
+                                <!-- Bagian 3: Nama Blok dan Jumlah Pembayaran Skeleton -->
+                                <div class="flex justify-between items-center">
+                                    <!-- Nama Blok Skeleton -->
+                                    <div class="skeleton h-5 rounded-md w-1/3"></div>
+
+                                    <!-- Jumlah Pembayaran Skeleton -->
+                                    <div class="text-right">
+                                        <div class="skeleton h-4 rounded-md w-24 ml-auto"></div>
+                                    </div>
                                 </div>
-                                <hr class="border-[#F1F2F6]">
-                                <div class="flex">
-                                    <div class="skeleton h-6 rounded-md w-1/3"></div>
-                                </div>
-                                <div class="flex">
-                                    <div class="skeleton h-6 rounded-full w-1/4"></div>
-                                </div>
+
+                                <!-- Bagian 4: Informasi Tambahan Skeleton (hanya untuk variasi) -->
+                                @if ($i === 0)
+                                    <div class="space-y-1">
+                                        <div class="skeleton h-3 rounded-md w-3/4"></div>
+                                        <div class="skeleton h-3 rounded-md w-1/2"></div>
+                                    </div>
+                                @endif
+
                             </div>
                         </div>
-                    </div>
-                </section>
-                <!-- Second skeleton card -->
-
+                    </section>
+                @endfor
             </div>
 
             <!-- Observer target untuk infinite scroll -->

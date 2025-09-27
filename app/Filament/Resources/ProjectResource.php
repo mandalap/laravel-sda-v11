@@ -24,6 +24,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Infolists\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
@@ -40,135 +41,167 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
-                //
-                Fieldset::make('Detail')
-                ->schema([
-                    Select::make('developer_id')
-                    ->label('Developer')
-                    ->options(Developer::all()->pluck('nama', 'id'))
-                    ->searchable()
-                    ->required(),
+                Forms\Components\Tabs::make('Project Tabs')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Detail')
+                            ->schema([
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Select::make('developer_id')
+                                            ->label('Developer')
+                                            ->options(Developer::all()->pluck('nama', 'id'))
+                                            ->searchable()
+                                            ->required(),
 
-                    Select::make('lokasi_id')
-                    ->label('Lokasi')
-                    ->options(Lokasi::all()->pluck('regency.name', 'id'))
-                    ->searchable()
-                    ->required(),
+                                        Select::make('lokasi_id')
+                                            ->label('Lokasi')
+                                            ->options(Lokasi::all()->pluck('regency.name', 'id'))
+                                            ->searchable()
+                                            ->required(),
 
-                    Select::make('kategori_id')
-                    ->label('Kategori')
-                    ->options(Kategori::all()->pluck('kategori', 'id'))
-                    ->searchable()
-                    ->required(),
+                                        Select::make('kategori_id')
+                                            ->label('Kategori')
+                                            ->options(Kategori::all()->pluck('kategori', 'id'))
+                                            ->searchable()
+                                            ->required(),
 
-                    Select::make('jenis_id')
-                    ->label('Jenis')
-                    ->options(Jenis::all()->pluck('jenis', 'id'))
-                    ->searchable()
-                    ->required(),
+                                        Select::make('jenis_id')
+                                            ->label('Jenis')
+                                            ->options(Jenis::all()->pluck('jenis', 'id'))
+                                            ->searchable()
+                                            ->required(),
 
-                    Forms\Components\TextInput::make('nama_project')
-                        ->reactive() // Penting: Membuat field kategori reaktif
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            $set('slug', Str::slug($state)); // Memanggil mutator secara manual
-                        })
-                        // ->label('Nama Project')
-                        ->unique(ignoreRecord: true)
-                        ->required(),
-                    Forms\Components\TextInput::make('slug')
-                        ->disabled()
-                        ->label('Tampilan'),
+                                        Forms\Components\TextInput::make('nama_project')
+                                            ->reactive()
+                                            ->afterStateUpdated(function ($state, callable $set) {
+                                                $set('slug', Str::slug($state));
+                                            })
+                                            ->unique(ignoreRecord: true)
+                                            ->required(),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->disabled()
+                                            ->label('Tampilan'),
 
-                    Forms\Components\FileUpload::make('thumbnail')
-                        ->nullable()
-                        ->image()
-                        ->optimize('webp'),
+                                        Forms\Components\FileUpload::make('thumbnail')
+                                            ->nullable()
+                                            ->image()
+                                            ->optimize('webp'),
 
-                    Textarea::make('alamat_project')
-                    ->label('Alamat Lokasi')
-                    ->rows(5)
-                    ->maxLength(255)
-                    ->required(),
+                                        Textarea::make('alamat_project')
+                                            ->label('Alamat Lokasi')
+                                            ->rows(5)
+                                            ->maxLength(255)
+                                            ->required(),
 
-                    TextInput::make('video')
-                    ->label('Link Video')
-                    ->nullable(),
+                                        TextInput::make('url_video')
+                                            ->label('Link Video')
+                                            ->nullable(),
 
-                    TextInput::make('google_maps')
-                    ->label('Link Google Maps')
-                    ->nullable(),
+                                        TextInput::make('google_map')
+                                            ->label('Link Google Maps')
+                                            ->nullable(),
 
-                    TextInput::make('latlang')
-                    ->label('Lat-Lang Google Maps')
-                    ->nullable(),
+                                        TextInput::make('latlang')
+                                            ->label('Lat-Lang Google Maps')
+                                            ->nullable(),
 
-                    RichEditor::make('deskripsi')
-                    ->label('Deskripsi')
-                    ->nullable(),
+                                        RichEditor::make('deskripsi')
+                                            ->label('Deskripsi')
+                                            ->nullable(),
 
-                    Select::make('sertifikat')
-                    ->options([
-                        'SHM' => 'SHM',
-                        'SKT' => 'SKT',
+                                        Select::make('sertifikat')
+                                            ->options([
+                                                'SHM' => 'SHM',
+                                                'SKT' => 'SKT',
+                                            ])
+                                            ->required(),
+
+                                        Select::make('status_sertifikat')
+                                            ->label('Status Sertifikat')
+                                            ->options([
+                                                'Siap Balik Nama' => 'Siap Balik Nama',
+                                                'Proses Pemecahan' => 'Proses Pemecahan',
+                                            ])
+                                            ->required(),
+
+                                        Select::make('transaksi')
+                                            ->options([
+                                                'Cash' => 'Cash',
+                                                'Cash Tempo' => 'Cash Tempo',
+                                                'Kredit' => 'Kredit',
+                                            ])
+                                            ->required(),
+
+                                        Select::make('kelompok_id')
+                                            ->label('Kelompok')
+                                            ->options(Kelompok::all()->pluck('kelompok', 'id'))
+                                            ->searchable()
+                                            ->required(),
+
+                                        Select::make('is_approved')
+                                            ->label('Status Persetujuan')
+                                            ->options([
+                                                'Pending' => 'Pending',
+                                                'Diterima' => 'Diterima',
+                                                'Ditolak' => 'Ditolak',
+                                            ]),
+
+                                        Select::make('status')
+                                            ->options([
+                                                'tampil' => 'Tampil',
+                                                'arsip' => 'Arsip',
+                                            ])
+                                            ->required(),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
+                        Forms\Components\Tabs\Tab::make('Foto')
+                            ->schema([
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\Repeater::make('photos')
+                                            ->relationship('projectPhotos')
+                                            ->label('Foto Project')
+                                            ->schema([
+                                                FileUpload::make('photo')
+                                                    ->nullable()
+                                                    ->image()
+                                                    ->optimize('webp'),
+                                            ]),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
+                        Forms\Components\Tabs\Tab::make('Brosur')
+                            ->schema([
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\Repeater::make('photo')
+                                            ->relationship('projectsBrosur')
+                                            ->label('Brosur Project')
+                                            ->schema([
+                                                FileUpload::make('photo')
+                                                    ->nullable()
+                                                    ->image()
+                                                    ->optimize('webp'),
+                                            ]),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
+                        Forms\Components\Tabs\Tab::make('Fasilitas')
+                            ->schema([
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\Repeater::make('fasilitas')
+                                            ->relationship('projectFasilitas')
+                                            ->label('Fasilitas Project')
+                                            ->schema([
+                                                TextInput::make('fasilitas')->nullable(),
+                                            ]),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
                     ])
-                    ->required(),
-
-                    Select::make('status_sertifikat')
-                    ->options([
-                        'Siap Balik Nama' => 'Siap Balik Nama',
-                        'Proses Pemecahan' => 'Proses Pemecahan',
-                    ])
-                    ->required(),
-
-                    Select::make('transaksi')
-                    ->options([
-                        'Cash' => 'Cash',
-                        'Cash Tempo' => 'Cash Tempo',
-                        'Kredit' => 'Kredit',
-                    ])
-                    ->required(),
-
-                    Select::make('kelompok_id')
-                    ->label('Kelompok')
-                    ->options(Kelompok::all()->pluck('kelompok', 'id'))
-                    ->searchable()
-                    ->required(),
-
-
-                    Select::make('is_approved')
-                    ->options([
-                        'Pending' => 'Pending',
-                        'Diterima' => 'Diterima',
-                        'Ditolak' => 'Ditolak',
-                    ])
-                    ->required(),
-                ]),
-
-                Fieldset::make('Photo')
-                ->schema([
-
-                    Forms\Components\Repeater::make('photos')
-                    ->relationship('project_photos')
-                    ->schema([
-                        FileUpload::make('photo')
-                        ->nullable()
-                        ->image()
-                        ->optimize('webp'),
-                    ]),
-
-                ]),
-
-                Fieldset::make('Fasilitas')
-                ->schema([
-
-                    Forms\Components\Repeater::make('fasilitas')
-                    ->relationship('project_fasilitas')
-                    ->schema([
-                        TextInput::make('fasilitas')->nullable(),
-                    ]),
-
-                ]),
-
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -178,53 +211,53 @@ class ProjectResource extends Resource
             ->columns([
                 //
                 TextColumn::make('developer.nama')
-                ->label('Developer')
-                ->formatStateUsing(fn ($state, $record) => $record->developer->nama ?? 'No Developer')
-                ->sortable()
-                ->searchable(),
+                    ->label('Developer')
+                    ->formatStateUsing(fn($state, $record) => $record->developer->nama ?? 'No Developer')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('kategori.kategori')
-                ->label('Kategori')
-                ->formatStateUsing(fn ($state, $record) => $record->kategori->kategori ?? 'No Kategori')
-                ->sortable()
-                ->searchable(),
+                    ->label('Kategori')
+                    ->formatStateUsing(fn($state, $record) => $record->kategori->kategori ?? 'No Kategori')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('lokasi.regency.name')
-                ->label('Lokasi')
-                ->formatStateUsing(fn ($state, $record) => $record->lokasi->regency->name ?? 'No Lokasi')
-                ->sortable()
-                ->searchable(),
+                    ->label('Lokasi')
+                    ->formatStateUsing(fn($state, $record) => $record->lokasi->regency->name ?? 'No Lokasi')
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('nama_project')
-                ->label('Nama Project')
-                ->searchable(),
+                    ->label('Nama Project')
+                    ->searchable(),
 
                 TextColumn::make('kelompok.kelompok')
-                ->label('Kelompok')
-                ->formatStateUsing(fn ($state, $record) => $record->kelompok->kelompok ?? 'No Kelompok')
-                ->sortable()
-                ->searchable(),
+                    ->label('Kelompok')
+                    ->formatStateUsing(fn($state, $record) => $record->kelompok->kelompok ?? 'No Kelompok')
+                    ->sortable()
+                    ->searchable(),
 
                 ImageColumn::make('thumbnail'),
 
             ])
             ->filters([
                 SelectFilter::make('kategori_id')
-                ->label('Kategori')
-                ->relationship('kategori', 'kategori'),
+                    ->label('Kategori')
+                    ->relationship('kategori', 'kategori'),
 
                 SelectFilter::make('lokasi_id')
-                ->label('Lokasi')
-                ->options(function () {
-                    return Lokasi::with('regency')
-                        ->get()
-                        ->pluck('regency.name', 'id') // Mengambil nama regency dan id lokasi
-                        ->sort(); // Menyortir berdasarkan nama regency
-                }),
+                    ->label('Lokasi')
+                    ->options(function () {
+                        return Lokasi::with('regency')
+                            ->get()
+                            ->pluck('regency.name', 'id') // Mengambil nama regency dan id lokasi
+                            ->sort(); // Menyortir berdasarkan nama regency
+                    }),
 
                 SelectFilter::make('developer_id')
-                ->label('Developer')
-                ->relationship('developer', 'nama'),
+                    ->label('Developer')
+                    ->relationship('developer', 'nama'),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
