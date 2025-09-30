@@ -600,7 +600,7 @@
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
-                                <img src="{{ asset('assets/images/photos/munzalan.jpg') }}"
+                                <img src="{{ asset('assets/images/photos/munzalan.png') }}"
                                     class="w-full h-full object-contain" alt="Munzalan">
                             </div>
                         </div>
@@ -610,6 +610,11 @@
                                     class="w-full h-full object-contain" alt="Sajada">
                             </div>
                         </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/propertimu.png') }}"
+                                    class="w-full h-full object-contain" alt="Propertimu">
+                            </div>
                     </div>
                 </div>
             </div>
