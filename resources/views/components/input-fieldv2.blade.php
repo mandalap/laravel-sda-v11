@@ -9,6 +9,9 @@
     'id' => null,
     'options' => [],
     'showArrow' => false,
+    'onkeyup' => null,
+    'onchange' => null,
+    'onclick' => null,
 ])
 
 @php
@@ -33,7 +36,8 @@
                     class="flex absolute top-1/2 left-3 w-5 h-5 transform -translate-y-1/2 shrink-0" alt="icon">
             @endif
             <select name="{{ $name }}" id="{{ $inputId }}"
-                {{ $attributes->merge(['class' => 'w-full bg-white text-sm outline-none appearance-none ' . ($icon ? 'pl-7' : 'pl-0')]) }}>
+                {{ $attributes->merge(['class' => 'w-full bg-white text-sm outline-none appearance-none ' . ($icon ? 'pl-7' : 'pl-0')]) }}
+                @if ($onchange) onchange="{{ $onchange }}" @endif>
                 @if ($placeholder)
                     <option value="" hidden>{{ $placeholder }}</option>
                 @endif
@@ -48,6 +52,9 @@
         @else
             <input type="{{ $type }}" name="{{ $name }}" id="{{ $inputId }}"
                 value="{{ $inputValue }}" @if ($placeholder) placeholder="{{ $placeholder }}" @endif
+                @if ($onkeyup) onkeyup="{{ $onkeyup }}" @endif
+                @if ($onchange) onchange="{{ $onchange }}" @endif
+                @if ($onclick) onclick="{{ $onclick }}" @endif
                 {{ $attributes->merge(['class' => 'w-full text-sm appearance-none outline-none placeholder:text-custom-gray-70']) }} />
         @endif
     </label>
