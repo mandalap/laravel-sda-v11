@@ -244,7 +244,7 @@
             @endif
         </div>
 
-        <div class="flex flex-col gap-3 px-4">
+        <div class="flex flex-col gap-3 px-5">
             @forelse ($tanahKavlingTerbaik as $kavlingterbaik)
                 <a href="{{ route('detailproject', [$kavlingterbaik->jenis->slug, $kavlingterbaik->kategori->slug, $kavlingterbaik->slug]) }}"
                     class="card">
@@ -259,7 +259,7 @@
                         </div>
 
                         <!-- Deskripsi -->
-                        <div class="flex flex-col flex-1 min-h-0">
+                        <div class="flex flex-col gap-1 flex-1 min-h-0">
                             <!-- Nama & Alamat -->
                             <div class="flex flex-col gap-1">
                                 <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">

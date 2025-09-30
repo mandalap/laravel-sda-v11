@@ -143,7 +143,8 @@
 
                 if (remainingTime <= 0) {
                     countdownElement.innerText = "Waktu habis!";
-                    countdownElement.classList.add("text-red-500");
+                    countdownElement.classList.remove("text-primary");
+                    countdownElement.classList.add("text-danger-main");
                     return;
                 }
 
@@ -151,7 +152,9 @@
                 const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
                 const seconds = Math.floor((remainingTime / 1000) % 60);
 
-                countdownElement.innerText = `${hours}jam ${minutes}menit ${seconds}detik`;
+                countdownElement.innerText = `${hours} jam ${minutes} menit ${seconds} detik`;
+                countdownElement.classList.add("text-primary");
+                countdownElement.classList.remove("text-danger-main");
 
                 setTimeout(updateCountdown, 1000);
             }

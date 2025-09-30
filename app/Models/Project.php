@@ -173,13 +173,22 @@ class Project extends Model
      * Get formatted price display
      * @return string
      */
-    public function getPriceDisplay()
+    public function getPriceDisplay($options = [])
     {
         $pricing = $this->getPricingInfo();
 
+        // Default styling
+        $defaults = [
+            'price_class' => 'text-sm font-semibold text-primary',
+            'strike_class' => 'text-[10px] text-custom-gray-80',
+            'strike_top' => '-4px'
+        ];
+
+        $options = array_merge($defaults, $options);
+
         if (!$pricing['has_multiple_prices'] && !$pricing['has_discount']) {
             // Hanya 1 harga, tanpa diskon
-            return '<span class="text-sm font-semibold text-primary">' .
+            return '<span class="' . $options['price_class'] . '">' .
                 $this->formatShortPrice($pricing['min_price']) .
                 '</span>';
         }
@@ -187,10 +196,10 @@ class Project extends Model
         if (!$pricing['has_multiple_prices'] && $pricing['has_discount']) {
             // Hanya 1 harga, ada diskon - tampilkan harga diskon + coretan harga asli
             return '<span class="inline-flex items-baseline gap-1 md:gap-2">' .
-                '<span class="text-sm font-semibold text-primary">' .
+                '<span class="' . $options['price_class'] . '">' .
                 $this->formatShortPrice($pricing['min_discounted_price']) .
                 '</span>' .
-                '<span class="text-[10px] text-custom-gray-80 line-through relative" style="top: -4px;">' .
+                '<span class="' . $options['strike_class'] . ' line-through relative" style="top: ' . $options['strike_top'] . ';">' .
                 $this->formatShortPrice($pricing['min_original_price']) .
                 '</span>' .
                 '</span>';
@@ -198,7 +207,7 @@ class Project extends Model
 
         if ($pricing['has_multiple_prices'] && !$pricing['has_discount']) {
             // Multiple harga, tanpa diskon
-            return '<span class="text-sm font-semibold text-primary">' .
+            return '<span class="' . $options['price_class'] . '">' .
                 $this->formatShortPrice($pricing['min_price']) . ' - ' .
                 $this->formatShortPrice($pricing['max_price']) .
                 '</span>';
@@ -206,7 +215,7 @@ class Project extends Model
 
         if ($pricing['has_multiple_prices'] && $pricing['has_discount']) {
             // Multiple harga, ada diskon - tampilkan rentang harga setelah diskon
-            return '<span class="text-sm font-semibold text-primary">' .
+            return '<span class="' . $options['price_class'] . '">' .
                 $this->formatShortPrice($pricing['min_discounted_price']) . ' - ' .
                 $this->formatShortPrice($pricing['max_discounted_price']) .
                 '</span>';
