@@ -66,7 +66,7 @@ class RegisterController extends Controller
             Alert::toast('Pendaftaran berhasil. Silakan tunggu konfirmasi dari kami.', 'success')->autoClose(10000);
             return redirect()->route('developer.index');
         } catch (ValidationException $e) {
-            Alert::toast('Data tidak valid: ' . $e->getMessage(), 'error')->autoClose(10000);
+            Alert::toast($e->getMessage(), 'error')->autoClose(10000);
             return redirect()->back()->withInput()->withErrors($e->validator->errors());
         } catch (\Exception $e) {
             Alert::toast('Terjadi kesalahan: ' . $e->getMessage(), 'error')->autoClose(10000);
