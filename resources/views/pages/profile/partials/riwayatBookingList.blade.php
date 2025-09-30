@@ -89,23 +89,24 @@
                     </div>
 
                     @if ($booking->status == 'pending')
-                        <div class="flex justify-end">
-                            <div class="space-y-1 text-right">
+                        <div class="flex justify-between items-center">
+                            <div class="space-y-3 text-left">
                                 @if ($booking->snap_token)
-                                    <div class="text-[10px] text-custom-gray-70">
-                                        Batas waktu: <strong>{{ $expiryGMT7->translatedFormat('d F Y') }}</strong>
+                                    <div class="text-xs text-custom-gray-80 font-medium">
+                                        Silahkan lanjutkan pembayaran Anda, batas waktu pembayaran adalah tanggal
+                                        <span class="text-custom-gray-100 font-semibold">{{ $expiryGMT7->translatedFormat('d F Y') }}</span>
                                         pukul
-                                        <strong>{{ $expiryGMT7->format('H:i') }} WIB</strong>
+                                        <span class="text-custom-gray-100 font-semibold">{{ $expiryGMT7->format('H:i') }} WIB</span>
                                     </div>
-                                    <div class="text-[10px] text-primary font-medium">
+                                    <div class="text-xs text-custom-gray-80 font-medium">
                                         Sisa waktu: <span id="countdown-{{ $booking->id }}"
                                             data-expiry="{{ $booking->snap_token_expiry }}"></span>
                                     </div>
                                 @else
-                                    <div class="flex items-center gap-1 text-[10px] text-danger-main justify-end">
-                                        <span>Menunggu konfirmasi Admin</span>
+                                    <div class="flex items-center gap-1 text-xs font-medium text-danger-main">
                                         <img src="{{ asset('assets/images/icons/alert-danger.png') }}"
-                                            class="w-3 h-3 flex-shrink-0" alt="alert">
+                                            class="w-5 h-5 flex-shrink-0" alt="alert">
+                                        <span>Menunggu konfirmasi Admin</span>
                                     </div>
                                 @endif
                             </div>

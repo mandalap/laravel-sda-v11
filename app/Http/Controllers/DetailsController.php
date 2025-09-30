@@ -90,7 +90,6 @@ class DetailsController extends Controller
             // Cek apakah request berasal dari riwayat booking
             $bookingId = $request->input('booking_id');
             if ($bookingId) {
-                // Ambil data booking berdasarkan ID
                 $bookingTransaction = BookingTransaction::with('product.project')->findOrFail($bookingId);
 
                 // Pastikan booking milik user yang sedang login
@@ -100,7 +99,6 @@ class DetailsController extends Controller
 
                 // Validasi untuk transaksi yang sudah dibayar
                 if ($bookingTransaction->status == 'booking' && $bookingTransaction->is_paid) {
-                    // Cari transaksi lain untuk produk yang sama dengan status pending atau cancel
                     $duplicateBookings = BookingTransaction::where('product_id', $bookingTransaction->product_id)
                         ->where('member_id', $user->id)
                         ->where(function ($query) {
@@ -110,7 +108,6 @@ class DetailsController extends Controller
                         ->where('id', '!=', $bookingTransaction->id)
                         ->get();
 
-                    // Hapus transaksi duplikat
                     if ($duplicateBookings->isNotEmpty()) {
                         foreach ($duplicateBookings as $duplicateBooking) {
                             $duplicateBooking->delete();
@@ -140,9 +137,10 @@ class DetailsController extends Controller
                     'telepon' => $user->telepon,
                     'kodeProduct' => $product->code_product,
                     'jumlahBooking' => $bookingTransaction->jumlah_uang_booking,
+                    'discount' => $bookingTransaction->diskon,
+                    'totalHarga' => $bookingTransaction->total_harga,
                     'snapToken' => $bookingTransaction->snap_token,
                     'booking' => $bookingTransaction,
-                    // 'refferalCode' => $referralCode
                 ]);
             }
 
@@ -158,7 +156,6 @@ class DetailsController extends Controller
 
             if (!empty($referralCode)) {
                 $agency = Agency::whereRaw('BINARY agency_code = ?', [$referralCode])->first();
-                // dd($agency, $referralCode);
 
                 if (!$agency) {
                     Alert::toast('Kode referral tidak valid.', 'error')->autoClose(10000)->timerProgressBar();
@@ -167,18 +164,12 @@ class DetailsController extends Controller
 
                 $product = Product::where("code_product", $request->input('product'))->firstOrFail();
 
-                // Validasi kode referral tidak boleh berubah setelah booking
-                $referralCode = $request->input('refferal');
-
                 $existingBookingForProduct = BookingTransaction::where('product_id', $product->id)
                     ->where('member_id', $user->id)
                     ->whereIn('status', ['pending', 'booking'])
                     ->first();
 
-                // dd($existingBookingForProduct, $referralCode);
-
                 if ($existingBookingForProduct && $referralCode) {
-                    // Cek apakah referral sebelumnya di booking sama
                     $previousAgency = Agency::find($existingBookingForProduct->agency_id);
 
                     if ($previousAgency && $previousAgency->agency_code !== $referralCode) {
@@ -189,19 +180,15 @@ class DetailsController extends Controller
                     }
                 }
 
-
-                // Cek apakah member sudah terdaftar sebagai affiliate dari agency lain
                 $existingAffiliate = Affiliate::where('member_id', $user->id)->first();
 
                 if (!$existingAffiliate) {
-                    // Jika belum terdaftar sebagai affiliate, tambahkan ke tabel affiliate
                     Affiliate::create([
                         'member_id' => $user->id,
                         'agency_id' => $agency->id,
                         'joined_at' => now(),
                     ]);
                 }
-                // Jika sudah terdaftar sebagai affiliate dari agency lain, tetap lanjutkan proses
             }
 
             // Jika bukan dari riwayat booking, lanjutkan dengan logika checkout baru
@@ -215,7 +202,6 @@ class DetailsController extends Controller
                 ->first();
 
             if ($existingPaidBooking) {
-                // Hapus transaksi pending atau cancel untuk produk yang sama
                 BookingTransaction::where('product_id', $product->id)
                     ->where('member_id', $user->id)
                     ->where(function ($query) {
@@ -223,7 +209,7 @@ class DetailsController extends Controller
                             ->orWhere('status', 'cancel');
                     })
                     ->where('id', '!=', $existingPaidBooking->id)
-                    ->delete(); // Atau soft delete
+                    ->delete();
 
                 Alert::toast('Produk ini sudah dibooking.', 'info')->autoClose(10000)->timerProgressBar();
                 return redirect()->route('custinfo', [
@@ -260,6 +246,10 @@ class DetailsController extends Controller
             $kodeProduct = $request->input('product');
             $jumlahBooking = $request->input('jumlah_uang_booking', 100000);
 
+            // Hitung discount dan total harga
+            $discount = $product->discount ?? 0;
+            $totalHarga = $product->harga - $discount;
+
             return view("pages.details.checkout", compact(
                 'project',
                 'product',
@@ -268,6 +258,8 @@ class DetailsController extends Controller
                 'telepon',
                 'kodeProduct',
                 'jumlahBooking',
+                'discount',
+                'totalHarga',
                 'agency',
                 'referralCode'
             ));
@@ -376,6 +368,11 @@ class DetailsController extends Controller
             // Jika sudah ada transaksi yang belum dibayar, gunakan invoice lama
             $invoice = $existingBooking ? $existingBooking->invoice : BookingTransaction::generateUniqueTrxId();
 
+            // Hitung discount dan total harga
+            $discount = $product->discount ?? 0;
+            $hargaTanah = $product->harga;
+            $totalHarga = $hargaTanah - $discount;
+
             // Jika transaksi belum ada, buat transaksi baru
             $booking = $existingBooking ?? new BookingTransaction();
             $booking->member_id = $user->id;
@@ -383,18 +380,19 @@ class DetailsController extends Controller
             $booking->agency_id = $agencyId;
             $booking->invoice = $invoice;
             $booking->jumlah_uang_booking = request()->input('jumlah_uang_booking', 100000);
-            $booking->harga_tanah = $product->harga;
-            $booking->total_harga = $product->harga;
+            $booking->harga_tanah = $hargaTanah;
+            $booking->diskon = $discount;
+            $booking->total_harga = $totalHarga;
             $booking->is_paid = false;
             $booking->status = 'pending';
 
-            log::info('Creating new booking transaction', [
-                'member_id' => $user->id,
-                'product_id' => $product->id,
-                'invoice' => $booking->invoice,
-                'jumlah_uang_booking' => $booking->jumlah_uang_booking,
-                'agency_id' => $booking->agency_id,
-            ]);
+            // log::info('Creating new booking transaction', [
+            //     'member_id' => $user->id,
+            //     'product_id' => $product->id,
+            //     'invoice' => $booking->invoice,
+            //     'jumlah_uang_booking' => $booking->jumlah_uang_booking,
+            //     'agency_id' => $booking->agency_id,
+            // ]);
 
             // Set Kadaluarsa 24 jam jika belum memilih metode pembayaran
             $expiryTime = request()->input('payment_method') ? $this->getExpiryTime(request()->input('payment_method')) : 1440; // 24 jam default
