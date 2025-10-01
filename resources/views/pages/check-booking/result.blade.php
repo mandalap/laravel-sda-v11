@@ -164,7 +164,7 @@
                 <div class="flex justify-center items-center rounded-2xl h-[52px] p-3 bg-success-main">
                     <!-- Info Section -->
                     <div class="flex flex-row items-center gap-2">
-                        <img src="{{ asset('assets/images/icons/check.png') }}" class="w-6 h-6" alt="icon">
+                        <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-6 h-6" alt="icon">
                         <span class="text-sm font-semibold text-custom-gray-10">Sudah Dibayar</span>
                     </div>
                 </div>
