@@ -50,23 +50,23 @@
 
                         <div class="flex flex-col flex-1 min-w-0">
                             <div class="flex flex-col gap-1">
-                                <h3 class="text-xs sm:text-sm font-medium text-custom-gray-100 line-clamp-2">
+                                <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
                                     {{ $booking->product->project->nama_project }}
                                 </h3>
-                                <p class="text-[10px] sm:text-xs text-custom-gray-70 line-clamp-1">
+                                <p class="text-xs text-custom-gray-70 line-clamp-1">
                                     {{ $booking->product->project->alamat_project }}</p>
                                 <div class="flex items-center gap-[4px] sm:gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/location2.png') }}"
                                         class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" alt="icon">
-                                    <p class="text-[10px] sm:text-xs text-custom-gray-70 truncate">
+                                    <p class="text-xs text-custom-gray-70 truncate">
                                         {{ $booking->product->project->lokasi->regency->name }}
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-[4px] sm:gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/tag.png') }}"
                                         class="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" alt="icon">
-                                    <p class="text-[10px] sm:text-xs text-custom-gray-70 truncate">Rp
-                                        {{ number_format($booking->total_harga) }}</p>
+                                    <p class="text-xs text-custom-gray-70 truncate">Rp
+                                        {{ number_format($booking->total_harga, 0, ',', '.') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                             <div class="flex flex-col gap-1">
                                 <p class="text-sm font-medium text-custom-gray-80">Jumlah pembayaran: <span
                                         class="text-sm font-semibold text-primary">Rp
-                                        {{ number_format($booking->jumlah_uang_booking) }}</span></p>
+                                        {{ number_format($booking->jumlah_uang_booking, 0, ',', '.') }}</span></p>
                             </div>
                         </div>
                     </div>
@@ -94,9 +94,12 @@
                                 @if ($booking->snap_token)
                                     <div class="text-xs text-custom-gray-80 font-medium">
                                         Silahkan lanjutkan pembayaran Anda, batas waktu pembayaran adalah tanggal
-                                        <span class="text-custom-gray-100 font-semibold">{{ $expiryGMT7->translatedFormat('d F Y') }}</span>
+                                        <span
+                                            class="text-custom-gray-100 font-semibold">{{ $expiryGMT7->translatedFormat('d F Y') }}</span>
                                         pukul
-                                        <span class="text-custom-gray-100 font-semibold">{{ $expiryGMT7->format('H:i') }} WIB</span>
+                                        <span
+                                            class="text-custom-gray-100 font-semibold">{{ $expiryGMT7->format('H:i') }}
+                                            WIB</span>
                                     </div>
                                     <div class="text-xs text-custom-gray-80 font-medium">
                                         Sisa waktu: <span id="countdown-{{ $booking->id }}"

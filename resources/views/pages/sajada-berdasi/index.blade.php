@@ -123,7 +123,7 @@
     <div id="BottomNav" class="relative flex w-full h-[80px] shrink-0">
         <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-50">
             <div
-                class="flex items-center justify-between rounded-xl h-[61px] pl-6 pr-2 bg-gradient-to-l from-secondary to-primary">
+                class="flex items-center justify-between rounded-xl h-[66px] pl-6 pr-2 bg-gradient-to-l from-secondary to-primary">
                 <!-- Info Section -->
                 <div class="flex flex-col justify-center">
                     <span class="text-sm font-semibold text-custom-gray-10 leading-none mb-1 block">Butuh Informasi</span>
