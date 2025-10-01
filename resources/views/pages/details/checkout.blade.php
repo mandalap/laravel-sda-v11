@@ -102,25 +102,27 @@
 
         <hr class="border-custom-gray-40">
 
-        <div class="flex flex-col justify-center px-5">
-            <p class="font-semibold text-sm text-custom-gray-100">Rincian Pembayaran</p>
-        </div>
-
-        <div class="flex flex-col justify-center px-5 gap-2">
-            <div class="flex flex-row justify-between">
-                <p class="text-sm text-custom-gray-80 leading-none mb-1">Harga per kavling</p>
-                <p class="font-medium text-sm text-custom-gray-80 leading-none">
-                    Rp{{ number_format($product->harga, 0, '.', '.') }}</p>
+        <div class="flex flex-col justify-center px-5 gap-3">
+            <div class="flex flex-col justify-center">
+                <p class="font-semibold text-sm text-custom-gray-100">Rincian Pembayaran</p>
             </div>
-            <div class="flex flex-row justify-between">
-                <p class="text-sm text-custom-gray-80 leading-none mb-1">Potongan harga</p>
-                <p class="font-medium text-sm text-primary leading-none">-Rp{{ number_format($discount, 0, ',', '.') }}</p>
-            </div>
-            <hr class="border-custom-gray-40">
-            <div class="flex flex-row justify-between">
-                <p class="text-sm text-custom-gray-80 leading-none mb-1">Total pembayaran kavling</p>
-                <p class="font-semibold text-sm text-custom-gray-100 leading-none">
-                    Rp{{ number_format($totalHarga, 0, ',', '.') }}</p>
+            <div class="flex flex-col justify-center px-2 gap-2">
+                <div class="flex flex-row justify-between">
+                    <p class="text-sm text-custom-gray-80 leading-none mb-1">Harga produk</p>
+                    <p class="font-medium text-sm text-custom-gray-80 leading-none">
+                        Rp{{ number_format($product->harga, 0, '.', '.') }}</p>
+                </div>
+                <div class="flex flex-row justify-between">
+                    <p class="text-sm text-custom-gray-80 leading-none mb-1">Potongan harga</p>
+                    <p class="font-medium text-sm text-primary leading-none">-Rp{{ number_format($discount, 0, ',', '.') }}
+                    </p>
+                </div>
+                <hr class="border-custom-gray-40">
+                <div class="flex flex-row justify-between">
+                    <p class="text-sm text-custom-gray-80 leading-none mb-1">Total pembayaran produk</p>
+                    <p class="font-semibold text-sm text-custom-gray-100 leading-none">
+                        Rp{{ number_format($totalHarga, 0, ',', '.') }}</p>
+                </div>
             </div>
         </div>
 

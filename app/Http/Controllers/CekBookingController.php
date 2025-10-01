@@ -19,11 +19,11 @@ class CekBookingController extends Controller
     {
         $data = $request->all();
 
-         $validator = Validator::make($request->all(), [
-             'code_booking' => 'required',
-         ]);
+        $validator = Validator::make($request->all(), [
+            'code_booking' => 'required',
+        ]);
 
-         if ($validator->fails()) {
+        if ($validator->fails()) {
             Alert::toast('Data tidak boleh kosong.', 'info')->autoClose(10000)->timerProgressBar();
             return redirect()->route('check-booking')->withInput();
         }
@@ -31,8 +31,10 @@ class CekBookingController extends Controller
         $booking = BookingTransaction::where('invoice', $request->code_booking)->first();
 
         if (!$booking) {
-            Alert::toast('Booking tidak ditemukan.', 'error')->autoClose(10000)->timerProgressBar();
-            return redirect()->route('check-booking')->withInput();
+            return redirect()->route('check-booking')
+                ->withInput()
+                ->with('notFound', true)
+                ->with('searchQuery', $request->code_booking);
         }
 
         return view('pages.check-booking.result', compact('booking'));
