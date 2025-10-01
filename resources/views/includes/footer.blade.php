@@ -1,4 +1,4 @@
-<div id="BottomNav" class="relative flex w-full h-[138px] shrink-0">
+<div id="BottomNav" class="relative flex w-full h-[110px] shrink-0">
     <nav class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
         <div
             class="grid grid-cols-4 h-fit rounded-[40px] justify-between py-4 px-5 bg-gradient-to-t from-secondary to-primary">

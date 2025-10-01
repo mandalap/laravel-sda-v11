@@ -54,9 +54,9 @@
                 </div>
             </div>
 
-            <x-button-primary type="submit" :full-width="true">
-                Daftar
-            </x-button-primary>
+            {{-- <x-button-primary type="submit" :full-width="true" disabled>
+                Daftar (Belum tersedia)
+            </x-button-primary> --}}
         </form>
     </div>
 @endsection
