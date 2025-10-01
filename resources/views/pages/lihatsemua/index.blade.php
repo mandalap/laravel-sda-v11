@@ -53,22 +53,9 @@
 @endpush
 
 @section('content')
-    <div id="Background"
-        class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-    </div>
-    <div id="TopNav" class="flex relative justify-between items-center px-5 pt-5">
-        <a href="{{ route('beranda') }}"
-            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="assets/images/icons/arrow-left.svg" class="w-[20px] h-[20px]" alt="icon">
-        </a>
-        <h3 class="text-lg font-bold text-white">Semua Properti</h3>
-        <div class="w-10 dummy-btn"></div>
-    </div>
-    <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
-        <h1 class="font-bold text-[20px] leading-[30px] text-white">Properti {{ $kelompok->kelompok }}</h1>
-        <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
-    </div>
-    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 py-2 mt-6 w-full bg-white shadow-md">
+    <x-navigation-route title="Properti {{ $kelompok->kelompok }}" :backRoute="route('beranda')" :showBackground="true"
+        textColor="text-custom-gray-10" />
+    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 w-full">
 
         <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
             <!-- Menambahkan hidden input untuk membawa query string lainnya -->
@@ -76,20 +63,21 @@
             <input type="hidden" name="propertiKategori" value="{{ request()->query('propertiKategori', 'all') }}">
             <input type="hidden" name="filter" value="{{ request()->query('filter', 'none') }}">
             <div
-                class="flex items-center rounded-full p-[6px_10px] bg-white w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-[#d40065] ring-gray-300 ring-1">
-                <div class="w-4 h-4 flex shrink-0 mr-[4px]">
-                    <img src="{{ asset('assets/images/icons/search.svg') }}" alt="icon">
+                class="flex items-center rounded-full gap-2 px-4 h-11 bg-custom-gray-10 w-full transition-all duration-300 focus-within:ring-1 focus-within:ring-primary ring-1">
+                <div class="w-5 h-5 flex shrink-0">
+                    <img src="{{ asset('assets/images/icons/search-primary.png') }}" alt="icon">
                 </div>
-                <input type="text" name="cari" id="cari_kavling" class="w-full text-xs bg-white outline-none"
+                <input type="text" name="cari" id="cari_kavling"
+                    class="w-full text-xs bg-transparent outline-none placeholder:text-custom-gray-70"
                     placeholder="Tuliskan nama lokasi" value="{{ request()->query('cari') }}">
                 <button type="submit"
-                    class="ml-2 flex justify-center rounded-full p-[6px_12px] bg-[#d40065] font-bold text-white hover:bg-black hover:text-white text-xs">Cari</button>
+                    class="ml-2 flex justify-center rounded-full px-3 py-1.5 bg-primary font-bold text-custom-gray-10 hover:text-custom-gray-100 text-xs whitespace-nowrap">Cari</button>
             </div>
         </form>
         <div class="relative">
             <button type="button" id="filter_button"
-                class="p-2 bg-white border border-gray-300 rounded-md hover:border-[#d40065]">
-                <img src="{{ asset('assets/images/icons/filter.svg') }}" alt="filter icon" class="w-5 h-5">
+                class="w-11 h-11 bg-custom-gray-10 rounded-full flex items-center justify-center flex-shrink-0">
+                <img src="{{ asset('assets/images/icons/filter.png') }}" alt="filter icon" class="w-6 h-6">
             </button>
             <div id="filter_dropdown"
                 class="hidden absolute left-0 p-2 mt-2 w-40 text-sm text-black bg-white rounded-md border border-gray-300 shadow-lg">

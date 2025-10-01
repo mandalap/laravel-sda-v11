@@ -190,7 +190,7 @@
     {{-- End Popular --}}
 
     {{-- Lokasi Project --}}
-    <section id="Cities" class="flex flex-col p-5 gap-3 mt-5">
+    <section id="Cities" class="flex flex-col p-5 gap-3 ">
         <div class="flex justify-between items-center">
             <h2 class="text-base font-semibold text-custom-gray-100">Pilihan Lokasi</h2>
             <a href="{{ route('lihatkota') }}">
@@ -202,7 +202,6 @@
             </a>
         </div>
 
-        <!-- Grid dengan gap 20px -->
         <div class="grid grid-cols-2 gap-5">
             @forelse ($cities as $city)
                 <a href="{{ route('lihatproperti', ['propertiKategori' => 'all', 'propertiCity' => $city->slug, 'filter' => 'none']) }}"
@@ -230,7 +229,7 @@
 
     {{-- Terbaik --}}
     <section id="Best" class="flex flex-col gap-4">
-        <div class="flex justify-between items-center px-5 mt-5">
+        <div class="flex justify-between items-center px-5">
             <h2 class="text-base font-semibold text-custom-gray-100">Kavling Terbaik</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'terbaik')->first())
                 <a
@@ -250,17 +249,13 @@
                     class="card">
                     <div
                         class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
-
-                        <!-- Gambar -->
                         <div
                             class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                             <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}"
                                 class="w-full h-full object-contain" alt="{{ $kavlingterbaik->nama_project }}">
                         </div>
 
-                        <!-- Deskripsi -->
                         <div class="flex flex-col gap-1 flex-1 min-h-0">
-                            <!-- Nama & Alamat -->
                             <div class="flex flex-col gap-1">
                                 <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
                                     {{ $kavlingterbaik->nama_project }}
@@ -271,7 +266,6 @@
 
                             <hr class="border-custom-gray-30 my-1">
 
-                            <!-- Detail Lokasi -->
                             <div class="flex flex-col gap-[6px]">
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/location2.png') }}"
@@ -298,14 +292,11 @@
 
                             <hr class="border-custom-gray-30 my-1">
 
-                            <!-- Harga -->
-                            @if ($kavlingterbaik->kategori->slug == 'tanah-kavling')
-                                <div class="flex items-center">
-                                    <p class="text-sm font-semibold text-primary">
-                                        {!! $kavlingterbaik->getPriceDisplay() !!}
-                                    </p>
-                                </div>
-                            @endif
+                            <div class="flex items-center">
+                                <p class="text-sm font-semibold text-primary">
+                                    {!! $kavlingterbaik->getPriceDisplay() !!}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -325,24 +316,20 @@
         <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
             <h2 class="text-sm font-bold">Promo Spesial</h2>
 
-            <!-- Landscape Testimonials -->
             <div>
                 <div class="testimonial-landscape-container relative">
                     <div class="testimonial-landscape-swiper overflow-hidden w-full">
                         <div class="swiper-wrapper">
-                            <!-- Loop untuk Menampilkan Gambar dari Database -->
                             @foreach ($promoBanners as $banner)
                                 <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
                                     <a href="{{ $banner->redirect_url }}"
                                         class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
-                                        <!-- Menampilkan Gambar dari Storage -->
                                         <img src="{{ asset('storage/' . $banner->image) }}"
                                             class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
                                     </a>
                                 </div>
                             @endforeach
                         </div>
-                        <!-- Pagination -->
                         <div class="swiper-pagination"></div>
 
                     </div>
@@ -376,10 +363,6 @@
                             <div
                                 class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
                                 <div class="relative">
-                                    {{-- <button
-                                        class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-primary text-white text-[0.625rem]">
-                                        Turun Harga
-                                    </button> --}}
                                     <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
                                         <img src="{{ asset('storage/' . $hunianRekomendasi->thumbnail) }}"
                                             class="object-cover w-full h-full"
@@ -441,10 +424,89 @@
     </section>
     {{-- End: Rekomendasi --}}
 
+    {{-- Terbaru --}}
+    <section id="Terbaru" class="flex flex-col gap-4 mt-5">
+        <div class="flex justify-between items-center px-5">
+            <h2 class="text-base font-semibold text-custom-gray-100">Properti Terbaru</h2>
+            @if ($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
+                <a
+                    href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
+                    <div class="flex gap-1 items-center">
+                        <span class="text-sm text-primary">Lihat Semua</span>
+                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
+                            alt="icon">
+                    </div>
+                </a>
+            @endif
+        </div>
+        <div class="flex flex-col gap-3 px-5">
+            @forelse ($listingTerbaru as $listingTerbaru)
+                <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
+                    class="card">
+                    <div
+                        class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
+                        <div
+                            class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
+                            <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
+                                class="w-full h-full object-contain" alt="{{ $listingTerbaru->nama_project }}">
+                        </div>
+
+                        <div class="flex flex-col gap-1 flex-1 min-h-0">
+                            <div class="flex flex-col gap-1">
+                                <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
+                                    {{ $listingTerbaru->nama_project }}
+                                </h3>
+                                <p class="text-xs text-custom-gray-70 line-clamp-1">{{ $listingTerbaru->alamat_project }}
+                                </p>
+                            </div>
+
+                            <hr class="border-custom-gray-30 my-1">
+
+                            <div class="flex flex-col gap-[6px]">
+                                <div class="flex items-center gap-[6px]">
+                                    <img src="{{ asset('assets/images/icons/location2.png') }}"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                    <p class="text-xs text-custom-gray-70 truncate">
+                                        {{ $listingTerbaru->lokasi->regency->name }}
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-[6px]">
+                                    <img src="{{ asset('assets/images/icons/category.png') }}"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                    <p class="text-xs text-custom-gray-70 truncate">
+                                        {{ $listingTerbaru->kategori->kategori }}</p>
+                                </div>
+                                <div class="flex items-center gap-[6px]">
+                                    <img src="{{ asset('assets/images/icons/layer.png') }}"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                    <p class="text-xs text-custom-gray-70 truncate">
+                                        Tersisa
+                                        {{ $listingTerbaru->project_product->where('status', 'Tersedia')->count() }} Unit
+                                    </p>
+                                </div>
+                            </div>
+
+                            <hr class="border-custom-gray-30 my-1">
+
+                            <div class="flex items-center">
+                                <p class="text-sm font-semibold text-primary">
+                                    {!! $listingTerbaru->getPriceDisplay() !!}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div class="flex justify-between items-center px-5">
+                    <h2 class="text-sm">Properti belum tersedia</h2>
+                </div>
+            @endforelse
+        </div>
+    </section>
+
     {{-- Counter --}}
     <div class="counter-wrapper mt-5">
         <section id="Counter" class="flex flex-cols p-5 gap-3 justify-between bg-gray-100">
-            <!-- Block #1 -->
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="icon">
@@ -459,7 +521,6 @@
                 </h2>
             </article>
 
-            <!-- Block #2 -->
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="icon">
@@ -474,7 +535,6 @@
                 </h2>
             </article>
 
-            <!-- Block #3 -->
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
@@ -489,7 +549,6 @@
                 </h2>
             </article>
 
-            <!-- Block #4 -->
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="icon">
@@ -507,48 +566,62 @@
     </div>
     {{-- End: Counter --}}
 
-    {{-- Terbaru --}}
-    <section id="Terbaru" class="flex flex-col gap-4 mt-5">
-        <div class="flex justify-between items-center px-5">
-            <h2 class="text-base font-semibold text-custom-gray-100">Listing Terbaru</h2>
-            @if ($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
-                <a
-                    href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
-                    <div class="flex gap-1 items-center">
-                        <span class="text-sm text-primary">Lihat Semua</span>
-                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                            alt="icon">
-                    </div>
-                </a>
-            @endif
-        </div>
-        <div class="overflow-x-hidden w-full swiper">
-            <div class="swiper-wrapper">
-                @forelse ($listingTerbaru as $listingTerbaru)
-                    <div class="swiper-slide !w-fit pb-[30px]">
-                        <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
-                            class="card">
-                            <div
-                                class="flex flex-col items-center w-[180px] shrink-0 rounded-[40px] p-4 pb-5 gap-3 bg-white shadow-[0px_12px_30px_0px_#0000000D] text-center border border-[#F1F2F6] hover:border-primary">
-                                <div class="flex shrink-0 overflow-hidden rounded-[30px] w-[140px] h-[100px] bg-[#F5F6F8]">
-                                    <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
-                                        class="object-cover w-full h-full" alt="thumbnail">
-                                </div>
-                                <div class="flex flex-col gap-[2px]">
-                                    <h3 class="font-semibold text-sm">{{ $listingTerbaru->nama_project }}</h3>
-                                    <p class="text-xs text-ngekos-grey">{{ $listingTerbaru->lokasi->regency->name }}</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                @empty
-                    <div class="flex justify-between items-center px-5">
-                        <h2 class="text-sm">Properti belum tersedia</h2>
-                    </div>
-                @endforelse
+    {{-- Partner Kerjasama --}}
+    <div class="counter-wrapper mt-5">
+        <section id="PartnerKerjasama" class="flex flex-col gap-3 p-4 bg-primary">
+            <!-- Bagian Judul -->
+            <div class="flex justify-center w-full">
+                <p class="text-center text-custom-gray-10 text-base font-semibold">
+                    Partner Kerjasama Kami
+                </p>
             </div>
-        </div>
-    </section>
+
+            <!-- Bagian Slider Partner -->
+            <div class="partner-swiper-container overflow-hidden w-full">
+                <div class="partner-swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/riil-property.png') }}"
+                                    class="w-full h-full object-contain" alt="Riil Property">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/erka-land.png') }}"
+                                    class="w-full h-full object-contain" alt="Erka Land">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/baiti-land.png') }}"
+                                    class="w-full h-full object-contain" alt="Baiti Land">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/munzalan.png') }}"
+                                    class="w-full h-full object-contain" alt="Munzalan">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/sajada.png') }}"
+                                    class="w-full h-full object-contain" alt="Sajada">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/propertimu.png') }}"
+                                    class="w-full h-full object-contain" alt="Propertimu">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    {{-- End: Partner Kerjasama --}}
+
 
     @include('includes.footer')
 @endsection
@@ -617,6 +690,34 @@
 
             // Tambahkan A11y untuk aksesibilitas
             landscapeSwiper.a11y.enable();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Partner Swiper
+            var partnerSwiper = new Swiper('.partner-swiper', {
+                slidesPerView: 4,
+                spaceBetween: 8,
+                loop: true,
+                autoplay: {
+                    delay: 2000,
+                    disableOnInteraction: false,
+                },
+                speed: 1000,
+                breakpoints: {
+                    320: {
+                        slidesPerView: 4,
+                        spaceBetween: 8,
+                    },
+                    480: {
+                        slidesPerView: 4,
+                        spaceBetween: 8,
+                    },
+                    640: {
+                        slidesPerView: 5,
+                        spaceBetween: 8,
+                    }
+                }
+            });
         });
     </script>
 
