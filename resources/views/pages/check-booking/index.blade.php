@@ -44,6 +44,10 @@
             </div>
 
         </form>
+
+        @if (session('notFound'))
+            <x-not-found />
+        @endif
     </div>
     @include('includes.footer')
     </div>

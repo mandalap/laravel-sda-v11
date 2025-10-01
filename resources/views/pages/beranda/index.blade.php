@@ -497,7 +497,7 @@
                     </div>
                 </a>
             @empty
-                <div class="flex justify-between items-center px-5">
+                <div class="flex justify-between items-center">
                     <h2 class="text-sm">Properti belum tersedia</h2>
                 </div>
             @endforelse
