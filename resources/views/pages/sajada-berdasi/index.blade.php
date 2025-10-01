@@ -35,7 +35,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3">
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Pengurusan Balik Nama', 23, '...') }}
@@ -44,7 +44,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Turun Waris', 23, '...') }}
@@ -53,7 +53,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('PBB', 23, '...') }}
@@ -62,7 +62,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Pajak PPh & BPHTB', 23, '...') }}
@@ -71,7 +71,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Pengecekan & Legalitas', 23, '...') }}
@@ -80,7 +80,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Pemetaan & ukur tanah', 23, '...') }}
@@ -89,7 +89,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Perizinan bangunan & properti', 23, '...') }}
@@ -98,7 +98,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Notaris & PPAT', 23, '...') }}
@@ -107,7 +107,7 @@
 
                     <div class="p-2 bg-custom-gray-10 rounded-xl shadow-lg flex items-center gap-2">
                         <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                            <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                         </div>
                         <p class="text-sm text-custom-gray-90">
                             {{ Str::limit('Pecah Sertifikat', 23, '...') }}

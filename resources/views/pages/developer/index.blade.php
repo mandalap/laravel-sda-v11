@@ -40,7 +40,7 @@
                     <div class="p-3 bg-custom-gray-10 rounded-xl shadow-lg">
                         <div class="flex items-center gap-3">
                             <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                                <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                                <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                             </div>
                             <p class="text-sm text-custom-gray-90 leading-relaxed flex-1">
                                 Jangkauan Lebih Luas: Platform kami menghubungkan properti Anda dengan ribuan calon pembeli
@@ -52,7 +52,7 @@
                     <div class="p-3 bg-custom-gray-10 rounded-xl shadow-lg">
                         <div class="flex items-center gap-3">
                             <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                                <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                                <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                             </div>
                             <p class="text-sm text-custom-gray-90 leading-relaxed flex-1">
                                 Proses Listing Cepat: Cukup beberapa klik, properti Anda langsung tersedia di aplikasi kami
@@ -64,7 +64,7 @@
                     <div class="p-3 bg-custom-gray-10 rounded-xl shadow-lg">
                         <div class="flex items-center gap-3">
                             <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                                <img src="{{ asset('assets/images/icons/check.png') }}" class="w-5 h-5" alt="check">
+                                <img src="{{ asset('assets/images/icons/check-gray.png') }}" class="w-5 h-5" alt="check">
                             </div>
                             <p class="text-sm text-custom-gray-90 leading-relaxed flex-1">
                                 Fitur Canggih: Dilengkapi dengan filter pencarian cerdas, foto berkualitas, dan informasi
