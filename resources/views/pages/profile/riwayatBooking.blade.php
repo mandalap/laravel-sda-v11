@@ -31,8 +31,8 @@
 @endpush
 
 @section('content')
-    <x-navigation-route title="Riwayat Booking" backRoute="{{ route('profil') }}" textColor="text-custom-gray-10"
-        :showBackground="true" />
+    <x-navigation-route title="Riwayat Booking" backRoute="{{ route('profil') }}" textColor="text-primary"
+        :showBackground="false" />
 
     @if ($bookings->isEmpty())
         @include('components.no-data')
