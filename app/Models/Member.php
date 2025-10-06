@@ -50,4 +50,9 @@ class Member extends Authenticatable implements LaratrustUser
     {
         return $this->hasOne(Agency::class);
     }
+
+    public function developer()
+    {
+        return $this->hasOne(Developer::class);
+    }
 }

@@ -28,7 +28,7 @@
                     <!-- Kolom 1: Lokasi, Invoice, Harga -->
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-1 md:gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/location2.svg') }}"
+                            <img src="{{ asset('assets/images/icons/location2.png') }}"
                                 class="w-4 h-4 md:w-5 md:h-5 shrink-0" alt="icon">
                             <p class="text-[10px] md:text-xs text-ngekos-grey">
                                 {{ $booking->product->project->lokasi->regency->name }}</p>

@@ -20,6 +20,7 @@ class Developer extends Model
         'alamat',
         'telepon',
         'email',
+        'status',
         'slug',
     ];
 

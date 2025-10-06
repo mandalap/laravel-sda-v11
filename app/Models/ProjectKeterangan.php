@@ -16,7 +16,11 @@ class ProjectKeterangan extends Model
         'project_id',
         'keterangan',
     ];
-
+    
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 
 }
 

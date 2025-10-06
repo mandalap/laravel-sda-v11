@@ -1,95 +1,60 @@
 @forelse ($product as $item)
-    @php
-        $harga = $item->project_product->min('harga');
-        $diskon = $item->project_product->min('discount');
-        $harga_setelah_diskon = $harga - $diskon;
-        $jumlahProdukTersedia = $item->project_product()->where('status', 'Tersedia')->count();
-    @endphp
-    <a href="{{ route('detailproject', [$item->jenis->slug, $item->kategori->slug, $item->slug]) }}" class="block">
+    <a href="{{ route('detailproject', [$item->jenis->slug, $item->kategori->slug, $item->slug]) }}" class="card">
         <div
-            class="flex flex-col md:flex-row rounded-[20px] md:rounded-[30px] border border-[#F1F2F6] p-3 gap-4 bg-white hover:border-[#d40065] transition-all duration-300">
-
-            <!-- Gambar -->
+            class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
             <div
-                class="relative w-full md:w-[500px] h-auto md:h-auto aspect-auto md:aspect-[250/183] rounded-[20px] md:rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                @if ($diskon > 0)
-                    <button
-                        class="absolute top-4 right-4 w-max rounded-full p-1.5 bg-[#d40065] text-white text-[0.625rem]">
-                        Turun Harga
-                    </button>
-                @endif
-                <img src="{{ asset('storage/' . $item->thumbnail) }}" class="object-cover w-full h-full"
-                    alt="{{ $item->jenis->jenis }} {{ $item->kategori->kategori }} {{ $item->nama_project }} di {{ $item->alamat_project }} - {{ $item->lokasi->regency->name }}">
+                class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
+                <img src="{{ asset('storage/' . $item->thumbnail) }}" class="w-full h-full object-contain"
+                    alt="{{ $item->nama_project }}">
             </div>
 
-            <!-- Konten -->
-            <div class="flex flex-col gap-2 md:gap-3 w-full p-2 md:p-0">
-                <!-- Nama & Alamat -->
-                <div class="flex flex-col">
-                    <h3 class="text-sm md:text-base font-semibold">{{ $item->nama_project }}</h3>
-                    <p class="text-xs md:text-sm text-ngekos-grey">{{ $item->alamat_project }}</p>
+            <div class="flex flex-col gap-1 flex-1 min-h-0">
+                <div class="flex flex-col gap-1">
+                    <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
+                        {{ $item->nama_project }}
+                    </h3>
+                    <p class="text-xs text-custom-gray-70 line-clamp-1">{{ $item->alamat_project }}
+                    </p>
                 </div>
 
-                <hr class="border-[#F1F2F6]">
+                <hr class="border-custom-gray-30 my-1">
 
-                <!-- Info -->
-                <div class="grid grid-cols-2 md:grid-cols-1 gap-1 md:gap-[6px]">
-                    <div class="flex items-center gap-1 md:gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location2.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
-                            alt="icon">
-                        <p class="text-xs md:text-xs text-ngekos-grey">
+                <div class="flex flex-col gap-[6px]">
+                    <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/location2.png') }}"
+                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                        <p class="text-xs text-custom-gray-70 truncate">
                             {{ $item->lokasi->regency->name }}
                         </p>
                     </div>
-                    <div class="flex items-center gap-1 md:gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/category.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
-                            alt="icon">
-                        <p class="text-xs md:text-xs text-ngekos-grey">
-                            {{ $item->kategori->kategori }}
-                        </p>
+                    <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/category.png') }}"
+                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                        <p class="text-xs text-custom-gray-70 truncate">
+                            {{ $item->kategori->kategori }}</p>
                     </div>
-                    <div class="flex items-center gap-1 md:gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/layer.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
-                            alt="icon">
-                        <p class="text-xs md:text-xs text-ngekos-grey">Tersedia {{ $jumlahProdukTersedia }} Properti
+                    <div class="flex items-center gap-[6px]">
+                        <img src="{{ asset('assets/images/icons/layer.png') }}"
+                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                        <p class="text-xs text-custom-gray-70 truncate">
+                            Tersisa
+                            {{ $item->project_product->where('status', 'Tersedia')->count() }} Unit
                         </p>
                     </div>
                 </div>
 
-                <hr class="border-[#F1F2F6]">
+                <hr class="border-custom-gray-30 my-1">
 
-                <!-- Harga -->
-                <div class="mt-1">
-                    @if (isset($item->kategori->slug) && $item->kategori->slug == 'tanah-kavling')
-                        @php
-                            $hargaX = $item->project_product->max('harga');
-                            $diskonX = $item->project_product->max('discount');
-                            $harga_setelah_diskonX = $hargaX - $diskonX;
-                        @endphp
-                        <div class="flex items-center">
-                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">Rp
-                                {{ number_format($harga_setelah_diskon) }}</p>
-                            <p class="px-1"> - </p>
-                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">Rp
-                                {{ number_format($harga_setelah_diskonX) }}</p>
-                        </div>
-                    @else
-                        <div class="flex items-center">
-                            <p class="text-sm md:text-lg font-semibold text-[#d40065]">Rp
-                                {{ number_format($harga_setelah_diskon) }}</p>
-                            @if ($diskon > 0)
-                                <p class="ml-3 text-xs md:text-sm text-gray-500 line-through">Rp
-                                    {{ number_format($harga) }}
-                                </p>
-                            @endif
-                        </div>
-                    @endif
+                <div class="flex items-center">
+                    <p class="text-sm font-semibold text-primary">
+                        {!! $item->getPriceDisplay() !!}
+                    </p>
                 </div>
             </div>
         </div>
     </a>
 @empty
     <div class="flex flex-col items-center justify-center h-[300px] text-center px-4">
-        <p class="text-gray-500 text-sm sm:text-base">Tidak ada properti Tersedia</p>
+        <p class="text-custom-gray-80 text-sm sm:text-base">Tidak ada properti Tersedia</p>
     </div>
 @endforelse

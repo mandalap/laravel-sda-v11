@@ -36,21 +36,21 @@
                         <!-- Info -->
                         <div class="grid grid-cols-2 md:grid-cols-1 gap-1 md:gap-[6px]">
                             <div class="flex items-center gap-1 md:gap-[6px]">
-                                <img src="{{ asset('assets/images/icons/location2.svg') }}"
+                                <img src="{{ asset('assets/images/icons/location2.png') }}"
                                     class="w-4 h-4 md:w-5 md:h-5" alt="icon">
                                 <p class="text-xs md:text-xs text-ngekos-grey">
                                     {{ $project->lokasi->regency->name }}
                                 </p>
                             </div>
                             <div class="flex items-center gap-1 md:gap-[6px]">
-                                <img src="{{ asset('assets/images/icons/category.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
+                                <img src="{{ asset('assets/images/icons/category.png') }}" class="w-4 h-4 md:w-5 md:h-5"
                                     alt="icon">
                                 <p class="text-xs md:text-xs text-ngekos-grey">
                                     {{ $project->kategori->kategori }}
                                 </p>
                             </div>
                             <div class="flex items-center gap-1 md:gap-[6px]">
-                                <img src="{{ asset('assets/images/icons/layer.svg') }}" class="w-4 h-4 md:w-5 md:h-5"
+                                <img src="{{ asset('assets/images/icons/layer.png') }}" class="w-4 h-4 md:w-5 md:h-5"
                                     alt="icon">
                                 <p class="text-xs md:text-xs text-ngekos-grey">Tersedia {{ $jumlahProdukTersedia }}
                                     Properti
