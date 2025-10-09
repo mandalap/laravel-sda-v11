@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Dashboard Agency - Sajada Kavling
+    Affiliate - Dashboard
 @endsection
 
 @push('prepend-style')
