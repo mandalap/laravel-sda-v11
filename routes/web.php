@@ -64,6 +64,7 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
 
         // Riwayat Booking
         Route::get('/riwayat-booking', [AffiliateProfileController::class, 'riwayatBooking'])->name('profile.riwayatBooking');
+        Route::get('/riwayat-booking/{invoice}', [AffiliateProfileController::class, 'detailBooking'])->name('profile.riwayatBooking.detail');
 
         // Booking Affiliate
         Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
