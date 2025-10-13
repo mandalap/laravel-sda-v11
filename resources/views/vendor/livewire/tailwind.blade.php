@@ -28,7 +28,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
             {{-- Previous Button --}}
             @if ($paginator->onFirstPage())
                 <button disabled
-                    class="w-9 h-9 rounded-full border border-custom-gray-40 flex items-center justify-center cursor-not-allowed opacity-50">
+                    class="w-9 h-9 rounded-full border border-custom-gray-40 bg-custom-gray-40 flex items-center justify-center cursor-not-allowed opacity-50">
                     <svg class="w-5 h-5 text-custom-gray-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 19l-7-7 7-7" />
                     </svg>
@@ -67,7 +67,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                 </button>
             @else
                 <button disabled
-                    class="w-9 h-9 rounded-full border border-custom-gray-40 flex items-center justify-center cursor-not-allowed opacity-50">
+                    class="w-9 h-9 rounded-full border border-custom-gray-40 bg-custom-gray-40 flex items-center justify-center cursor-not-allowed opacity-50">
                     <svg class="w-5 h-5 text-custom-gray-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5l7 7-7 7" />
                     </svg>

@@ -8,7 +8,7 @@
 ])
 
 @if ($showBackground)
-    <div id="Background" class="absolute top-0 w-full h-[190px] bg-gradient-to-t from-secondary to-primary"></div>
+    <div id="Background" class="absolute top-0 w-full h-[210px] bg-gradient-to-t from-secondary to-primary"></div>
 @endif
 
 <div class="flex items-center justify-between px-5 pt-5 pb-5 relative z-10">

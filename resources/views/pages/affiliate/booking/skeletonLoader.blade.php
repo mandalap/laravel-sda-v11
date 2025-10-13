@@ -1,33 +1,48 @@
-<!-- Create this in a new file: resources/views/pages/lihatsemua/skeleton-loader.blade.php -->
-<section id="Skeleton" class="flex relative flex-col gap-4 px-5 mt-5 mb-3 skeleton-item">
+<section id="Skeleton" class="relative px-4 sm:px-5 mb-3 skeleton-item">
     <div class="card">
-        <div class="flex rounded-[30px] border border-[#F1F2F6] p-2 gap-4 bg-white">
+        <div class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white">
             <!-- Image placeholder -->
-            <div class="flex w-[120px] h-[183px] shrink-0 rounded-[30px] bg-gray-200 animate-pulse"></div>
-            <div class="flex flex-col gap-3 w-full">
-                <!-- Title placeholder -->
-                <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                <!-- Address placeholder -->
-                <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
-                <hr class="border-[#F1F2F6]">
-                <!-- Location info placeholder -->
-                <div class="flex items-center gap-[6px]">
-                    <div class="w-5 h-5 bg-gray-200 rounded-full animate-pulse shrink-0"></div>
-                    <div class="h-3 bg-gray-200 rounded w-1/3 animate-pulse"></div>
+            <div
+                class="w-32 sm:w-40 md:w-60 flex-shrink-0 rounded overflow-hidden bg-gray-200 animate-pulse h-24 sm:h-28 md:h-32">
+            </div>
+
+            <!-- Content placeholder -->
+            <div class="flex flex-col gap-1 flex-1 min-h-0">
+                <!-- Title and Address -->
+                <div class="flex flex-col gap-1">
+                    <div class="h-4 bg-gray-200 rounded animate-pulse w-full"></div>
+                    <div class="h-3 bg-gray-200 rounded animate-pulse w-3/4"></div>
                 </div>
-                <!-- Category info placeholder -->
-                <div class="flex items-center gap-[6px]">
-                    <div class="w-5 h-5 bg-gray-200 rounded-full animate-pulse shrink-0"></div>
-                    <div class="h-3 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+
+                <!-- Divider -->
+                <div class="border-t border-custom-gray-30 my-1"></div>
+
+                <!-- Details -->
+                <div class="flex flex-col gap-[6px]">
+                    <!-- Location -->
+                    <div class="flex items-center gap-[6px]">
+                        <div class="w-4 h-4 sm:w-5 sm:h-5 bg-gray-200 rounded animate-pulse flex-shrink-0"></div>
+                        <div class="h-3 bg-gray-200 rounded animate-pulse w-2/3"></div>
+                    </div>
+                    <!-- Category -->
+                    <div class="flex items-center gap-[6px]">
+                        <div class="w-4 h-4 sm:w-5 sm:h-5 bg-gray-200 rounded animate-pulse flex-shrink-0"></div>
+                        <div class="h-3 bg-gray-200 rounded animate-pulse w-1/2"></div>
+                    </div>
+                    <!-- Availability -->
+                    <div class="flex items-center gap-[6px]">
+                        <div class="w-4 h-4 sm:w-5 sm:h-5 bg-gray-200 rounded animate-pulse flex-shrink-0"></div>
+                        <div class="h-3 bg-gray-200 rounded animate-pulse w-3/5"></div>
+                    </div>
                 </div>
-                <!-- Availability info placeholder -->
-                <div class="flex items-center gap-[6px]">
-                    <div class="w-5 h-5 bg-gray-200 rounded-full animate-pulse shrink-0"></div>
-                    <div class="h-3 bg-gray-200 rounded w-2/5 animate-pulse"></div>
-                </div>
-                <hr class="border-[#F1F2F6]">
+
+                <!-- Divider -->
+                <div class="border-t border-custom-gray-30 my-1"></div>
+
                 <!-- Price placeholder -->
-                <div class="h-5 bg-gray-200 rounded w-1/3 animate-pulse"></div>
+                <div class="flex items-center">
+                    <div class="h-5 bg-gray-200 rounded animate-pulse w-2/5"></div>
+                </div>
             </div>
         </div>
     </div>
