@@ -10,14 +10,9 @@
     <style>
         #filter_dropdown {
             left: unset;
-            /* Hapus posisi left yang sebelumnya */
             right: 0;
-            /* Tempatkan dropdown di sisi kanan */
             transform: translateX(-10%);
-            /* Geser dropdown ke kiri agar tidak keluar dari layar */
         }
-
-        /* Skeleton animation */
         @keyframes pulse {
             0% {
                 opacity: 0.6;
@@ -36,12 +31,10 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
 
-        /* Hide skeleton loader initially */
         #skeleton-loader {
             display: none;
         }
 
-        /* No more data message */
         #no-more-data {
             display: none;
             text-align: center;
@@ -58,7 +51,6 @@
     <div class="flex sticky top-0 z-50 gap-4 items-center px-5 w-full">
 
         <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
-            <!-- Menambahkan hidden input untuk membawa query string lainnya -->
             <input type="hidden" name="propertiType" value="{{ request()->query('propertiType', 'popular') }}">
             <input type="hidden" name="propertiKategori" value="{{ request()->query('propertiKategori', 'all') }}">
             <input type="hidden" name="filter" value="{{ request()->query('filter', 'none') }}">
@@ -98,17 +90,28 @@
         </div>
     </div>
 
-    <!-- Projects container where items will be loaded -->
+    @if (request()->has('cari') && request()->query('cari') !== '')
+        <div id="Header" class="relative flex flex-col px-5 mt-4">
+            @if ($projectCount > 0)
+                <p class="text-sm text-custom-gray-10 font-medium">
+                    {{ $projectCount }} hasil pencarian ditemukan
+                </p>
+            @else
+                <p class="text-sm text-custom-gray-10 font-medium">
+                    Hasil tidak ditemukan
+                </p>
+            @endif
+        </div>
+    @endif
+
     <div id="projects-container">
         @include('pages.lihatsemua.itemProperti')
     </div>
 
-    <!-- Skeleton loader (single item) -->
     <div id="skeleton-loader">
         @include('pages.lihatsemua.skeletonLoader')
     </div>
 
-    <!-- No more data message -->
     <div id="no-more-data">
         Semua properti telah ditampilkan
     </div>
@@ -118,7 +121,6 @@
 
 @push('addon-script')
     <script>
-        // Typewriter effect for search placeholder
         timeout_var = null;
 
         function typeWriter(selector_target, text_list, placeholder = false, i = 0, text_list_i = 0, delay_ms = 200) {
@@ -167,35 +169,29 @@
 
         return_value = typeWriter("#cari_kavling", text_list, true);
 
-        // Filter dropdown toggle
         document.getElementById('filter_button').addEventListener('click', function() {
             const filter = document.getElementById('filter_dropdown');
             filter.classList.toggle('hidden');
         });
 
-        // Infinite scroll implementation
         let currentPage = 1;
         let isLoading = false;
         let hasMorePages = true;
 
-        // Function to load more properties
         function loadMoreProjects() {
             if (isLoading || !hasMorePages) return;
 
             isLoading = true;
             document.getElementById('skeleton-loader').style.display = 'block';
 
-            // Get current filters from URL
             const urlParams = new URLSearchParams(window.location.search);
             const propertiType = urlParams.get('propertiType') || '';
             const propertiKategori = urlParams.get('propertiKategori') || '';
             const filter = urlParams.get('filter') || '';
             const cari = urlParams.get('cari') || '';
 
-            // Increment page
             currentPage++;
 
-            // Fetch next page of projects
             fetch(`{{ route('lihatsemua') }}?propertiType=${propertiType}&propertiKategori=${propertiKategori}&filter=${filter}&cari=${cari}&page=${currentPage}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
@@ -203,13 +199,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Hide skeleton loader
                     document.getElementById('skeleton-loader').style.display = 'none';
 
-                    // Append new projects to container
                     document.getElementById('projects-container').insertAdjacentHTML('beforeend', data.html);
 
-                    // Check if there are more pages
                     hasMorePages = data.hasMorePages;
 
                     if (!hasMorePages) {
@@ -225,7 +218,6 @@
                 });
         }
 
-        // Detect when user scrolls near the bottom of the page
         window.addEventListener('scroll', function() {
             const scrollHeight = Math.max(
                 document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -233,7 +225,6 @@
                 document.body.clientHeight, document.documentElement.clientHeight
             );
 
-            // Load more projects when user is 200px from bottom of page
             if (window.innerHeight + window.pageYOffset >= scrollHeight - 200) {
                 loadMoreProjects();
             }

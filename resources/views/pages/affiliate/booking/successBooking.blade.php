@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Affiliate-Booking Berhasil
+    Affiliate - Booking Berhasil
 @endsection
 
 @push('prepend-style')
@@ -10,10 +10,8 @@
 @endpush
 
 @section('content')
-    <div id="Background"
-        class="absolute top-0 w-full h-[330px] rounded-b-[75px] bg-gradient-to-r from-[#a7006d] to-[#d40065]"></div>
-    <div class="relative flex flex-col gap-[30px] my-[30px] px-5">
-        <h1 class="font-bold text-[30px] leading-[45px] text-center text-white">Booking Berhasil<br>Selamat!</h1>
+    <x-navigation-route title="Booking Berhasil" :backRoute="route('affiliate.booking.index')" :showBackground="true" textColor="text-custom-gray-10" />
+    <div class="relative flex flex-col gap-[30px] px-5">
         <div id="Header" class="relative flex items-center justify-between gap-2">
             <div class="flex flex-col w-full rounded-[30px] border border-[#F1F2F6] p-4 gap-4 bg-white">
                 <div class="flex gap-4">
