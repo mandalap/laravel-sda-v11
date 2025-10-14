@@ -1,6 +1,6 @@
 @if (count($projects) > 0)
     @foreach ($projects as $project)
-        <section id="Result" class="relative px-4 sm:px-5 mt-5 mb-3 project-item">
+        <section id="Result" class="relative px-5 mt-5 mb-3 project-item">
             <a href="{{ route('affiliate.booking.detail', $project->slug) }}" class="card">
                 <div
                     class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">

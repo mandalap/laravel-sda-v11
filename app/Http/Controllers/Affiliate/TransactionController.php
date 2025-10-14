@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $member = auth()->guard('member')->user();
@@ -24,8 +24,14 @@ class TransactionController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(5);
 
-        // Log::info($transactions->toArray());
-
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('pages.affiliate.transaction.partials.transactionList', compact('transactions'))->render(),
+                'hasMorePages' => $transactions->hasMorePages(),
+                'currentPage' => $transactions->currentPage(),
+                'lastPage' => $transactions->lastPage()
+            ]);
+        }
         return view('pages.affiliate.transaction.index', [
             'transactions' => $transactions,
             'agency' => $agency,
