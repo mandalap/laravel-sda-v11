@@ -1,4 +1,4 @@
-<section id="Skeleton" class="relative px-4 sm:px-5 mt-5 mb-3 skeleton-item">
+<section id="Skeleton" class="relative px-4 sm:px-5 mb-3 skeleton-item">
     <div class="card">
         <div class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white">
             <!-- Image placeholder -->

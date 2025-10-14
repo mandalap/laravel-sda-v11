@@ -64,13 +64,14 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
 
         // Riwayat Booking
         Route::get('/riwayat-booking', [AffiliateProfileController::class, 'riwayatBooking'])->name('profile.riwayatBooking');
+        Route::get('/riwayat-booking/{invoice}', [AffiliateProfileController::class, 'detailBooking'])->name('profile.riwayatBooking.detail');
 
         // Booking Affiliate
         Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
         Route::get('/booking/{project}', [BookingController::class, 'detail'])->name('booking.detail');
         Route::post('/booking/checkout/{project}', [BookingController::class, 'checkout'])->name('booking.checkout');
         Route::post('/booking/checkout/{project}/store', [BookingController::class, 'checkoutStore'])->name('booking.checkout.store');
-        Route::get('/booking/success/{invoice}', [BookingController::class, 'success'])->name('booking.checkout.success');
+        // Route::get('/booking/checkout/success/{invoice}', [BookingController::class, 'success'])->name('booking.checkout.success');
 
         // Link Affiliasi
         Route::get('/affiliasi', [AffiliasiController::class, 'index'])->name('affiliasi.index');

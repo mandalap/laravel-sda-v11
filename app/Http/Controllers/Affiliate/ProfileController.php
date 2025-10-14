@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProfileController extends Controller
 {
@@ -169,5 +172,68 @@ class ProfileController extends Controller
             'agency' => $agency,
             'bookings' => $bookings,
         ]);
+    }
+
+    public function detailBooking($invoice)
+    {
+        try {
+            $member = Auth::guard('member')->user();
+            $agency = $member->agency;
+
+            // Validasi apakah user memiliki akses sebagai agency
+            if (!$agency) {
+                abort(403, 'Anda tidak memiliki akses sebagai agency');
+            }
+
+            // Ambil booking dengan eager loading untuk optimasi query
+            $booking = BookingTransaction::where('invoice', $invoice)
+                ->with([
+                    'member:id,sapaan,nama,telepon',
+                    'product:id,nama_product,project_id,code_product',
+                    'product.project:id,nama_project,alamat_project,thumbnail,lokasi_id',
+                    'product.project.lokasi:id,regency_id',
+                    'product.project.lokasi.regency:id,name'
+                ])
+                ->firstOrFail();
+
+            // Validasi authorization: Pastikan booking milik agency yang login
+            if ($booking->agency_id !== $agency->id) {
+                abort(403, 'Anda tidak memiliki akses ke transaksi ini');
+            }
+
+            return view('pages.affiliate.profile.detailBooking', [
+                'booking' => $booking,
+                'product' => $booking->product,
+                'project' => $booking->product->project,
+                'costumer' => $booking->member,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            // Booking tidak ditemukan
+            Alert::toast('Transaksi booking tidak ditemukan', 'error')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return redirect()->route('affiliate.profile.riwayatBooking');
+        } catch (HttpException $e) {
+            // Error 403 atau error HTTP lainnya
+            Alert::toast($e->getMessage(), 'error')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return redirect()->route('affiliate.profile.riwayatBooking');
+        } catch (\Exception $e) {
+            // Error tidak terduga
+            Log::error('Error accessing booking detail', [
+                'invoice' => $invoice ?? 'unknown',
+                'agency_id' => $agency->id ?? 'unknown',
+                'error' => $e->getMessage()
+            ]);
+
+            Alert::toast('Terjadi kesalahan saat mengakses detail booking', 'error')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return redirect()->route('affiliate.profile.riwayatBooking');
+        }
     }
 }
