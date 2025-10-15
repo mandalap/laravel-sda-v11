@@ -10,16 +10,12 @@
     <style>
         .swiper {
             display: flex;
-            /* Menggunakan flexbox untuk menjaga posisi item */
             overflow: hidden;
-            /* Sembunyikan overflow */
         }
 
         .swiper-wrapper {
             display: flex;
-            /* Pastikan wrapper juga menggunakan flex */
             transition: transform 0.3s ease;
-            /* Tambahkan transisi untuk efek yang lebih halus */
         }
     </style>
 @endpush
@@ -34,20 +30,16 @@
 
     <div class="flex flex-col gap-5">
 
-        <!-- Bagian 1: Produk yang dipesan -->
         <div class="flex flex-col gap-5 px-5">
             <p class="font-semibold text-sm text-custom-gray-100">Produk yang dipesan</p>
             <div
                 class="flex flex-row gap-2.5 rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
-                <!-- Gambar -->
                 <div
                     class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                     <img src="{{ asset('storage/' . $project->thumbnail) }}" class="w-full h-full object-contain"
                         alt="{{ $project->nama_project }}">
                 </div>
-                <!-- Deskripsi -->
                 <div class="flex flex-col gap-1 flex-1 min-h-0">
-                    <!-- Nama & Alamat -->
                     <div class="flex flex-col gap-1">
                         <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
                             {{ $project->nama_project }}
@@ -55,7 +47,6 @@
                         <p class="text-xs text-custom-gray-70 line-clamp-1">{{ $project->alamat_project }}</p>
                     </div>
                     <hr class="border-custom-gray-30 my-1">
-                    <!-- Detail Lokasi -->
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-2">
                             <img src="{{ asset('assets/images/icons/location2.png') }}"
@@ -95,7 +86,6 @@
 
         <hr class="border-custom-gray-40">
 
-        <!-- Bagian 2: Form dengan Informasi Project -->
         <form action="{{ route('checkout', [$project->slug]) }}" method="POST"
             class="flex flex-col gap-5 bg-custom-gray-10">
             @csrf
@@ -115,7 +105,6 @@
                 </div>
 
                 <div class="flex flex-col gap-[18px]">
-                    {{-- Field pencarian menggunakan component yang sama --}}
                     <x-input-fieldv2 label="Pilih Produk" name="search" type="text"
                         icon="assets/images/icons/search-primary.png" placeholder="Cari produk" onkeyup="filterProducts()"
                         id="search" />
@@ -139,7 +128,7 @@
                                         </label>
                                     </div>
                                 @empty
-                                    <p>Tidak ada produk tersedia.</p>
+                                    <p class="px-5 text-sm font-medium">Tidak ada produk tersedia.</p>
                                 @endforelse
                             </div>
                         </div>
@@ -188,19 +177,16 @@
                 }
             });
 
-            // Jika hanya ada satu item yang terlihat, atur posisi
             if (visibleCount === 1) {
                 const visibleItem = Array.from(productItems).find(item => item.style.display !== 'none');
                 if (visibleItem) {
-                    // Pusatkan item
                     const swiperWrapper = document.querySelector('.swiper-wrapper');
                     const itemWidth = visibleItem.offsetWidth;
-                    const totalWidth = itemWidth * visibleCount; // Total lebar item yang terlihat
-                    const offset = (swiperWrapper.offsetWidth - totalWidth) / 2; // Hitung offset untuk memusatkan
-                    swiperWrapper.style.transform = `translateX(${offset}px)`; // Pusatkan item
+                    const totalWidth = itemWidth * visibleCount;
+                    const offset = (swiperWrapper.offsetWidth - totalWidth) / 2; 
+                    swiperWrapper.style.transform = `translateX(${offset}px)`;
                 }
             } else {
-                // Reset transform jika lebih dari satu item terlihat
                 const swiperWrapper = document.querySelector('.swiper-wrapper');
                 swiperWrapper.style.transform = 'translateX(0)';
             }

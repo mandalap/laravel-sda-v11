@@ -60,8 +60,6 @@
     @endforeach
 @else
     @if (!request()->ajax())
-        <div class="flex flex-col items-center justify-center h-[300px] text-center px-4">
-            <p class="text-custom-gray-80 text-sm sm:text-base">Tidak ada properti Tersedia</p>
-        </div>
+        @include('components.not-found')
     @endif
 @endif

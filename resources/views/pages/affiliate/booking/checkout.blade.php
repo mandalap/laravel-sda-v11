@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Affiliate-Checkout {{ $project->nama_project }}
+    Affiliate - Checkout {{ $project->nama_project }}
 @endsection
 
 @push('prepend-style')
@@ -10,185 +10,161 @@
 @endpush
 
 @section('content')
-    <div id="Background"
-        class="absolute top-0 w-full h-[230px] rounded-b-[75px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-    </div>
-    <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[30px]">
-        <a href="{{ route('affiliate.booking.detail', $project->slug) }}"
-            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[20px] h-[20px]" alt="icon">
-        </a>
-        <p class="font-semibold text-white">Checkout</p>
-        <div class="w-12 dummy-btn"></div>
-    </div>
-    <div id="Header" class="relative flex items-center justify-between gap-2 px-5 mt-[18px]">
-        <div class="flex flex-col w-full rounded-[30px] border border-[#F1F2F6] p-4 gap-4 bg-white">
-            <div class="flex gap-4">
-                <div class="flex w-[120px] h-[132px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="object-cover w-full h-full"
+    <x-navigation-route title="Pembayaran" :backRoute="route('affiliate.booking.detail', $project->slug)" :showBackground="false" textColor="text-primary" />
+    <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-5 px-5">
+            <p class="font-semibold text-sm text-custom-gray-100">Produk yang dipesan</p>
+            <div
+                class="flex flex-row gap-2.5 rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
+                <div
+                    class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
+                    <img src="{{ asset('storage/' . $project->thumbnail) }}" class="w-full h-full object-contain"
                         alt="{{ $project->nama_project }}">
                 </div>
-                <div class="flex flex-col w-full gap-3">
-                    <p class="font-semibold text-base leading-[27px] line-clamp-2 min-h-[54px]">{{ $project->nama_project }}
-                    </p>
-                    <hr class="border-[#F1F2F6]">
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location2.png') }}" class="flex w-5 h-5 shrink-0"
-                            alt="icon">
-                        <p class="text-sm text-ngekos-grey">{{ $project->alamat_project }}</p>
+                <div class="flex flex-col gap-1 flex-1 min-h-0">
+                    <div class="flex flex-col gap-1">
+                        <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
+                            {{ $project->nama_project }}
+                        </h3>
+                        <p class="text-xs text-custom-gray-70 line-clamp-1">{{ $project->alamat_project }}</p>
                     </div>
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location2.png') }}" class="flex w-5 h-5 shrink-0"
-                            alt="icon">
-                        <p class="text-sm text-ngekos-grey">{{ $project->lokasi->regency->name }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div
-        class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
-        <label class="relative flex items-center justify-between">
-            <p class="text-base font-semibold">Marketing</p>
-            <img src="{{ asset('assets/images/icons/arrow-up.svg') }}"
-                class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300"
-                alt="icon">
-            <input type="checkbox" class="absolute hidden">
-        </label>
-        <div class="flex flex-col gap-4 pt-[22px]">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-sm text-ngekos-grey">Nama</p>
-                </div>
-                <p class="text-sm font-semibold">{{ $agency->nama }}</p>
-            </div>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-sm text-ngekos-grey">Telepon</p>
-                </div>
-                <p class="text-sm font-semibold">{{ $agency->telepon }}</p>
-            </div>
-        </div>
-    </div>
-    <div
-        class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
-        <label class="relative flex items-center justify-between">
-            <p class="text-base font-semibold">Pelanggan</p>
-            <img src="{{ asset('assets/images/icons/arrow-up.svg') }}"
-                class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300"
-                alt="icon">
-            <input type="checkbox" class="absolute hidden">
-        </label>
-        <div class="flex flex-col gap-4 pt-[22px]">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="{{ asset('assets/images/icons/user.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-sm text-ngekos-grey">Nama</p>
-                </div>
-                <p class="text-sm font-semibold">{{ $nama }}</p>
-            </div>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="{{ asset('assets/images/icons/phone.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-sm text-ngekos-grey">Telepon</p>
-                </div>
-                <p class="text-sm font-semibold">{{ $costumer->telepon }}</p>
-            </div>
-        </div>
-    </div>
-    <div
-        class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
-        <label class="relative flex items-center justify-between">
-            <p class="text-base font-semibold">Booking</p>
-            <img src="{{ asset('assets/images/icons/arrow-up.svg') }}"
-                class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300"
-                alt="icon">
-            <input type="checkbox" class="absolute hidden">
-        </label>
-        <div class="flex flex-col gap-4 pt-[22px]">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="{{ asset('assets/images/icons/block.svg') }}" class="flex w-6 h-6 shrink-0" alt="icon">
-                    <p class="text-sm text-ngekos-grey">Nomor Properti</p>
-                </div>
-                <p class="text-sm font-semibold">{{ $product->nama_product }}</p>
-            </div>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src="{{ asset('assets/images/icons/calendar.svg') }}" class="flex w-6 h-6 shrink-0"
-                        alt="icon">
-                    <p class="text-sm text-ngekos-grey">Tanggal Booking</p>
-                </div>
-                <p class="text-sm font-semibold">{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</p>
-            </div>
-        </div>
-    </div>
-    <form
-        action="{{ route('affiliate.booking.checkout.store', ['project' => $project->slug]) }}?costumer_id={{ $costumer->id }}&product_code={{ $kodeProduct }}"
-        method="POST" onsubmit="this.querySelector('button[type=submit]').disabled = true;"
-        class="relative flex flex-col gap-6 pt-5 mt-5">
-        @csrf
-        <div id="PaymentOptions" class="flex flex-col rounded-[30px] border border-[#F1F2F6] p-5 gap-4 mx-5">
-            <div id="TabButton-Container" class="flex items-center justify-between border-b border-[#F1F2F6] gap-[18px]">
-                <label class="relative flex flex-col justify-between gap-4 tab-link group"
-                    data-target-tab="#DownPayment-Tab">
-                    <input type="radio" name="Payment" value="down"
-                        class="absolute opacity-0 -z-10 top-1/2 left-1/2" checked>
-                    <div class="flex items-center gap-3 mx-auto">
-                        <div class="relative w-6 h-6">
-                            <img src="{{ asset('assets/images/icons/status-orange.svg') }}"
-                                class="absolute w-6 h-6 flex shrink-0 opacity-0 group-has-[:checked]:opacity-100 transition-all duration-300"
-                                alt="icon">
-                            <img src="assets/images/icons/status.svg"
-                                class="absolute w-6 h-6 flex shrink-0 opacity-100 group-has-[:checked]:opacity-0 transition-all duration-300"
-                                alt="icon">
+                    <hr class="border-custom-gray-30 my-1">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset('assets/images/icons/location2.png') }}"
+                                class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                            <p class="text-xs text-custom-gray-70 truncate">
+                                {{ $project->lokasi->regency->name }}
+                            </p>
                         </div>
-                        <p class="text-base font-semibold">Pembayaran</p>
-                    </div>
-                    <div
-                        class="w-0 mx-auto group-has-[:checked]:ring-1 group-has-[:checked]:ring-[#058E2A] group-has-[:checked]:w-[90%] transition-all duration-300">
-                    </div>
-                </label>
-            </div>
-            <div id="TabContent-Container">
-                <div id="DownPayment-Tab" class="flex flex-col gap-4 tab-content">
-                    <p class="text-sm text-ngekos-grey">Anda perlu melunasi pembayaran secara cash atau melalui transfer
-                        setelah melakukan
-                        survey lokasi</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <img src="{{ asset('assets/images/icons/credit.svg') }}" class="flex w-6 h-6 shrink-0"
-                                alt="icon">
-                            <p class="text-sm text-ngekos-grey">Jumlah Pembayaran</p>
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset('assets/images/icons/category.png') }}"
+                                class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                            <p class="text-xs text-custom-gray-70 truncate">
+                                {{ $project->kategori->kategori }}
+                            </p>
                         </div>
-                        <p class="text-sm font-semibold">Rp {{ number_format($jumlahBooking) }}</p>
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset('assets/images/icons/layer.png') }}"
+                                class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                            <p class="text-xs text-custom-gray-70 truncate">
+                                Tersisa {{ $project->project_product->where('status', 'Tersedia')->count() }} Unit
+                            </p>
+                        </div>
+                    </div>
+                    <hr class="border-custom-gray-30 my-1">
+                    <div class="flex items-center">
+                        <p class="text-sm font-semibold text-primary">
+                            {!! $project->getPriceDisplay([
+                                'price_class' => 'text-sm font-bold text-primary',
+                                'strike_class' => 'text-xs text-custom-gray-80 font-medium',
+                                'strike_top' => '2px',
+                            ]) !!}</p>
+                        </p>
                     </div>
                 </div>
+            </div>
+        </div>
+        <hr class="border-custom-gray-40">
 
+        <div class="flex flex-col justify-center px-5 gap-3">
+            <p class="font-semibold text-sm text-custom-gray-100">Informasi Agen</p>
+            <div class="flex flex-col justify-center">
+                <p class="text-sm text-custom-gray-80 leading-none mb-1">Nama</p>
+                <p class="font-medium text-base text-custom-gray-100 leading-none">{{ $agency->nama }}</p>
+            </div>
+            <div class="flex flex-col justify-center">
+                <p class="text-sm text-custom-gray-80 leading-none mb-1">Nomor Whatsapp</p>
+                <p class="font-medium text-base text-custom-gray-100 leading-none">{{ $agency->telepon }}</p>
             </div>
         </div>
-        <div id="BottomNav" class="relative flex w-full h-[132px] shrink-0">
-            <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-10">
-                <div
-                    class="flex items-center justify-between rounded-[40px] py-4 px-6 bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-                    <div class="flex flex-col gap-[2px]">
-                        <p id="price" class="font-bold text-xl leading-[30px] text-white">
-                            <!-- Price mengikuti pilihan yang dipilih dan diambil dari text grand total -->
-                        </p>
-                        <span class="text-sm text-white">Total Pembayaran</span>
-                        <p class="font-bold text-base leading-[30px] text-white">Rp {{ number_format($jumlahBooking) }}
-                        </p>
-                    </div>
-                    <button type="submit"
-                        class="text-sm flex shrink-0 rounded-full py-[14px] px-5 bg-white hover:bg-black hover:text-white font-bold text-black">
-                        Bayar Sekarang
-                    </button>
+
+        <hr class="border-custom-gray-40">
+
+        <div class="flex flex-col justify-center px-5 gap-3">
+            <p class="font-semibold text-sm text-custom-gray-100">Informasi Pelanggan</p>
+            <div class="flex flex-col justify-center">
+                <p class="text-sm text-custom-gray-80 leading-none mb-1">Nama</p>
+                <p class="font-medium text-base text-custom-gray-100 leading-none">{{ $nama }}</p>
+            </div>
+            <div class="flex flex-col justify-center">
+                <p class="text-sm text-custom-gray-80 leading-none mb-1">Nomor Whatsapp</p>
+                <p class="font-medium text-base text-custom-gray-100 leading-none">{{ $costumer->telepon }}</p>
+            </div>
+            <div class="flex flex-col justify-center">
+                <p class="text-sm text-custom-gray-80 leading-none mb-1">Nomor Properti</p>
+                <p class="font-medium text-base text-custom-gray-100 leading-none">{{ $product->nama_product }}</p>
+            </div>
+        </div>
+
+        <hr class="border-custom-gray-40">
+
+        <div class="flex flex-col justify-center px-5 gap-3">
+            <div class="flex flex-col justify-center">
+                <p class="font-semibold text-sm text-custom-gray-100">Rincian Pembayaran</p>
+            </div>
+            <div class="flex flex-col justify-center px-2 gap-2">
+                <div class="flex flex-row justify-between">
+                    <p class="text-sm text-custom-gray-80 leading-none mb-1">Harga produk</p>
+                    <p class="font-medium text-sm text-custom-gray-80 leading-none">
+                        Rp{{ number_format($product->harga, 0, '.', '.') }}</p>
+                </div>
+                <div class="flex flex-row justify-between">
+                    <p class="text-sm text-custom-gray-80 leading-none mb-1">Potongan harga</p>
+                    <p class="font-medium text-sm text-primary leading-none">-Rp{{ number_format($discount, 0, ',', '.') }}
+                    </p>
+                </div>
+                <hr class="border-custom-gray-40">
+                <div class="flex flex-row justify-between">
+                    <p class="text-sm text-custom-gray-80 leading-none mb-1">Total pembayaran produk</p>
+                    <p class="font-semibold text-sm text-custom-gray-100 leading-none">
+                        Rp{{ number_format($totalHarga, 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>
-    </form>
+
+        <div class="mx-5 p-4 rounded rounded-lg bg-danger-focus">
+            <p class="text-sm text-danger-main">
+                Sebelum melakukan pembookingan, kami sarankan anda untuk terlebih dahulu melakukan survei lokasi. Jika sudah
+                maka lanjutkan pembookingan.
+            </p>
+
+        </div>
+
+        <form
+            action="{{ route('affiliate.booking.checkout.store', ['project' => $project->slug]) }}?costumer_id={{ $costumer->id }}&product_code={{ $kodeProduct }}"
+            method="POST" onsubmit="this.querySelector('button[type=submit]').disabled = true;">
+            @csrf
+            <div id="payment-form" class="flex relative flex-col gap-6 pt-5 mt-5">
+                <div id="BottomNav" class="relative flex w-full h-[30px] shrink-0">
+                    <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-50">
+                        <div
+                            class="flex items-center justify-between rounded-full h-[61px] gap-2 px-3 py-2 bg-gradient-to-t from-secondary to-primary">
+                            <button type="submit" id="pay-button"
+                                class="flex items-center justify-center shrink-0 rounded-full w-[110px] h-[45px] p-3 text-sm bg-primary-secondary font-bold text-primary hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap order-2">
+                                Bayar
+                            </button>
+                            <div class="flex flex-col justify-center text-right order-1 ml-auto h-[45px]">
+                                <p class="font-medium text-xs text-custom-gray-10 leading-tight">
+                                    Biaya Booking
+                                    <span class="font-semibold text-base text-custom-gray-10">
+                                        Rp{{ number_format($jumlahBooking, 0, '.', '.') }}
+                                    </span>
+                                </p>
+                                <p class="font-medium text-xs text-custom-gray-10 leading-tight">
+                                    Harga Produk
+                                    <span class="font-medium text-sm text-custom-gray-10">
+                                        Rp{{ number_format($totalHarga, 0, ',', '.') }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
 @endsection
 
 @push('addon-script')
