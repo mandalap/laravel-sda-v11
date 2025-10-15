@@ -31,8 +31,8 @@ jobs:
     - name: 📂 Sync project files (tanpa vendor)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        server: ${{ secrets.FTP_SERVER_SAJADA }}
+        username: ${{ secrets.FTP_USERNAME_SAJADA }}
+        password: ${{ secrets.FTP_PASSWORD_SAJADA }}
         server-dir: /
         local-dir: ./
