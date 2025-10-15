@@ -8,7 +8,6 @@
 @endpush
 @push('addon-style')
     <style>
-        /* Skeleton animation */
         @keyframes pulse {
             0% {
                 opacity: 0.6;
@@ -31,8 +30,7 @@
 @endpush
 
 @section('content')
-    <x-navigation-route title="Riwayat Booking" backRoute="{{ route('profil') }}" textColor="text-custom-gray-10"
-        :showBackground="true" />
+    <x-navigation-route title="Riwayat Booking" backRoute="{{ route('profil') }}" textColor="text-primary" :showBackground="false" />
 
     @if ($bookings->isEmpty())
         @include('components.no-data')
@@ -43,49 +41,31 @@
             </div>
 
             <div id="loading" class="hidden">
-                <!-- Skeleton loader cards -->
                 @for ($i = 0; $i < 3; $i++)
                     <section class="relative px-5 mb-3">
                         <div class="card w-full">
                             <div class="flex flex-col rounded-2xl border border-custom-gray-40 p-3 bg-white gap-3">
-
-                                <!-- Bagian 1: Invoice & Status Skeleton -->
                                 <div class="flex justify-between items-center">
-                                    <!-- Invoice Skeleton -->
                                     <div class="flex items-center gap-2">
                                         <div class="skeleton w-5 h-5 rounded shrink-0"></div>
                                         <div class="skeleton h-5 rounded-md w-24"></div>
                                     </div>
-
-                                    <!-- Status Badge Skeleton -->
                                     <div class="skeleton h-6 rounded w-16"></div>
                                 </div>
 
-                                <!-- Garis Pembatas 1 -->
                                 <div class="border-t border-custom-gray-40"></div>
 
-                                <!-- Bagian 2: Gambar dan Informasi Booking Skeleton -->
                                 <div class="flex flex-row gap-2 items-center">
-                                    <!-- Gambar Skeleton -->
                                     <div class="w-20 sm:w-24 md:w-40 h-16 sm:h-20 md:h-24 flex-shrink-0 rounded skeleton">
                                     </div>
-
-                                    <!-- Konten Skeleton -->
                                     <div class="flex flex-col flex-1 min-w-0 gap-1">
-                                        <!-- Nama Project -->
                                         <div class="skeleton h-4 rounded-md w-full"></div>
-                                        <!-- Nama Product -->
                                         <div class="skeleton h-3 rounded-md w-3/4"></div>
-                                        <!-- Alamat -->
                                         <div class="skeleton h-3 rounded-md w-5/6"></div>
-
-                                        <!-- Lokasi dengan Icon -->
                                         <div class="flex items-center gap-1">
                                             <div class="skeleton w-3 h-3 sm:w-4 sm:h-4 rounded shrink-0"></div>
                                             <div class="skeleton h-3 rounded-md w-1/2"></div>
                                         </div>
-
-                                        <!-- Harga dengan Icon -->
                                         <div class="flex items-center gap-1">
                                             <div class="skeleton w-3 h-3 sm:w-4 sm:h-4 rounded shrink-0"></div>
                                             <div class="skeleton h-3 rounded-md w-2/5"></div>
@@ -93,21 +73,14 @@
                                     </div>
                                 </div>
 
-                                <!-- Garis Pembatas 2 -->
                                 <div class="border-t border-custom-gray-40"></div>
 
-                                <!-- Bagian 3: Nama Blok dan Jumlah Pembayaran Skeleton -->
                                 <div class="flex justify-between items-center">
-                                    <!-- Nama Blok Skeleton -->
                                     <div class="skeleton h-5 rounded-md w-1/3"></div>
-
-                                    <!-- Jumlah Pembayaran Skeleton -->
                                     <div class="text-right">
                                         <div class="skeleton h-4 rounded-md w-24 ml-auto"></div>
                                     </div>
                                 </div>
-
-                                <!-- Bagian 4: Informasi Tambahan Skeleton (hanya untuk variasi) -->
                                 @if ($i === 0)
                                     <div class="space-y-1">
                                         <div class="skeleton h-3 rounded-md w-3/4"></div>
@@ -121,7 +94,6 @@
                 @endfor
             </div>
 
-            <!-- Observer target untuk infinite scroll -->
             <div id="observer-target" class="h-10"></div>
         </div>
     @endif

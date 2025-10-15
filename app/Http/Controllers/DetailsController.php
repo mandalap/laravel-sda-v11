@@ -26,6 +26,107 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class DetailsController extends Controller
 {
+
+    /**
+     * Menambahkan method untuk update status product
+     * Method ini memastikan status product selalu sinkron dengan booking transaction
+     */
+    private function updateProductStatus(Product $product, string $status)
+    {
+        $validStatuses = ['Tersedia', 'Pending', 'Booking', 'Terjual'];
+
+        if (!in_array($status, $validStatuses)) {
+            throw new \InvalidArgumentException("Invalid product status: {$status}");
+        }
+
+        $product->status = $status;
+        $product->save();
+    }
+
+    /**
+     * Method untuk validasi ketersediaan product
+     * Digunakan di semua flow booking untuk konsistensi
+     */
+    private function validateProductAvailability(Product $product, $currentUserId = null)
+    {
+        // // Bersihkan booking yang sudah expired terlebih dahulu
+        $this->cleanupExpiredBookings($product->id);
+
+        // Cek apakah product sedang dalam booking aktif
+        $activeBooking = BookingTransaction::where('product_id', $product->id)
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('status', 'booking')
+                        ->where('is_paid', true);
+                })
+                    ->orWhere(function ($q) {
+                        $q->where('status', 'pending')
+                            ->where('is_paid', false);
+                    });
+            })
+            ->first();
+
+        // Jika ada booking aktif dan bukan milik user saat ini
+        if ($activeBooking && $activeBooking->member_id != $currentUserId) {
+            return [
+                'available' => false,
+                'message' => 'Produk ini sedang dalam proses booking oleh pengguna lain.',
+                'booking' => $activeBooking
+            ];
+        }
+
+        // Jika ada booking aktif dan adalah milik user saat ini
+        if ($activeBooking && $activeBooking->member_id == $currentUserId) {
+            // Cek apakah sudah dibayar
+            if ($activeBooking->status == 'booking' && $activeBooking->is_paid) {
+                return [
+                    'available' => false,
+                    'message' => 'Anda sudah membooking produk ini.',
+                    'booking' => $activeBooking,
+                    'already_owned' => true
+                ];
+            }
+        }
+
+        return [
+            'available' => true,
+            'message' => 'Product tersedia untuk dibooking',
+            'booking' => $activeBooking
+        ];
+    }
+
+    private function cleanupExpiredBookings($productId)
+    {
+        // Jika tidak ada booking aktif lagi, kembalikan status product ke Tersedia
+        $hasActiveBooking = $this->hasActiveBooking($productId);
+
+        if (!$hasActiveBooking) {
+            $product = Product::find($productId);
+            if ($product && $product->status !== 'Tersedia' && $product->status !== 'Terjual') {
+                $this->updateProductStatus($product, 'Tersedia');
+            }
+        }
+    }
+
+    /**
+     * Helper method untuk cek apakah product punya booking aktif
+     */
+    private function hasActiveBooking($productId)
+    {
+        return BookingTransaction::where('product_id', $productId)
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('status', 'booking')
+                        ->where('is_paid', true);
+                })
+                    ->orWhere(function ($q) {
+                        $q->where('status', 'pending')
+                            ->where('is_paid', false);
+                    });
+            })
+            ->exists();
+    }
+
     //
     public function index($jenis, $kategori, $project)
     {
@@ -52,69 +153,79 @@ class DetailsController extends Controller
     {
         $member = Auth::guard('member')->user();
 
-        // Menggunakan eager loading untuk memuat relasi
         $jenis = Jenis::where('slug', $jenis)->firstOrFail();
         $kategori = Kategori::where('slug', $kategori)->firstOrFail();
 
-        // Ambil project dengan eager loading untuk memuat relasi kategori dan jenis
-        $project = Project::with(['kategori', 'jenis', 'project_product']) // Menggunakan eager loading untuk kategori, jenis dan produk terkait
+        $project = Project::with(['kategori', 'jenis', 'project_product'])
             ->where("slug", $project)
             ->firstOrFail();
 
-        // Ambil produk terkait untuk project yang dipilih dengan status 'Tersedia'
         $products = $project->project_product()->where('status', 'Tersedia')->get();
 
-        // Validasi jika kategori adalah 'rumah' atau hanya ada satu produk
         $selectedProduct = null;
         if ($kategori->slug === 'rumah' && $products->count() === 1) {
-            $selectedProduct = $products->first();  // Pilih produk pertama jika kategori rumah atau hanya ada satu produk
+            $selectedProduct = $products->first();
         }
 
-        // Mengurutkan produk berdasarkan nama (huruf dan angka)
         $products = $products->sortBy(function ($product) {
             preg_match('/([A-Za-z]+)([0-9]+)/', $product->nama_product, $matches);
             return isset($matches[1]) ? [$matches[1], (int)($matches[2] ?? 0)] : [$product->nama_product, 0];
         })->values();
 
-        // Mengirimkan data ke view
         return view("pages.details.custInfo", compact('project', 'products', 'kategori', 'member', 'selectedProduct'));
     }
 
 
+    /**
+     * PERUBAHAN 5: Refactoring method checkout dengan validasi yang lebih ketat
+     */
     public function checkout(Request $request, $project)
     {
         try {
             $user = Auth::guard('member')->user();
             $project = Project::where("slug", $project)->firstOrFail();
 
-            // Cek apakah request berasal dari riwayat booking
+            // Handle booking dari riwayat
             $bookingId = $request->input('booking_id');
             if ($bookingId) {
-                $bookingTransaction = BookingTransaction::with('product.project')->findOrFail($bookingId);
+                return $this->handleExistingBooking($bookingId, $user, $project);
+            }
 
-                // Pastikan booking milik user yang sedang login
-                if ($bookingTransaction->member_id !== $user->id) {
-                    abort(403, 'Unauthorized');
+            // Validasi wajib memilih produk
+            if (!$request->has('product') || empty($request->input('product'))) {
+                Alert::toast('Silahkan memilih properti terlebih dahulu', 'info')
+                    ->autoClose(10000)->timerProgressBar();
+                return redirect()->back();
+            }
+
+            // Handle referral code validation
+            $agency = null;
+            $referralCode = $request->input('refferal');
+
+            if (!empty($referralCode)) {
+                $referralValidation = $this->validateAndProcessReferral($referralCode, $user, $request->input('product'));
+
+                if (!$referralValidation['valid']) {
+                    Alert::toast($referralValidation['message'], 'error')
+                        ->autoClose(10000)->timerProgressBar();
+                    return redirect()->back()->withInput();
                 }
 
-                // Validasi untuk transaksi yang sudah dibayar
-                if ($bookingTransaction->status == 'booking' && $bookingTransaction->is_paid) {
-                    $duplicateBookings = BookingTransaction::where('product_id', $bookingTransaction->product_id)
-                        ->where('member_id', $user->id)
-                        ->where(function ($query) {
-                            $query->where('status', 'pending')
-                                ->orWhere('status', 'cancel');
-                        })
-                        ->where('id', '!=', $bookingTransaction->id)
-                        ->get();
+                $agency = $referralValidation['agency'];
+            }
 
-                    if ($duplicateBookings->isNotEmpty()) {
-                        foreach ($duplicateBookings as $duplicateBooking) {
-                            $duplicateBooking->delete();
-                        }
-                    }
+            // Ambil product
+            $product = Product::where("code_product", $request->input('product'))->firstOrFail();
 
-                    Alert::toast('Produk ini sudah dibooking.', 'info')->autoClose(10000)->timerProgressBar();
+            // PERUBAHAN 6: Gunakan method validateProductAvailability yang centralized
+            $availability = $this->validateProductAvailability($product, $user->id);
+
+            if (!$availability['available']) {
+                Alert::toast($availability['message'], 'info')
+                    ->autoClose(10000)->timerProgressBar();
+
+                // Jika user sudah punya booking untuk product ini, redirect ke custinfo
+                if (isset($availability['already_owned']) && $availability['already_owned']) {
                     return redirect()->route('custinfo', [
                         'jenis' => $project->jenis->slug,
                         'kategori' => $project->kategori->slug,
@@ -122,12 +233,12 @@ class DetailsController extends Controller
                     ]);
                 }
 
-                if ($bookingTransaction->status == 'cancel') {
-                    Alert::toast('Pembayaran telah dibatalkan, silakan lakukan pembelian lagi.', 'info')->autoClose(10000)->timerProgressBar();
-                    return redirect()->back();
-                }
+                return redirect()->back();
+            }
 
-                $product = $bookingTransaction->product;
+            // Jika ada booking sebelumnya milik user ini yang belum expired, gunakan data tersebut
+            if ($availability['booking'] && $availability['booking']->member_id == $user->id) {
+                $booking = $availability['booking'];
 
                 return view("pages.details.checkout", [
                     'project' => $project,
@@ -136,117 +247,21 @@ class DetailsController extends Controller
                     'email' => $user->email,
                     'telepon' => $user->telepon,
                     'kodeProduct' => $product->code_product,
-                    'jumlahBooking' => $bookingTransaction->jumlah_uang_booking,
-                    'discount' => $bookingTransaction->diskon,
-                    'totalHarga' => $bookingTransaction->total_harga,
-                    'snapToken' => $bookingTransaction->snap_token,
-                    'booking' => $bookingTransaction,
+                    'jumlahBooking' => $booking->jumlah_uang_booking,
+                    'discount' => $booking->diskon,
+                    'totalHarga' => $booking->total_harga,
+                    'snapToken' => $booking->snap_token,
+                    'booking' => $booking,
                 ]);
             }
 
-            // Validasi wajib memilih produk
-            if (!$request->has('product') || empty($request->input('product'))) {
-                Alert::toast('Silahkan memilih properti terlebih dahulu', 'info')->autoClose(10000)->timerProgressBar();
-                return redirect()->back();
-            }
-
-            // Validasi kode referral jika diisi
-            $agency = null;
-            $referralCode = $request->input('refferal');
-
-            if (!empty($referralCode)) {
-                $agency = Agency::whereRaw('BINARY agency_code = ?', [$referralCode])->first();
-
-                if (!$agency) {
-                    Alert::toast('Kode referral tidak valid.', 'error')->autoClose(10000)->timerProgressBar();
-                    return redirect()->back()->withInput();
-                }
-
-                $product = Product::where("code_product", $request->input('product'))->firstOrFail();
-
-                $existingBookingForProduct = BookingTransaction::where('product_id', $product->id)
-                    ->where('member_id', $user->id)
-                    ->whereIn('status', ['pending', 'booking'])
-                    ->first();
-
-                if ($existingBookingForProduct && $referralCode) {
-                    $previousAgency = Agency::find($existingBookingForProduct->agency_id);
-
-                    if ($previousAgency && $previousAgency->agency_code !== $referralCode) {
-                        Alert::toast('Kode referral tidak dapat diubah saat melakukan proses booking produk ini.', 'error')
-                            ->autoClose(10000)
-                            ->timerProgressBar();
-                        return redirect()->back()->withInput();
-                    }
-                }
-
-                $existingAffiliate = Affiliate::where('member_id', $user->id)->first();
-
-                if (!$existingAffiliate) {
-                    Affiliate::create([
-                        'member_id' => $user->id,
-                        'agency_id' => $agency->id,
-                        'joined_at' => now(),
-                    ]);
-                }
-            }
-
-            // Jika bukan dari riwayat booking, lanjutkan dengan logika checkout baru
-            $product = Product::where("code_product", $request->input('product'))->firstOrFail();
-
-            // Cek apakah sudah ada transaksi lunas untuk produk ini
-            $existingPaidBooking = BookingTransaction::where('product_id', $product->id)
-                ->where('member_id', $user->id)
-                ->where('status', 'booking')
-                ->where('is_paid', true)
-                ->first();
-
-            if ($existingPaidBooking) {
-                BookingTransaction::where('product_id', $product->id)
-                    ->where('member_id', $user->id)
-                    ->where(function ($query) {
-                        $query->where('status', 'pending')
-                            ->orWhere('status', 'cancel');
-                    })
-                    ->where('id', '!=', $existingPaidBooking->id)
-                    ->delete();
-
-                Alert::toast('Produk ini sudah dibooking.', 'info')->autoClose(10000)->timerProgressBar();
-                return redirect()->route('custinfo', [
-                    'jenis' => $project->jenis->slug,
-                    'kategori' => $project->kategori->slug,
-                    'project' => $project->slug
-                ]);
-            }
-
-            // Cek apakah produk sedang dalam booking aktif oleh user lain
-            $existingBooking = BookingTransaction::where('product_id', $product->id)
-                ->where(function ($query) {
-                    $query->where(function ($q) {
-                        $q->where('status', 'pending');
-                    })->orWhere(function ($q) {
-                        $q->where('status', 'booking')
-                            ->where('is_paid', true);
-                    })->orWhere(function ($q) {
-                        $q->where('status', 'pending')
-                            ->where('is_paid', false)
-                            ->where('snap_token_expiry', '>', now());
-                    });
-                })
-                ->first();
-
-            if ($existingBooking && $existingBooking->member_id !== $user->id) {
-                Alert::toast('Produk ini sedang dalam proses booking oleh pengguna lain.', 'info')->autoClose(10000)->timerProgressBar();
-                return redirect()->back();
-            }
-
+            // Setup data untuk checkout baru
             $nama = $request->input('nama');
             $email = $request->input('email');
             $telepon = $request->input('telepon');
             $kodeProduct = $request->input('product');
             $jumlahBooking = $request->input('jumlah_uang_booking', 100000);
 
-            // Hitung discount dan total harga
             $discount = $product->discount ?? 0;
             $totalHarga = $product->harga - $discount;
 
@@ -265,226 +280,289 @@ class DetailsController extends Controller
             ));
         } catch (\Exception $e) {
             Log::error('Error di halaman checkout: ' . $e->getMessage());
-            Alert::toast('Terjadi kesalahan: ' . $e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
+            Alert::toast('Terjadi kesalahan: ' . $e->getMessage(), 'error')
+                ->autoClose(10000)->timerProgressBar();
             return redirect()->back();
         }
     }
+    /**
+     * PERUBAHAN 7: Memisahkan logika handle existing booking
+     */
+    private function handleExistingBooking($bookingId, $user, $project)
+    {
+        $bookingTransaction = BookingTransaction::with('product.project')->findOrFail($bookingId);
 
+        if ($bookingTransaction->member_id !== $user->id) {
+            abort(403, 'Unauthorized');
+        }
+
+        if ($bookingTransaction->status == 'booking' && $bookingTransaction->is_paid) {
+            $this->cleanupDuplicateBookings($bookingTransaction, $user->id);
+
+            Alert::toast('Produk ini sudah dibooking.', 'info')
+                ->autoClose(10000)->timerProgressBar();
+            return redirect()->route('custinfo', [
+                'jenis' => $project->jenis->slug,
+                'kategori' => $project->kategori->slug,
+                'project' => $project->slug
+            ]);
+        }
+
+        if ($bookingTransaction->status == 'cancel') {
+            Alert::toast('Pembayaran telah dibatalkan, silakan lakukan pembelian lagi.', 'info')
+                ->autoClose(10000)->timerProgressBar();
+            return redirect()->back();
+        }
+
+        $product = $bookingTransaction->product;
+
+        return view("pages.details.checkout", [
+            'project' => $project,
+            'product' => $product,
+            'nama' => $user->nama,
+            'email' => $user->email,
+            'telepon' => $user->telepon,
+            'kodeProduct' => $product->code_product,
+            'jumlahBooking' => $bookingTransaction->jumlah_uang_booking,
+            'discount' => $bookingTransaction->diskon,
+            'totalHarga' => $bookingTransaction->total_harga,
+            'snapToken' => $bookingTransaction->snap_token,
+            'booking' => $bookingTransaction,
+        ]);
+    }
+
+    /**
+     * PERUBAHAN 8: Memisahkan logika validasi referral
+     */
+    private function validateAndProcessReferral($referralCode, $user, $productCode)
+    {
+        $agency = Agency::whereRaw('BINARY agency_code = ?', [$referralCode])->first();
+
+        if (!$agency) {
+            return [
+                'valid' => false,
+                'message' => 'Kode referral tidak valid.'
+            ];
+        }
+
+        $product = Product::where("code_product", $productCode)->firstOrFail();
+
+        $existingBookingForProduct = BookingTransaction::where('product_id', $product->id)
+            ->where('member_id', $user->id)
+            ->whereIn('status', ['pending', 'booking'])
+            ->first();
+
+        if ($existingBookingForProduct && $referralCode) {
+            $previousAgency = Agency::find($existingBookingForProduct->agency_id);
+
+            if ($previousAgency && $previousAgency->agency_code !== $referralCode) {
+                return [
+                    'valid' => false,
+                    'message' => 'Kode referral tidak dapat diubah saat melakukan proses booking produk ini.'
+                ];
+            }
+        }
+
+        $existingAffiliate = Affiliate::where('member_id', $user->id)->first();
+
+        if (!$existingAffiliate) {
+            Affiliate::create([
+                'member_id' => $user->id,
+                'agency_id' => $agency->id,
+                'joined_at' => now(),
+            ]);
+        }
+
+        return [
+            'valid' => true,
+            'agency' => $agency
+        ];
+    }
+
+    /**
+     * PERUBAHAN 9: Helper untuk cleanup duplicate bookings
+     */
+    private function cleanupDuplicateBookings($mainBooking, $userId)
+    {
+        BookingTransaction::where('product_id', $mainBooking->product_id)
+            ->where('member_id', $userId)
+            ->where(function ($query) {
+                $query->where('status', 'pending')
+                    ->orWhere('status', 'cancel');
+            })
+            ->where('id', '!=', $mainBooking->id)
+            ->delete();
+    }
+
+    /**
+     * PERUBAHAN 10: Refactoring getSnapToken dengan validasi yang lebih ketat
+     */
     public function getSnapToken(Request $request)
     {
         try {
             $user = Auth::guard('member')->user();
             $product = Product::where("code_product", $request->input('product'))->firstOrFail();
 
-            // Cek apakah user ini sudah menyelesaikan pembayaran
-            $alreadyBooked = BookingTransaction::where('product_id', $product->id)
-                ->where('member_id', $user->id)
-                ->where('status', 'booking')
-                ->where('is_paid', true)
-                ->first();
+            // Validasi ketersediaan product
+            $availability = $this->validateProductAvailability($product, $user->id);
 
-            if ($alreadyBooked) {
+            if (!$availability['available']) {
                 return response()->json([
-                    'error' => 'Produk ini sudah dibooking.',
+                    'error' => $availability['message'],
                 ], 409);
             }
 
-            // Cek apakah ada booking aktif untuk produk ini
-            $existingBooking = BookingTransaction::where('product_id', $product->id)
-                ->where('member_id', $user->id)
-                ->where('is_paid', false)
-                ->where('snap_token_expiry', '>', now()) // Booking masih berlaku
-                ->whereIn('status', ['pending', 'booking'])
-                ->orderBy('snap_token_expiry', 'desc')
-                ->first();
-
-            // Jika masih ada transaksi dengan status pending atau booking, gunakan token lama
-            if ($existingBooking) {
+            // Jika ada booking yang masih aktif, gunakan token yang ada
+            if ($availability['booking']) {
                 return response()->json([
-                    'snapToken' => $existingBooking->snap_token,
-                    'booking' => $existingBooking,
+                    'snapToken' => $availability['booking']->snap_token,
+                    'booking' => $availability['booking'],
                     'product' => $product,
                 ]);
             }
 
-            // Jika transaksi sebelumnya sudah expired atau cancel, buat transaksi baru TANPA menghapus yang lama
+            // Buat snap token baru
             return $this->createNewSnapToken($user, $product);
         } catch (\Exception $e) {
-            Log::error('Error di halaman bayar: ' . $e->getMessage());
-            return response()->json(['error' => 'Terjadi kesalahan saat memproses pembayaran'], 500);
+            Log::error('Error di getSnapToken: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Terjadi kesalahan saat memproses pembayaran'
+            ], 500);
         }
     }
 
-
+    /**
+     * PERUBAHAN 11: Perbaikan createNewSnapToken dengan locking yang lebih ketat
+     */
     private function createNewSnapToken($user, $product, $existingBooking = null)
     {
-        DB::beginTransaction();
-        try {
-            // Cek apakah user ini sudah pernah beli (booking & paid)
-            $alreadyBookedBySelf = BookingTransaction::where('product_id', $product->id)
-                ->where('member_id', $user->id)
-                ->where('status', 'booking')
-                ->where('is_paid', true)
-                ->first();
+        return DB::transaction(function () use ($user, $product, $existingBooking) {
+            try {
+                // CRITICAL: Lock product untuk update
+                $product = Product::where('id', $product->id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-            if ($alreadyBookedBySelf) {
-                Alert::toast('Anda sudah menyelesaikan pembayaran untuk produk ini.', 'info')->autoClose(10000)->timerProgressBar();
-                return redirect()->route('custinfo', [
-                    'jenis' => $product->project->jenis->slug,
-                    'kategori' => $product->project->kategori->slug,
-                    'project' => $product->project->slug,
-                ]);
-            }
+                // Double check ketersediaan setelah lock
+                $availability = $this->validateProductAvailability($product, $user->id);
 
-            // LOCKING: Kunci record produk saat proses berlangsung
-            $product = Product::where('id', $product->id)->lockForUpdate()->first();
+                if (!$availability['available']) {
+                    throw new \Exception($availability['message']);
+                }
 
-            // Cek apakah produk sedang di-booking user lain
-            $conflictingBooking = BookingTransaction::where('product_id', $product->id)
-                ->where('member_id', '!=', $user->id)
-                ->where(function ($query) {
-                    $query->where(function ($q) {
-                        $q->where('status', 'pending')
-                            ->where('is_paid', false)
-                            ->where('snap_token_expiry', '>', now());
-                    })->orWhere(function ($q) {
-                        $q->where('status', 'booking')
-                            ->where('is_paid', true);
-                    });
-                })
-                ->lockForUpdate() // Kunci juga booking terkait
-                ->first();
+                // Lock juga semua booking terkait product ini
+                BookingTransaction::where('product_id', $product->id)
+                    ->lockForUpdate()
+                    ->get();
 
-            if ($conflictingBooking) {
-                DB::rollBack();
+                // Tentukan agency_id
+                $agencyId = $this->determineAgencyIdForBooking($user);
+
+                // Generate invoice
+                $invoice = $existingBooking ? $existingBooking->invoice : BookingTransaction::generateUniqueTrxId();
+
+                // Hitung harga
+                $discount = $product->discount ?? 0;
+                $hargaTanah = $product->harga;
+                $totalHarga = $hargaTanah - $discount;
+                $jumlahBooking = request()->input('jumlah_uang_booking', 100000);
+
+                // Buat atau update booking
+                $booking = $existingBooking ?? new BookingTransaction();
+                $booking->member_id = $user->id;
+                $booking->product_id = $product->id;
+                $booking->agency_id = $agencyId;
+                $booking->invoice = $invoice;
+                $booking->jumlah_uang_booking = $jumlahBooking;
+                $booking->harga_tanah = $hargaTanah;
+                $booking->diskon = $discount;
+                $booking->total_harga = $totalHarga;
+                $booking->is_paid = false;
+                $booking->status = 'pending';
+
+                // Set expiry time
+                $expiryTime = request()->input('payment_method')
+                    ? $this->getExpiryTime(request()->input('payment_method'))
+                    : 1440; // 24 jam default
+
+                // Configure Midtrans
+                \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+                \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+                \Midtrans\Config::$isSanitized = true;
+                \Midtrans\Config::$is3ds = true;
+
+                // Prepare Midtrans params
+                $params = [
+                    'transaction_details' => [
+                        'order_id' => $booking->invoice,
+                        'gross_amount' => $booking->jumlah_uang_booking,
+                    ],
+                    'customer_details' => [
+                        'first_name' => $user->nama,
+                        'phone' => $user->telepon,
+                        'email' => $user->email,
+                    ],
+                    'item_details' => [
+                        [
+                            'id' => $product->code_product,
+                            'price' => $booking->jumlah_uang_booking,
+                            'quantity' => 1,
+                            'name' => $product->nama_product,
+                        ]
+                    ],
+                ];
+
+                // Generate snap token
+                $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+                // Save booking
+                $booking->snap_token = $snapToken;
+                $booking->snap_token_created_at = now();
+                $booking->snap_token_expiry = now()->addMinutes($expiryTime);
+                $booking->save();
+
+                // PERUBAHAN 12: Update status product ke Pending
+                $this->updateProductStatus($product, 'Pending');
+
+                // Dispatch notification job
+                SendWhatsAppBookingFirst::dispatch($booking);
+
                 return response()->json([
-                    'error' => 'Produk ini sedang dalam proses booking oleh pengguna lain.'
-                ], 409);
+                    'snapToken' => $snapToken,
+                    'booking' => $booking,
+                    'product' => $product,
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Gagal membuat snapToken: ' . $e->getMessage());
+                throw $e;
             }
-
-            // Tentukan agency_id berdasarkan logika referral
-            $agencyId = $this->determineAgencyIdForBooking($user);
-
-            // Jika sudah ada transaksi yang belum dibayar, gunakan invoice lama
-            $invoice = $existingBooking ? $existingBooking->invoice : BookingTransaction::generateUniqueTrxId();
-
-            // Hitung discount dan total harga
-            $discount = $product->discount ?? 0;
-            $hargaTanah = $product->harga;
-            $totalHarga = $hargaTanah - $discount;
-
-            // Jika transaksi belum ada, buat transaksi baru
-            $booking = $existingBooking ?? new BookingTransaction();
-            $booking->member_id = $user->id;
-            $booking->product_id = $product->id;
-            $booking->agency_id = $agencyId;
-            $booking->invoice = $invoice;
-            $booking->jumlah_uang_booking = request()->input('jumlah_uang_booking', 100000);
-            $booking->harga_tanah = $hargaTanah;
-            $booking->diskon = $discount;
-            $booking->total_harga = $totalHarga;
-            $booking->is_paid = false;
-            $booking->status = 'pending';
-
-            // log::info('Creating new booking transaction', [
-            //     'member_id' => $user->id,
-            //     'product_id' => $product->id,
-            //     'invoice' => $booking->invoice,
-            //     'jumlah_uang_booking' => $booking->jumlah_uang_booking,
-            //     'agency_id' => $booking->agency_id,
-            // ]);
-
-            // Set Kadaluarsa 24 jam jika belum memilih metode pembayaran
-            $expiryTime = request()->input('payment_method') ? $this->getExpiryTime(request()->input('payment_method')) : 1440; // 24 jam default
-
-            // Set Midtrans Config
-            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-            \Midtrans\Config::$isProduction = config('midtrans.isProduction');
-            \Midtrans\Config::$isSanitized = true;
-            \Midtrans\Config::$is3ds = true;
-
-            // Persiapkan data untuk Midtrans
-            $params = [
-                'transaction_details' => [
-                    'order_id' => $booking->invoice,
-                    'gross_amount' => $booking->jumlah_uang_booking,
-                ],
-                'customer_details' => [
-                    'first_name' => $user->nama,
-                    'phone' => $user->telepon,
-                    'email' => $user->email,
-                ],
-                'item_details' => [
-                    [
-                        'id' => $product->code_product,
-                        'price' => $booking->jumlah_uang_booking,
-                        'quantity' => 1,
-                        'name' => $product->nama_product,
-                    ]
-                ],
-            ];
-
-            // Generate snap token
-            $snapToken = \Midtrans\Snap::getSnapToken($params);
-
-            // Simpan snap_token, waktu pembuatan dan kadaluarsa di database
-            $booking->snap_token = $snapToken;
-            $booking->snap_token_created_at = now(); // Simpan waktu pembuatan snap_token
-            $booking->snap_token_expiry = now()->addMinutes($expiryTime); // Waktu kadaluarsa berdasarkan metode
-            $booking->save(); // Pastikan perubahan disimpan
-
-            DB::commit();
-            SendWhatsAppBookingFirst::dispatch($booking);
-
-            return response()->json([
-                'snapToken' => $snapToken,
-                'booking' => $booking,
-                'product' => $product,
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack(); // Jika error, rollback
-            Log::error('Gagal membuat snapToken: ' . $e->getMessage());
-            return response()->json(['error' => 'Gagal membuat transaksi pembayaran'], 500);
-            Alert::toast('Terjadi kesalahan saat memproses pembayaran.', 'info')->autoClose(10000)->timerProgressBar();
-            return redirect()->route('custinfo', [
-                'jenis' => $product->project->jenis->slug,
-                'kategori' => $product->project->kategori->slug,
-                'project' => $product->project->slug,
-            ]);
-        }
+        }, 3); // 3 attempts untuk handle deadlock
     }
 
-    // Fungsi untuk menentukan agency_id berdasarkan referral code
+    /**
+     * Helper method untuk menentukan agency_id
+     */
     private function determineAgencyIdForBooking($user)
     {
-        // Ambil referral code dari request
-        $referralCode = request()->input('refferal');
-        log::info('Determining agency_id for booking', [
-            'refferal' => $referralCode
-        ]);
-
-        // Jika ada referral code saat checkout
-        if (!empty($referralCode)) {
-            $agency = Agency::where('agency_code', $referralCode)->first();
-            if ($agency) {
-                return $agency->id;
-            }
-        }
-        // Jika tidak ada referral code saat checkout, return null
-        return null;
+        $affiliate = Affiliate::where('member_id', $user->id)->first();
+        return $affiliate ? $affiliate->agency_id : null;
     }
 
-    // Fungsi untuk mendapatkan waktu kadaluarsa berdasarkan metode pembayaran
+    /**
+     * Helper method untuk mendapatkan expiry time berdasarkan payment method
+     */
     private function getExpiryTime($paymentMethod)
     {
-        switch ($paymentMethod) {
-            case 'qris':
-                return 15; // QRIS kadaluarsa dalam 15 menit
-            case 'bank_transfer':
-                return 1440; // Bank Transfer kadaluarsa dalam 30 menit
-            default:
-                return 60; // Default: 1 jam
-        }
+        // Implementasi sesuai dengan metode pembayaran
+        // Contoh: bank transfer 1440 menit (24 jam), e-wallet 15 menit, dll
+        $expiryTimes = [
+            'bank_transfer' => 1440, // 24 jam
+            'gopay' => 15,
+            'qris' => 30,
+            'credit_card' => 60,
+        ];
+
+        return $expiryTimes[$paymentMethod] ?? 1440;
     }
 
     // Fungsi callback yang menerima notifikasi dari Midtrans
@@ -515,12 +593,6 @@ class DetailsController extends Controller
 
                         // Konversi ke UTC untuk disimpan di database
                         $expiryTime = $expiryTimeLocal->setTimezone('UTC');
-
-                        Log::info('Converted Expiry Time', [
-                            'original_midtrans' => $request->expiry_time,
-                            'parsed_as_jakarta' => $expiryTimeLocal->format('Y-m-d H:i:s'),
-                            'converted_to_utc' => $expiryTime->format('Y-m-d H:i:s')
-                        ]);
                     } catch (\Exception $e) {
                         Log::error('Error parsing expiry_time: ' . $e->getMessage());
                     }
@@ -542,12 +614,6 @@ class DetailsController extends Controller
 
                 $booking->update($updateData);
 
-                // Log untuk memastikan update berjalan
-                Log::info('Booking updated with expiry time', [
-                    'booking_id' => $booking->id,
-                    'snap_token_expiry' => $expiryTime ? $expiryTime->format('Y-m-d H:i:s') : null
-                ]);
-
                 // Tentukan status transaksi
                 $transactionStatus = $request->transaction_status;
 
@@ -559,16 +625,13 @@ class DetailsController extends Controller
                     (empty($previousPaymentMethod) || $previousPaymentMethod != $request->payment_type)
                 ) {
 
-                    Log::info('Sending payment method notification', [
-                        'payment_method' => $request->payment_type
-                    ]);
-
                     SendWhatsAppPaymentMethod::dispatch($booking);
                 }
 
                 // Update status transaksi berdasarkan status pembayaran
                 switch ($transactionStatus) {
                     case 'settlement':
+                    case 'capture':
                         // Pembayaran berhasil dan diterima
                         $booking->update([
                             'status' => 'booking',
@@ -579,13 +642,6 @@ class DetailsController extends Controller
                         if ($booking->product) {
                             $booking->product->update(['status' => 'Booking']);
                         }
-                        Log::info(
-                            'Status updated to Booking',
-                            [
-                                'booking_id' => $booking->id,
-                                'product_id' => $booking->product->id ?? null
-                            ]
-                        );
                         SendWhatsAppPaymentSuccess::dispatch($booking);
                         break;
                     case 'pending':
@@ -598,7 +654,7 @@ class DetailsController extends Controller
                     case 'cancel':
                         // Pembayaran gagal atau dibatalkan
                         $booking->update(['status' => 'cancel']);
-                        Log::info('Status updated to Failed', ['booking_id' => $booking->id]);
+                        $booking->product->update(['status' => 'Tersedia']);
                         SendWhatsAppPaymentCancel::dispatch($booking);
                         break;
                 }

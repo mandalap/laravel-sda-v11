@@ -23,17 +23,17 @@
                                 @endphp
                                 <div
                                     class="inline-flex py-1 px-2 rounded bg-warning-secondary text-sm font-medium text-warning-pressed">
-                                    PENDING
+                                    Pending
                                 </div>
                             @elseif ($booking->status == 'booking')
                                 <div
                                     class="inline-flex py-1 px-2 rounded bg-success-secondary text-sm font-medium text-success-pressed">
-                                    BOOKING
+                                    Booking
                                 </div>
                             @elseif ($booking->status == 'cancel')
                                 <div
                                     class="inline-flex py-1 px-2 rounded bg-danger-secondary text-sm font-medium text-danger-pressed">
-                                    BATAL
+                                    Batal
                                 </div>
                             @endif
                         </div>
@@ -89,9 +89,9 @@
                     </div>
 
                     @if ($booking->status == 'pending')
-                        <div class="flex justify-between items-center">
-                            <div class="space-y-3 text-left">
-                                @if ($booking->snap_token)
+                        @if ($booking->snap_token)
+                            <div class="flex justify-between items-center">
+                                <div class="space-y-3 text-left">
                                     <div class="text-xs text-custom-gray-80 font-medium">
                                         Silahkan lanjutkan pembayaran Anda, batas waktu pembayaran adalah tanggal
                                         <span
@@ -105,17 +105,18 @@
                                         Sisa waktu: <span id="countdown-{{ $booking->id }}"
                                             data-expiry="{{ $booking->snap_token_expiry }}"></span>
                                     </div>
-                                @else
-                                    <div class="flex items-center gap-1 text-xs font-medium text-danger-main">
-                                        <img src="{{ asset('assets/images/icons/alert-danger.png') }}"
-                                            class="w-5 h-5 flex-shrink-0" alt="alert">
-                                        <span>Menunggu konfirmasi Admin</span>
-                                    </div>
-                                @endif
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="flex justify-end items-center w-full">
+                                <div class="flex items-center gap-1 text-xs font-medium text-danger-main">
+                                    <span>Menunggu konfirmasi Admin</span>
+                                    <img src="{{ asset('assets/images/icons/alert-danger.png') }}"
+                                        class="w-5 h-5 flex-shrink-0" alt="alert">
+                                </div>
+                            </div>
+                        @endif
                     @endif
-
                 </div>
             </button>
         </form>

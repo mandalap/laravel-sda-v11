@@ -16,12 +16,12 @@ class AffiliasiController extends Controller
         $member = Auth::guard('member')->user();
         $agency = $member->agency;
 
-        $affiliatedMembers = Affiliate::with('member')
-            ->whereHas('agency', function ($query) use ($agency) {
-                $query->where('id', $agency->id);
-            })
-            ->orderBy('joined_at', 'desc')
-            ->paginate(4);
+        // $affiliatedMembers = Affiliate::with('member')
+        //     ->whereHas('agency', function ($query) use ($agency) {
+        //         $query->where('id', $agency->id);
+        //     })
+        //     ->orderBy('joined_at', 'desc')
+        //     ->paginate(10);
 
 
         // dd($affiliatedMembers);
@@ -29,7 +29,7 @@ class AffiliasiController extends Controller
         return view('pages.affiliate.affiliasi.index', [
             // 'member' => $member,
             'agency' => $agency,
-            'affiliatedMembers' => $affiliatedMembers, // kirim ke view
+            // 'affiliatedMembers' => $affiliatedMembers,
         ]);
     }
 }

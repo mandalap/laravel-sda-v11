@@ -42,7 +42,7 @@ class DashboardController extends Controller
                 $query->orWhere('log_name', 'booking_transactions')
                     ->whereJsonContains('properties->attributes->agency_id', $agency->id);
             })
-            ->with(['subject', 'causer']) // Eager load relationships jika diperlukan
+            ->with(['subject', 'causer'])
             ->latest()
             ->take(5) // Ambil 10 aktivitas terbaru
             ->get();
@@ -61,8 +61,12 @@ class DashboardController extends Controller
 
             // Update description dengan nama member yang benar
             if ($activity->log_name == 'affiliates') {
+                $activity->bg_class = 'bg-success-main';
+                $activity->icon_type = 'affiliate';
                 $activity->formatted_description = "Member {$memberName} bergabung menggunakan referral anda";
             } elseif ($activity->log_name == 'booking_transactions') {
+                $activity->bg_class = 'bg-orange-main';
+                $activity->icon_type = 'booking';
                 $productName = 'produk';
                 $projectName = 'project';
                 if (isset($properties['attributes']['product_id'])) {
