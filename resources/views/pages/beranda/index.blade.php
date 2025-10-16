@@ -60,7 +60,7 @@
             @forelse ($kategories as $kategori)
                 <a href="{{ route('kategori', $kategori->slug) }}">
                     <div class="flex flex-col items-center gap-1">
-                        <div class="w-[52px] h-[52px] flex shrink-0">
+                        <div class="w-9 h-9 flex shrink-0">
                             <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt="icon">
                         </div>
                         <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">
@@ -73,7 +73,7 @@
 
             <a href="{{ route('sajada.berdasi') }}">
                 <div class="flex flex-col items-center gap-1">
-                    <div class="w-[52px] h-[52px] flex shrink-0">
+                    <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt="icon">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">SAJADA BERDASI</p>
@@ -81,7 +81,7 @@
             </a>
             <a href="{{ route('sajada.jaksel') }}">
                 <div class="flex flex-col items-center gap-1">
-                    <div class="w-[52px] h-[52px] flex shrink-0">
+                    <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt="icon">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">SAJADA JAKSEL</p>
@@ -89,7 +89,7 @@
             </a>
             <a href="{{ route('affiliate.index') }}">
                 <div class="flex flex-col items-center gap-1">
-                    <div class="w-[52px] h-[52px] flex shrink-0">
+                    <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/agen.png') }}" class="object-cover" alt="icon">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Daftar Agen</p>
@@ -97,7 +97,7 @@
             </a>
             <a href="{{ route('developer.index') }}">
                 <div class="flex flex-col items-center gap-1">
-                    <div class="w-[52px] h-[52px] flex shrink-0">
+                    <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="icon">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kerja Sama</p>

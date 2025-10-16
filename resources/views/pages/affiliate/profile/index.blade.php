@@ -22,8 +22,8 @@
         }
 
         .tab-button.active {
-            color: #d40065;
-            border-bottom-color: #d40065;
+            color: #D81D76;
+            border-bottom-color: #D81D76;
             font-weight: 600;
         }
 
@@ -38,7 +38,7 @@
             height: 48px;
             display: flex;
             align-items: center;
-            border-radius: 30px;
+            border-radius: 4px;
             outline: none;
         }
 
@@ -53,9 +53,13 @@
             /* Menyembunyikan panah default */
         }
 
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            padding-left: 10px;
+        }
+
         /* Styling untuk dropdown ketika terbuka */
         .select2-container--custom-class .select2-dropdown {
-            border-radius: 15px;
+            border-radius: 4px;
             margin-top: 5px;
             border: 1px solid #F1F2F6;
             overflow: hidden;
@@ -68,16 +72,21 @@
             font-size: 0.875rem;
         }
 
+        li.select2-results__option.select2-results__message {
+            padding: 10px;
+            font-size: 0.875rem;
+        }
+
         /* Styling untuk hasil yang dihover/difokuskan */
         .select2-container--custom-class .select2-results__option--highlighted {
             background-color: #f8f9fa;
-            color: #d40065;
+            color: #D81D76;
         }
 
         /* Styling untuk hasil yang dipilih */
         .select2-container--custom-class .select2-results__option--selected {
             background-color: #ffeef7;
-            color: #d40065;
+            color: #D81D76;
         }
 
         /* Menyembunyikan panah dropdown bawaan Select2 */
@@ -87,8 +96,8 @@
 
         /* Styling untuk rendered text (teks yang terpilih) */
         .select2-container--default .select2-selection__rendered {
-            margin-left: 43px !important;
-            font-size: 16px;
+            margin-left: 30px !important;
+            font-size: 14px;
         }
 
         /* Styling untuk placeholder */
@@ -99,16 +108,15 @@
             margin-left: 40px;
         }
 
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #757575;
+        }
+
         .select2-container--custom-class .select2-selection__placeholder,
         .select2-container--default .select2-selection__rendered {
             font-size: 14px;
             color: #5E6F76;
         }
-
-        /*
-                        .select2-container--default .select2-selection__placeholder {
-                            margin-left: 40px;
-                        } */
 
         /* Wrapper kustom untuk Select2 */
         .select2-wrapper {
@@ -116,14 +124,14 @@
             width: 100%;
             background-color: white;
             padding: 0;
-            border-radius: 30px;
+            border-radius: 4px;
             height: 44px;
         }
 
         /* Styling untuk icon di dalam wrapper */
         .select2-icon-left {
             position: absolute;
-            left: 20px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             z-index: 10;
@@ -149,195 +157,144 @@
 
         .select2-search--dropdown .select2-search__field {
             border: 1px solid #F1F2F6;
-            border-radius: 20px;
+            border-radius: 4px;
             padding: 8px 15px;
             outline: none;
         }
 
         .select2-search--dropdown .select2-search__field:focus {
-            border-color: #d40065;
+            border-color: #D81D76;
         }
     </style>
 @endpush
 
 @section('content')
-    <div id="Background"
-        class="absolute top-0 w-full h-[280px] rounded-bl-[75px] rounded-br-[75px] bg-gradient-to-t from-[#a7006d] to-[#d40065]">
-    </div>
-
-    <!-- Top Nav Agency -->
-    <x-top-nav-agency title="Profil Agency" back-route="affiliate.dashboard" />
+    <x-navigation-route title="Profil" :backRoute="route('affiliate.dashboard')" textColor="text-custom-gray-10" :showBackground="true" :showAgencyProfile="true"
+        :showLogout="true" />
 
     <form action="{{ route('affiliate.profile.update') }}" method="POST" enctype="multipart/form-data"
-        class="relative flex flex-col px-5 mt-[30px]">
+        class="relative flex flex-col px-5">
         @csrf
         @method('PUT')
 
-        <div class="flex flex-col gap-4 bg-white p-4 rounded-[30px] border border-[#F1F2F6]">
+        <div class="flex flex-col gap-4 bg-white p-3 rounded-2xl border border-custom-gray-40 mb-2">
             <!-- Tab Navigation -->
             <div class="flex">
                 <button type="button"
-                    class="tab-button active flex-1 py-4 px-6 text-sm font-medium text-center text-gray-600 transition-all duration-300"
+                    class="tab-button active flex-1 p-2.5 text-sm font-medium text-center text-custom-gray-70 transition-all duration-300"
                     onclick="switchTab('profil')">
                     Profil Agency
                 </button>
                 <button type="button"
-                    class="tab-button flex-1 py-4 px-6 text-sm font-medium text-center text-gray-600 transition-all duration-300"
+                    class="tab-button flex-1 p-2.5 text-sm font-medium text-center text-custom-gray-70 transition-all duration-300"
                     onclick="switchTab('rekening')">
                     Informasi Rekening
                 </button>
             </div>
+
             <!-- Tab 1: Profil Pribadi -->
             <div id="profil-tab" class="tab-content active">
                 <div class="flex flex-col gap-4">
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Sapaan</p>
-                        <label
-                            class="relative flex items-center w-full rounded-full p-[14px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/user.svg') }}"
-                                class="flex absolute left-5 top-1/2 w-5 h-5 transform -translate-y-1/2 shrink-0"
-                                alt="icon">
-                            <select name="sapaan" class="w-full pl-8 bg-white text-sm outline-none appearance-none">
-                                <option value="" hidden>Pilih Sapaan</option>
-                                <option value="Bang" {{ $agency->sapaan == 'Bang' ? 'selected' : '' }}>Bang</option>
-                                <option value="Kak" {{ $agency->sapaan == 'Kak' ? 'selected' : '' }}>Kak</option>
-                                <option value="Pak" {{ $agency->sapaan == 'Pak' ? 'selected' : '' }}>Pak</option>
-                                <option value="Bu" {{ $agency->sapaan == 'Bu' ? 'selected' : '' }}>Bu</option>
-                            </select>
-                            <img src="{{ asset('/assets/images/icons/arrow-down.svg') }}" class="w-5 h-5" alt="icon">
-                        </label>
-                    </div>
+                    <x-input-fieldv2 label="Sapaan" name="sapaan" type="select" icon="assets/images/icons/user.svg"
+                        placeholder="Pilih Sapaan" :value="$agency->sapaan" :options="[
+                            'Bang' => 'Bang',
+                            'Kak' => 'Kak',
+                            'Pak' => 'Pak',
+                            'Bu' => 'Bu',
+                        ]" />
+
+                    <x-input-fieldv2 label="Nama" name="nama" icon="assets/images/icons/user.svg"
+                        placeholder="Masukkan Nama" :value="$agency->nama" />
+
+                    <x-input-fieldv2 label="Nomor WhatsApp" name="telepon" type="tel"
+                        icon="assets/images/icons/phone.svg" placeholder="Masukkan Nomor WhatsApp" :value="$agency->telepon" />
+
+                    <x-input-fieldv2 label="Jenis Kelamin" name="gender" type="select"
+                        icon="assets/images/icons/gender.svg" placeholder="Pilih Jenis Kelamin" :value="$agency->gender"
+                        :options="[
+                            'L' => 'Laki-laki',
+                            'P' => 'Perempuan',
+                        ]" />
+
+                    <x-input-fieldv2 label="Email" name="email" type="email" icon="assets/images/icons/mail.svg"
+                        placeholder="Masukkan Email" :value="$agency->email" />
+
+                    <x-input-fieldv2 label="Asal Kota" name="kota_id" icon="assets/images/icons/location2.png"
+                        placeholder="Masukkan Tempat Lahir" :value="$agency->kota_id" />
+
+                    <x-input-fieldv2 label="Tanggal Lahir" name="tanggal_lahir" type="date"
+                        icon="assets/images/icons/calendar.svg" placeholder="Masukkan Tanggal Lahir" :value="$agency->tanggal_lahir" />
+
+                    <x-input-fieldv2 label="Alamat" name="alamat" icon="assets/images/icons/location2.png"
+                        placeholder="Masukkan Alamat" :value="$agency->alamat" />
 
                     <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Nama</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="text" name="nama" value="{{ $agency->nama }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Nama">
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Nomor WhatsApp</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/phone.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="tel" name="telepon" value="{{ $agency->telepon }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Nomor WhatsApp">
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Jenis Kelamin</p>
-                        <label
-                            class="relative flex items-center w-full rounded-full p-[14px_20px] gap-2 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('assets/images/icons/gender.svg') }}"
-                                class="flex absolute left-5 top-1/2 w-5 h-5 transform -translate-y-1/2 shrink-0"
-                                alt="icon">
-                            <select name="gender" class="w-full pl-8 bg-white text-sm outline-none appearance-none">
-                                <option value="" hidden>Pilih Jenis Kelamin</option>
-                                <option value="L" {{ $agency->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="P" {{ $agency->gender == 'P' ? 'selected' : '' }}>Perempuan</option>
-                            </select>
-                            <img src="{{ asset('/assets/images/icons/arrow-down.svg') }}" class="w-5 h-5" alt="icon">
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Email</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/mail.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="text" name="email" value="{{ $agency->email }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Email">
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Asal Kota</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/location2.png') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="text" name="kota_id" value="{{ $agency->kota_id }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Tempat Lahir">
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Tanggal Lahir</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/calendar.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="date" name="tanggal_lahir" value="{{ $agency->tanggal_lahir }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Tanggal Lahir">
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Alamat</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/location2.png') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="text" name="alamat" value="{{ $agency->alamat }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Alamat">
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Kode Referral</p>
-
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-
-                            <input type="text" name="agency_code" value="{{ $agency->agency_code }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Kode Referral"
-                                {{ $agency->referral_code_edited ? 'disabled' : '' }}>
-                        </label>
-
+                        <x-input-fieldv2 label="Kode Referral" name="agency_code" icon="assets/images/icons/user.svg"
+                            placeholder="Masukkan Kode Referral" :value="$agency->agency_code" :disabled="$agency->referral_code_edited" />
 
                         <!-- Info tambahan -->
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            <div class="flex items-start gap-2">
-                                <img src="{{ asset('/assets/images/icons/info.svg') }}" class="w-4 h-4 shrink-0"
-                                    alt="info">
-                                <div class="text-xs text-blue-700">
-                                    <p>Kode referral hanya bisa diganti sebanyak 1 kali.</p>
-                                </div>
-                            </div>
+                        <div class="text-xs text-primary">
+                            <p>Kode referral hanya bisa diganti sebanyak 1 kali.</p>
                         </div>
 
                     </div>
 
+                    <div class="flex flex-col gap-1 w-full">
+                        <p class="font-medium text-sm text-custom-gray-90">Foto Profil</p>
 
-                    <label class="text-sm font-semibold">Foto Profil</label>
-                    <div class="flex flex-col w-full gap-5">
-                        <div>
-                            @if ($agency->photo)
-                                <img src="{{ asset('storage/' . $agency->photo) }}"
-                                    class="w-20 h-20 rounded-full border border-dark" alt="icon">
-                            @else
-                                <img src="{{ asset('/assets/images/icons/profil-default.png') }}"
-                                    class="w-20 h-20 rounded-full border border-dark" alt="Default photo">
-                            @endif
-                        </div>
-                        <div>
-                            <input type="file" name="photo" class="p-2 border rounded-lg">
+                        <input type="file" id="developer-photo" name="photo" accept="image/jpeg,image/jpg,image/png"
+                            class="hidden" />
+
+                        <div class="w-full border border-primary rounded p-3">
+                            <div class="flex flex-col items-center justify-center text-center space-y-2" id="upload-area">
+                                @if ($agency->photo)
+                                    {{-- Jika sudah ada foto, tampilkan preview --}}
+                                    <div class="relative">
+                                        <div class="w-20 h-20 rounded-lg overflow-hidden border-2 border-gray-200">
+                                            <img src="{{ asset('storage/' . $agency->photo) }}"
+                                                class="w-full h-full object-cover" alt="Current Profile">
+                                        </div>
+                                        <button type="button" id="remove-photo-btn"
+                                            class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-custom-gray-20 rounded-full flex items-center justify-center hover:bg-primary transition-colors duration-200 p-0">
+                                            <img src="{{ asset('assets/images/icons/x.png') }}" alt="Remove"
+                                                class="w-2.5 h-2.5 object-contain" />
+                                        </button>
+
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-custom-gray-100">Foto saat ini</p>
+                                        <p class="text-[10px] text-custom-gray-80">Klik tombol di bawah untuk mengubah</p>
+                                    </div>
+                                    <button type="button" id="upload-button"
+                                        class="inline-flex items-center gap-2 px-6 py-3 h-10 bg-primary text-custom-gray-10 font-medium rounded-full hover:bg-primary/90 transition-colors duration-200">
+                                        Ganti foto
+                                        <img src="{{ asset('assets/images/icons/upload-primary.png') }}" class="w-5 h-5"
+                                            alt="icon">
+                                    </button>
+                                @else
+                                    {{-- Jika belum ada foto, tampilkan upload area --}}
+                                    <div
+                                        class="w-[50px] h-[50px] bg-primary-border rounded-full flex items-center justify-center">
+                                        <img src="{{ asset('assets/images/icons/file-primary.png') }}" class="w-8 h-8"
+                                            alt="icon">
+                                    </div>
+                                    <div>
+                                        <p class="text-base font-medium text-custom-gray-100">Upload foto di sini</p>
+                                        <p class="text-[10px] text-custom-gray-80 max-w-xs">
+                                            Upload foto profil Anda
+                                        </p>
+                                        <p class="text-[10px] text-custom-gray-80 max-w-xs">
+                                            dalam format file JPG, JPEG, dan PNG
+                                        </p>
+                                    </div>
+                                    <button type="button" id="upload-button"
+                                        class="inline-flex items-center gap-2 px-6 py-3 h-10 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-colors duration-200">
+                                        Pilih file
+                                        <img src="{{ asset('assets/images/icons/upload-primary.png') }}" class="w-5 h-5"
+                                            alt="icon">
+                                    </button>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -350,13 +307,13 @@
                         <p class="font-semibold text-sm">Nama Bank</p>
                         <div class="relative w-full">
                             <div
-                                class="select2-wrapper ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] rounded-full transition-all duration-300">
+                                class="select2-wrapper flex items-center w-full h-10 rounded p-3 bg-custom-gray-10 ring-1 ring-custom-gray-50 focus-within:ring-primary transition-all duration-300 relative">
                                 <!-- Ikon kiri (bank) -->
                                 <img src="{{ asset('assets/images/icons/bank.svg') }}" class="select2-icon-left"
                                     alt="icon">
 
                                 <!-- Select2 field -->
-                                <select id="nama_bank" name="nama_bank" class="select2-ajax select2-pl-40">
+                                <select id="nama_bank" name="nama_bank" class="select2-ajax">
                                     @if ($agency && $agency->nama_bank)
                                         <option value="{{ $agency->nama_bank }}" selected>{{ $agency->nama_bank }}
                                         </option>
@@ -369,49 +326,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Nama Pemilik Rekening</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/user.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="text" name="nama_pemilik" value="{{ $agency->nama_pemilik ?? '' }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Nama Pemilik Rekening">
-                        </label>
-                    </div>
-                    <div class="flex flex-col w-full gap-2">
-                        <p class="font-semibold text-sm">Nomor Rekening</p>
-                        <label
-                            class="flex items-center w-full rounded-full p-[14px_20px] gap-3 bg-white ring-1 ring-[#F1F2F6] focus-within:ring-[#d40065] transition-all duration-300">
-                            <img src="{{ asset('/assets/images/icons/credit-card.svg') }}" class="flex w-5 h-5 shrink-0"
-                                alt="icon">
-                            <input type="text" name="nomor_rekening" value="{{ $agency->nomor_rekening ?? '' }}"
-                                class="w-full text-sm outline-none appearance-none placeholder:text-ngekos-grey placeholder:font-normal"
-                                placeholder="Masukkan Nomor Rekening" inputmode="numeric">
-                        </label>
-                    </div>
+
+                    <x-input-fieldv2 label="Nama Pemilik Rekening" name="nama_pemilik"
+                        icon="assets/images/icons/user.svg" placeholder="Masukkan Nama Pemilik Rekening"
+                        :value="$agency->nama_pemilik ?? ''" />
+
+                    <x-input-fieldv2 label="Nomor Rekening" name="nomor_rekening" type="text"
+                        icon="assets/images/icons/credit-card.svg" placeholder="Masukkan Nomor Rekening"
+                        :value="$agency->nomor_rekening ?? ''" inputmode="numeric" />
+
                     <!-- Info tambahan -->
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                        <div class="flex items-start gap-2">
-                            <img src="{{ asset('/assets/images/icons/info.svg') }}" class="w-4 h-4 mt-0.5 shrink-0"
-                                alt="info">
-                            <div class="text-xs text-blue-700">
+                    <div class="bg-custom-gray-10 border border-custom-gray-40 rounded-lg p-3">
+                        <div class="flex items-start">
+                            <div class="text-xs text-primary">
                                 <p class="font-semibold mb-1">Informasi Penting:</p>
                                 <p>Pastikan data rekening yang dimasukkan sudah benar. Informasi ini akan digunakan untuk
-                                    pembayaran komisi affiliate.</p>
+                                    pencairan komisi affiliate.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Submit Button -->
-        <button type="submit"
-            class="text-sm flex w-full justify-center rounded-full p-[10px_20px] mt-3 mb-3 bg-[#d40065] hover:bg-black hover:text-white font-bold text-white">
-            Simpan Profil
-        </button>
+            <x-button-primary type="submit" :full-width="true">
+                Simpan
+            </x-button-primary>
         </div>
     </form>
 @endsection
@@ -515,5 +454,216 @@
                 }
             });
         @endif
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const select = document.getElementById('nama_bank');
+            const maxLength = 25;
+
+            for (let i = 0; i < select.options.length; i++) {
+                const option = select.options[i];
+                const fullText = option.text;
+
+                if (fullText.length > maxLength) {
+                    option.text = fullText.slice(0, maxLength) + '...';
+                    option.setAttribute('title', fullText); // Tooltip untuk lihat nama lengkap
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadButton = document.getElementById('upload-button');
+            const fileInput = document.getElementById('developer-photo');
+            const uploadArea = document.getElementById('upload-area');
+            const removePhotoBtn = document.getElementById('remove-photo-btn');
+
+            // Simpan HTML awal
+            const initialHTML = uploadArea.innerHTML;
+
+            console.log('Upload elements found:', {
+                uploadButton: !!uploadButton,
+                fileInput: !!fileInput,
+                uploadArea: !!uploadArea
+            });
+
+            // Event listener untuk button click
+            function attachUploadButtonListener() {
+                const currentUploadButton = document.getElementById('upload-button');
+                if (currentUploadButton) {
+                    currentUploadButton.addEventListener('click', function() {
+                        console.log('Upload button clicked');
+                        fileInput.click();
+                    });
+                }
+            }
+
+            // Event listener untuk remove button (jika ada foto existing)
+            if (removePhotoBtn) {
+                removePhotoBtn.addEventListener('click', function() {
+                    if (confirm('Apakah Anda yakin ingin menghapus foto profil?')) {
+                        // Reset ke state upload
+                        uploadArea.innerHTML = `
+                        <div class="w-[50px] h-[50px] bg-primary-border rounded-full flex items-center justify-center">
+                            <img src="{{ asset('assets/images/icons/file-primary.png') }}" class="w-8 h-8" alt="icon">
+                        </div>
+                        <div>
+                            <p class="text-base font-medium text-custom-gray-100">Upload foto di sini</p>
+                            <p class="text-[10px] text-custom-gray-80 max-w-xs">
+                                Upload foto profil Anda
+                            </p>
+                            <p class="text-[10px] text-custom-gray-80 max-w-xs">
+                                dalam format file JPG, JPEG, dan PNG
+                            </p>
+                        </div>
+                        <button type="button" id="upload-button"
+                            class="inline-flex items-center gap-2 px-6 py-3 h-10 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-colors duration-200">
+                            Pilih file
+                            <img src="{{ asset('assets/images/icons/upload-primary.png') }}" class="w-5 h-5" alt="icon">
+                        </button>
+                    `;
+                        attachUploadButtonListener();
+
+                        // Add hidden input untuk mark deletion (jika diperlukan)
+                        const deleteInput = document.createElement('input');
+                        deleteInput.type = 'hidden';
+                        deleteInput.name = 'delete_current_photo';
+                        deleteInput.value = '1';
+                        fileInput.parentNode.appendChild(deleteInput);
+                    }
+                });
+            }
+
+            // Attach initial listener
+            attachUploadButtonListener();
+
+            // Event listener untuk file selection
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                console.log('File selected:', file);
+
+                removeErrorMessage();
+
+                if (file) {
+                    // Validasi file type
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                    if (!allowedTypes.includes(file.type)) {
+                        showErrorMessage('Format file tidak didukung. Gunakan JPG, JPEG, atau PNG.');
+                        fileInput.value = '';
+                        return;
+                    }
+
+                    // Validasi ukuran file 
+                    const maxSize = 2 * 1024 * 1024;
+                    if (file.size > maxSize) {
+                        showErrorMessage('Ukuran file terlalu besar. Maksimal 2MB.');
+                        fileInput.value = '';
+                        return;
+                    }
+
+                    displaySelectedFile(file);
+                } else {
+                    resetToInitialState();
+                }
+            });
+
+            function displaySelectedFile(file) {
+                removeErrorMessage();
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadArea.innerHTML = `
+                    <div class="flex flex-col items-center justify-center text-center space-y-3">
+                        <div class="relative">
+                            <div class="w-20 h-20 rounded-lg overflow-hidden border-2 border-gray-200">
+                                <img src="${e.target.result}" class="w-full h-full object-cover" alt="Preview">
+                            </div>
+                           <button type="button" id="remove-photo-btn" class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-custom-gray-20 rounded-full flex items-center justify-center hover:bg-primary transition-colors duration-200 p-0">
+                                <img src="{{ asset('assets/images/icons/x.png') }}" alt="Remove" class="w-2.5 h-2.5 object-contain" />
+                            </button>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-custom-gray-100">${file.name}</p>
+                            <p class="text-[10px] text-custom-gray-80">${formatFileSize(file.size)}</p>
+                        </div>
+                        <button type="button" id="change-file-btn"
+                            class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-colors duration-200">
+                            Ganti file
+                            <img src="{{ asset('assets/images/icons/upload-primary.png') }}" class="w-5 h-5" alt="icon">
+                        </button>
+                    </div>
+                `;
+
+                    // Event listeners untuk tombol baru
+                    document.getElementById('change-file-btn').addEventListener('click', function() {
+                        fileInput.click();
+                    });
+
+                    document.getElementById('remove-photo-btn').addEventListener('click', function() {
+                        fileInput.value = '';
+                        resetToInitialState();
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function resetToInitialState() {
+                uploadArea.innerHTML = initialHTML;
+                attachUploadButtonListener();
+            }
+
+            function showErrorMessage(message) {
+                removeErrorMessage();
+                const errorDiv = document.createElement('div');
+                errorDiv.id = 'upload-error-message';
+                errorDiv.className =
+                    'mt-3 p-2 text-xs text-red-500 text-center bg-red-50 rounded border border-red-200';
+                errorDiv.textContent = message;
+                uploadArea.appendChild(errorDiv);
+
+                setTimeout(() => removeErrorMessage(), 5000);
+            }
+
+            function removeErrorMessage() {
+                const existingError = document.getElementById('upload-error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            // Drag and drop
+            const uploadContainer = document.querySelector('.border.border-primary');
+            uploadContainer.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('bg-gray-50');
+            });
+
+            uploadContainer.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('bg-gray-50');
+            });
+
+            uploadContainer.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('bg-gray-50');
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const dt = new DataTransfer();
+                    dt.items.add(files[0]);
+                    fileInput.files = dt.files;
+
+                    fileInput.dispatchEvent(new Event('change', {
+                        bubbles: true
+                    }));
+                }
+            });
+        });
     </script>
 @endpush

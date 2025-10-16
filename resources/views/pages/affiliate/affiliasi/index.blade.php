@@ -15,7 +15,7 @@
 
     <div id="Header" class="flex flex-col relative items-center gap-5 px-5">
         <div class="w-full">
-            <p class="text-sm md:text-base leading-[27px] font-semibold text-custom-gray-10 justify-between min-h-[54px]">
+            <p class="text-sm leading-[20px] font-semibold text-custom-gray-10 justify-between min-h-[54px]">
                 Ajak temanmu dan dapatkan komisi dari setiap penjualan yang mereka lakukan dengan cara salin dan bagian kode
                 atau link referralmu di bawah ini.
             </p>
