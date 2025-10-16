@@ -1,4 +1,3 @@
-{{-- resources/views/components/input-fieldv2.blade.php --}}
 @props([
     'label',
     'name',
@@ -12,6 +11,8 @@
     'onkeyup' => null,
     'onchange' => null,
     'onclick' => null,
+    'disabled' => false,
+    'inputmode' => null,
 ])
 
 @php
@@ -37,7 +38,8 @@
             @endif
             <select name="{{ $name }}" id="{{ $inputId }}"
                 {{ $attributes->merge(['class' => 'w-full bg-white text-sm outline-none appearance-none ' . ($icon ? 'pl-7' : 'pl-0')]) }}
-                @if ($onchange) onchange="{{ $onchange }}" @endif>
+                @if ($onchange) onchange="{{ $onchange }}" @endif
+                @if ($disabled) disabled @endif>
                 @if ($placeholder)
                     <option value="" hidden>{{ $placeholder }}</option>
                 @endif
@@ -55,6 +57,8 @@
                 @if ($onkeyup) onkeyup="{{ $onkeyup }}" @endif
                 @if ($onchange) onchange="{{ $onchange }}" @endif
                 @if ($onclick) onclick="{{ $onclick }}" @endif
+                @if ($disabled) disabled @endif
+                @if ($inputmode) inputmode="{{ $inputmode }}" @endif
                 {{ $attributes->merge(['class' => 'w-full text-sm appearance-none outline-none placeholder:text-custom-gray-70']) }} />
         @endif
     </label>
