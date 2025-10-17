@@ -16,6 +16,8 @@ use Illuminate\View\View;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
 use App\Models\Member;
@@ -161,6 +163,70 @@ class ProfilController extends Controller
         }
 
         return view('pages.profile.riwayatBooking', compact('bookings'));
+    }
+
+    public function detailBooking($invoice)
+    {
+        try {
+            $member = Auth::guard('member')->user();
+
+            if (!$member) {
+                abort(403, 'Anda tidak memiliki akses');
+            }
+
+            // Ambil booking dengan eager loading untuk optimasi query
+            $booking = BookingTransaction::where('invoice', $invoice)
+                ->with([
+                    'member:id,sapaan,nama,telepon',
+                    'product:id,nama_product,project_id,code_product',
+                    'product.project:id,nama_project,alamat_project,thumbnail,lokasi_id',
+                    'product.project.lokasi:id,regency_id',
+                    'product.project.lokasi.regency:id,name'
+                ])
+                ->firstOrFail();
+
+            // Validasi authorization: Pastikan booking milik member yang login
+            if ($booking->member_id !== $member->id) {
+                abort(403, 'Anda tidak memiliki akses ke transaksi ini');
+            }
+
+            return view('pages.profile.detailBooking', [
+                'booking' => $booking,
+                'product' => $booking->product,
+                'project' => $booking->product->project,
+                'costumer' => $booking->member,
+            ]);
+
+            dd($booking);
+        } catch (ModelNotFoundException $e) {
+            // Booking tidak ditemukan
+            Alert::toast('Transaksi booking tidak ditemukan', 'error')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return redirect()->route('riwayat.booking');
+        } catch (HttpException $e) {
+            // Error 403 atau error HTTP lainnya
+            Alert::toast($e->getMessage(), 'error')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return redirect()->route('riwayat.booking');
+        } catch (\Exception $e) {
+            // Error tidak terduga
+            Log::error('Error accessing booking detail', [
+                'invoice' => $invoice ?? 'unknown',
+                'member_id' => $member->id ?? 'unknown', // Fixed: gunakan $member bukan $agency
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString() // Tambahkan trace untuk debugging
+            ]);
+
+            Alert::toast('Terjadi kesalahan saat mengakses detail booking', 'error')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return redirect()->route('riwayat.booking');
+        }
     }
 
     /**
