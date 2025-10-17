@@ -21,15 +21,14 @@ use App\Http\Controllers\Developer\ProfileController as DeveloperProfileControll
 use App\Http\Controllers\SajadaBerdasiController;
 use App\Http\Controllers\SajadaJakselController;
 
+// ============================================
+// GUEST ROUTES
+// ============================================
 Route::middleware('guest')->group(function () {
-
     Route::redirect('/', '/login');
 
-    Route::get('/login', [RegisterController::class, 'login'])
-        ->name('login');
-
-    Route::post('login', [RegisterController::class, 'loginStore'])
-        ->name('store.login');
+    Route::get('/login', [RegisterController::class, 'login'])->name('login');
+    Route::post('login', [RegisterController::class, 'loginStore'])->name('store.login');
 
     // Daftar
     Route::get('/daftar', [RegisterController::class, 'daftar'])->name('daftar');
@@ -41,10 +40,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [RegisterController::class, 'resetpassword'])->name('resetpassword');
 });
 
-// Sajada Affiliate
+// ============================================
+// AFFILIATE ROUTES - Not Registered
+// ============================================
 Route::middleware(['auth:member', 'check.agency.registered'])->group(function () {
     Route::get('/get-kota', [AffiliateController::class, 'getKota'])->name('get-kota');
-    // Sajada Affiliate
+
     Route::prefix('affiliate')->name('affiliate.')->group(function () {
         Route::get('/', [AffiliateController::class, 'index'])->name('index');
         Route::get('/daftar', [AffiliateController::class, 'daftar'])->name('daftar');
@@ -52,10 +53,11 @@ Route::middleware(['auth:member', 'check.agency.registered'])->group(function ()
     });
 });
 
+// ============================================
+// AFFILIATE ROUTES - Registered & Approved
+// ============================================
 Route::middleware(['auth:member', 'check.agency'])->group(function () {
-    // Sajada Affiliate
     Route::prefix('affiliate')->name('affiliate.')->group(function () {
-        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // Profile
@@ -71,7 +73,6 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
         Route::get('/booking/{project}', [BookingController::class, 'detail'])->name('booking.detail');
         Route::post('/booking/checkout/{project}', [BookingController::class, 'checkout'])->name('booking.checkout');
         Route::post('/booking/checkout/{project}/store', [BookingController::class, 'checkoutStore'])->name('booking.checkout.store');
-        // Route::get('/booking/checkout/success/{invoice}', [BookingController::class, 'success'])->name('booking.checkout.success');
 
         // Link Affiliasi
         Route::get('/affiliasi', [AffiliasiController::class, 'index'])->name('affiliasi.index');
@@ -81,58 +82,43 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
     });
 });
 
-// Sajada Developer - Public
+// ============================================
+// DEVELOPER ROUTES - Public
+// ============================================
 Route::prefix('kerjasama')->name('developer.')->group(function () {
-    Route::get('/', [DeveloperRegisterController::class, 'index'])->name('index'); // Halaman info developer
+    Route::get('/', [DeveloperRegisterController::class, 'index'])->name('index');
 });
 
-// Sajada Developer - Register
+// ============================================
+// DEVELOPER ROUTES - Register
+// ============================================
 Route::middleware('auth:member')->group(function () {
     Route::prefix('kerjasama')->name('developer.')->group(function () {
         Route::get('/daftar', [DeveloperRegisterController::class, 'register'])->name('register');
         Route::post('/daftar/store', [DeveloperRegisterController::class, 'registerStore'])->name('register.store');
         Route::get('/daftar/success', [DeveloperRegisterController::class, 'registerSuccess'])->name('register.success');
-        Route::get('/status', [DeveloperRegisterController::class, 'status'])->name('status'); // Cek status pendaftaran
+        Route::get('/status', [DeveloperRegisterController::class, 'status'])->name('status');
     });
 });
 
-// Sajada Developer - Approved
+// ============================================
+// DEVELOPER ROUTES - Approved
+// ============================================
 Route::middleware(['auth:member', 'check.developer'])->group(function () {
     Route::prefix('kerjasama')->name('developer.')->group(function () {
-        // // Dashboard
-        // Route::get('/dashboard', [DeveloperDashboardController::class, 'index'])->name('dashboard');
-
-        // // Profile
-        // Route::get('/profil', [DeveloperProfileController::class, 'index'])->name('profile.index');
-        // Route::put('/profil/update', [DeveloperProfileController::class, 'update'])->name('profile.update');
-
-        // Project Management (contoh fitur developer)
-        // Route::get('/project', [DeveloperProjectController::class, 'index'])->name('project.index');
-        // Route::get('/project/create', [DeveloperProjectController::class, 'create'])->name('project.create');
-        // Route::post('/project/store', [DeveloperProjectController::class, 'store'])->name('project.store');
-
-        // Laporan/Analytics
-        // Route::get('/laporan', [DeveloperReportController::class, 'index'])->name('report.index');
+        // Add developer routes here
     });
 });
 
-// Bank
+// ============================================
+// PUBLIC ROUTES - SPECIFIC FIRST
+// ============================================
+
+// Bank Search
 Route::get('/bank-search', [AffiliateProfileController::class, 'search'])->name('bank.search');
 
 // Beranda
 Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
-
-/// List City
-Route::get('/jual/{slug}', [ListCityController::class, 'kategori'])->name('kategori');
-Route::get('/{kategori}/{cities}', [ListCityController::class, 'detailkategori'])->name('detailkategori');
-Route::get('/lihat-semua', [ListCityController::class, 'lihat'])->name('lihatsemua');
-Route::get('/lihat-properti', [ListCityController::class, 'lihatproperti'])->name('lihatproperti');
-
-Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');
-Route::get('/properti', [ListCityController::class, 'properti'])->name('properti');
-
-/// Details
-Route::get('/{jenis}/{kategori}/{project}', [DetailsController::class, 'index'])->name('detailproject');
 
 // Cek Booking
 Route::get('/cek-booking', [CekBookingController::class, 'index'])->name('check-booking');
@@ -142,28 +128,50 @@ Route::post('/cek-booking/hasil-pencarian', [CekBookingController::class, 'carib
 Route::get('/cari-properti', [PencarianController::class, 'index'])->name('cari-properti');
 Route::match(['get', 'post'], '/find-properti', [PencarianController::class, 'findproperti'])->name('findproperti');
 
-//Sajada Berdasi
+// Sajada Berdasi
 Route::get('/sajada-berdasi', [SajadaBerdasiController::class, 'index'])->name('sajada.berdasi');
 
-//Sajada Jaksel
+// Sajada Jaksel
 Route::get('/sajada-jaksel', [SajadaJakselController::class, 'index'])->name('sajada.jaksel');
 
+// List City - SPECIFIC ROUTES
+Route::get('/lihat-semua', [ListCityController::class, 'lihat'])->name('lihatsemua');
+Route::get('/lihat-properti', [ListCityController::class, 'lihatproperti'])->name('lihatproperti');
+Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');
+Route::get('/properti', [ListCityController::class, 'properti'])->name('properti');
+
+// ============================================
+// AUTHENTICATED MEMBER ROUTES
+// ============================================
 Route::middleware('auth:member')->group(function () {
 
-    // Customer Boking Info
-    Route::get('/{jenis}/{kategori}/{project}/info', [DetailsController::class, 'custinfo'])->name('custinfo');
-
-    // Checkcout
-    Route::post('/checkout/{project}', [DetailsController::class, 'checkout'])->name('checkout');
-    Route::post('/get-snap-token', [DetailsController::class, 'getSnapToken'])->name('getSnapToken');
-
-    // Profil
+    // ====== PROFILE ROUTES - HARUS DI ATAS ======
     Route::get('/akun', [ProfilController::class, 'index'])->name('profil');
     Route::get('/profil', [ProfilController::class, 'detail'])->name('detail.profil');
     Route::put('/profil-update', [ProfilController::class, 'updateProfil'])->name('update.profil');
+
     Route::get('/password', [ProfilController::class, 'password'])->name('index.password');
     Route::put('/password-update', [ProfilController::class, 'updatePassword'])->name('update.password');
+
+    // ====== RIWAYAT BOOKING - SPESIFIK ROUTES ======
     Route::get('/riwayat-booking', [ProfilController::class, 'riwayatBooking'])->name('riwayat.booking');
+    Route::get('/riwayat-booking/{invoice}', [ProfilController::class, 'detailBooking'])->name('riwayat.booking.detail');
+
+    // ====== BOOKING INFO & CHECKOUT ======
+    Route::get('/{jenis}/{kategori}/{project}/info', [DetailsController::class, 'custinfo'])->name('custinfo');
+    Route::post('/checkout/{project}', [DetailsController::class, 'checkout'])->name('checkout');
+    Route::post('/get-snap-token', [DetailsController::class, 'getSnapToken'])->name('getSnapToken');
 });
+
+// ============================================
+// DYNAMIC ROUTES - HARUS PALING BAWAH (CATCH-ALL)
+// ============================================
+
+// List City dengan Kategori - 2 segments
+Route::get('/jual/{slug}', [ListCityController::class, 'kategori'])->name('kategori');
+// Route::get('/{kategori}/{cities}', [ListCityController::class, 'detailkategori'])->name('detailkategori');
+
+// Details - 3 segments - PALING BAWAH
+Route::get('/{jenis}/{kategori}/{project}', [DetailsController::class, 'index'])->name('detailproject');
 
 require __DIR__ . '/auth.php';

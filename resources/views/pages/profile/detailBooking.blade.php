@@ -15,7 +15,7 @@
 @endpush
 
 @section('content')
-    <x-navigation-route title="Detail Booking" :backRoute="route('check-booking')" :showBackground="false" textColor="text-primary" />
+    <x-navigation-route title="Detail Booking" :backRoute="route('riwayat.booking')" :showBackground="false" textColor="text-primary" />
 
     <div class="flex flex-col gap-5">
         <div class="flex flex-col gap-5 px-5">
@@ -89,7 +89,7 @@
             <p class="font-semibold text-sm text-custom-gray-100">Informasi Pelanggan</p>
             <div class="flex flex-col justify-center">
                 <p class="text-sm text-custom-gray-80 leading-none mb-1">Nama</p>
-                <p class="font-medium text-base text-custom-gray-100 leading-none">{{ $booking->member->sapaan }} {{ $booking->member->nama }}</p>
+                <p class="font-medium text-base text-custom-gray-100 leading-none"> <span>{{ $booking->member->sapaan }}</span> {{ $booking->member->nama }}</p>
             </div>
             <div class="flex flex-col justify-center">
                 <p class="text-sm text-custom-gray-80 leading-none mb-1">Nomor Whatsapp</p>
@@ -181,25 +181,4 @@
     </div>
 @endsection
 @push('addon-script')
-    <script src="{{ asset('js/accodion.js') }}"></script>
-    <script>
-        // Get all tab buttons
-        const tabLinks = document.querySelectorAll('.tab-link');
-
-        // Add click event listener to each button
-        tabLinks.forEach(button => {
-            button.addEventListener('click', () => {
-                // Get the target tab id from the data attribute
-                const targetTab = button.getAttribute('data-target-tab');
-                console.log(targetTab)
-                // Hide all tab contents
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.add('hidden');
-                });
-
-                // Show the target tab content
-                document.querySelector(targetTab).classList.toggle('hidden');
-            });
-        });
-    </script>
 @endpush
