@@ -212,6 +212,12 @@ class DetailsController extends Controller
                 }
 
                 $agency = $referralValidation['agency'];
+
+                // PERBAIKAN: Simpan referral code ke session agar bisa diakses di createNewSnapToken
+                session(['checkout_referral_code' => $referralCode]);
+            } else {
+                // Jika tidak ada referral code, hapus dari session
+                session()->forget('checkout_referral_code');
             }
 
             // Ambil product
@@ -544,8 +550,21 @@ class DetailsController extends Controller
      */
     private function determineAgencyIdForBooking($user)
     {
-        $affiliate = Affiliate::where('member_id', $user->id)->first();
-        return $affiliate ? $affiliate->agency_id : null;
+        // Ambil referral code dari session yang sudah disimpan saat checkout
+        $referralCode = session('checkout_referral_code');
+
+        // Jika ada referral code saat checkout
+        if (!empty($referralCode)) {
+            $agency = Agency::where('agency_code', $referralCode)->first();
+            if ($agency) {
+                // PERBAIKAN: Hapus session setelah digunakan agar tidak mengganggu transaksi berikutnya
+                session()->forget('checkout_referral_code');
+                return $agency->id;
+            }
+        }
+
+        // Jika tidak ada referral code saat checkout, return null
+        return null;
     }
 
     /**

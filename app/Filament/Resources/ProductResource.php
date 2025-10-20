@@ -121,8 +121,9 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferLoading()
+            ->striped()
             ->columns([
-                //
                 TextColumn::make('project.developer.nama')
                     ->label('Developer')
                     ->formatStateUsing(fn($state, $record) => $record->project->developer->nama ?? 'No Developer')
