@@ -39,6 +39,26 @@ class BookingTransactionResource extends Resource
     protected static ?string $pluralModelLabel = 'Transaksi Booking';
     protected static ?string $modelLabel = 'Transaksi Booking';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = static::getModel()::where('status', 'pending')->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $count = static::getModel()::where('status', 'pending')->count();
+
+        if ($count > 5) {
+            return 'danger';
+        } elseif ($count > 0) {
+            return 'warning';
+        }
+
+        return 'primary';
+    }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -162,6 +182,8 @@ class BookingTransactionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('20s')
+            ->striped()
             ->columns([
                 TextColumn::make('invoice')
                     ->label('Invoice')
