@@ -17,9 +17,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\Action as TableAction;
+use Filament\Notifications\Notification;
 
 class ProductResource extends Resource
 {
@@ -33,7 +36,6 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                //
                 Select::make('project_id')
                     ->label('Project')
                     ->options(Project::all()->pluck('nama_project', 'id'))
@@ -112,9 +114,6 @@ class ProductResource extends Resource
                         'Jual/Sewa' => 'Jual/Sewa',
                     ])
                     ->required(),
-
-
-
             ]);
     }
 
@@ -124,11 +123,11 @@ class ProductResource extends Resource
             ->deferLoading()
             ->striped()
             ->columns([
-                TextColumn::make('project.developer.nama')
-                    ->label('Developer')
-                    ->formatStateUsing(fn($state, $record) => $record->project->developer->nama ?? 'No Developer')
-                    ->sortable()
-                    ->searchable(),
+                // TextColumn::make('project.developer.nama')
+                //     ->label('Developer')
+                //     ->formatStateUsing(fn($state, $record) => $record->project->developer->nama ?? 'No Developer')
+                //     ->sortable()
+                //     ->searchable(),
 
                 TextColumn::make('project.nama_project')
                     ->label('Project')
@@ -150,22 +149,48 @@ class ProductResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->formatStateUsing(fn($state, $record) => $record->status ?? 'No Status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Tersedia' => 'success',
+                        'Booking' => 'warning',
+                        'Pending' => 'info',
+                        'Terjual' => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable()
                     ->searchable(),
 
                 TextColumn::make('harga')
                     ->label('Harga')
                     ->formatStateUsing(fn($state, $record) =>
-                    $record->harga && $record->diskon
-                        ? number_format($record->harga - $record->diskon, 0, ',', '.')
-                        : ($record->harga
-                            ? number_format($record->harga, 0, ',', '.')
-                            : 'No Harga'))
-                    ->searchable(),
+                    $record->harga
+                        ? 'Rp' . number_format($record->harga, 0, ',', '.')
+                        : 'No Harga'),
+
+                TextColumn::make('discount')
+                    ->label('Diskon')
+                    ->formatStateUsing(fn($state, $record) =>
+                    $record->discount
+                        ? 'Rp' . number_format($record->discount, 0, ',', '.')
+                        : '-'),
+
+                TextColumn::make('created_at')
+                    ->label('Tanggal Dibuat')
+                    ->dateTime()
+                    ->sortable()
+                    ->formatStateUsing(function ($state, $record) {
+                        return \Carbon\Carbon::parse($state)
+                            ->locale('id')
+                            ->timezone('Asia/Jakarta')
+                            ->isoFormat('dddd, D MMMM YYYY, HH:mm');
+
+                        return '';
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('project_id')
-                    ->label('project')
+                    ->label('Project')
                     ->searchable()
                     ->relationship('project', 'nama_project'),
 
@@ -178,28 +203,87 @@ class ProductResource extends Resource
                         'Terjual' => 'Terjual',
                     ]),
 
-                // SelectFilter::make('project.developer_id')
-                // ->label('Developer')
-                // ->options(function () {
-                //     return Project::with('developer')
-                //         ->whereHas('products') // Hanya ambil project yang memiliki produk
-                //         ->get()
-                //         ->pluck('developer.nama', 'developer_id') // Ambil nama developer dan id-nya
-                //         ->filter(function ($name) {
-                //             return !is_null($name); // Filter out null names
-                //         })
-                //         ->sort();
-                // }),
                 Tables\Filters\TrashedFilter::make(),
-            ])
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
+                TableAction::make('changeStatus')
+                    ->label('Ubah Status')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('warning')
+                    ->form([
+                        Select::make('status')
+                            ->label('Status Baru')
+                            ->options([
+                                'Tersedia' => 'Tersedia',
+                                'Booking' => 'Booking',
+                                'Pending' => 'Pending',
+                                'Terjual' => 'Terjual',
+                            ])
+                            ->required()
+                            ->default(fn($record) => $record->status),
+                    ])
+                    ->action(function (Product $record, array $data): void {
+                        $oldStatus = $record->status;
+                        $record->update([
+                            'status' => $data['status']
+                        ]);
+
+                        Notification::make()
+                            ->title('Status Berhasil Diubah')
+                            ->body("Status produk '{$record->nama_product}' berhasil diubah dari {$oldStatus} menjadi {$data['status']}")
+                            ->success()
+                            ->send();
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Ubah Status Product')
+                    ->modalDescription(fn($record) => "Apakah Anda yakin ingin mengubah status product '{$record->nama_product}'?")
+                    ->modalSubmitActionLabel('Ya, Ubah Status'),
+
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Detail')
+                    ->color('warning'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+
+                    Tables\Actions\BulkAction::make('bulkChangeStatus')
+                        ->label('Ubah Status Massal')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('warning')
+                        ->form([
+                            Select::make('status')
+                                ->label('Status Baru')
+                                ->options([
+                                    'Tersedia' => 'Tersedia',
+                                    'Booking' => 'Booking',
+                                    'Pending' => 'Pending',
+                                    'Terjual' => 'Terjual',
+                                ])
+                                ->required(),
+                        ])
+                        ->action(function ($records, array $data): void {
+                            $count = $records->count();
+                            foreach ($records as $record) {
+                                $record->update([
+                                    'status' => $data['status']
+                                ]);
+                            }
+
+                            Notification::make()
+                                ->title('Status Berhasil Diubah')
+                                ->body("{$count} produk berhasil diubah statusnya menjadi {$data['status']}")
+                                ->success()
+                                ->send();
+                        })
+                        ->requiresConfirmation()
+                        ->modalHeading('Ubah Status Produk Terpilih')
+                        ->modalDescription('Apakah Anda yakin ingin mengubah status semua produk yang dipilih?')
+                        ->modalSubmitActionLabel('Ya, Ubah Status')
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }
