@@ -28,8 +28,12 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->spa()
             ->favicon(asset('assets/images/icons/logo.svg'))
             ->login()
+            ->profile(isSimple: false)
+            ->databaseTransactions()
+            ->unsavedChangesAlerts()
             ->navigationGroups([
                 NavigationGroup::make('Data Master')
                     ->collapsible(),
