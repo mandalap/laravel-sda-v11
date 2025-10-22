@@ -85,7 +85,7 @@ class BookingTransactionResource extends Resource
                     ->label('Product')
                     ->options(function () {
                         return Product::with('project')
-                            ->whereIn('status', ['Tersedia', 'Booking'])
+                            ->whereIn('status', ['Tersedia'])
                             ->get()
                             ->mapWithKeys(function ($product) {
                                 $productName = $product->nama_product ?? 'No Product';

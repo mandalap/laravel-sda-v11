@@ -167,7 +167,8 @@ class ProjectResource extends Resource
                                                     ->nullable()
                                                     ->image()
                                                     ->optimize('webp'),
-                                            ]),
+                                            ])
+                                            ->required(),
                                     ]),
                             ])
                             ->columnSpanFull(),
@@ -183,7 +184,8 @@ class ProjectResource extends Resource
                                                     ->nullable()
                                                     ->image()
                                                     ->optimize('webp'),
-                                            ]),
+                                            ])
+                                            ->required(),
                                     ]),
                             ])
                             ->columnSpanFull(),
@@ -196,7 +198,8 @@ class ProjectResource extends Resource
                                             ->label('Fasilitas Project')
                                             ->schema([
                                                 TextInput::make('fasilitas')->nullable(),
-                                            ]),
+                                            ])
+                                            ->required(),
                                     ]),
                             ])
                             ->columnSpanFull(),
@@ -240,6 +243,20 @@ class ProjectResource extends Resource
 
                 ImageColumn::make('thumbnail'),
 
+                TextColumn::make('created_at')
+                    ->label('Tanggal Dibuat')
+                    ->dateTime()
+                    ->sortable()
+                    ->formatStateUsing(function ($state, $record) {
+                        return \Carbon\Carbon::parse($state)
+                            ->locale('id')
+                            ->timezone('Asia/Jakarta')
+                            ->isoFormat('dddd, D MMMM YYYY, HH:mm');
+
+                        return '';
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 SelectFilter::make('kategori_id')
@@ -262,7 +279,9 @@ class ProjectResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Detail')
+                    ->color('warning'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -286,7 +305,6 @@ class ProjectResource extends Resource
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
-            'view' => Pages\ViewProject::route('/{record}'),
         ];
     }
 
