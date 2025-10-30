@@ -46,16 +46,21 @@ class ListCityController extends Controller
         $page = $request->query('page', 1); // Default ke halaman 1
 
         if ($propertyKategori == 'all') {
-            $kategori = Kategori::all();
+            $kategori = null; // Set null jika 'all'
+            $allKategori = Kategori::all(); // Simpan semua kategori jika diperlukan
         } else {
             $kategori = Kategori::where('slug', $propertyKategori)->firstOrFail();
+            $allKategori = null;
         }
 
         if ($propertyCity == 'all') {
-            $city = Lokasi::all();
+            $city = null; // Set null jika 'all'
+            $allCity = Lokasi::all(); // Simpan semua lokasi jika diperlukan
         } else {
             $city = Lokasi::where('slug', $propertyCity)->firstOrFail();
+            $allCity = null;
         }
+
 
         // Buat query dasar
         $query = Project::where('projects.is_approved', 'Diterima')

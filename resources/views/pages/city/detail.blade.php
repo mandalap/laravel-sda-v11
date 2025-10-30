@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    List Properti
+    Daftar Properti
 @endsection
 
 @push('prepend-style')
@@ -52,24 +52,7 @@
 @endpush
 
 @section('content')
-    {{-- <div id="Background"
-        class="absolute top-0 w-full h-[570px] rounded-bl-[30px] rounded-br-[30px] bg-gradient-to-r from-[#a7006d] to-[#d40065]">
-    </div>
-    <div id="TopNav" class="relative flex items-center justify-between px-5 pt-5">
-        <a href="{{ route('lihatkota') }}"
-            class="flex items-center justify-center w-10 h-10 overflow-hidden bg-white rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
-        </a>
-        <h3 class="text-lg font-bold text-white">List Properti</h3>
-        <div class="w-10 dummy-btn"></div>
-    </div>
-    <div id="Header" class="relative flex flex-col items-center gap-2 px-5 mt-[18px] text-center">
-        <h2 class="font-bold text-[20px] leading-[30px] text-white">{{ $city->regency->name }}</h2>
-        <p class="text-white">{{ $projectCount }} Project Ditemukan</p>
-    </div> --}}
-
-    <x-navigation-route title="List Properti" :backRoute="route('lihatkota')" :showBackground="true" textColor="text-custom-gray-10" />
-
+    <x-navigation-route title="Daftar Properti" :backRoute="$kategori ? route('kategori', [$kategori->slug]) : route('beranda')" :showBackground="true" textColor="text-custom-gray-10" />
 
     <div class="flex sticky top-0 z-50 gap-4 items-center px-5 w-full">
 
@@ -125,6 +108,20 @@
         }
     </script>
 
+    @if (request()->has('cari') && request()->query('cari') !== '')
+        <div id="Header" class="relative flex flex-col px-5 mt-4">
+            @if ($projectCount > 0)
+                <p class="text-sm text-custom-gray-10 font-medium">
+                    {{ $projectCount }} hasil pencarian ditemukan
+                </p>
+            @else
+                <p class="text-sm text-custom-gray-10 font-medium">
+                    Hasil tidak ditemukan
+                </p>
+            @endif
+        </div>
+    @endif
+
     <div id="projects-container">
         @include('pages.city.partials.projectItems')
     </div>
@@ -139,7 +136,6 @@
         Semua properti telah ditampilkan
     </div>
 
-    @include('includes.footer')
 @endsection
 
 @push('addon-script')
