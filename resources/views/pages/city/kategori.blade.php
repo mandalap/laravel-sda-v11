@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ $kategori->kategori }}
+    Daftar Lokasi {{ $kategori->kategori }}
 @endsection
 
 @push('prepend-style')
