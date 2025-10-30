@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Hasil Pencarian Booking
+    Detail Booking
 @endsection
 
 @push('prepend-style')
