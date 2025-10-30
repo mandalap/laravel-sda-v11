@@ -1,7 +1,6 @@
 @forelse ($bookings as $booking)
     <section id="Result" class="relative px-5 mb-3">
         @if (in_array($booking->status, ['booking', 'cancel']))
-            {{-- Untuk status booking dan cancel, gunakan anchor tag --}}
             <a href="{{ route('riwayat.booking.detail', ['invoice' => $booking->invoice]) }}" class="card block">
                 <div
                     class="flex flex-col rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 text-left gap-3">
@@ -79,7 +78,6 @@
                 </div>
             </a>
         @else
-            {{-- Untuk status pending, gunakan form --}}
             <form action="{{ route('checkout', $booking->product->project->slug) }}" method="POST" class="card">
                 @csrf
                 <input type="hidden" name="booking_id" value="{{ $booking->id }}">
