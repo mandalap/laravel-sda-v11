@@ -53,9 +53,9 @@ class ProfileController extends Controller
             $request->validate([
                 'sapaan' => 'required|string',
                 'nama' => 'required|string|max:255',
-                'telepon' => 'required|numeric',
+                'telepon' => ['required', 'string', 'max:15', 'regex:/^08[0-9]{8,13}$/', 'unique:agency,telepon,' . $agency->id],
                 'gender' => 'required|in:L,P',
-                'email' => 'required|email|max:255',
+                'email' => ['required', 'email', 'max:255', 'unique:agency,email,' . $agency->id],
                 'alamat' => 'required|string|max:255',
                 'kota_id' => 'required|string|max:255',
                 'tanggal_lahir' => 'nullable|date',
@@ -65,17 +65,17 @@ class ProfileController extends Controller
                 'nama_pemilik' => 'required|string|max:255',
             ]);
 
-            // Cek apakah telepon sudah digunakan oleh agency lain
-            if (Agency::where('telepon', $request->telepon)->where('id', '!=', $agency->id)->exists()) {
-                Alert::toast('Nomor WhatsApp sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
-                return redirect()->back()->with('active_tab', 'profil');
-            }
+            // // Cek apakah telepon sudah digunakan oleh agency lain
+            // if (Agency::where('telepon', $request->telepon)->where('id', '!=', $agency->id)->exists()) {
+            //     Alert::toast('Nomor WhatsApp sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
+            //     return redirect()->back()->with('active_tab', 'profil');
+            // }
 
-            // Cek apakah email sudah digunakan oleh agency lain
-            if (Agency::where('email', $request->email)->where('id', '!=', $agency->id)->exists()) {
-                Alert::toast('Email sudah digunakan oleh akun lain.', 'error')->autoClose(10000);
-                return redirect()->back()->with('active_tab', 'profil');
-            }
+            // // Cek apakah email sudah digunakan oleh agency lain
+            // if (Agency::where('email', $request->email)->where('id', '!=', $agency->id)->exists()) {
+            //     Alert::toast('Email sudah digunakan oleh akun lain.', 'error')->autoClose(10000);
+            //     return redirect()->back()->with('active_tab', 'profil');
+            // }
 
             // Perbarui data member
             $agency->update([
