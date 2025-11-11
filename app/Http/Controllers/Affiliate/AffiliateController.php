@@ -51,8 +51,8 @@ class AffiliateController extends Controller
             $agencyData = $request->validate([
                 'nama' => 'required|string|max:255',
                 'sapaan' => 'required|string',
-                'telepon' => 'required|numeric',
-                'email' => 'required|email',
+                'telepon' => ['required', 'string', 'max:15', 'unique:agency,telepon', 'regex:/^08[0-9]{8,13}$/'],
+                'email' => ['required', 'email', 'max:255', 'unique:agency,email,'],
                 'gender' => 'required|string',
                 'tanggal_lahir' => 'required|date',
                 'kota_id' => 'required|string',
@@ -89,6 +89,10 @@ class AffiliateController extends Controller
             // Setelah berhasil, tampilkan pesan sukses dan arahkan pengguna kembali
             Alert::toast('Anda berhasil melakukan pendaftaran.', 'success')->autoClose(10000)->timerProgressBar();
             return redirect()->route('affiliate.dashboard');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Exception $e) {
             // Tangkap error jika ada dan tampilkan pesan error
             Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();

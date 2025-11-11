@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Hasil Pencarian
+    Daftar {{ $kelompok->kelompok }}
 @endsection
 
 @push('prepend-style')

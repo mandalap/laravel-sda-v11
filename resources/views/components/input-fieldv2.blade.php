@@ -19,14 +19,45 @@
     $inputId = $id ?? $name;
     $inputValue = $value ?? old($name, request()->query($name));
     $isSelect = $type === 'select';
+    $hasError = $errors->has($name);
 @endphp
 
-<div class="flex flex-col w-full gap-1">
+<style>
+    @keyframes shake-rotate {
+
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        20% {
+            transform: rotate(-1deg);
+        }
+
+        40% {
+            transform: rotate(1deg);
+        }
+
+        60% {
+            transform: rotate(-1deg);
+        }
+
+        80% {
+            transform: rotate(1deg);
+        }
+    }
+
+    .shake-error {
+        animation: shake-rotate 0.4s ease-in-out;
+    }
+</style>
+
+<div class="flex flex-col w-full gap-1 {{ $hasError ? 'shake-error' : '' }}">
     <p class="text-sm font-medium text-custom-gray-90">
         {{ $label }}
     </p>
     <label
-        class="flex items-center w-full h-10 rounded p-3 gap-2 bg-custom-gray-10 ring-1 ring-custom-gray-50 focus-within:ring-primary transition-all duration-300 {{ $isSelect ? 'relative' : '' }}">
+        class="flex items-center w-full h-10 rounded p-3 gap-2 bg-custom-gray-10 ring-1 transition-all duration-300 {{ $isSelect ? 'relative' : '' }} {{ $hasError ? 'ring-danger-main focus-within:ring-danger-main' : 'ring-custom-gray-50 focus-within:ring-primary' }}">
         @if ($icon && !$isSelect)
             <img src="{{ asset($icon) }}" class="flex w-5 h-5 shrink-0" alt="icon">
         @endif
@@ -64,6 +95,6 @@
     </label>
 
     @error($name)
-        <p class="text-primary text-xs mt-1">{{ $message }}</p>
+        <p class="text-danger-main text-xs mt-1">{{ $message }}</p>
     @enderror
 </div>

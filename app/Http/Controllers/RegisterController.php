@@ -45,12 +45,14 @@ class RegisterController extends Controller
 
     public function loginStore(Request $request): RedirectResponse
     {
-        try {
-            $request->validate([
-                'telepon' => ['required', 'string'],
-                'password' => ['required', 'string'],
-            ]);
+        // Validasi di luar try-catch
+        $request->validate([
+            'telepon' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
 
+        try {
+            // Coba login
             if (Auth::guard('member')->attempt($request->only('telepon', 'password'), $request->boolean('remember'))) {
                 $request->session()->regenerate();
 
@@ -59,25 +61,29 @@ class RegisterController extends Controller
 
                 // Cek apakah user memiliki role "member"
                 if (!$user->hasRole('member')) {
-                    Auth::guard('member')->logout(); // Logout user jika tidak memiliki role
-                    Alert::toast('Akun Anda tidak memiliki akses.', 'error')->autoClose(10000)->timerProgressBar();
-                    return back();
+                    Auth::guard('member')->logout();
+                    Alert::toast('Akun Anda tidak memiliki akses.', 'error')
+                        ->autoClose(10000)
+                        ->timerProgressBar();
+                    return back()->withInput($request->only('telepon'));
                 }
 
                 return redirect()->intended(RouteServiceProvider::HOME);
             }
 
-            Alert::toast('Nomor telepon atau password anda salah.', 'error')->autoClose(10000)->timerProgressBar();
-            return back()->withInput();
-        } catch (ValidationException $e) {
-            Alert::toast('Data tidak valid: ' . $e->getMessage(), 'error')->autoClose(10000);
-            return redirect()->back()->withInput()->withErrors($e->validator->errors());
+            // Login gagal (nomor tidak terdaftar atau password salah)
+            // Error hanya ditampilkan di field telepon untuk keamanan
+            return back()
+                ->withInput($request->only('telepon'))
+                ->withErrors(['telepon' => 'Nomor WhatsApp atau password Anda salah.']);
         } catch (\Exception $e) {
-            Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
-            return back()->withInput();
+            Log::error('Login error: ' . $e->getMessage());
+            Alert::toast('Terjadi kesalahan pada sistem.', 'error')
+                ->autoClose(10000)
+                ->timerProgressBar();
+            return back()->withInput($request->only('telepon'));
         }
     }
-
 
     public function daftar()
     {
@@ -113,26 +119,29 @@ class RegisterController extends Controller
         ]);
     }
 
-
     public function storeRegister(Request $request)
     {
+        // Validasi input data (diluar try-catch agar Laravel handle otomatis)
+        $request->validate([
+            'sapaan' => ['required', 'in:Pak,Bu,Bang,Kak'],
+            'nama' => ['required', 'string', 'max:255'],
+            'telepon' => ['required', 'string', 'max:15', 'unique:members,telepon', 'regex:/^08[0-9]{8,13}$/'],
+            'referral_code' => ['nullable', 'string', 'exists:agency,agency_code'],
+        ], [
+            'sapaan.required' => 'Sapaan wajib dipilih.',
+            'sapaan.in' => 'Sapaan tidak valid.',
+            'nama.required' => 'Nama wajib diisi.',
+            'nama.max' => 'Nama maksimal 255 karakter.',
+            'telepon.required' => 'Nomor WhatsApp wajib diisi.',
+            'telepon.max' => 'Nomor WhatsApp maksimal 15 digit.',
+            'telepon.unique' => 'Nomor WhatsApp sudah terdaftar.',
+            'telepon.regex' => 'Format nomor WhatsApp tidak valid. Harus diawali 08.',
+            'referral_code.exists' => 'Kode referral tidak valid.',
+        ]);
+
         try {
             // Mulai transaksi
             DB::beginTransaction();
-
-            // Validasi input data
-            $request->validate([
-                'sapaan' => ['required', 'in:Pak,Bu,Bang,Kak'],
-                'nama' => ['required', 'string', 'max:255'],
-                'telepon' => ['required', 'string', 'max:15', 'unique:members,telepon', 'regex:/^08[0-9]{8,13}$/'],
-                'referral_code' => ['nullable', 'string', 'exists:agency,agency_code'],
-            ], [
-                'sapaan.required' => 'Sapaan harus dipilih',
-                'nama.required' => 'Nama harus diisi',
-                'telepon.required' => 'Nomor WhatsApp harus diisi',
-                'telepon.unique' => 'Nomor WhatsApp sudah terdaftar',
-                'referral_code.exists' => 'Kode referral tidak valid',
-            ]);
 
             // Generate recovery code dan password sementara
             $rd = random_int(10000, 99999);
@@ -173,7 +182,7 @@ class RegisterController extends Controller
                 } else {
                     // Jika referral code tidak valid
                     DB::rollBack();
-                    Alert::toast('Kode referral tidak valid.', 'error')
+                    Alert::toast('Kode referral tidak valid atau tidak aktif.', 'error')
                         ->autoClose(10000)
                         ->timerProgressBar();
                     return redirect()->back()->withInput();
@@ -186,25 +195,15 @@ class RegisterController extends Controller
             // Dispatch job untuk mengirim pesan WhatsApp
             SendWhatsAppDaftar::dispatch($member);
 
-            $message = 'Akun anda berhasil dibuat, silahkan cek WhatsApp untuk melihat password anda.';
+            $message = 'Akun Anda berhasil dibuat. Silahkan cek WhatsApp untuk melihat password Anda.';
             return redirect()->route('login')->with('success', $message);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Rollback jika validasi gagal
-            DB::rollBack();
-
-            $errors = $e->validator->errors()->all();
-            foreach ($errors as $error) {
-                Alert::toast($error, 'error')->autoClose(10000)->timerProgressBar();
-            }
-
-            return back()->withInput();
         } catch (\Exception $e) {
             // Rollback jika terjadi kesalahan lain
             DB::rollBack();
 
             Log::error('Registration error: ' . $e->getMessage());
             Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
-            return back()->withInput();
+            return redirect()->back()->withInput();
         }
     }
 
