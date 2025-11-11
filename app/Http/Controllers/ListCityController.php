@@ -247,6 +247,10 @@ class ListCityController extends Controller
         $query = Project::where('kelompok_id', $kelompok->id)
             ->where('projects.is_approved', 'Diterima')
             ->where('projects.status', 'tampil');
+            // ->withCount(['products as tersedia_count' => function ($query) {
+            //     $query->where('status', 'Tersedia');
+            // }])
+            // ->orderBy('tersedia_count', 'desc');
 
         // Apply kategori filter jika kategori selain 'all'
         if ($kat != 'all') {

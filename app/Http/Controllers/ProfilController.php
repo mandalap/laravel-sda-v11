@@ -91,26 +91,14 @@ class ProfilController extends Controller
             $request->validate([
                 'sapaan' => 'required',
                 'nama' => 'required|string|max:255',
-                'telepon' => 'required|string|max:15',
+                'telepon' => ['required', 'string', 'max:15', 'regex:/^08[0-9]{8,13}$/', 'unique:members,telepon,' . $member->id],
                 'gender' => 'nullable|in:L,P',
-                'email' => 'required|email|max:255',
+                'email' => ['required', 'email', 'max:255', 'unique:members,email,' . $member->id],
                 'tempat_lahir' => 'nullable|string|max:255',
                 'tanggal_lahir' => 'nullable|date',
                 'alamat' => 'nullable|string|max:255',
                 'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
-
-            // Cek apakah telepon sudah digunakan oleh member lain
-            if (Member::where('telepon', $request->telepon)->where('id', '!=', $member->id)->exists()) {
-                Alert::toast('Nomor WhatsApp sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
-                return redirect()->back();
-            }
-
-            // Cek apakah email sudah digunakan oleh member lain
-            if (Member::where('email', $request->email)->where('id', '!=', $member->id)->exists()) {
-                Alert::toast('Email sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
-                return redirect()->back();
-            }
 
             // Perbarui data member
             $member->update([
@@ -137,7 +125,6 @@ class ProfilController extends Controller
             Alert::toast('Profil berhasil diperbarui.', 'success')->autoClose(10000);
             return redirect()->route('profil');
         } catch (ValidationException $e) {
-            Alert::toast($e->getMessage(), 'error')->autoClose(10000);
             return redirect()->back()->withErrors($e->validator->errors());
         } catch (\Exception $e) {
             Alert::toast('Terjadi kesalahan: ' . $e->getMessage(), 'error')->autoClose(10000);
