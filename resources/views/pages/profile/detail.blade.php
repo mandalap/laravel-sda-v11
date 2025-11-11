@@ -28,7 +28,7 @@
             <x-input-fieldv2 label="Nama Lengkap" name="nama" type="text" :value="$member->nama"
                 placeholder="Masukkan Nama Lengkap" icon="assets/images/icons/user-primary.png" />
 
-            <x-input-fieldv2 label="No. Handphone" name="telepon" type="text" :value="$member->telepon"
+            <x-input-fieldv2 label="No. Handphone" name="telepon" type="tel" :value="$member->telepon"
                 placeholder="Masukkan No. Handphone" icon="assets/images/icons/phone-primary.png" />
 
             <x-input-fieldv2 label="Jenis Kelamin" name="gender" type="select" :value="$member->gender"

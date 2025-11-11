@@ -35,7 +35,7 @@
         .select2-container--default .select2-selection--single {
             border: none;
             background-color: transparent;
-            height: 48px;
+            height: 40px;
             display: flex;
             align-items: center;
             border-radius: 4px;
@@ -125,7 +125,7 @@
             background-color: white;
             padding: 0;
             border-radius: 4px;
-            height: 44px;
+            height: 40px;
         }
 
         /* Styling untuk icon di dalam wrapper */
@@ -141,7 +141,7 @@
 
         .select2-icon-right {
             position: absolute;
-            right: 20px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
             z-index: 10;
@@ -195,7 +195,7 @@
             <!-- Tab 1: Profil Pribadi -->
             <div id="profil-tab" class="tab-content active">
                 <div class="flex flex-col gap-4">
-                    <x-input-fieldv2 label="Sapaan" name="sapaan" type="select" icon="assets/images/icons/user.svg"
+                    <x-input-fieldv2 label="Sapaan" name="sapaan" type="select" icon="assets/images/icons/sapaan-primary.png"
                         placeholder="Pilih Sapaan" :value="$agency->sapaan" :options="[
                             'Bang' => 'Bang',
                             'Kak' => 'Kak',
@@ -203,33 +203,33 @@
                             'Bu' => 'Bu',
                         ]" />
 
-                    <x-input-fieldv2 label="Nama" name="nama" icon="assets/images/icons/user.svg"
+                    <x-input-fieldv2 label="Nama" name="nama" icon="assets/images/icons/user-primary.png"
                         placeholder="Masukkan Nama" :value="$agency->nama" />
 
                     <x-input-fieldv2 label="Nomor WhatsApp" name="telepon" type="tel"
-                        icon="assets/images/icons/phone.svg" placeholder="Masukkan Nomor WhatsApp" :value="$agency->telepon" />
+                        icon="assets/images/icons/phone-primary.png" placeholder="Masukkan Nomor WhatsApp" :value="$agency->telepon" />
 
                     <x-input-fieldv2 label="Jenis Kelamin" name="gender" type="select"
-                        icon="assets/images/icons/gender.svg" placeholder="Pilih Jenis Kelamin" :value="$agency->gender"
+                        icon="assets/images/icons/gender-primary.png" placeholder="Pilih Jenis Kelamin" :value="$agency->gender"
                         :options="[
                             'L' => 'Laki-laki',
                             'P' => 'Perempuan',
                         ]" />
 
-                    <x-input-fieldv2 label="Email" name="email" type="email" icon="assets/images/icons/mail.svg"
+                    <x-input-fieldv2 label="Email" name="email" type="email" icon="assets/images/icons/email-primary.png"
                         placeholder="Masukkan Email" :value="$agency->email" />
 
-                    <x-input-fieldv2 label="Asal Kota" name="kota_id" icon="assets/images/icons/location2.png"
+                    <x-input-fieldv2 label="Asal Kota" name="kota_id" icon="assets/images/icons/house-primary.png"
                         placeholder="Masukkan Tempat Lahir" :value="$agency->kota_id" />
 
                     <x-input-fieldv2 label="Tanggal Lahir" name="tanggal_lahir" type="date"
-                        icon="assets/images/icons/calendar.svg" placeholder="Masukkan Tanggal Lahir" :value="$agency->tanggal_lahir" />
+                        icon="assets/images/icons/calendar-primary.png" placeholder="Masukkan Tanggal Lahir" :value="$agency->tanggal_lahir" />
 
-                    <x-input-fieldv2 label="Alamat" name="alamat" icon="assets/images/icons/location2.png"
+                    <x-input-fieldv2 label="Alamat" name="alamat" icon="assets/images/icons/map-primary.png"
                         placeholder="Masukkan Alamat" :value="$agency->alamat" />
 
                     <div class="flex flex-col w-full gap-2">
-                        <x-input-fieldv2 label="Kode Referral" name="agency_code" icon="assets/images/icons/user.svg"
+                        <x-input-fieldv2 label="Kode Referral" name="agency_code" icon="assets/images/icons/refferal-primary.png"
                             placeholder="Masukkan Kode Referral" :value="$agency->agency_code" :disabled="$agency->referral_code_edited" />
 
                         <!-- Info tambahan -->
@@ -300,7 +300,6 @@
                 </div>
             </div>
 
-            <!-- Tab 2: Informasi Rekening -->
             <div id="rekening-tab" class="tab-content">
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-2 w-full">
@@ -308,19 +307,14 @@
                         <div class="relative w-full">
                             <div
                                 class="select2-wrapper flex items-center w-full h-10 rounded p-3 bg-custom-gray-10 ring-1 ring-custom-gray-50 focus-within:ring-primary transition-all duration-300 relative">
-                                <!-- Ikon kiri (bank) -->
-                                <img src="{{ asset('assets/images/icons/bank.svg') }}" class="select2-icon-left"
+                                <img src="{{ asset('assets/images/icons/bank-primary.png') }}" class="select2-icon-left"
                                     alt="icon">
-
-                                <!-- Select2 field -->
                                 <select id="nama_bank" name="nama_bank" class="select2-ajax">
                                     @if ($agency && $agency->nama_bank)
                                         <option value="{{ $agency->nama_bank }}" selected>{{ $agency->nama_bank }}
                                         </option>
                                     @endif
                                 </select>
-
-                                <!-- Ikon panah kanan -->
                                 <img src="{{ asset('assets/images/icons/arrow-down.svg') }}" class="select2-icon-right"
                                     alt="icon">
                             </div>
@@ -328,11 +322,11 @@
                     </div>
 
                     <x-input-fieldv2 label="Nama Pemilik Rekening" name="nama_pemilik"
-                        icon="assets/images/icons/user.svg" placeholder="Masukkan Nama Pemilik Rekening"
+                        icon="assets/images/icons/user-primary.png" placeholder="Masukkan Nama Pemilik Rekening"
                         :value="$agency->nama_pemilik ?? ''" />
 
                     <x-input-fieldv2 label="Nomor Rekening" name="nomor_rekening" type="text"
-                        icon="assets/images/icons/credit-card.svg" placeholder="Masukkan Nomor Rekening"
+                        icon="assets/images/icons/card-primary.png" placeholder="Masukkan Nomor Rekening"
                         :value="$agency->nomor_rekening ?? ''" inputmode="numeric" />
 
                     <!-- Info tambahan -->

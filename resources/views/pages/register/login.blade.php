@@ -23,17 +23,16 @@
                 <h2 class="mt-4 mb-6 text-xl font-semibold text-center text-gray-900">Masuk</h2>
                 <form class="space-y-4" method="POST" action="{{ route('store.login') }}">
                     @csrf
-                    <!-- Nomor WhatsApp -->
-                    <div>
-                        <x-input-field label="Nomor WhatsApp" type="tel" name="telepon"
-                            placeholder="Masukkan Nomor WhatsApp" value="{{ old('telepon') }}" required />
-                    </div>
+
+                    <x-input-fieldv2 label="Nomor WhatsApp" name="telepon" type="tel" value="{{ old('telepon') }}"
+                        placeholder="Masukkan Nomor WhatsApp"
+                        required />
+
                     <div class="relative">
                         <label class="block mb-1 text-sm font-medium text-custom-gray">Kata Sandi</label>
                         <input type="password" name="password"
                             class="px-4 py-2 w-full rounded-md border border-custom-gray-50 transition-all outline-none focus:ring-0.5 focus:ring-primary focus:border-primary"
                             placeholder="••••••••" id="password-field" required />
-                        <!-- Show/Hide Password-->
                         <span class="absolute right-3 top-9 cursor-pointer" onclick="togglePassword()">
 
                             <img id="eye-disabled" src="{{ asset('assets/images/icons/hide.png') }}" alt="Eye Disabled"
@@ -42,9 +41,6 @@
                             <img id="eye-enabled" src="{{ asset('assets/images/icons/enabled.png') }}" alt="Eye Enabled"
                                 class="w-6 h-6 text-custom-gray-70 hover:text-black hidden" />
                         </span>
-                        @error('password')
-                            <p class="text-sm text-red-500">{{ $message }}</p>
-                        @enderror
                     </div>
                     <div class="flex justify-between items-center">
                         <label class="flex items-center">
