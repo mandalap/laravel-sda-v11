@@ -42,7 +42,7 @@
     </div>
 
     <!-- Stats Cards -->
-    <div class="relative z-10 px-4 mt-3">
+    <div class="relative z-10 px-5 mt-3">
         <div class="grid grid-cols-2 gap-2 mb-6">
             <div class="stats-card bg-custom-gray-10 p-2 rounded-2xl shadow-lg">
                 <div class="flex items-center gap-2">
