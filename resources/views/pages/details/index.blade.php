@@ -189,15 +189,13 @@
             <h2 class="text-lg text-custom-gray-100 font-medium">{{ $project->nama_project }}</h2>
             <p class="text-sm text-custom-gray-90 font medium">{{ $project->alamat_project }}</p>
         </div>
+
         <hr class="border-custom-gray-40 -mx-5">
+
         <div id="Features" class="grid grid-cols-2 gap-3">
             <div class="flex items-center gap-[6px]">
                 <img src="{{ asset('assets/images/icons/location2.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
                 <p class="text-sm text-custom-gray-80 font-medium">{{ $project->lokasi->regency->name }}</p>
-            </div>
-            <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/category.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
-                <p class="text-sm text-custom-gray-80 font-medium">{{ $project->kategori->kategori }}</p>
             </div>
             <div class="flex items-center gap-[6px]">
                 <img src="{{ asset('assets/images/icons/layer.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
@@ -209,17 +207,58 @@
                 </p>
             </div>
             <div class="flex items-center gap-[6px]">
+                <img src="{{ asset('assets/images/icons/category.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
+                <p class="text-sm text-custom-gray-80 font-medium">{{ $project->kategori->kategori }}</p>
+            </div>
+            <div class="flex items-center gap-[6px]">
+                <img src="{{ asset('assets/images/icons/size.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
+                <p class="text-sm text-custom-gray-80 font-medium">
+                    {{ $project->ukuran_kavling ?: '-' }}
+                </p>
+            </div>
+            <div class="flex items-center gap-[6px]">
                 <img src="{{ asset('assets/images/icons/file.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
                 <p class="text-sm text-custom-gray-80 font-medium">Sertifikat {{ $project->sertifikat }}</p>
             </div>
         </div>
+
         <hr class="border-custom-gray-40 -mx-5">
+
+        <div id="About" class="flex flex-col">
+            <div class="flex flex-row gap-3 justify-between items-center">
+                <div class="flex flex-col">
+                    <h2 class="text-sm text-custom-gray-100 font-bold">Hubungi Admin</h2>
+                    <div class="text-xs text-custom-gray-90">
+                        Tanyakan apapun terkait dengan produk ini secara langsung ke Admin kami.
+                    </div>
+                </div>
+                @if ($whatsappConfig && $whatsappConfig->sender)
+                    <a href="https://wa.me/{{ $whatsappConfig->sender }}?text={{ urlencode('Halo, Saya ingin bertanya mengenai Project ' . $project->nama_project) }}"
+                        target="_blank" class="p-2 rounded-xl flex items-center gap-2 hover:opacity-80 transition-opacity">
+                        <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="chat">
+                        </div>
+                    </a>
+                @else
+                    {{-- Fallback jika WhatsApp config tidak ada --}}
+                    <div class="p-2 rounded-xl flex items-center gap-2 opacity-50 cursor-not-allowed">
+                        <div class="w-9 h-9 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
+                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="chat">
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <hr class="border-custom-gray-40 -mx-5">
+
         <div id="About" class="flex flex-col gap-2">
             <h2 class="text-sm text-custom-gray-100 font-bold">Deskripsi</h2>
             <div class="text-custom-gray-90" style="font-size: 14px; line-height: 30px;">
                 {!! str($project->deskripsi)->sanitizeHtml() !!}
             </div>
         </div>
+
         <div id="Tabs" class="overflow-x-hidden w-full swiper-tab">
             <div class="swiper-wrapper gap-2">
                 <div class="swiper-slide !w-fit">
