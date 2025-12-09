@@ -224,7 +224,7 @@
 
         <hr class="border-custom-gray-40 -mx-5">
 
-        <div id="About" class="flex flex-col">
+        <div id="Contact" class="flex flex-col">
             <div class="flex flex-row gap-3 justify-between items-center">
                 <div class="flex flex-col">
                     <h2 class="text-sm text-custom-gray-100 font-bold">Hubungi Admin</h2>
@@ -232,9 +232,10 @@
                         Tanyakan apapun terkait dengan produk ini secara langsung ke Admin kami.
                     </div>
                 </div>
+
                 @if ($whatsappConfig && $whatsappConfig->sender)
-                    <a href="https://wa.me/{{ $whatsappConfig->sender }}?text={{ urlencode('Halo, Saya ingin bertanya mengenai Project ' . $project->nama_project) }}"
-                        target="_blank" class="p-2 rounded-xl flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <a href="{{ route('detailproject.contact', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
+                        class="p-2 rounded-xl flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                             <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="chat">
                         </div>

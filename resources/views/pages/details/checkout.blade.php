@@ -246,8 +246,9 @@
                                 icon: 'info',
                                 position: 'top',
                                 toast: true,
-                                width: '32rem',
-                                title: 'Pembayaran pending, silahkan selesaikan pembayaran.'
+                                // width: '20rem',
+                                // padding: '0.75rem',
+                                title: 'Pembayaran pending'
                             });
                         }
                     });
