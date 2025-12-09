@@ -46,7 +46,7 @@
 @endpush
 
 @section('content')
-    <x-navigation-route title="Properti {{ $kelompok->kelompok }}" :backRoute="route('beranda')" :showBackground="true"
+    <x-navigation-route title="Daftar {{ $kelompok->kelompok }}" :backRoute="route('beranda')" :showBackground="true"
         textColor="text-custom-gray-10" />
     <div class="flex sticky top-0 z-50 gap-4 items-center px-5 w-full">
 

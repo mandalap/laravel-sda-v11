@@ -76,7 +76,7 @@
                     <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">SAJADA BERDASI</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Pemberkasan</p>
                 </div>
             </a>
             <a href="{{ route('sajada.jaksel') }}">
@@ -84,7 +84,7 @@
                     <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">SAJADA JAKSEL</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kelola Lahan</p>
                 </div>
             </a>
             <a href="{{ route('affiliate.index') }}">
@@ -136,6 +136,7 @@
                                             class="object-cover w-full h-full"
                                             alt="{{ $popular->jenis->jenis }} {{ $popular->kategori->kategori }} {{ $popular->nama_project }} di {{ $popular->alamat_project }} - {{ $popular->lokasi->regency->name }}">
                                     </div>
+                                    <x-project-availability-badge :project="$popular" />
                                 </div>
 
                                 <div class="flex flex-col gap-1">
@@ -250,9 +251,10 @@
                     <div
                         class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
                         <div
-                            class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
+                            class="relative w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                             <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}"
                                 class="w-full h-full object-contain" alt="{{ $kavlingterbaik->nama_project }}">
+                            <x-project-availability-badge :project="$kavlingterbaik" />
                         </div>
 
                         <div class="flex flex-col gap-1 flex-1 min-h-0">
@@ -270,7 +272,7 @@
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/location2.png') }}"
                                         class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
-                                    <p class="text-xs text-custom-gray-70 truncate">
+                                    <p class="text-xs text-custom-gray-70 line-clamp-1">
                                         {{ $kavlingterbaik->lokasi->regency->name }}
                                     </p>
                                 </div>
@@ -367,6 +369,7 @@
                                         <img src="{{ asset('storage/' . $hunianRekomendasi->thumbnail) }}"
                                             class="object-cover w-full h-full"
                                             alt="{{ $hunianRekomendasi->jenis->jenis }} {{ $hunianRekomendasi->kategori->kategori }} {{ $hunianRekomendasi->nama_project }} di {{ $hunianRekomendasi->alamat_project }} - {{ $hunianRekomendasi->lokasi->regency->name }}">
+                                        <x-project-availability-badge :project="$hunianRekomendasi" />
                                     </div>
                                 </div>
                                 <div class="flex flex-col gap-1">
@@ -446,9 +449,10 @@
                     <div
                         class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
                         <div
-                            class="w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
+                            class="relative w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                             <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
                                 class="w-full h-full object-contain" alt="{{ $listingTerbaru->nama_project }}">
+                            <x-project-availability-badge :project="$listingTerbaru" />
                         </div>
 
                         <div class="flex flex-col gap-1 flex-1 min-h-0">
@@ -615,9 +619,9 @@
                                 <img src="{{ asset('assets/images/photos/propertimu.png') }}"
                                     class="w-full h-full object-contain" alt="Propertimu">
                             </div>
+                        </div>
                     </div>
                 </div>
-            </div>
         </section>
     </div>
     {{-- End: Partner Kerjasama --}}

@@ -222,6 +222,22 @@ class Project extends Model
         }
     }
 
+    public function getUkuranKavlingAttribute()
+    {
+        $size = $this->products
+            ->map(function ($product) {
+                return $product->panjang . 'x' . $product->lebar . ' m';
+            })
+            ->unique()
+            ->values();
+
+        if ($size->count() > 3) {
+            return $size->take(3)->implode(', ') . '...';
+        }
+
+        return $size->implode(', ');
+    }
+
     public function projectPhotos()
     {
         return $this->hasMany(ProjectPhoto::class);
