@@ -28,6 +28,20 @@ class BookingTransaction extends Model
         'tanggal_bayar',
         'status',
         'payment_method',
+        'snap_token',
+        'snap_token_created_at',
+        'snap_token_expiry',
+    ];
+
+    protected $hidden = [
+        'updated_at',
+        'created_at',
+        'deleted_at',
+        'tanggal_bayar',
+        'member_id',
+        'agency_id',
+        'payment_method',
+        'snap_token',
         'snap_token_created_at',
         'snap_token_expiry',
     ];
