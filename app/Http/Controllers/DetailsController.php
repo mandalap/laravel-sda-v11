@@ -6,6 +6,7 @@ use App\Jobs\SendWhatsAppBookingFirst;
 use App\Jobs\SendWhatsAppPaymentCancel;
 use App\Jobs\SendWhatsAppPaymentMethod;
 use App\Jobs\SendWhatsAppPaymentSuccess;
+use App\Jobs\WhatsAppBookingDeveloperTransaction;
 use App\Models\BookingTransaction;
 use App\Models\Jenis;
 use App\Models\Kategori;
@@ -16,6 +17,7 @@ use App\Models\ProjectPhoto;
 use App\Models\Affiliate;
 use App\Models\Agency;
 use App\Models\Member;
+use App\Models\WhatsappApiToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -130,23 +132,64 @@ class DetailsController extends Controller
     //
     public function index($jenis, $kategori, $project)
     {
-        $jenis = Jenis::where('slug', $jenis)->firstOrFail();
-        $kategori = Kategori::where('slug', $kategori)->firstOrFail();
+        try {
+            $jenis = Jenis::where('slug', $jenis)->firstOrFail();
+            $kategori = Kategori::where('slug', $kategori)->firstOrFail();
 
-        $project = Project::with([
-            'projectFasilitas',
-            'projectPhotos',
-            'projectsBrosur',
-            'products'
-        ])->where("slug", $project)->firstOrFail();
+            $whatsappConfig = WhatsappApiToken::where('status', 'active')->first();
 
-        // Ambil relasi yang sudah di-load
-        $facilities = $project->projectFasilitas;
-        $photos = $project->projectPhotos;
-        $siteplan = $project->products;
-        $brosurs = $project->projectsBrosur;
+            $project = Project::with([
+                'projectFasilitas',
+                'projectPhotos',
+                'projectsBrosur',
+                'products'
+            ])->where("slug", $project)->firstOrFail();
 
-        return view("pages.details.index", compact('project', 'photos', 'facilities', 'brosurs', 'kategori', 'siteplan'));
+            // Ambil relasi yang sudah di-load
+            $facilities = $project->projectFasilitas;
+            $photos = $project->projectPhotos;
+            $siteplan = $project->products;
+            $brosurs = $project->projectsBrosur;
+
+            return view("pages.details.index", compact('project', 'photos', 'facilities', 'brosurs', 'kategori', 'siteplan', 'whatsappConfig'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            abort(404, 'Halaman tidak ditemukan');
+        }
+    }
+    public function contactAdmin($jenis, $kategori, $project)
+    {
+        // Cek apakah user sudah login
+        if (!Auth::check()) {
+            Alert::toast('Anda harus login terlebih dahulu untuk menghubungi admin', 'info')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return redirect()
+                ->route('login')
+                ->with('redirect_after_login', url()->previous());
+        }
+        try {
+            $project = Project::where('slug', $project)->firstOrFail();
+            $whatsappConfig = WhatsappApiToken::where('status', 'active')->first();
+
+            if (!$whatsappConfig || !$whatsappConfig->sender) {
+                Alert::toast('Nomor WhatsApp admin tidak tersedia saat ini', 'error')
+                    ->autoClose(5000)
+                    ->timerProgressBar();
+
+                return back();
+            }
+
+            // Redirect ke WhatsApp
+            $message = urlencode('Halo, Saya ingin bertanya mengenai Project ' . $project->nama_project);
+            return redirect()->away("https://wa.me/{$whatsappConfig->sender}?text={$message}");
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Alert::toast('Project tidak ditemukan', 'error')
+                ->autoClose(5000)
+                ->timerProgressBar();
+
+            return back();
+        }
     }
 
     public function custinfo($jenis, $kategori, $project)
@@ -177,7 +220,7 @@ class DetailsController extends Controller
 
 
     /**
-     * PERUBAHAN 5: Refactoring method checkout dengan validasi yang lebih ketat
+     * Refactoring method checkout dengan validasi yang lebih ketat
      */
     public function checkout(Request $request, $project)
     {
@@ -213,7 +256,7 @@ class DetailsController extends Controller
 
                 $agency = $referralValidation['agency'];
 
-                // PERBAIKAN: Simpan referral code ke session agar bisa diakses di createNewSnapToken
+                // Simpan referral code ke session agar bisa diakses di createNewSnapToken
                 session(['checkout_referral_code' => $referralCode]);
             } else {
                 // Jika tidak ada referral code, hapus dari session
@@ -223,7 +266,7 @@ class DetailsController extends Controller
             // Ambil product
             $product = Product::where("code_product", $request->input('product'))->firstOrFail();
 
-            // PERUBAHAN 6: Gunakan method validateProductAvailability yang centralized
+            // Gunakan method validateProductAvailability yang centralized
             $availability = $this->validateProductAvailability($product, $user->id);
 
             if (!$availability['available']) {
@@ -292,7 +335,7 @@ class DetailsController extends Controller
         }
     }
     /**
-     * PERUBAHAN 7: Memisahkan logika handle existing booking
+     * Memisahkan logika handle existing booking
      */
     private function handleExistingBooking($bookingId, $user, $project)
     {
@@ -338,7 +381,7 @@ class DetailsController extends Controller
     }
 
     /**
-     * PERUBAHAN 8: Memisahkan logika validasi referral
+     * Memisahkan logika validasi referral
      */
     private function validateAndProcessReferral($referralCode, $user, $productCode)
     {
@@ -386,7 +429,7 @@ class DetailsController extends Controller
     }
 
     /**
-     * PERUBAHAN 9: Helper untuk cleanup duplicate bookings
+     * Helper untuk cleanup duplicate bookings
      */
     private function cleanupDuplicateBookings($mainBooking, $userId)
     {
@@ -401,7 +444,7 @@ class DetailsController extends Controller
     }
 
     /**
-     * PERUBAHAN 10: Refactoring getSnapToken dengan validasi yang lebih ketat
+     * Refactoring getSnapToken dengan validasi yang lebih ketat
      */
     public function getSnapToken(Request $request)
     {
@@ -438,7 +481,7 @@ class DetailsController extends Controller
     }
 
     /**
-     * PERUBAHAN 11: Perbaikan createNewSnapToken dengan locking yang lebih ketat
+     * createNewSnapToken dengan locking yang lebih ketat
      */
     private function createNewSnapToken($user, $product, $existingBooking = null)
     {
@@ -521,17 +564,17 @@ class DetailsController extends Controller
                 // Generate snap token
                 $snapToken = \Midtrans\Snap::getSnapToken($params);
 
-                // Save booking
                 $booking->snap_token = $snapToken;
                 $booking->snap_token_created_at = now();
                 $booking->snap_token_expiry = now()->addMinutes($expiryTime);
                 $booking->save();
 
-                // PERUBAHAN 12: Update status product ke Pending
+                // Update status product ke Pending
                 $this->updateProductStatus($product, 'Pending');
 
                 // Dispatch notification job
                 SendWhatsAppBookingFirst::dispatch($booking);
+                WhatsAppBookingDeveloperTransaction::dispatch($booking);
 
                 return response()->json([
                     'snapToken' => $snapToken,

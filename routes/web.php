@@ -161,6 +161,9 @@ Route::middleware('auth:member')->group(function () {
     Route::get('/{jenis}/{kategori}/{project}/info', [DetailsController::class, 'custinfo'])->name('custinfo');
     Route::post('/checkout/{project}', [DetailsController::class, 'checkout'])->name('checkout');
     Route::post('/get-snap-token', [DetailsController::class, 'getSnapToken'])->name('getSnapToken');
+
+    // ====== CONTACT ADMIN ======
+    Route::get('/{jenis}/{kategori}/{project}/contact-admin', [DetailsController::class, 'contactAdmin'])->name('detailproject.contact');
 });
 
 // ============================================
