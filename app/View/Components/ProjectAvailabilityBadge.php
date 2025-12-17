@@ -40,12 +40,11 @@ class ProjectAvailabilityBadge extends Component
     {
         $classes = [];
 
-        // Position classes - ubah dari top-4/right-4 ke top-2/right-2
         $positionClasses = [
-            'top-right' => 'absolute top-2 right-2',
-            'top-left' => 'absolute top-2 left-2',
-            'bottom-right' => 'absolute bottom-2 right-2',
-            'bottom-left' => 'absolute bottom-2 left-2',
+            'top-right' => 'absolute top-4 right-4',
+            'top-left' => 'absolute top-4 left-4',
+            'bottom-right' => 'absolute bottom-4 right-4',
+            'bottom-left' => 'absolute bottom-4 left-4',
             'inline' => ''
         ];
 
