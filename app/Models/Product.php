@@ -28,24 +28,19 @@ class Product extends Model
         'slug',
     ];
 
-    protected $hidden = [
-        'project_id',
-        'harga',
-        'discount',
-        'pembayaran',
-        'sertifikat_link',
-        'ktp',
-        'fee',
-        'jenis',
-        'slug',
-        'deleted_at',
-        'created_at',
-        'updated_at',
-    ];
-
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function bookingTransactions()
+    {
+        return $this->hasMany(BookingTransaction::class);
+    }
+
+    public function successfulBookings()
+    {
+        return $this->hasMany(BookingTransaction::class)->where('status', 'success');
     }
 
     protected static function booted()

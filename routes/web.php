@@ -83,21 +83,15 @@ Route::middleware(['auth:member', 'check.agency'])->group(function () {
 });
 
 // ============================================
-// DEVELOPER ROUTES - Public
-// ============================================
-Route::prefix('kerjasama')->name('developer.')->group(function () {
-    Route::get('/', [DeveloperRegisterController::class, 'index'])->name('index');
-});
-
-// ============================================
 // DEVELOPER ROUTES - Register
 // ============================================
 Route::middleware('auth:member')->group(function () {
     Route::prefix('kerjasama')->name('developer.')->group(function () {
-        Route::get('/daftar', [DeveloperRegisterController::class, 'register'])->name('register');
+        Route::get('/', [DeveloperRegisterController::class, 'index'])->middleware('prevent.duplicate.developer')->name('index');
+        Route::get('/daftar', [DeveloperRegisterController::class, 'register'])->middleware('prevent.duplicate.developer')->name('register');
         Route::post('/daftar/store', [DeveloperRegisterController::class, 'registerStore'])->name('register.store');
-        Route::get('/daftar/success', [DeveloperRegisterController::class, 'registerSuccess'])->name('register.success');
-        Route::get('/status', [DeveloperRegisterController::class, 'status'])->name('status');
+        Route::get('/status', [DeveloperRegisterController::class, 'pending'])
+            ->name('pending');
     });
 });
 

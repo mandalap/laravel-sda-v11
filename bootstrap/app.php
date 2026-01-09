@@ -13,8 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-           'check.agency' => \App\Http\Middleware\CheckAgencyRegistration::class,
-           'check.agency.registered' => \App\Http\Middleware\CheckAgencyAlreadyRegistered::class,
+            'ensure.developer' => \App\Http\Middleware\EnsureDeveloperAccess::class,
+            'prevent.duplicate.developer' => \App\Http\Middleware\PreventDuplicateDeveloperRegistration::class,
+            'check.agency' => \App\Http\Middleware\CheckAgencyRegistration::class,
+            'check.agency.registered' => \App\Http\Middleware\CheckAgencyAlreadyRegistered::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

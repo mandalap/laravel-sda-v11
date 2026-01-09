@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Developer\Resources;
 
-use App\Filament\Resources\ProjectResource\Pages;
-use App\Filament\Resources\ProjectResource\RelationManagers;
+use App\Filament\Developer\Resources\ProjectResource\Pages;
+use App\Filament\Developer\Resources\ProjectResource\RelationManagers;
 use App\Models\Developer;
 use App\Models\Jenis;
 use App\Models\Kategori;
@@ -11,8 +11,8 @@ use App\Models\Kelompok;
 use App\Models\Lokasi;
 use App\Models\Project;
 use Filament\Forms;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -20,11 +20,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Infolists\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
@@ -33,9 +32,26 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-library';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
-    protected static ?string $navigationGroup = 'Data Master';
+    protected static ?string $navigationLabel = 'Project';
+
+    // protected static ?string $navigationGroup = 'Project Management';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $recordTitleAttribute = 'nama_project';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $developer = auth('member')->user()?->developer;
+
+        return parent::getEloquentQuery()
+            ->where('developer_id', $developer?->id)
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
 
     public static function form(Form $form): Form
     {
@@ -47,11 +63,8 @@ class ProjectResource extends Resource
                             ->schema([
                                 Forms\Components\Grid::make(2)
                                     ->schema([
-                                        Select::make('developer_id')
-                                            ->label('Developer')
-                                            ->options(Developer::all()->pluck('nama', 'id'))
-                                            ->searchable()
-                                            ->required(),
+                                        Hidden::make('developer_id')
+                                            ->default(fn() => auth('member')->user()->developer?->id),
 
                                         Select::make('lokasi_id')
                                             ->label('Lokasi')
@@ -71,7 +84,7 @@ class ProjectResource extends Resource
                                             ->searchable()
                                             ->required(),
 
-                                        Forms\Components\TextInput::make('nama_project')
+                                        TextInput::make('nama_project')
                                             ->label('Nama Project')
                                             ->required()
                                             ->maxLength(255)
@@ -82,15 +95,15 @@ class ProjectResource extends Resource
                                             )
                                             ->placeholder('Contoh: PARIT SIDIQ'),
 
-                                        Forms\Components\TextInput::make('slug')
+                                        TextInput::make('slug')
                                             ->label('Slug URL')
                                             ->required()
                                             ->maxLength(255)
                                             ->unique(ignoreRecord: true)
                                             ->disabled()
                                             ->dehydrated(),
-                                            
-                                        Forms\Components\FileUpload::make('thumbnail')
+
+                                        FileUpload::make('thumbnail')
                                             ->nullable()
                                             ->image()
                                             ->optimize('webp'),
@@ -105,13 +118,10 @@ class ProjectResource extends Resource
                                             ->label('Link Video')
                                             ->nullable(),
 
-                                        TextInput::make('google_map')
-                                            ->label('Link Google Maps')
-                                            ->nullable(),
-
                                         TextInput::make('latlang')
                                             ->label('Lat-Lang Google Maps')
-                                            ->nullable(),
+                                            ->nullable()
+                                            ->helperText('Contoh: -0.058839944096, 109.2474171703'),
 
                                         RichEditor::make('deskripsi')
                                             ->label('Deskripsi')
@@ -145,21 +155,6 @@ class ProjectResource extends Resource
                                             ->options(Kelompok::all()->pluck('kelompok', 'id'))
                                             ->searchable()
                                             ->required(),
-
-                                        Select::make('is_approved')
-                                            ->label('Status Persetujuan')
-                                            ->options([
-                                                'Pending' => 'Pending',
-                                                'Diterima' => 'Diterima',
-                                                'Ditolak' => 'Ditolak',
-                                            ]),
-
-                                        Select::make('status')
-                                            ->options([
-                                                'tampil' => 'Tampil',
-                                                'arsip' => 'Arsip',
-                                            ])
-                                            ->required(),
                                     ]),
                             ])
                             ->columnSpanFull(),
@@ -172,7 +167,7 @@ class ProjectResource extends Resource
                                             ->label('Foto Project')
                                             ->schema([
                                                 FileUpload::make('photo')
-                                                    ->nullable()
+
                                                     ->image()
                                                     ->optimize('webp'),
                                             ])
@@ -189,7 +184,7 @@ class ProjectResource extends Resource
                                             ->label('Brosur Project')
                                             ->schema([
                                                 FileUpload::make('photo')
-                                                    ->nullable()
+
                                                     ->image()
                                                     ->optimize('webp'),
                                             ])
@@ -205,7 +200,7 @@ class ProjectResource extends Resource
                                             ->relationship('projectFasilitas')
                                             ->label('Fasilitas Project')
                                             ->schema([
-                                                TextInput::make('fasilitas')->nullable(),
+                                                TextInput::make('fasilitas'),
                                             ])
                                             ->required(),
                                     ]),
@@ -219,35 +214,49 @@ class ProjectResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
-                //
-                TextColumn::make('developer.nama')
-                    ->label('Developer')
-                    ->formatStateUsing(fn($state, $record) => $record->developer->nama ?? 'No Developer')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('nama_project')
+                    ->label('Nama Project')
+                    ->searchable()
+                    ->weight('bold')
+                    ->wrap(),
 
                 TextColumn::make('kategori.kategori')
                     ->label('Kategori')
                     ->formatStateUsing(fn($state, $record) => $record->kategori->kategori ?? 'No Kategori')
-                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('lokasi.regency.name')
                     ->label('Lokasi')
                     ->formatStateUsing(fn($state, $record) => $record->lokasi->regency->name ?? 'No Lokasi')
-                    ->sortable()
                     ->searchable(),
 
-                TextColumn::make('nama_project')
-                    ->label('Nama Project')
-                    ->searchable(),
+                TextColumn::make('product_count')
+                    ->label('Jumlah Produk')
+                    ->getStateUsing(fn($record) => $record->products()->count())
+                    ->badge()
+                    ->color('info')
+                    ->alignCenter()
+                    ->sortable(query: function ($query, $direction) {
+                        return $query->withCount('products')->orderBy('products_count', $direction);
+                    }),
 
-                TextColumn::make('kelompok.kelompok')
-                    ->label('Kelompok')
-                    ->formatStateUsing(fn($state, $record) => $record->kelompok->kelompok ?? 'No Kelompok')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('available_products')
+                    ->label('Tersedia')
+                    ->getStateUsing(fn($record) => $record->products()->where('status', 'Tersedia')->count())
+                    ->badge()
+                    ->color('success')
+                    ->alignCenter()
+                    ->toggleable(),
+
+                BadgeColumn::make('is_approved')
+                    ->label('Status')
+                    ->colors([
+                        'warning' => 'Pending',
+                        'success' => 'Diterima',
+                        'danger' => 'Ditolak',
+                    ]),
 
                 ImageColumn::make('thumbnail'),
 
@@ -264,38 +273,22 @@ class ProjectResource extends Resource
                         return '';
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
-                SelectFilter::make('kategori_id')
-                    ->label('Kategori')
-                    ->relationship('kategori', 'kategori'),
-
-                SelectFilter::make('lokasi_id')
-                    ->label('Lokasi')
-                    ->options(function () {
-                        return Lokasi::with('regency')
-                            ->get()
-                            ->pluck('regency.name', 'id') // Mengambil nama regency dan id lokasi
-                            ->sort(); // Menyortir berdasarkan nama regency
-                    }),
-
-                SelectFilter::make('developer_id')
-                    ->label('Developer')
-                    ->relationship('developer', 'nama'),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()
-                    ->label('Detail')
-                    ->color('warning'),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -303,7 +296,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProductsRelationManager::class,
         ];
     }
 
@@ -312,23 +305,29 @@ class ProjectResource extends Resource
         return [
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
+            'view' => Pages\ViewProject::route('/{record}'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
 
-    public static function getEloquentQuery(): Builder
+    public static function getNavigationBadge(): ?string
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        $developer = auth('member')->user()?->developer;
+
+
+        if (!$developer) {
+            return null;
+        }
+
+        $pending = static::getModel()::where('developer_id', $developer->id)
+            ->where('is_approved', 'Pending')
+            ->count();
+
+        return $pending > 0 ? (string) $pending : null;
     }
 
-    public static function getTableActions(): array
+    public static function getNavigationBadgeColor(): ?string
     {
-        return [
-            Tables\Actions\ViewAction::make(),
-            Tables\Actions\EditAction::make(),
-        ];
+        return 'warning';
     }
 }

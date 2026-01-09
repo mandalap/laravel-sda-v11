@@ -82,8 +82,7 @@ class ProductResource extends Resource
 
                 TextInput::make('discount')
                     ->label('Diskon')
-                    ->numeric()
-                    ->required(),
+                    ->numeric(),
 
                 TextInput::make('fee')
                     ->label('Fee Marketing')
