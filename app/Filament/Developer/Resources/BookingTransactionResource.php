@@ -1,30 +1,28 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Developer\Resources;
 
-use App\Filament\Resources\BookingTransactionResource\Pages;
-use App\Models\BookingTransaction;
-use App\Models\Product;
-use App\Models\Member;
+use App\Filament\Developer\Resources\BookingTransactionResource\Pages;
+use App\Filament\Developer\Resources\BookingTransactionResource\RelationManagers;
 use App\Models\Agency;
-use App\Models\FeeTransaction;
+use App\Models\BookingTransaction;
+use App\Models\Member;
+use App\Models\Product;
+use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Jobs\WhatsAppBookingMemberTransaction;
-use App\Jobs\WhatsAppBookingAgencyTransaction;
-use App\Jobs\WhatsAppClosingMemberTransaction;
-use App\Jobs\WhatsAppClosingAgencyTransaction;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BookingTransactionResource extends Resource
 {
@@ -34,44 +32,33 @@ class BookingTransactionResource extends Resource
 
     protected static ?string $navigationLabel = 'Transaksi Booking';
 
-    protected static ?string $navigationGroup = 'Transaksi';
-
-    protected static ?string $pluralModelLabel = 'Transaksi Booking';
     protected static ?string $modelLabel = 'Transaksi Booking';
 
-    public static function getNavigationBadge(): ?string
-    {
-        $count = static::getModel()::where('status', 'pending')->count();
-
-        return $count > 0 ? (string) $count : null;
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        $count = static::getModel()::where('status', 'pending')->count();
-
-        if ($count > 5) {
-            return 'danger';
-        } elseif ($count > 0) {
-            return 'warning';
-        }
-
-        return 'primary';
-    }
+    protected static ?string $recordTitleAttribute = 'invoice';
 
     public static function getEloquentQuery(): Builder
     {
+        $developer = auth('member')->user()?->developer;
+
+        if (!$developer) {
+            // Jika tidak ada developer, return empty query
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
+        }
+
         return parent::getEloquentQuery()
-            ->whereIn('status', ['pending', 'booking', 'cancel'])
-            ->whereHas('product', function ($query) {
-                $query->where('status', 'Tersedia')
-                    ->orWhere('status', 'Booking')
-                    ->orWhere('status', 'Pending');
-            });
+            ->whereHas('product.project', function (Builder $query) use ($developer) {
+                $query->where('developer_id', $developer->id);
+            })
+            ->with(['member', 'product.project', 'agency'])
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function form(Form $form): Form
     {
+        $developer = auth('member')->user()?->developer;
+
         return $form
             ->schema([
                 TextInput::make('invoice')
@@ -83,9 +70,16 @@ class BookingTransactionResource extends Resource
 
                 Select::make('product_id')
                     ->label('Product')
-                    ->options(function () {
+                    ->options(function () use ($developer) {
+                        if (!$developer) {
+                            return [];
+                        }
+
                         return Product::with('project')
                             ->whereIn('status', ['Tersedia'])
+                            ->whereHas('project', function (Builder $query) use ($developer) {
+                                $query->where('developer_id', $developer->id);
+                            })
                             ->get()
                             ->mapWithKeys(function ($product) {
                                 $productName = $product->nama_product ?? 'No Product';
@@ -95,7 +89,22 @@ class BookingTransactionResource extends Resource
                     })
                     ->searchable()
                     ->required()
-                    ->preload(),
+                    ->preload()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if ($state) {
+                            $product = Product::find($state);
+                            if ($product) {
+                                $hargaTanah = $product->harga ?? 0;
+                                $diskon = $product->discount ?? 0;
+                                $totalHarga = $hargaTanah - $diskon;
+
+                                $set('harga_tanah', $hargaTanah);
+                                $set('diskon', $diskon);
+                                $set('total_harga', $totalHarga);
+                            }
+                        }
+                    }),
 
                 Select::make('member_id')
                     ->label('Member')
@@ -111,7 +120,7 @@ class BookingTransactionResource extends Resource
                     ->preload(),
 
                 Select::make('agency_id')
-                    ->label('Agency')
+                    ->label('Agency (Marketing)')
                     ->options(function () {
                         return Agency::all()->mapWithKeys(function ($agency) {
                             $nama = $agency->nama ?? 'No Name';
@@ -126,25 +135,38 @@ class BookingTransactionResource extends Resource
                     ->prefix('Rp')
                     ->label('Harga Tanah')
                     ->numeric()
-                    ->required(),
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                        $diskon = $get('diskon') ?? 0;
+                        $set('total_harga', $state - $diskon);
+                    }),
 
                 TextInput::make('diskon')
                     ->prefix('Rp')
                     ->label('Diskon')
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                        $hargaTanah = $get('harga_tanah') ?? 0;
+                        $set('total_harga', $hargaTanah - $state);
+                    }),
 
                 TextInput::make('total_harga')
                     ->prefix('Rp')
                     ->label('Total Harga')
                     ->numeric()
-                    ->required(),
+                    ->required()
+                    ->disabled()
+                    ->dehydrated(true),
 
                 TextInput::make('jumlah_uang_booking')
                     ->prefix('Rp')
                     ->label('Harga Booking')
                     ->numeric()
-                    ->required(),
+                    ->required()
+                    ->default(100000),
 
                 Select::make('status')
                     ->label('Status')
@@ -154,7 +176,8 @@ class BookingTransactionResource extends Resource
                         'booking' => 'Booking',
                     ])
                     ->visible(fn($record) => $record !== null)
-                    ->default('pending'),
+                    ->default('pending')
+                    ->reactive(),
 
                 DateTimePicker::make('tanggal_bayar')
                     ->label('Tanggal Bayar')
@@ -174,48 +197,44 @@ class BookingTransactionResource extends Resource
                     ->visible(fn($record) => $record !== null),
 
                 Hidden::make('is_paid')
-                    ->default(false)
-
+                    ->default(false),
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $developer = auth('member')->user()?->developer;
+
         return $table
             ->poll('20s')
             ->striped()
             ->columns([
                 TextColumn::make('invoice')
                     ->label('Invoice')
-                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('product.nama_product')
-                    ->label('Product')
+                    ->label('Produk')
                     ->formatStateUsing(function ($state, $record) {
                         $productName = $record->product->nama_product ?? 'No Product';
                         $projectName = $record->product->project->nama_project ?? 'No Project';
 
                         return "{$productName}-{$projectName}";
                     })
-                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('member.nama')
                     ->label('Member')
                     ->formatStateUsing(fn($state, $record) => $record->member->nama ?? 'No Member')
-                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('agency.nama')
                     ->label('Marketing')
                     ->formatStateUsing(fn($state, $record) => $record->agency->nama ?? '')
-                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('jumlah_uang_booking')
                     ->label('Harga Booking')
-                    ->sortable()
                     ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.')),
 
                 TextColumn::make('status')
@@ -254,9 +273,8 @@ class BookingTransactionResource extends Resource
                         'qris' => 'QRIS',
                         'bank_transfer' => 'Transfer Bank',
                         'cash' => 'Cash',
-                        default => ucfirst($state),  // For other status values, capitalize the first letter
+                        default => ucfirst($state),
                     }),
-
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -274,124 +292,43 @@ class BookingTransactionResource extends Resource
                         'bank_transfer' => 'Transfer Bank',
                         'cash' => 'Cash',
                     ]),
+                SelectFilter::make('project')
+                    ->label('Project')
+                    ->options(function () use ($developer) {
+                        if (!$developer) {
+                            return [];
+                        }
+
+                        return Project::where('developer_id', $developer->id)
+                            ->pluck('nama_project', 'id');
+                    })
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn(Builder $query, $projectId): Builder => $query->whereHas('product', function (Builder $query) use ($projectId) {
+                                $query->where('project_id', $projectId);
+                            })
+                        );
+                    }),
+
                 Tables\Filters\TrashedFilter::make(),
 
             ])
-            ->actions([
-                Tables\Actions\Action::make('konfirmasi')
-                    ->label('Konfirmasi')
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->visible(fn($record) => in_array($record->status, ['pending', 'booking']))
-                    ->requiresConfirmation()
-                    ->modalHeading('Konfirmasi Transaksi')
-                    ->modalDescription(fn($record) => match ($record->status) {
-                        'pending' => 'Isi detail pembayaran sebelum mengubah status menjadi "booking".',
-                        'booking' => $record->agency_id
-                            ? 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi. Silakan masukkan fee marketing.'
-                            : 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi.',
-                    })
-                    ->modalButton('Ya, Konfirmasi')
-                    ->form(fn($record) => match ($record->status) {
-                        'pending' => [
-                            DateTimePicker::make('tanggal_bayar')
-                                ->label('Tanggal Bayar')
-                                ->required()
-                                ->default(now())
-                                ->timezone('Asia/Jakarta'),
-                            Select::make('payment_method')
-                                ->label('Metode Pembayaran')
-                                ->required()
-                                ->options([
-                                    'qris' => 'QRIS',
-                                    'bank_transfer' => 'Transfer Bank',
-                                    'cash' => 'Cash',
-                                ]),
-                        ],
-                        'booking' => $record->agency_id ? [
-                            TextInput::make('jumlah_fee')
-                                ->label('Fee Marketing')
-                                ->prefix('Rp')
-                                ->numeric()
-                                ->required()
-                                ->helperText('Masukkan fee untuk marketing yang menangani transaksi ini')
-                                ->placeholder('0'),
-                        ] : [],
-                        default => []
-                    })
-                    ->action(function ($record, array $data) {
-                        if ($record->status === 'pending') {
-                            $record->update([
-                                'status' => 'booking',
-                                'tanggal_bayar' => $data['tanggal_bayar'],
-                                'payment_method' => $data['payment_method'],
-                                'is_paid' => true,
-                            ]);
-                            // Update status produk jadi "Booking"
-                            $record->product->update([
-                                'status' => 'Booking'
-                            ]);
-                            // Validasi berdasarkan agency_id
-                            if ($record->agency_id) {
-                                WhatsAppBookingMemberTransaction::dispatch($record);
-                                WhatsAppBookingAgencyTransaction::dispatch($record);
-                            } else {
-                                WhatsAppBookingMemberTransaction::dispatch($record);
-                            }
-                        } elseif ($record->status === 'booking') {
-                            $record->product->update(['status' => 'Terjual']);
-                            // Simpan fee marketing ke tabel fee_transactions hanya jika ada agency_id
-                            if ($record->agency_id && isset($data['jumlah_fee']) && $data['jumlah_fee'] > 0) {
-                                FeeTransaction::create([
-                                    'booking_transaction_id' => $record->id,
-                                    'jumlah_fee' => $data['jumlah_fee'],
-                                    'status' => 'tersedia',
-                                    'created_at' => now(),
-                                    'updated_at' => now(),
-                                ]);
-                                WhatsAppClosingAgencyTransaction::dispatch($record);
-                            }
-                            WhatsAppClosingMemberTransaction::dispatch($record);
-                        }
+            ->actions([])
+            ->bulkActions([]);
+    }
 
-                        Notification::make()
-                            ->title('Transaksi berhasil dikonfirmasi.')
-                            ->success()
-                            ->send();
-                    }),
-
-                Tables\Actions\Action::make('batal')
-                    ->label('Batalkan')
-                    ->icon('heroicon-o-x-circle')
-                    ->color('danger')
-                    ->visible(fn($record) => in_array($record->status, ['pending', 'booking']))
-                    ->requiresConfirmation()
-                    ->modalHeading('Yakin ingin membatalkan transaksi ini?')
-                    ->modalDescription('Tindakan ini akan mengubah status transaksi menjadi "Cancel" dan produk akan tersedia kembali.')
-                    ->modalButton('Ya, batalkan')
-                    ->action(function ($record) {
-                        $record->update(['status' => 'cancel']);
-                        $record->product->update(['status' => 'Tersedia']);
-
-                        Notification::make()
-                            ->title('Transaksi berhasil dibatalkan.')
-                            ->warning()
-                            ->send();
-                    }),
-                Tables\Actions\EditAction::make(),
-
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListBookingTransactions::route('/'),
-            'create' => Pages\CreateBookingTransaction::route('/create'),
-            'edit' => Pages\EditBookingTransaction::route('/{record}/edit'),
         ];
     }
 }

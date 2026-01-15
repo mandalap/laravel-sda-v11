@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookingResource;
+use App\Http\Resources\ProductResource;
 use App\Jobs\SendWhatsAppBookingFirst;
 use App\Jobs\SendWhatsAppPaymentCancel;
 use App\Jobs\SendWhatsAppPaymentMethod;
@@ -465,8 +467,7 @@ class DetailsController extends Controller
             if ($availability['booking']) {
                 return response()->json([
                     'snapToken' => $availability['booking']->snap_token,
-                    'booking' => $availability['booking'],
-                    'product' => $product,
+                    'booking' => new BookingResource($availability['booking']),
                 ]);
             }
 
@@ -578,8 +579,7 @@ class DetailsController extends Controller
 
                 return response()->json([
                     'snapToken' => $snapToken,
-                    'booking' => $booking,
-                    'product' => $product,
+                    'booking' => new BookingResource($booking),
                 ]);
             } catch (\Exception $e) {
                 Log::error('Gagal membuat snapToken: ' . $e->getMessage());

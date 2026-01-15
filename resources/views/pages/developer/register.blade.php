@@ -16,14 +16,14 @@
         <form class="flex flex-col gap-4" method="POST" enctype="multipart/form-data"
             action="{{ route('developer.register.store') }}">
             @csrf
-            <x-input-fieldv2 label="Nama Developer" name="nama" type="text" placeholder="Masukkan nama developer"
-                icon="assets/images/icons/building-primary.png" required />
-            <x-input-fieldv2 label="Alamat" name="alamat" type="text" placeholder="Masukkan alamat developer"
-                icon="assets/images/icons/map-primary.png" required />
-            <x-input-fieldv2 label="Nomor Whatsapp" name="telepon" type="tel" placeholder="Masukkan nomor WhatsApp"
-                icon="assets/images/icons/phone-primary.png" required />
-            <x-input-fieldv2 label="Email" name="email" type="text" placeholder="Masukkan email developer"
-                icon="assets/images/icons/email-primary.png" required />
+            <x-input-fieldv2 :value="old('nama', $developer->nama ?? '')" label="Nama Developer" name="nama" type="text"
+                placeholder="Masukkan nama developer" icon="assets/images/icons/building-primary.png" required />
+            <x-input-fieldv2 :value="old('alamat', $developer->alamat ?? '')" label="Alamat" name="alamat" type="text"
+                placeholder="Masukkan alamat developer" icon="assets/images/icons/map-primary.png" required />
+            <x-input-fieldv2 :value="old('telepon', $developer->telepon ?? '')" label="Nomor Whatsapp" name="telepon" type="tel"
+                placeholder="Masukkan nomor WhatsApp" icon="assets/images/icons/phone-primary.png" required />
+            <x-input-fieldv2 :value="old('email', $developer->email ?? '')" label="Email" name="email" type="text"
+                placeholder="Masukkan email developer" icon="assets/images/icons/email-primary.png" required />
 
             <div class="flex flex-col gap-1 w-full">
                 <p class="font-medium text-sm text-custom-gray-90">Foto/logo developer</p>
@@ -54,9 +54,9 @@
                 </div>
             </div>
 
-            {{-- <x-button-primary type="submit" :full-width="true" disabled>
-                Daftar (Belum tersedia)
-            </x-button-primary> --}}
+            <x-button-primary type="submit" :full-width="true">
+                Daftar
+            </x-button-primary>
         </form>
     </div>
 @endsection

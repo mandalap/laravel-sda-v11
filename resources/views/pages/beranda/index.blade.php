@@ -100,7 +100,7 @@
                     <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kerja Sama</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Developer</p>
                 </div>
             </a>
         </div>

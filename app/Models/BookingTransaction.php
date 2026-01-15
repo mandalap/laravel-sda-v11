@@ -33,19 +33,6 @@ class BookingTransaction extends Model
         'snap_token_expiry',
     ];
 
-    protected $hidden = [
-        'updated_at',
-        'created_at',
-        'deleted_at',
-        'tanggal_bayar',
-        'member_id',
-        'agency_id',
-        'payment_method',
-        'snap_token',
-        'snap_token_created_at',
-        'snap_token_expiry',
-    ];
-
     protected $casts = [
         'agency_id' => 'integer',
         'member_id' => 'integer',
@@ -102,6 +89,32 @@ class BookingTransaction extends Model
         } while (self::where('invoice', $randomSting)->exists());
 
         return $randomSting;
+    }
+
+    /**
+     * Accessor: Get project dari product
+     */
+    public function getProjectAttribute()
+    {
+        return $this->product?->project;
+    }
+
+    /**
+     * Accessor: Get developer dari project
+     */
+    public function getDeveloperAttribute()
+    {
+        return $this->product?->project?->developer;
+    }
+
+    /**
+     * Scope: Filter by developer
+     */
+    public function scopeForDeveloper($query, $developerId)
+    {
+        return $query->whereHas('product.project', function ($q) use ($developerId) {
+            $q->where('developer_id', $developerId);
+        });
     }
 
     public function product(): BelongsTo
