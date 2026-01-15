@@ -256,8 +256,6 @@ class ProductsRelationManager extends RelationManager
                         'Jual/Sewa' => 'Jual/Sewa',
                     ])
                     ->native(false),
-
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
@@ -271,69 +269,14 @@ class ProductsRelationManager extends RelationManager
                     ),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn($record) => $record->status === 'Tersedia'),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn($record) => $record->status === 'Tersedia'),
 
-                Tables\Actions\Action::make('changeStatus')
-                    ->label('Ubah Status')
-                    ->icon('heroicon-o-arrow-path')
-                    ->color('warning')
-                    ->form([
-                        Forms\Components\Select::make('status')
-                            ->label('Status Baru')
-                            ->options([
-                                'Tersedia' => 'Tersedia',
-                                'Booking' => 'Booking',
-                                'Pending' => 'Pending',
-                                'Terjual' => 'Terjual',
-                            ])
-                            ->required()
-                            ->native(false),
-                    ])
-                    ->action(function ($record, array $data) {
-                        $oldStatus = $record->status;
-                        $record->update(['status' => $data['status']]);
-
-                        \Filament\Notifications\Notification::make()
-                            ->title('Status berhasil diubah')
-                            ->body("Status '{$record->nama_product}' diubah dari {$oldStatus} → {$data['status']}")
-                            ->success()
-                            ->send();
-                    }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('changeStatus')
-                        ->label('Ubah Status')
-                        ->icon('heroicon-o-arrow-path')
-                        ->color('warning')
-                        ->form([
-                            Forms\Components\Select::make('status')
-                                ->label('Status Baru')
-                                ->options([
-                                    'Tersedia' => 'Tersedia',
-                                    'Booking' => 'Booking',
-                                    'Pending' => 'Pending',
-                                    'Terjual' => 'Terjual',
-                                ])
-                                ->required()
-                                ->native(false),
-                        ])
-                        ->action(function ($records, array $data) {
-                            $count = $records->count();
-                            $records->each->update(['status' => $data['status']]);
-
-                            \Filament\Notifications\Notification::make()
-                                ->title('Status berhasil diubah')
-                                ->body("{$count} product berhasil diubah statusnya menjadi {$data['status']}")
-                                ->success()
-                                ->send();
-                        }),
-
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
+                Tables\Actions\BulkActionGroup::make([]),
             ])
             ->modifyQueryUsing(fn(Builder $query) => $query->withoutGlobalScopes([
                 SoftDeletingScope::class,

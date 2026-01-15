@@ -314,14 +314,8 @@ class BookingTransactionResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
 
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->actions([])
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
@@ -335,8 +329,6 @@ class BookingTransactionResource extends Resource
     {
         return [
             'index' => Pages\ListBookingTransactions::route('/'),
-            'create' => Pages\CreateBookingTransaction::route('/create'),
-            'edit' => Pages\EditBookingTransaction::route('/{record}/edit'),
         ];
     }
 }

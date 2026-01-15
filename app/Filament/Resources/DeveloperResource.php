@@ -35,47 +35,42 @@ class DeveloperResource extends Resource
             ->schema([
                 //
                 Select::make('member_id')
-                ->label('Member')
-                ->options(Member::all()->pluck('nama', 'id'))
-                ->searchable()
-                ->required(),
+                    ->label('Member')
+                    ->options(Member::all()->pluck('nama', 'id'))
+                    ->searchable()
+                    ->required(),
 
                 Forms\Components\TextInput::make('nama')
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->label('Nama Developer'),
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->label('Nama Developer'),
 
                 Forms\Components\TextInput::make('telepon')
-                ->required()
-                ->numeric()
-                ->unique(ignoreRecord: true)
-                ->minLength(9),
+                    ->required()
+                    ->numeric()
+                    ->unique(ignoreRecord: true)
+                    ->minLength(9),
 
                 Forms\Components\TextInput::make('email')
-                ->email()
-                ->unique(ignoreRecord: true)
-                ->maxLength(255),
+                    ->email()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
 
-                // Forms\Components\FileUpload::make('thumbnail')
-                // ->required()
-                // ->image()
-                // ->optimize('webp'),
 
                 Forms\Components\FileUpload::make('thumbnail')
-                ->required()
-                ->image()
-                ->optimize('webp')
-                ->afterStateUpdated(function ($state, callable $get) {
-                    // Menghapus foto lama jika ada
-                    $existingThumbnail = $get('existing_thumbnail'); // Ambil foto yang ada dari state
+                    ->required()
+                    ->image()
+                    ->optimize('webp')
+                    ->afterStateUpdated(function ($state, callable $get) {
+                        $existingThumbnail = $get('existing_thumbnail');
 
-                    if ($existingThumbnail) {
-                        Storage::delete($existingThumbnail); // Hapus foto lama
-                    }
-                }),
+                        if ($existingThumbnail) {
+                            Storage::delete($existingThumbnail);
+                        }
+                    }),
 
-            Forms\Components\Hidden::make('existing_thumbnail')
-                ->default(fn ($record) => $record ? $record->thumbnail : null), // Cek apakah $record ada
+                Forms\Components\Hidden::make('existing_thumbnail')
+                    ->default(fn($record) => $record ? $record->thumbnail : null),
 
             ]);
     }
@@ -86,23 +81,19 @@ class DeveloperResource extends Resource
             ->columns([
                 //
                 TextColumn::make('member.nama')
-                ->label('Nama Member')
-                ->formatStateUsing(fn ($state, $record) => $record->member->nama ?? 'No Member')
-                ->sortable()
-                ->searchable(),
+                    ->label('Nama Member')
+                    ->formatStateUsing(fn($state, $record) => $record->member->nama ?? 'No Member')
+                    ->searchable(),
 
                 TextColumn::make('nama')
-                ->label('Nama Developer')
-                ->sortable()
-                ->searchable(),
+                    ->label('Nama Developer')
+                    ->searchable(),
 
                 TextColumn::make('telepon')
-                ->sortable()
-                ->searchable(),
+                    ->searchable(),
 
                 TextColumn::make('email')
-                ->sortable()
-                ->searchable(),
+                    ->searchable(),
 
                 ImageColumn::make('thumbnail'),
 
@@ -111,6 +102,45 @@ class DeveloperResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('konfirmasi_developer')
+                    ->label('Konfirmasi')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn($record) => $record->status === 'pending' || $record->status === 'rejected')
+                    ->requiresConfirmation()
+                    ->modalHeading('Konfirmasi Developer')
+                    ->modalDescription('Setuju menerima Developer ini?')
+                    ->modalButton('Ya, Konfirmasi')
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'status' => 'approved',
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Developer berhasil dikonfirmasi.')
+                            ->success()
+                            ->send();
+                    }),
+                Tables\Actions\Action::make('tolak_developer')
+                    ->label('Tolak')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn($record) => $record->status === 'pending')
+                    ->requiresConfirmation()
+                    ->modalHeading('Tolak Developer')
+                    ->modalDescription('Setuju menolak Developer ini?')
+                    ->modalButton('Ya, Tolak')
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'status' => 'rejected',
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Developer berhasil ditolak.')
+                            ->success()
+                            ->send();
+                    }),
+
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -144,5 +174,19 @@ class DeveloperResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+
+        $pending = self::getModel()::where('status', 'Pending')
+            ->count();
+
+        return $pending > 0 ? (string) $pending : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
     }
 }

@@ -7,33 +7,6 @@
 @push('prepend-style')
 @endpush
 @push('addon-style')
-    <style>
-        .card {
-            border-radius: 1rem;
-        }
-
-        .btn {
-            border-radius: 0.5rem;
-            font-weight: 500;
-        }
-
-        .alert {
-            border-radius: 0.75rem;
-            border: none;
-        }
-
-        svg {
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-        }
-
-        .bg-light {
-            background-color: #f8f9fa !important;
-        }
-
-        .border-primary {
-            border: 2px solid #0d6efd !important;
-        }
-    </style>
 @endpush
 
 @section('content')

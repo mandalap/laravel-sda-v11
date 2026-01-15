@@ -10,7 +10,6 @@ class Dashboard extends BaseDashboard
     {
         return [
             \App\Filament\Developer\Widgets\DeveloperStatsOverview::class,
-            \App\Filament\Developer\Widgets\SalesPerProjectChart::class,
         ];
     }
 

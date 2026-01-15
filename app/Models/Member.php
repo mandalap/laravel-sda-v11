@@ -111,9 +111,6 @@ class Member extends Authenticatable implements LaratrustUser, FilamentUser, Has
      */
     public function getFilamentAvatarUrl(): ?string
     {
-        if ($this->thumbnail) {
-            return asset('storage/' . $this->thumbnail);
-        }
 
         if ($this->developer?->thumbnail) {
             return asset('storage/' . $this->developer->thumbnail);

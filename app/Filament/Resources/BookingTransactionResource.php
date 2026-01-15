@@ -220,12 +220,18 @@ class BookingTransactionResource extends Resource
 
                 TextColumn::make('status')
                     ->label('Status')
-                    ->sortable()
                     ->formatStateUsing(fn($state) => match ($state) {
                         'pending' => 'Pending',
                         'cancel' => 'Cancel',
                         'booking' => 'Booking',
-                        default => ucfirst($state),  // For other status values, capitalize the first letter
+                        default => ucfirst($state),
+                    })
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        'pending' => 'warning',
+                        'cancel' => 'danger',
+                        'booking' => 'success',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('tanggal_bayar')

@@ -37,7 +37,6 @@ class DeveloperPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Purple,
             ])
-            ->profile(isSimple: false)
             ->discoverResources(in: app_path('Filament/Developer/Resources'), for: 'App\\Filament\\Developer\\Resources')
             ->discoverPages(in: app_path('Filament/Developer/Pages'), for: 'App\\Filament\\Developer\\Pages')
             ->pages([])
