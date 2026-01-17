@@ -48,15 +48,7 @@ class BookingTransactionResource extends Resource
 
     public static function getNavigationBadgeColor(): ?string
     {
-        $count = static::getModel()::where('status', 'pending')->count();
-
-        if ($count > 5) {
-            return 'danger';
-        } elseif ($count > 0) {
-            return 'warning';
-        }
-
-        return 'primary';
+        return 'warning';
     }
 
     public static function getEloquentQuery(): Builder

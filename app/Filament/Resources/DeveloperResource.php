@@ -98,6 +98,7 @@ class DeveloperResource extends Resource
                 ImageColumn::make('thumbnail'),
 
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
