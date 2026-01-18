@@ -214,7 +214,7 @@
                         </div>
                         <div class="flex flex-col">
                             <h3 class="font-medium text-xs">{{ $city->regency->name }}</h3>
-                            <p class="text-[10px] text-custom-gray-70">{{ $city->project->count() }} Properti</p>
+                            <p class="text-[10px] text-custom-gray-70">{{ $city->project_count }} Properti</p>
                         </div>
                     </div>
                 </a>
@@ -430,7 +430,7 @@
             <h2 class="text-base font-semibold text-custom-gray-100">Properti Terbaru</h2>
             @if ($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
                 <a
-                    href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
+                    href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'all', 'filter' => 'none']) }}">
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"

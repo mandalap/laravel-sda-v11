@@ -11,14 +11,16 @@ class ProjectAvailabilityBadge extends Component
 {
     public $project;
     public $position;
+    public $style;
 
     /**
      * Create a new component instance.
      */
-    public function __construct(Project $project, $position = 'top-right')
+    public function __construct(Project $project, $position = 'top-right', $style = 'ribbon')
     {
         $this->project = $project;
         $this->position = $position;
+        $this->style = $style; // 'ribbon' or 'badge'
     }
 
     public function render(): View|Closure|string
@@ -31,13 +33,12 @@ class ProjectAvailabilityBadge extends Component
         return $this->project->project_product->where('status', 'Tersedia')->count() > 0;
     }
 
-    public function statusText()
-    {
-        return $this->isAvailable() ? 'Tersedia' : 'Habis';
-    }
-
     public function badgeClasses()
     {
+        if ($this->style === 'ribbon') {
+            return '';
+        }
+
         $classes = [];
 
         $positionClasses = [
@@ -48,12 +49,9 @@ class ProjectAvailabilityBadge extends Component
             'inline' => ''
         ];
 
-        // Background color based on availability
-        $bgClass = $this->isAvailable() ? 'bg-green-primary' : 'bg-danger-main';
-
-        $classes[] = 'rounded-full px-2 py-1 w-fit h-fit text-xs leading-tight text-custom-gray-10';
+        // Hanya untuk badge HABIS
+        $classes[] = 'rounded-full px-2 py-1 w-fit h-fit text-xs leading-tight text-custom-gray-10 bg-danger-main';
         $classes[] = $positionClasses[$this->position] ?? $positionClasses['top-right'];
-        $classes[] = $bgClass;
 
         return implode(' ', array_filter($classes));
     }
