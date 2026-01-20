@@ -78,6 +78,12 @@ class Project extends Model
         });
     }
 
+    public function scopeApprovedAndVisible($query)
+    {
+        return $query->where('status', 'tampil')
+            ->where('is_approved', 'Diterima');
+    }
+
     public function getPricingInfo()
     {
         $products = $this->project_product;

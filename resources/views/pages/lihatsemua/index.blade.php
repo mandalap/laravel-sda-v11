@@ -13,6 +13,7 @@
             right: 0;
             transform: translateX(-10%);
         }
+
         @keyframes pulse {
             0% {
                 opacity: 0.6;
@@ -48,9 +49,9 @@
 @section('content')
     <x-navigation-route title="Daftar {{ $kelompok->kelompok }}" :backRoute="route('beranda')" :showBackground="true"
         textColor="text-custom-gray-10" />
-    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 w-full">
+    <div class="flex sticky top-0 z-10 gap-4 items-center px-5 w-full">
 
-        <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
+        <form action="" class="flex relative flex-row flex-grow items-center w-full">
             <input type="hidden" name="propertiType" value="{{ request()->query('propertiType', 'popular') }}">
             <input type="hidden" name="propertiKategori" value="{{ request()->query('propertiKategori', 'all') }}">
             <input type="hidden" name="filter" value="{{ request()->query('filter', 'none') }}">
@@ -116,7 +117,6 @@
         Semua properti telah ditampilkan
     </div>
 
-    @include('includes.footer')
 @endsection
 
 @push('addon-script')

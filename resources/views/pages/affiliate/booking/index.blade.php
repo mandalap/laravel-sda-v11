@@ -50,8 +50,8 @@
     <x-navigation-route title="Booking" textColor="text-custom-gray-10" :showBackground="true" :showAgencyProfile="true"
         :agencyData="auth()->user()" />
 
-    <div class="flex sticky top-0 gap-4 items-center px-5 w-full">
-        <form action="" class="flex relative z-10 flex-row flex-grow items-center w-full">
+    <div class="flex sticky top-0 gap-4 z-10 items-center px-5 w-full">
+        <form action="" class="flex relative flex-row flex-grow items-center w-full">
 
             <input type="hidden" name="filter" value="{{ request()->query('filter', 'none') }}">
             <div
