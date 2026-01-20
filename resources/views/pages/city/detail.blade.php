@@ -54,9 +54,9 @@
 @section('content')
     <x-navigation-route title="Daftar Properti" :backRoute="$kategori ? route('kategori', [$kategori->slug]) : route('beranda')" :showBackground="true" textColor="text-custom-gray-10" />
 
-    <div class="flex sticky top-0 z-50 gap-4 items-center px-5 w-full">
+    <div class="flex sticky top-0 z-10 gap-4 items-center px-5 w-full">
 
-        <form action="" class="relative z-10 flex flex-row items-center flex-grow w-full">
+        <form action="" class="relative flex flex-row items-center flex-grow w-full">
             <input type="hidden" name="propertiKategori" value="{{ request()->query('propertiKategori', 'all') }}">
             <input type="hidden" name="propertiCity" value="{{ request()->query('propertiCity', 'all') }}">
             <input type="hidden" name="filter" value="{{ request()->query('filter', 'none') }}">

@@ -16,66 +16,93 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        return view('pages.developer.index');
+        $member = auth('member')->user();
+        $developer = $member?->developer;
+
+        $isRejected = $developer && $developer->status === 'rejected';
+
+        return view('pages.developer.index', compact('isRejected', 'developer'));
     }
+
 
     public function register()
     {
-        return view('pages.developer.register');
-    }
+        $member = auth('member')->user();
+        $developer = $member->developer;
 
+        $isUpdate = $developer && $developer->status === 'rejected';
+
+        return view('pages.developer.register', compact('developer', 'isUpdate'));
+    }
     public function registerStore(Request $request)
     {
         try {
             $member = Auth::guard('member')->user();
 
+            $developer = $member->developer;
+
             // Validasi input
-            $request->validate([
+            $validated = $request->validate([
                 'nama' => 'required|string|max:255',
-                'email' => 'required|email|unique:developers,email',
-                'telepon' => 'required|string|unique:developers,telepon|max:15',
+                'email' => 'required|email|max:255' . ($developer ? '|unique:developers,email,' . $developer->id : '|unique:developers,email'),
+                'telepon' => 'required|string|max:15' . ($developer ? '|unique:developers,telepon,' . $developer->id : '|unique:developers,telepon'),
                 'alamat' => 'required|string|max:255',
                 'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
 
-            if (!$member) {
-                Alert::toast('Email sudah digunakan oleh pengguna lain.', 'error')->autoClose(10000);
-                return redirect()->back();
+            if ($developer) {
+                $developer->update([
+                    'nama' => $validated['nama'],
+                    'email' => $validated['email'],
+                    'telepon' => $validated['telepon'],
+                    'alamat' => $validated['alamat'],
+                    'status' => 'pending',
+                ]);
+
+                $this->handleThumbnailUpload($request, $developer, true);
+                $message = 'Data berhasil diperbaharui! Silakan tunggu verifikasi ulang.';
+            } else {
+                $developer = Developer::create([
+                    'member_id' => $member->id,
+                    'nama' => $validated['nama'],
+                    'email' => $validated['email'],
+                    'telepon' => $validated['telepon'],
+                    'alamat' => $validated['alamat'],
+                    'status' => 'pending',
+                ]);
+
+                $this->handleThumbnailUpload($request, $developer, false);
+                $message = 'Pendaftaran berhasil! Silakan tunggu konfirmasi dari kami.';
             }
 
-            $developer = new Developer();
-            $developer->nama = $request->nama;
-            $developer->email = $request->email;
-            $developer->telepon = $request->telepon;
-            $developer->alamat = $request->alamat;
-            $developer->member_id = $member->id;
-
-            if ($request->hasFile('thumbnail')) {
-                $file = $request->file('thumbnail');
-                if ($file->isValid()) {
-                    $path = $file->store('profile_pictures', 'public');
-                    $developer->thumbnail = $path;
-                }
-            }
-
-            // Set status
-            $developer->status = 'pending';
-
-            $developer->save();
-
-            Alert::toast('Pendaftaran berhasil. Silakan tunggu konfirmasi dari kami.', 'success')->autoClose(10000);
-            return redirect()->route('developer.index');
+            Alert::toast($message, 'success')->autoClose(5000);
+            return redirect()->route('developer.pending');
         } catch (ValidationException $e) {
-            Alert::toast($e->getMessage(), 'error')->autoClose(10000);
-            return redirect()->back()->withInput()->withErrors($e->validator->errors());
+            Alert::toast('Validasi gagal. Periksa kembali form Anda.', 'error')->autoClose(5000);
+            return redirect()->back()->withInput()->withErrors($e->errors());
         } catch (\Exception $e) {
-            Alert::toast('Terjadi kesalahan: ' . $e->getMessage(), 'error')->autoClose(10000);
+            Alert::toast('Terjadi kesalahan. Silakan coba lagi.', 'error')->autoClose(5000);
             return redirect()->back()->withInput();
         }
     }
 
-    public function registerSuccess()
+    public function pending()
     {
-        return view('pages.developer.success');
+        $developer = auth('member')->user()->developer;
+
+        return view('pages.developer.pending', compact('developer'));
+    }
+
+    private function handleThumbnailUpload(Request $request, Developer $developer, bool $isUpdate)
+    {
+        if ($request->hasFile('thumbnail')) {
+            // Hapus file lama jika update
+            if ($isUpdate && $developer->thumbnail && Storage::disk('public')->exists($developer->thumbnail)) {
+                Storage::disk('public')->delete($developer->thumbnail);
+            }
+
+            $developer->thumbnail = $request->file('thumbnail')->store('developers', 'public');
+            $developer->save();
+        }
     }
 }

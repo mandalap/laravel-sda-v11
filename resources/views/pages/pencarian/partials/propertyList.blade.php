@@ -6,7 +6,7 @@
                 class="relative w-32 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                 <img src="{{ asset('storage/' . $item->thumbnail) }}" class="w-full h-full object-contain"
                     alt="{{ $item->nama_project }}">
-                <x-project-availability-badge :project="$item" />
+                <x-project-availability-badge :project="$item" style="ribbon" />
             </div>
 
             <div class="flex flex-col gap-1 flex-1 min-h-0">

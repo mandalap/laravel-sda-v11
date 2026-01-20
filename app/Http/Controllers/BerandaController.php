@@ -39,15 +39,14 @@ class BerandaController extends Controller
         $kota = Lokasi::all();
         $kategories = Kategori::orderBy('kategori', 'desc')->get();
 
-        $projects = Project::where('status', 'tampil')
-            ->where('is_approved', 'Diterima')
+        $projects = Project::approvedAndVisible()
             ->whereHas('project_product', function ($query) {
                 $query->where('status', 'Tersedia');
-            })->take(5)->get();
+            })->take(5)
+            ->get();
 
         // Query untuk project tanah kavling dengan kelompok terbaik
-        $tanahKavlingTerbaik = Project::where('status', 'tampil')
-            ->where('is_approved', 'Diterima')
+        $tanahKavlingTerbaik = Project::approvedAndVisible()
             ->whereHas('project_product', function ($query) {
                 $query->where('status', 'Tersedia');
             })
@@ -62,8 +61,7 @@ class BerandaController extends Controller
             ->take(5)
             ->get();
 
-        $hunianRekomendasi = Project::where('status', 'tampil')
-            ->where('is_approved', 'Diterima')
+        $hunianRekomendasi = Project::approvedAndVisible()
             ->whereHas('project_product', function ($query) {
                 $query->where('status', 'Tersedia');
             })
@@ -78,8 +76,7 @@ class BerandaController extends Controller
             ->take(5)
             ->get();
 
-        $listingTerbaru = Project::where('status', 'tampil')
-            ->where('is_approved', 'Diterima')
+        $listingTerbaru = Project::approvedAndVisible()
             ->whereHas('project_product', function ($query) {
                 $query->where('status', 'Tersedia');
             })
@@ -91,11 +88,15 @@ class BerandaController extends Controller
             ->take(5)
             ->get();
 
-        $cities = Lokasi::limit(6)->inRandomOrder()->get();
+        $cities = Lokasi::withApprovedProjects()
+            ->withApprovedProjectCount()
+            ->get();
 
         $agency     = Agency::count();
-        $properties = Project::count();
-        $products = Product::count();
+        $properties = Project::approvedAndVisible()->count();
+        $products = Product::whereHas('project', function ($query) {
+            $query->approvedAndVisible();
+        })->count();
         $members  = Member::count();
 
 

@@ -31,7 +31,8 @@ class PencarianController extends Controller
             return redirect()->back()->withInput();
         }
 
-        $query = Project::with(['lokasi', 'jenis', 'kategori', 'project_product']);
+        $query = Project::with(['lokasi', 'jenis', 'kategori', 'project_product'])
+            ->approvedAndVisible();
 
         // Filter berdasarkan nama
         if (!empty($nama)) {

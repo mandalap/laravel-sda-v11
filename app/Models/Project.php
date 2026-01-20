@@ -78,6 +78,12 @@ class Project extends Model
         });
     }
 
+    public function scopeApprovedAndVisible($query)
+    {
+        return $query->where('status', 'tampil')
+            ->where('is_approved', 'Diterima');
+    }
+
     public function getPricingInfo()
     {
         $products = $this->project_product;
@@ -236,6 +242,16 @@ class Project extends Model
         }
 
         return $size->implode(', ');
+    }
+
+    public function getProductCountAttribute(): int
+    {
+        return $this->products()->count();
+    }
+
+    public function getAvailableProductCountAttribute(): int
+    {
+        return $this->products()->where('status', 'Tersedia')->count();
     }
 
     public function projectPhotos()
