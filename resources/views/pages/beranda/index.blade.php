@@ -29,30 +29,31 @@
         </a>
     </div>
 
-    @if ($testimoniBanners->isNotEmpty())
-        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 mt-[20px]">
+    {{-- Promo Banner --}}
+    @if ($promoBanners->isNotEmpty())
+        <section id="Promo" class="flex relative flex-col gap-3 mt-[20px]">
             <div>
                 <div class="banner-landscape-container relative">
                     <div class="swiper-banner overflow-hidden w-full">
                         <div class="swiper-wrapper">
-                            @foreach ($testimoniBanners as $banner)
+                            @foreach ($promoBanners as $banner)
                                 <div
                                     class="swiper-slide !w-[calc(100%-3rem)] md:!w-[450px] lg:!w-[550px] flex shrink-0 rounded-[20px] overflow-hidden aspect-[353/171]">
-                                    <div
+                                    <a href="{{ $banner->redirect_url }}"
                                         class="w-full h-full rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
                                         <img src="{{ asset('storage/' . $banner->image) }}"
-                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
-                                    </div>
+                                            class="w-full h-full object-cover rounded-[20px]" alt="promo">
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
-                        <!-- Pagination -->
                         <div class="swiper-pagination"></div>
                     </div>
                 </div>
             </div>
         </section>
     @endif
+    {{-- End Promo Banner --}}
 
     <div id="Feature" class="px-[20px] mt-[18px] relative z-10">
         <div class="bg-white p-4 rounded-2xl border border-custom-gray-40 overflow-hidden grid grid-cols-4 gap-x-3 gap-y-4">
@@ -310,33 +311,32 @@
     </section>
     {{-- End: Terbaik --}}
 
-    {{-- Promo Banner --}}
-    @if ($promoBanners->isNotEmpty())
-        <section id="Promo" class="flex relative flex-col gap-3 mt-[20px]">
-            <h2 class="text-base font-semibold text-custom-gray-100 px-5">Promo Spesial</h2>
-
+    {{-- Testimoni Banner --}}
+    @if ($testimoniBanners->isNotEmpty())
+        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 mt-[20px]">
             <div>
                 <div class="banner-landscape-container relative">
                     <div class="swiper-banner overflow-hidden w-full">
                         <div class="swiper-wrapper">
-                            @foreach ($promoBanners as $banner)
+                            @foreach ($testimoniBanners as $banner)
                                 <div
                                     class="swiper-slide !w-[calc(100%-3rem)] md:!w-[450px] lg:!w-[550px] flex shrink-0 rounded-[20px] overflow-hidden aspect-[353/171]">
-                                    <a href="{{ $banner->redirect_url }}"
+                                    <div
                                         class="w-full h-full rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
                                         <img src="{{ asset('storage/' . $banner->image) }}"
-                                            class="w-full h-full object-cover rounded-[20px]" alt="promo">
-                                    </a>
+                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
+                        <!-- Pagination -->
                         <div class="swiper-pagination"></div>
                     </div>
                 </div>
             </div>
         </section>
     @endif
-    {{-- End Promo Banner --}}
+    {{-- End Testimoni Banner --}}
 
     {{-- Rekomendasi --}}
     <section id="Rekomendasi" class="flex flex-col mt-5 gap-3">
