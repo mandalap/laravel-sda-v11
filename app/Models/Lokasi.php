@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+
 class Lokasi extends Model
 {
     //
@@ -17,18 +18,25 @@ class Lokasi extends Model
         'slug',
     ];
 
-    // protected static function booted()
-    // {
-    //     static::creating(function ($lokasi) {
-    //         $lokasi->slug = Str::slug($lokasi->nama_lokasi);
-    //     });
+    /**
+     * Scope untuk filter lokasi yang memiliki project approved
+     */
+    public function scopeWithApprovedProjects($query)
+    {
+        return $query->whereHas('project', function ($query) {
+            $query->approvedAndVisible();
+        });
+    }
 
-    //     static::updating(function ($lokasi) {
-    //         if ($lokasi->isDirty('nama_lokasi')) { // Hanya update jika kategori berubah
-    //             $lokasi->slug = Str::slug($lokasi->nama_lokasi);
-    //         }
-    //     });
-    // }
+    /**
+     * Scope untuk menghitung project yang approved
+     */
+    public function scopeWithApprovedProjectCount($query)
+    {
+        return $query->withCount(['project' => function ($query) {
+            $query->approvedAndVisible();
+        }]);
+    }
 
     public function project()
     {
