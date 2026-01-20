@@ -62,8 +62,6 @@
             @endforeach
         </section>
     @endif
-
-    @include('includes.footer')
 @endsection
 
 @push('addon-script')

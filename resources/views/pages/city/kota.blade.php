@@ -59,8 +59,6 @@
             <p class="text-center">Data belum Tersedia</p>
         @endforelse
     </section>
-
-    @include('includes.footer')
 @endsection
 
 @push('addon-script')
