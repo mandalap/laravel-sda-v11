@@ -91,7 +91,16 @@ class BerandaController extends Controller
             ->take(5)
             ->get();
 
-        $cities = Lokasi::limit(6)->inRandomOrder()->get();
+        $cities = Lokasi::whereHas('project', function ($query) {
+            $query->where('status', 'tampil')
+                ->where('is_approved', 'Diterima');
+        })
+            ->withCount(['project' => function ($query) {
+                $query->where('status', 'tampil')
+                    ->where('is_approved', 'Diterima');
+            }])
+            ->get();
+
 
         $agency     = Agency::count();
         $properties = Project::count();

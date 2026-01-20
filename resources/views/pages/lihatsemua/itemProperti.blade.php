@@ -9,8 +9,7 @@
                         class=" relative w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                         <img src="{{ asset('storage/' . $project->thumbnail) }}" class="w-full h-full object-contain"
                             alt="{{ $project->nama_project }}">
-                        <x-project-availability-badge :project="$project" />
-
+                        <x-project-availability-badge :project="$project" style="ribbon" />
                     </div>
 
                     <div class="flex flex-col gap-1 flex-1 min-h-0">

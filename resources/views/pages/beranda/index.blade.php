@@ -29,15 +29,15 @@
         </a>
     </div>
 
-
     @if ($testimoniBanners->isNotEmpty())
-        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px]">
+        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 mt-[20px]">
             <div>
-                <div class="testimonial-landscape-container relative">
-                    <div class="testimonial-landscape-swiper overflow-hidden w-full">
+                <div class="banner-landscape-container relative">
+                    <div class="swiper-banner overflow-hidden w-full">
                         <div class="swiper-wrapper">
                             @foreach ($testimoniBanners as $banner)
-                                <div class="swiper-slide flex shrink-0 rounded-[20px] overflow-hidden w-[353px] h-[171px]">
+                                <div
+                                    class="swiper-slide !w-[calc(100%-3rem)] md:!w-[450px] lg:!w-[550px] flex shrink-0 rounded-[20px] overflow-hidden aspect-[353/171]">
                                     <div
                                         class="w-full h-full rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
                                         <img src="{{ asset('storage/' . $banner->image) }}"
@@ -53,7 +53,6 @@
             </div>
         </section>
     @endif
-
 
     <div id="Feature" class="px-[20px] mt-[18px] relative z-10">
         <div class="bg-white p-4 rounded-2xl border border-custom-gray-40 overflow-hidden grid grid-cols-4 gap-x-3 gap-y-4">
@@ -100,7 +99,7 @@
                     <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="icon">
                     </div>
-                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kerja Sama</p>
+                    <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Developer</p>
                 </div>
             </a>
         </div>
@@ -215,7 +214,7 @@
                         </div>
                         <div class="flex flex-col">
                             <h3 class="font-medium text-xs">{{ $city->regency->name }}</h3>
-                            <p class="text-[10px] text-custom-gray-70">{{ $city->project->count() }} Properti</p>
+                            <p class="text-[10px] text-custom-gray-70">{{ $city->project_count }} Properti</p>
                         </div>
                     </div>
                 </a>
@@ -313,27 +312,25 @@
 
     {{-- Promo Banner --}}
     @if ($promoBanners->isNotEmpty())
-        <section id="height" class="flex flex-col p-2 gap-4 bg-[#F5F6F8] mt-[30px]"></section>
-
-        <section id="Testimonials" class="flex relative z-10 flex-col gap-3 px-4 mt-[20px] ">
-            <h2 class="text-sm font-bold">Promo Spesial</h2>
+        <section id="Promo" class="flex relative flex-col gap-3 mt-[20px]">
+            <h2 class="text-base font-semibold text-custom-gray-100 px-5">Promo Spesial</h2>
 
             <div>
-                <div class="testimonial-landscape-container relative">
-                    <div class="testimonial-landscape-swiper overflow-hidden w-full">
+                <div class="banner-landscape-container relative">
+                    <div class="swiper-banner overflow-hidden w-full">
                         <div class="swiper-wrapper">
                             @foreach ($promoBanners as $banner)
-                                <div class="swiper-slide aspect-[360/120] flex shrink-0 rounded-[20px] overflow-hidden">
+                                <div
+                                    class="swiper-slide !w-[calc(100%-3rem)] md:!w-[450px] lg:!w-[550px] flex shrink-0 rounded-[20px] overflow-hidden aspect-[353/171]">
                                     <a href="{{ $banner->redirect_url }}"
-                                        class="w-[1500px] h-[200px] rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
+                                        class="w-full h-full rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
                                         <img src="{{ asset('storage/' . $banner->image) }}"
-                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
+                                            class="w-full h-full object-cover rounded-[20px]" alt="promo">
                                     </a>
                                 </div>
                             @endforeach
                         </div>
                         <div class="swiper-pagination"></div>
-
                     </div>
                 </div>
             </div>
@@ -433,7 +430,7 @@
             <h2 class="text-base font-semibold text-custom-gray-100">Properti Terbaru</h2>
             @if ($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
                 <a
-                    href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
+                    href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'all', 'filter' => 'none']) }}">
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
@@ -631,21 +628,18 @@
 @endsection
 
 @push('addon-script')
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Landscape Testimonial Swiper
-            var landscapeSwiper = new Swiper('.testimonial-landscape-swiper', {
-                slidesPerView: 1,
-                spaceBetween: 10,
+            var landscapeSwiper = new Swiper('.swiper-banner', {
+                slidesPerView: 'auto',
+                spaceBetween: 12,
                 grabCursor: true,
                 loop: true,
-                // effect: 'fade', // Menggunakan efek fade yang lebih sederhana
-                // fadeEffect: {
-                //     crossFade: true // Mengaktifkan crossfade untuk transisi yang lebih halus
-                // },
+                centeredSlides: false,
+                slidesOffsetBefore: 20,
+                slidesOffsetAfter: 20,
                 autoplay: {
                     delay: 5000,
                     disableOnInteraction: false,
@@ -657,47 +651,42 @@
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
-                    type: 'bullets', // Menggunakan pagination tipe bullets
-                    dynamicBullets: true, // Bullets yang dinamis
-
+                    type: 'bullets',
+                    dynamicBullets: true,
                 },
                 keyboard: {
-                    enabled: true, // Mengaktifkan navigasi dengan keyboard
+                    enabled: true,
                 },
-
                 breakpoints: {
                     640: {
-                        slidesPerView: 1,
-                        spaceBetween: 20,
+                        slidesPerView: 'auto',
+                        spaceBetween: 12,
                     },
                     768: {
-                        slidesPerView: 1,
-                        spaceBetween: 20,
+                        slidesPerView: 'auto',
+                        spaceBetween: 12,
                     },
                     1024: {
-                        slidesPerView: 1,
-                        spaceBetween: 30,
+                        slidesPerView: 'auto',
+                        spaceBetween: 16,
                     },
                 }
             });
 
-            // Update fraction text (e.g., "1/5")
             function updateFraction(swiper) {
                 const fractionElement = document.querySelector('.testimonial-fraction');
                 if (fractionElement) {
                     const activeIndex = swiper.realIndex + 1;
                     const totalSlides = document.querySelectorAll(
-                        '.testimonial-landscape-swiper .swiper-slide:not(.swiper-slide-duplicate)').length;
+                        '.swiper-banner .swiper-slide:not(.swiper-slide-duplicate)').length;
                     fractionElement.textContent = `${activeIndex}/${totalSlides}`;
                 }
             }
 
-            // Tambahkan A11y untuk aksesibilitas
             landscapeSwiper.a11y.enable();
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Partner Swiper
             var partnerSwiper = new Swiper('.partner-swiper', {
                 slidesPerView: 4,
                 spaceBetween: 8,
@@ -727,7 +716,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Counter Animation Function
             function animateCounter(element, target) {
                 let current = 0;
                 const increment = target / 100; // Adjust speed by changing divisor
