@@ -65,7 +65,7 @@
 
                 <hr class="border-custom-gray-40 ml-8">
 
-                <a href="" class="flex justify-between items-center h-11 hover:text-primary">
+                <a href="{{ route('developer.index') }}" class="flex justify-between items-center h-11 hover:text-primary">
                     <div class="flex items-center gap-2">
                         <img src="{{ 'assets/images/icons/kerjasama-primary.png' }}" class="w-6 h-6" alt="icon">
                         <p class="text-sm text-custom-gray-90">Sajada Developer</p>

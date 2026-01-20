@@ -72,15 +72,23 @@ class ProjectResource extends Resource
                                             ->required(),
 
                                         Forms\Components\TextInput::make('nama_project')
-                                            ->reactive()
-                                            ->afterStateUpdated(function ($state, callable $set) {
-                                                $set('slug', Str::slug($state));
-                                            })
-                                            ->unique(ignoreRecord: true)
-                                            ->required(),
+                                            ->label('Nama Project')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated(
+                                                fn($state, Forms\Set $set) =>
+                                                $set('slug', Str::slug($state))
+                                            )
+                                            ->placeholder('Contoh: PARIT SIDIQ'),
+
                                         Forms\Components\TextInput::make('slug')
+                                            ->label('Slug URL')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->unique(ignoreRecord: true)
                                             ->disabled()
-                                            ->label('Tampilan'),
+                                            ->dehydrated(),
 
                                         Forms\Components\FileUpload::make('thumbnail')
                                             ->nullable()
@@ -211,6 +219,7 @@ class ProjectResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 //
                 TextColumn::make('developer.nama')
@@ -256,8 +265,8 @@ class ProjectResource extends Resource
                         return '';
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('kategori_id')
                     ->label('Kategori')
@@ -268,8 +277,7 @@ class ProjectResource extends Resource
                     ->options(function () {
                         return Lokasi::with('regency')
                             ->get()
-                            ->pluck('regency.name', 'id') // Mengambil nama regency dan id lokasi
-                            ->sort(); // Menyortir berdasarkan nama regency
+                            ->pluck('regency.name', 'id');
                     }),
 
                 SelectFilter::make('developer_id')
@@ -278,6 +286,44 @@ class ProjectResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('konfirmasi_project')
+                    ->label('Konfirmasi')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn($record) => $record->is_approved === 'Pending' || $record->is_approved === 'Ditolak')
+                    ->requiresConfirmation()
+                    ->modalHeading('Konfirmasi Project')
+                    ->modalDescription('Setuju menerima Project ini?')
+                    ->modalButton('Ya, Konfirmasi')
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'is_approved' => 'Diterima',
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Project berhasil dikonfirmasi.')
+                            ->success()
+                            ->send();
+                    }),
+                Tables\Actions\Action::make('tolak_project')
+                    ->label('Tolak')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(fn($record) => $record->is_approved === 'Pending')
+                    ->requiresConfirmation()
+                    ->modalHeading('Tolak Project')
+                    ->modalDescription('Setuju menolak Project ini?')
+                    ->modalButton('Ya, Tolak')
+                    ->action(function ($record, array $data) {
+                        $record->update([
+                            'is_approved' => 'Ditolak',
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Project berhasil ditolak.')
+                            ->success()
+                            ->send();
+                    }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make()
                     ->label('Detail')
@@ -322,5 +368,19 @@ class ProjectResource extends Resource
             Tables\Actions\ViewAction::make(),
             Tables\Actions\EditAction::make(),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+
+        $pending = self::getModel()::where('is_approved', 'Pending')
+            ->count();
+
+        return $pending > 0 ? (string) $pending : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
     }
 }

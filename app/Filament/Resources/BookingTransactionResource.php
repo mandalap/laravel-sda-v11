@@ -48,15 +48,7 @@ class BookingTransactionResource extends Resource
 
     public static function getNavigationBadgeColor(): ?string
     {
-        $count = static::getModel()::where('status', 'pending')->count();
-
-        if ($count > 5) {
-            return 'danger';
-        } elseif ($count > 0) {
-            return 'warning';
-        }
-
-        return 'primary';
+        return 'warning';
     }
 
     public static function getEloquentQuery(): Builder
@@ -220,12 +212,18 @@ class BookingTransactionResource extends Resource
 
                 TextColumn::make('status')
                     ->label('Status')
-                    ->sortable()
                     ->formatStateUsing(fn($state) => match ($state) {
                         'pending' => 'Pending',
                         'cancel' => 'Cancel',
                         'booking' => 'Booking',
-                        default => ucfirst($state),  // For other status values, capitalize the first letter
+                        default => ucfirst($state),
+                    })
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        'pending' => 'warning',
+                        'cancel' => 'danger',
+                        'booking' => 'success',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('tanggal_bayar')

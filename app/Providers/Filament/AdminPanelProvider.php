@@ -31,6 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->favicon(asset('assets/images/icons/logo.svg'))
             ->login()
+            ->authGuard('web')
+            ->authPasswordBroker('users')
             ->profile(isSimple: false)
             ->databaseTransactions()
             ->unsavedChangesAlerts()

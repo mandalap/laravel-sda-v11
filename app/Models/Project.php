@@ -238,6 +238,16 @@ class Project extends Model
         return $size->implode(', ');
     }
 
+    public function getProductCountAttribute(): int
+    {
+        return $this->products()->count();
+    }
+
+    public function getAvailableProductCountAttribute(): int
+    {
+        return $this->products()->where('status', 'Tersedia')->count();
+    }
+
     public function projectPhotos()
     {
         return $this->hasMany(ProjectPhoto::class);
