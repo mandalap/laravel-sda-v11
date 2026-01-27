@@ -220,19 +220,18 @@ class RegisterController extends Controller
             if ($member === null) {
                 Alert::toast('Opss....!, Nomor tidak ditemukan atau belum terdaftar. Silahkan cek kembali.', 'error')->autoClose(10000)->timerProgressBar();
                 return redirect()->route('lupapassword');
-            } else {
-                $item = Member::where('telepon', $request->telepon)->firstOrFail();
-                $rd = random_int(10000, 99999);
-
-                $item->password = Hash::make($rd);
-                $item->recovery_code = $rd;
-                $item->save();
-
-                SendWhatsAppResetPassword::dispatch($member);
-
-                Alert::toast('Password berhasil diubah, silahkan cek WhatsApp kamu', 'success')->autoClose(10000)->timerProgressBar();
-                return redirect()->route('login');
             }
+
+            $rd = random_int(10000, 99999);
+
+            $member->password = Hash::make($rd);
+            $member->recovery_code = $rd;
+            $member->save();
+
+            SendWhatsAppResetPassword::dispatch($member);
+
+            Alert::toast('Password berhasil diubah, silahkan cek WhatsApp kamu', 'success')->autoClose(10000)->timerProgressBar();
+            return redirect()->route('login');
         } catch (\Exception $e) {
             Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
             return back()->withInput();
