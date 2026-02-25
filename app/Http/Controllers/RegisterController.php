@@ -28,9 +28,6 @@ class RegisterController extends Controller
 
     public function login(Request $request)
     {
-        \Illuminate\Support\Facades\Log::info('Auth status: ', ['member_auth' => Auth::guard('member')->check()]);
-
-        // Regenerate session jika ada indikasi baru logout
         if ($request->session()->has('just_logged_out')) {
             $request->session()->forget('just_logged_out');
             return view('pages.register.login');
@@ -45,21 +42,17 @@ class RegisterController extends Controller
 
     public function loginStore(Request $request): RedirectResponse
     {
-        // Validasi di luar try-catch
         $request->validate([
             'telepon' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
         try {
-            // Coba login
             if (Auth::guard('member')->attempt($request->only('telepon', 'password'), $request->boolean('remember'))) {
                 $request->session()->regenerate();
 
-                // Ambil user yang sedang login
                 $user = Auth::guard('member')->user();
 
-                // Cek apakah user memiliki role "member"
                 if (!$user->hasRole('member')) {
                     Auth::guard('member')->logout();
                     Alert::toast('Akun Anda tidak memiliki akses.', 'error')
@@ -71,8 +64,6 @@ class RegisterController extends Controller
                 return redirect()->intended(RouteServiceProvider::HOME);
             }
 
-            // Login gagal (nomor tidak terdaftar atau password salah)
-            // Error hanya ditampilkan di field telepon untuk keamanan
             return back()
                 ->withInput($request->only('telepon'))
                 ->withErrors(['telepon' => 'Nomor WhatsApp atau password Anda salah.']);
@@ -94,25 +85,19 @@ class RegisterController extends Controller
         ]);
     }
 
-
-    /**
-     * Tampilkan form registrasi dengan referral dari slug
-     */
     public function daftarWithReff($slug)
     {
-        // Cari agency berdasarkan slug
         $agency = Agency::where('slug', strtolower($slug))
             ->where('status', 'active')
             ->first();
 
         if (!$agency) {
-            // Jika slug tidak valid, redirect ke form registrasi biasa
             return redirect()->route('daftar')
                 ->with('error', 'Link referral tidak valid atau sudah tidak aktif.');
         }
 
         return view('pages.register.daftar', [
-            'referral_code' => $agency->agency_code, // Gunakan agency_code untuk form
+            'referral_code' => $agency->agency_code,
             'agency_name' => $agency->nama,
             'is_referral' => true,
             'referral_link' => $slug
@@ -121,7 +106,6 @@ class RegisterController extends Controller
 
     public function storeRegister(Request $request)
     {
-        // Validasi input data (diluar try-catch agar Laravel handle otomatis)
         $request->validate([
             'sapaan' => ['required', 'in:Pak,Bu,Bang,Kak'],
             'nama' => ['required', 'string', 'max:255'],
@@ -140,13 +124,10 @@ class RegisterController extends Controller
         ]);
 
         try {
-            // Mulai transaksi
             DB::beginTransaction();
 
-            // Generate recovery code dan password sementara
             $rd = random_int(10000, 99999);
 
-            // Buat member baru
             $member = Member::create([
                 'sapaan' => $request->sapaan,
                 'nama' => $request->nama,
@@ -155,32 +136,21 @@ class RegisterController extends Controller
                 'recovery_code' => $rd,
             ]);
 
-            // Menambahkan role konsumen
             $memberRole = Role::where('name', 'member')->first();
             $member->addRole($memberRole);
 
-            // Proses referral jika ada
             if ($request->filled('referral_code')) {
                 $agency = Agency::whereRaw('BINARY agency_code = ?', [$request->referral_code])
                     ->where('status', 'active')
                     ->first();
 
                 if ($agency) {
-                    // Buat record affiliate
                     Affiliate::create([
                         'member_id' => $member->id,
                         'agency_id' => $agency->id,
                         'joined_at' => now(),
                     ]);
-
-                    // Log untuk tracking
-                    Log::info('New affiliate member registered', [
-                        'member_id' => $member->id,
-                        'agency_id' => $agency->id,
-                        'referral_code' => $request->referral_code,
-                    ]);
                 } else {
-                    // Jika referral code tidak valid
                     DB::rollBack();
                     Alert::toast('Kode referral tidak valid atau tidak aktif.', 'error')
                         ->autoClose(10000)
@@ -188,17 +158,13 @@ class RegisterController extends Controller
                     return redirect()->back()->withInput();
                 }
             }
-
-            // Commit transaksi
             DB::commit();
 
-            // Dispatch job untuk mengirim pesan WhatsApp
             SendWhatsAppDaftar::dispatch($member);
 
             $message = 'Akun Anda berhasil dibuat. Silahkan cek WhatsApp untuk melihat password Anda.';
             return redirect()->route('login')->with('success', $message);
         } catch (\Exception $e) {
-            // Rollback jika terjadi kesalahan lain
             DB::rollBack();
 
             Log::error('Registration error: ' . $e->getMessage());
@@ -207,12 +173,38 @@ class RegisterController extends Controller
         }
     }
 
-    public function lupapassword()
+    public function lupaPassword()
     {
         return view('pages.register.lupa-password');
     }
 
-    public function resetpassword(Request $request)
+    // public function resetpassword(Request $request)
+    // {
+    //     try {
+    //         $member = Member::where('telepon', $request->telepon)->first();
+
+    //         if ($member === null) {
+    //             Alert::toast('Opss....!, Nomor tidak ditemukan atau belum terdaftar. Silahkan cek kembali.', 'error')->autoClose(10000)->timerProgressBar();
+    //             return redirect()->route('lupapassword');
+    //         }
+
+    //         $rd = random_int(10000, 99999);
+
+    //         $member->password = Hash::make($rd);
+    //         $member->recovery_code = $rd;
+    //         $member->save();
+
+    //         SendWhatsAppResetPassword::dispatch($member);
+
+    //         Alert::toast('Password berhasil diubah, silahkan cek WhatsApp kamu', 'success')->autoClose(10000)->timerProgressBar();
+    //         return redirect()->route('login');
+    //     } catch (\Exception $e) {
+    //         Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
+    //         return back()->withInput();
+    //     }
+    // }
+
+    public function resetPassword(Request $request)
     {
         try {
             $member = Member::where('telepon', $request->telepon)->first();
@@ -222,15 +214,16 @@ class RegisterController extends Controller
                 return redirect()->route('lupapassword');
             }
 
+            $defaultPassword = '12345';
             $rd = random_int(10000, 99999);
 
-            $member->password = Hash::make($rd);
+            $member->password = Hash::make($defaultPassword);
             $member->recovery_code = $rd;
             $member->save();
 
             SendWhatsAppResetPassword::dispatch($member);
 
-            Alert::toast('Password berhasil diubah, silahkan cek WhatsApp kamu', 'success')->autoClose(10000)->timerProgressBar();
+            Alert::toast('Password berhasil diubah menjadi default, silahkan cek WhatsApp kamu', 'success')->autoClose(10000)->timerProgressBar();
             return redirect()->route('login');
         } catch (\Exception $e) {
             Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
