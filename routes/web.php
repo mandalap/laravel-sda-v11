@@ -37,7 +37,7 @@ Route::middleware('guest')->group(function () {
 
     // Password
     Route::get('/lupa-password', [RegisterController::class, 'lupaPassword'])->name('lupapassword');
-    Route::post('/reset-password', [RegisterController::class, 'resetpassword'])->name('resetpassword');
+    Route::post('/reset-password', [RegisterController::class, 'resetPassword'])->name('resetpassword');
 });
 
 // ============================================
