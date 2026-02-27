@@ -1,4 +1,4 @@
-<div x-data="propertyList" class="flex flex-col min-h-screen">
+<div x-data="propertyList" class="flex flex-col">
 
     {{-- Search + Filter Bar --}}
     <div class="flex sticky top-0 z-10 gap-4 items-center px-5 w-full">
