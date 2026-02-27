@@ -29,7 +29,6 @@
         </a>
     </div>
 
-    {{-- Promo Banner --}}
     @if ($promoBanners->isNotEmpty())
         <section id="Promo" class="flex relative flex-col gap-3 mt-[20px]">
             <div>
@@ -53,12 +52,11 @@
             </div>
         </section>
     @endif
-    {{-- End Promo Banner --}}
 
     <div id="Feature" class="px-[20px] mt-[18px] relative z-10">
         <div class="bg-white p-4 rounded-2xl border border-custom-gray-40 overflow-hidden grid grid-cols-4 gap-x-3 gap-y-4">
             @forelse ($kategories as $kategori)
-                <a href="{{ route('kategori', $kategori->slug) }}">
+                <a href="{{ route('properti.index', $kategori->slug) }}">
                     <div class="flex flex-col items-center gap-1">
                         <div class="w-9 h-9 flex shrink-0">
                             <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt="icon">
@@ -106,7 +104,6 @@
         </div>
     </div>
 
-    {{-- Popular --}}
     <section id="Popular" class="flex flex-col mt-5 gap-3">
         <div class="flex justify-between items-center px-5">
             <h2 class="text-base font-semibold text-custom-gray-100">Properti Populer</h2>
@@ -188,9 +185,7 @@
             </div>
         </div>
     </section>
-    {{-- End Popular --}}
 
-    {{-- Lokasi Project --}}
     <section id="Cities" class="flex flex-col p-5 gap-3 ">
         <div class="flex justify-between items-center">
             <h2 class="text-base font-semibold text-custom-gray-100">Pilihan Lokasi</h2>
@@ -226,9 +221,7 @@
             @endforelse
         </div>
     </section>
-    {{-- End Lokasi Project --}}
 
-    {{-- Terbaik --}}
     <section id="Best" class="flex flex-col gap-4">
         <div class="flex justify-between items-center px-5">
             <h2 class="text-base font-semibold text-custom-gray-100">Kavling Terbaik</h2>
@@ -309,9 +302,7 @@
             @endforelse
         </div>
     </section>
-    {{-- End: Terbaik --}}
 
-    {{-- Testimoni Banner --}}
     @if ($testimoniBanners->isNotEmpty())
         <section id="Testimonials" class="flex relative z-10 flex-col gap-3 mt-[20px]">
             <div>
@@ -329,17 +320,14 @@
                                 </div>
                             @endforeach
                         </div>
-                        <!-- Pagination -->
                         <div class="swiper-pagination"></div>
                     </div>
                 </div>
             </div>
         </section>
     @endif
-    {{-- End Testimoni Banner --}}
 
-    {{-- Rekomendasi --}}
-    <section id="Rekomendasi" class="flex flex-col mt-5 gap-3">
+    <section id="Rekomendasi" class="flex flex-col gap-4 mt-5">
         <div class="flex justify-between items-center px-5">
             <h2 class="text-base font-semibold text-custom-gray-100">Hunian Rekomendasi</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'rekomendasi')->first())
@@ -353,111 +341,26 @@
                 </a>
             @endif
         </div>
-        <div class="overflow-x-hidden gap-4 w-full swiper">
-            <div class="swiper-wrapper">
-                @forelse ($hunianRekomendasi as $hunianRekomendasi)
-                    <div class="swiper-slide !w-fit">
-                        <a href="{{ route('detailproject', [$hunianRekomendasi->jenis->slug, $hunianRekomendasi->kategori->slug, $hunianRekomendasi->slug]) }}"
-                            class="card">
-                            <div
-                                class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
-                                <div class="relative">
-                                    <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
-                                        <img src="{{ asset('storage/' . $hunianRekomendasi->thumbnail) }}"
-                                            class="object-cover w-full h-full"
-                                            alt="{{ $hunianRekomendasi->jenis->jenis }} {{ $hunianRekomendasi->kategori->kategori }} {{ $hunianRekomendasi->nama_project }} di {{ $hunianRekomendasi->alamat_project }} - {{ $hunianRekomendasi->lokasi->regency->name }}">
-                                        <x-project-availability-badge :project="$hunianRekomendasi" />
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <h3 class="text-sm font-medium text-custom-gray-100">
-                                        {{ $hunianRekomendasi->nama_project }}</h3>
-                                    <p class="text-xs text-custom-gray-70">
-                                        {{ \Illuminate\Support\Str::limit($hunianRekomendasi->alamat_project, 35) }}</p>
-                                </div>
-
-                                <hr class="border-custom-gray-30">
-
-                                <div class="flex flex-col gap-1.5">
-                                    <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/location2.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-custom-gray-70">
-                                            {{ $hunianRekomendasi->lokasi->regency->name }}</p>
-                                    </div>
-                                    <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/category.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-custom-gray-70">
-                                            {{ $hunianRekomendasi->kategori->kategori }}</p>
-                                    </div>
-                                    <div class="flex items-center gap-[6px]">
-                                        <img src="{{ asset('assets/images/icons/layer.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-custom-gray-70">
-                                            Tersisa
-                                            {{ $hunianRekomendasi->project_product->where('status', 'Tersedia')->count() }}
-                                            Unit
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <hr class="border-custom-gray-30">
-
-                                <div class="flex">
-                                    <div class="flex items-center">
-                                        <div>
-                                            {!! $hunianRekomendasi->getPriceDisplay() !!}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                @empty
-                    <div class="flex justify-between items-center px-5">
-                        <h2 class="text-sm">Properti belum tersedia</h2>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </section>
-    {{-- End: Rekomendasi --}}
-
-    {{-- Terbaru --}}
-    <section id="Terbaru" class="flex flex-col gap-4 mt-5">
-        <div class="flex justify-between items-center px-5">
-            <h2 class="text-base font-semibold text-custom-gray-100">Properti Terbaru</h2>
-            @if ($terbaruKelompok = $kelompoks->where('slug', 'terbaru')->first())
-                <a
-                    href="{{ route('lihatsemua', ['propertiType' => $terbaruKelompok->slug, 'propertiKategori' => 'all', 'filter' => 'none']) }}">
-                    <div class="flex gap-1 items-center">
-                        <span class="text-sm text-primary">Lihat Semua</span>
-                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                            alt="icon">
-                    </div>
-                </a>
-            @endif
-        </div>
         <div class="flex flex-col gap-3 px-5">
-            @forelse ($listingTerbaru as $listingTerbaru)
-                <a href="{{ route('detailproject', [$listingTerbaru->jenis->slug, $listingTerbaru->kategori->slug, $listingTerbaru->slug]) }}"
+            @forelse ($hunianRekomendasi as $hunianRekomendasi)
+                <a href="{{ route('detailproject', [$hunianRekomendasi->jenis->slug, $hunianRekomendasi->kategori->slug, $hunianRekomendasi->slug]) }}"
                     class="card">
                     <div
                         class="flex flex-row gap-[10px] rounded-2xl border border-custom-gray-40 p-3 bg-white hover:border-primary transition-all duration-300 items-center">
                         <div
                             class="relative w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
-                            <img src="{{ asset('storage/' . $listingTerbaru->thumbnail) }}"
-                                class="w-full h-full object-contain" alt="{{ $listingTerbaru->nama_project }}">
-                            <x-project-availability-badge :project="$listingTerbaru" />
+                            <img src="{{ asset('storage/' . $hunianRekomendasi->thumbnail) }}"
+                                class="w-full h-full object-contain" alt="{{ $hunianRekomendasi->nama_project }}">
+                            <x-project-availability-badge :project="$hunianRekomendasi" />
                         </div>
 
                         <div class="flex flex-col gap-1 flex-1 min-h-0">
                             <div class="flex flex-col gap-1">
                                 <h3 class="text-sm font-medium text-custom-gray-100 line-clamp-2">
-                                    {{ $listingTerbaru->nama_project }}
+                                    {{ $hunianRekomendasi->nama_project }}
                                 </h3>
-                                <p class="text-xs text-custom-gray-70 line-clamp-1">{{ $listingTerbaru->alamat_project }}
+                                <p class="text-xs text-custom-gray-70 line-clamp-1">
+                                    {{ $hunianRekomendasi->alamat_project }}
                                 </p>
                             </div>
 
@@ -468,21 +371,22 @@
                                     <img src="{{ asset('assets/images/icons/location2.png') }}"
                                         class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
                                     <p class="text-xs text-custom-gray-70 truncate">
-                                        {{ $listingTerbaru->lokasi->regency->name }}
+                                        {{ $hunianRekomendasi->lokasi->regency->name }}
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/category.png') }}"
                                         class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
                                     <p class="text-xs text-custom-gray-70 truncate">
-                                        {{ $listingTerbaru->kategori->kategori }}</p>
+                                        {{ $hunianRekomendasi->kategori->kategori }}</p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/layer.png') }}"
                                         class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         Tersisa
-                                        {{ $listingTerbaru->project_product->where('status', 'Tersedia')->count() }} Unit
+                                        {{ $hunianRekomendasi->project_product->where('status', 'Tersedia')->count() }}
+                                        Unit
                                     </p>
                                 </div>
                             </div>
@@ -491,7 +395,7 @@
 
                             <div class="flex items-center">
                                 <p class="text-sm font-semibold text-primary">
-                                    {!! $listingTerbaru->getPriceDisplay() !!}
+                                    {!! $hunianRekomendasi->getPriceDisplay() !!}
                                 </p>
                             </div>
                         </div>
@@ -505,7 +409,6 @@
         </div>
     </section>
 
-    {{-- Counter --}}
     <div class="counter-wrapper mt-5">
         <section id="Counter" class="flex flex-cols p-5 gap-3 justify-between bg-gray-100">
             <article class="flex flex-col items-center">
@@ -565,19 +468,15 @@
             </article>
         </section>
     </div>
-    {{-- End: Counter --}}
 
-    {{-- Partner Kerjasama --}}
     <div class="counter-wrapper mt-5">
         <section id="PartnerKerjasama" class="flex flex-col gap-3 p-4 bg-primary">
-            <!-- Bagian Judul -->
             <div class="flex justify-center w-full">
                 <p class="text-center text-custom-gray-10 text-base font-semibold">
                     Partner Kerjasama Kami
                 </p>
             </div>
 
-            <!-- Bagian Slider Partner -->
             <div class="partner-swiper-container overflow-hidden w-full">
                 <div class="partner-swiper">
                     <div class="swiper-wrapper">
@@ -621,7 +520,6 @@
                 </div>
         </section>
     </div>
-    {{-- End: Partner Kerjasama --}}
 
 
     @include('includes.footer')
