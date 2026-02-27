@@ -435,7 +435,7 @@
                             data-target="{{ $products }}">0</span>
                         <span class="text-secondary text-base font-bold">+</span>
                     </div>
-                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Produk</span>
+                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Unit</span>
                 </h2>
             </article>
 
