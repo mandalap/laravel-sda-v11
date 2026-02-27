@@ -421,7 +421,7 @@
                             data-target="{{ $properties }}">0</span>
                         <span class="text-secondary text-base font-bold">+</span>
                     </div>
-                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Proyek</span>
+                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Properti</span>
                 </h2>
             </article>
 
@@ -435,7 +435,7 @@
                             data-target="{{ $products }}">0</span>
                         <span class="text-secondary text-base font-bold">+</span>
                     </div>
-                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Properti</span>
+                    <span class="inline-flex font-medium text-sm text-custom-gray-100">Produk</span>
                 </h2>
             </article>
 
