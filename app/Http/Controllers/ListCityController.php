@@ -11,43 +11,6 @@ use Illuminate\Support\Facades\Schema;
 
 class ListCityController extends Controller
 {
-    public function kategori($slug)
-    {
-        $kategori = Kategori::where('slug', $slug)->firstOrFail();
-        $totalcities = Lokasi::count();
-
-        $cities = Lokasi::with([
-            'regency',
-            'province',
-            'project' => function ($query) use ($kategori) {
-                $query->approvedAndVisible()
-                    ->where('kategori_id', $kategori->id);
-            },
-            'project.project_product' => function ($query) {
-                $query->where('status', 'Tersedia');
-            }
-        ])
-            ->whereHas('project', function ($query) use ($kategori) {
-                $query->approvedAndVisible()
-                    ->where('kategori_id', $kategori->id);
-            })
-            ->get()
-            ->map(function ($city) {
-                // Hitung jumlah project per kategori (sudah terfilter dari eager loading)
-                $city->jumlah_project = $city->project->count();
-
-                // Hitung jumlah produk tersedia
-                $city->jumlah_produk_tersedia = $city->project->sum(function ($project) {
-                    return $project->project_product->count();
-                });
-
-                return $city;
-            })
-            ->sortByDesc('jumlah_produk_tersedia');
-
-        return view("pages.city.kategori", compact('cities', 'totalcities', 'kategori'));
-    }
-
     public function lihatproperti(Request $request)
     {
         $propertyKategori = $request->query('propertiKategori');
@@ -270,10 +233,6 @@ class ListCityController extends Controller
         $query = Project::where('kelompok_id', $kelompok->id)
             ->where('projects.is_approved', 'Diterima')
             ->where('projects.status', 'tampil');
-        // ->withCount(['products as tersedia_count' => function ($query) {
-        //     $query->where('status', 'Tersedia');
-        // }])
-        // ->orderBy('tersedia_count', 'desc');
 
         // Apply kategori filter jika kategori selain 'all'
         if ($kat != 'all') {

@@ -16,8 +16,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Affiliate\ProfileController as AffiliateProfileController;
 use App\Http\Controllers\Affiliate\TransactionController;
 use App\Http\Controllers\Developer\RegisterController as DeveloperRegisterController;
-use App\Http\Controllers\Developer\DashboardController as DeveloperDashboardController;
-use App\Http\Controllers\Developer\ProfileController as DeveloperProfileController;
+use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\SajadaBerdasiController;
 use App\Http\Controllers\SajadaJakselController;
 
@@ -161,12 +160,14 @@ Route::middleware('auth:member')->group(function () {
 });
 
 // ============================================
-// DYNAMIC ROUTES - HARUS PALING BAWAH (CATCH-ALL)
+// Properti
 // ============================================
 
-// List City dengan Kategori - 2 segments
-Route::get('/jual/{slug}', [ListCityController::class, 'kategori'])->name('kategori');
-// Route::get('/{kategori}/{cities}', [ListCityController::class, 'detailkategori'])->name('detailkategori');
+// List Properti 
+Route::get('/properti/{kategoriSlug}', [PropertyController::class, 'index'])->name('properti.index');
+
+// All Kategori
+Route::get('/properti', [PropertyController::class, 'index'])->name('properti.all');
 
 // Details - 3 segments - PALING BAWAH
 Route::get('/{jenis}/{kategori}/{project}', [DetailsController::class, 'index'])->name('detailproject');
