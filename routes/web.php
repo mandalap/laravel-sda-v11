@@ -127,11 +127,8 @@ Route::get('/sajada-berdasi', [SajadaBerdasiController::class, 'index'])->name('
 // Sajada Jaksel
 Route::get('/sajada-jaksel', [SajadaJakselController::class, 'index'])->name('sajada.jaksel');
 
-// List City - SPECIFIC ROUTES
-Route::get('/lihat-semua', [ListCityController::class, 'lihat'])->name('lihatsemua');
-Route::get('/lihat-properti', [ListCityController::class, 'lihatproperti'])->name('lihatproperti');
+// Lihat Kota
 Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');
-Route::get('/properti', [ListCityController::class, 'properti'])->name('properti');
 
 // ============================================
 // AUTHENTICATED MEMBER ROUTES
@@ -163,11 +160,8 @@ Route::middleware('auth:member')->group(function () {
 // Properti
 // ============================================
 
-// List Properti 
-Route::get('/properti/{kategoriSlug}', [PropertyController::class, 'index'])->name('properti.index');
-
-// All Kategori
-Route::get('/properti', [PropertyController::class, 'index'])->name('properti.all');
+// List Properti
+Route::get('/properti', [PropertyController::class, 'index'])->name('properti.index');
 
 // Details - 3 segments - PALING BAWAH
 Route::get('/{jenis}/{kategori}/{project}', [DetailsController::class, 'index'])->name('detailproject');

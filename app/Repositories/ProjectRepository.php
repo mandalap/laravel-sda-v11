@@ -4,17 +4,17 @@ namespace App\Repositories;
 
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ProjectRepository
 {
     public function buildQuery(
-        ?int $kategoriId = null,
-        array $lokasiIds = [],
-        ?string $urutan = null,
-        ?string $cari = null
+        ?int    $kategoriId  = null,
+        array   $kategoriIds = [],
+        array   $lokasiIds   = [],
+        ?int    $kelompokId  = null,
+        ?string $urutan      = null,
+        ?string $cari        = null
     ): Builder {
         $query = Project::query()
             ->with([
@@ -23,16 +23,25 @@ class ProjectRepository
                 'project_product',
             ])
             ->withCount([
-                'project_product as available_count' => fn($q) => $q->where('status', 'Tersedia')
+                'project_product as available_count' => fn($q) =>
+                $q->where('status', 'Tersedia')
             ])
             ->approvedAndVisible();
 
-        if ($kategoriId) {
+        // Kategori dari filter modal (prioritas utama)
+        if (!empty($kategoriIds)) {
+            $query->whereIn('kategori_id', $kategoriIds);
+        } elseif ($kategoriId) {
+            // Fallback ke kategoriId tunggal dari route (tidak dipakai lagi tapi tetap ada sebagai fallback)
             $query->where('kategori_id', $kategoriId);
         }
 
         if (!empty($lokasiIds)) {
             $query->whereIn('lokasi_id', $lokasiIds);
+        }
+
+        if ($kelompokId) {
+            $query->where('kelompok_id', $kelompokId);
         }
 
         if ($cari) {
@@ -54,7 +63,6 @@ class ProjectRepository
             'terlama'  => $query->orderBy('projects.id', 'asc'),
             'termahal' => $this->applySortByPrice($query, 'desc'),
             'termurah' => $this->applySortByPrice($query, 'asc'),
-            // Default: produk tersedia terbanyak duluan, sold out paling bawah
             default    => $query
                 ->withCount([
                     'project_product as tersedia_count' => fn($q) =>
@@ -70,11 +78,11 @@ class ProjectRepository
 
         $query->leftJoin(
             DB::raw("(
-            SELECT {$aggregate}(harga) as harga_sort, project_id
-            FROM products
-            WHERE deleted_at IS NULL
-            GROUP BY project_id
-        ) as price_summary"),
+                SELECT {$aggregate}(harga) as harga_sort, project_id
+                FROM products
+                WHERE deleted_at IS NULL
+                GROUP BY project_id
+            ) as price_summary"),
             'projects.id',
             '=',
             'price_summary.project_id'
@@ -87,10 +95,5 @@ class ProjectRepository
     public function getCount(Builder $query): int
     {
         return (clone $query)->reorder()->count();
-    }
-
-    public function getPaginated(Builder $query, int $perPage = 10): LengthAwarePaginator
-    {
-        return $query->paginate($perPage);
     }
 }
