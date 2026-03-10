@@ -89,15 +89,58 @@
                         @foreach ($uraianOptions as $option)
                             <button wire:click="setUrutan('{{ $option['value'] }}')"
                                 class="px-4 py-2 rounded-full text-xs font-medium border transition-all
-                                       {{ $urutan === $option['value']
-                                           ? 'bg-primary text-white border-primary'
-                                           : 'bg-white text-custom-gray-80 border-gray-200 hover:border-primary hover:text-primary' }}">
+                       {{ $urutan === $option['value']
+                           ? 'bg-primary text-white border-primary'
+                           : 'bg-white text-custom-gray-80 border-gray-200 hover:border-primary hover:text-primary' }}">
                                 {{ $option['label'] }}
                             </button>
                         @endforeach
                     </div>
                 </div>
+
                 <hr class="border-gray-100">
+
+                @if ($kelompokOptions && $kelompokOptions->isNotEmpty())
+                    <div class="flex flex-col gap-3">
+                        <p class="text-xs font-semibold text-custom-gray-70 uppercase tracking-wide">Kelompok</p>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($kelompokOptions as $kelompok)
+                                <button wire:click="setKelompok({{ $kelompok->id }})"
+                                    class="px-4 py-2 rounded-full text-xs font-medium border transition-all
+                           {{ $selectedKelompokId === $kelompok->id
+                               ? 'bg-primary text-white border-primary'
+                               : 'bg-white text-custom-gray-80 border-gray-200 hover:border-primary hover:text-primary' }}">
+                                    {{ $kelompok->kelompok }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+                    <hr class="border-gray-100">
+                @endif
+
+                @if ($kategoriOptions && $kategoriOptions->isNotEmpty())
+                    <div class="flex flex-col gap-3">
+                        <p class="text-xs font-semibold text-custom-gray-70 uppercase tracking-wide">
+                            Kategori
+                            @if (!empty($selectedKategoriIds))
+                                <span class="ml-1 text-primary">({{ count($selectedKategoriIds) }} dipilih)</span>
+                            @endif
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($kategoriOptions as $kat)
+                                <button wire:click="toggleKategori({{ $kat->id }})"
+                                    class="px-4 py-2 rounded-full text-xs font-medium border transition-all
+                           {{ in_array($kat->id, $selectedKategoriIds)
+                               ? 'bg-primary text-white border-primary'
+                               : 'bg-white text-custom-gray-80 border-gray-200 hover:border-primary hover:text-primary' }}">
+                                    {{ $kat->kategori }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+                    <hr class="border-gray-100">
+                @endif
+
                 <div class="flex flex-col gap-3">
                     <p class="text-xs font-semibold text-custom-gray-70 uppercase tracking-wide">
                         Lokasi
@@ -109,9 +152,9 @@
                         @forelse($lokasiOptions as $lokasi)
                             <button wire:click="toggleLokasi({{ $lokasi->id }})"
                                 class="px-4 py-2 rounded-full text-xs font-medium border transition-all
-                                       {{ in_array($lokasi->id, $selectedLokasiIds)
-                                           ? 'bg-primary text-white border-primary'
-                                           : 'bg-white text-custom-gray-80 border-gray-200 hover:border-primary hover:text-primary' }}">
+                       {{ in_array($lokasi->id, $selectedLokasiIds)
+                           ? 'bg-primary text-white border-primary'
+                           : 'bg-white text-custom-gray-80 border-gray-200 hover:border-primary hover:text-primary' }}">
                                 {{ $lokasi->regency->name }}
                             </button>
                         @empty
@@ -119,15 +162,14 @@
                         @endforelse
                     </div>
                 </div>
+
                 <div class="flex gap-3 mt-2">
                     <button wire:click="resetFilter"
-                        class="flex-1 py-3 rounded-full border border-gray-200 text-sm font-medium
-                               text-custom-gray-80 hover:border-red-400 hover:text-red-500 transition-colors">
+                        class="flex-1 py-3 rounded-full border border-gray-200 text-sm font-medium text-custom-gray-80 hover:border-red-400 hover:text-red-500 transition-colors">
                         Reset
                     </button>
                     <button wire:click="closeModal"
-                        class="flex-1 py-3 rounded-full bg-primary text-white text-sm font-semibold
-                               hover:bg-primary/90 transition-colors">
+                        class="flex-1 py-3 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">
                         Terapkan Filter
                     </button>
                 </div>
