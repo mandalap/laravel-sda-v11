@@ -163,11 +163,14 @@ class Project extends Model
     public function formatShortPrice($price, $withRp = true)
     {
         if ($price >= 1000000000) {
-            $formatted = number_format($price / 1000000000, 0, ',', '.') . ' Miliar';
+            $value = $price / 1000000000;
+            $formatted = number_format($value, $value == floor($value) ? 0 : 1, ',', '.') . ' Miliar';
         } elseif ($price >= 1000000) {
-            $formatted = number_format($price / 1000000, 0, ',', '.') . ' Juta';
+            $value = $price / 1000000;
+            $formatted = number_format($value, $value == floor($value) ? 0 : 1, ',', '.') . ' Juta';
         } elseif ($price >= 1000) {
-            $formatted = number_format($price / 1000, 0, ',', '.') . ' Ribu';
+            $value = $price / 1000;
+            $formatted = number_format($value, $value == floor($value) ? 0 : 1, ',', '.') . ' Ribu';
         } else {
             $formatted = number_format($price, 0, ',', '.');
         }

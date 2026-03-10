@@ -45,7 +45,6 @@ class BerandaController extends Controller
             })->take(5)
             ->get();
 
-        // Query untuk project tanah kavling dengan kelompok terbaik
         $tanahKavlingTerbaik = Project::approvedAndVisible()
             ->whereHas('project_product', function ($query) {
                 $query->where('status', 'Tersedia');
@@ -56,7 +55,7 @@ class BerandaController extends Controller
             ->whereHas('kelompok', function ($query) {
                 $query->where('kelompok', 'LIKE', '%terbaik%');
             })
-            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer']) // Eager loading
+            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer'])
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
@@ -71,7 +70,7 @@ class BerandaController extends Controller
             ->whereHas('kelompok', function ($query) {
                 $query->where('kelompok', 'LIKE', '%rekomendasi%');
             })
-            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer']) // Eager loading
+            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer'])
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();

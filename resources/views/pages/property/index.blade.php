@@ -1,23 +1,17 @@
 @extends('layouts.app')
 
 @section('title')
-    Daftar Properti
+    {{ $pageTitle }}
 @endsection
-
-@push('prepend-style')
-@endpush
-@push('addon-style')
-@endpush
 
 @section('content')
-    <x-navigation-route :title="$kategori ? $kategori->kategori : 'Semua Properti'" :backRoute="route('beranda')" :showBackground="true" textColor="text-custom-gray-10" />
+    <x-navigation-route :title="$pageTitle" :backRoute="route('beranda')" :showBackground="true" textColor="text-custom-gray-10" />
 
     @livewire('property-list', [
-        'kategori' => $kategori,
         'lokasiOptions' => $lokasiOptions,
+        'kategoriOptions' => $kategoriOptions,
+        'kelompokOptions' => $kelompokOptions,
+        'preKategoriIds' => $preKategoriIds ?? [],
+        'preKelompokId' => $preKelompokId ?? null,
     ])
 @endsection
-
-
-@push('addon-script')
-@endpush

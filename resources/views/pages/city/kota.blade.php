@@ -14,7 +14,7 @@
 
     <section id="Store-list" class="flex flex-col gap-4 px-5">
         @forelse ($cities as $city)
-            <a href="{{ route('lihatproperti', ['propertiKategori' => 'all', 'propertiCity' => $city->slug, 'filter' => 'none']) }}"
+            <a href="{{ route('properti.index', ['propertiCity' => $city->slug, 'propertiKategori' => 'all']) }}"
                 class="card z-10">
                 <div
                     class="flex flex-col gap-2 rounded-2xl ring-1 ring-custom-gray-40 pb-4 bg-custom-gray-10 overflow-hidden transition-all duration-300 hover:ring-1 hover:ring-primary">
