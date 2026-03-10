@@ -56,7 +56,7 @@
     <div id="Feature" class="px-[20px] mt-[18px] relative z-10">
         <div class="bg-white p-4 rounded-2xl border border-custom-gray-40 overflow-hidden grid grid-cols-4 gap-x-3 gap-y-4">
             @forelse ($kategories as $kategori)
-                <a href="{{ route('properti.index', $kategori->slug) }}">
+                <a href="{{ route('properti.index', ['propertiKategori' => $kategori->slug]) }}">
                     <div class="flex flex-col items-center gap-1">
                         <div class="w-9 h-9 flex shrink-0">
                             <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt="icon">
@@ -108,8 +108,7 @@
         <div class="flex justify-between items-center px-5">
             <h2 class="text-base font-semibold text-custom-gray-100">Properti Populer</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'popular')->first())
-                <a
-                    href="{{ route('lihatsemua', ['propertiType' => $popularKelompok->slug, 'propertiKategori' => 'all', 'filter' => 'none']) }}">
+                <a href="{{ route('properti.index', ['propertiType' => 'popular', 'propertiKategori' => 'all']) }}">
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
@@ -200,7 +199,7 @@
 
         <div class="grid grid-cols-2 gap-5">
             @forelse ($cities as $city)
-                <a href="{{ route('lihatproperti', ['propertiKategori' => 'all', 'propertiCity' => $city->slug, 'filter' => 'none']) }}"
+                <a href="{{ route('properti.index', ['propertiCity' => $city->slug, 'propertiKategori' => 'all']) }}"
                     class="card">
                     <div
                         class="flex items-center rounded-lg p-2 gap-1.5 bg-white border border-custom-gray-40 overflow-hidden transition-all duration-300 hover:border-primary">
@@ -227,7 +226,7 @@
             <h2 class="text-base font-semibold text-custom-gray-100">Kavling Terbaik</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'terbaik')->first())
                 <a
-                    href="{{ route('lihatsemua', ['propertiType' => $popularKelompok->slug, 'propertiKategori' => 'tanah-kavling', 'filter' => 'none']) }}">
+                    href="{{ route('properti.index', ['propertiType' => 'terbaik', 'propertiKategori' => 'tanah-kavling']) }}">
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
@@ -331,8 +330,7 @@
         <div class="flex justify-between items-center px-5">
             <h2 class="text-base font-semibold text-custom-gray-100">Hunian Rekomendasi</h2>
             @if ($popularKelompok = $kelompoks->where('slug', 'rekomendasi')->first())
-                <a
-                    href="{{ route('lihatsemua', ['propertiType' => $popularKelompok->slug, 'propertiKategori' => 'rumah', 'filter' => 'none']) }}">
+                <a href="{{ route('properti.index', ['propertiType' => 'rekomendasi', 'propertiKategori' => 'rumah']) }}">
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
