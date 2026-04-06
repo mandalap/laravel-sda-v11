@@ -144,7 +144,8 @@ class DetailsController extends Controller
                 'projectFasilitas',
                 'projectPhotos',
                 'projectsBrosur',
-                'products'
+                'products',
+                'siteplan'
             ])->where("slug", $project)->firstOrFail();
 
             // Ambil relasi yang sudah di-load

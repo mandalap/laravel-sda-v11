@@ -65,6 +65,11 @@ class Project extends Model
         return $this->belongsTo(Kelompok::class);
     }
 
+    public function siteplan()
+    {
+        return $this->hasOne(ProjectSiteplan::class);
+    }
+
     protected static function booted()
     {
         static::creating(function ($project) {
