@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
 
-class Project extends Model
+class Project extends Model implements Viewable
 {
     //
     use SoftDeletes;
+    use InteractsWithViews;
     protected $table = "projects";
 
     protected $fillable = [
