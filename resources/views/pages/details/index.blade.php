@@ -149,7 +149,6 @@
         </a>
     </div>
 
-    <!-- Gallery -->
     <div id="Gallery" class="swiper-gallery w-full relative gallery-container">
         <div class="swiper-wrapper">
             @forelse ($photos as $index => $photo)
@@ -163,7 +162,6 @@
                     </div>
                 </div>
             @empty
-                <!-- Placeholder -->
                 <div class="swiper-slide">
                     <div class="relative w-full h-full bg-gray-200 flex items-center justify-center">
                         <p class="text-gray-500">Tidak ada foto</p>
@@ -172,12 +170,10 @@
             @endforelse
         </div>
 
-        <!-- Pagination -->
         <div class="swiper-pagination"></div>
 
     </div>
 
-    <!-- Main content -->
     <main id="Details" class="relative flex flex-col p-5 gap-5 bg-custom-gray-10 z-30 ">
         <div id="Title" class="flex flex-col gap-0.5">
             <p class="text-xs font-bold text-primary">
@@ -241,7 +237,6 @@
                         </div>
                     </a>
                 @else
-                    {{-- Fallback jika WhatsApp config tidak ada --}}
                     <div class="p-2 rounded-xl flex items-center gap-2 opacity-50 cursor-not-allowed">
                         <div class="w-9 h-9 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
                             <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="chat">
@@ -269,7 +264,7 @@
                     </button>
                 </div>
 
-                @if (View::exists('pages.detailkavling.' . $project->slug))
+                @if ($project->siteplan || View::exists('pages.detailkavling.' . $project->slug))
                     <div class="swiper-slide !w-fit">
                         <button class="tab-link rounded-[50px] py-2 px-4 text-sm font-semibold transition-all duration-300"
                             data-target-tab="#Siteplan-Tab">
@@ -301,7 +296,6 @@
             </div>
         </div>
 
-        <!-- Fasilitas Tab -->
         <div id="TabsContent" class="">
             <div id="Fasilitas-Tab" class="flex flex-col gap-5 tab-content">
                 <div class="flex flex-col gap-4">
@@ -331,18 +325,21 @@
                 </div>
             </div>
 
-            @if (View::exists('pages.detailkavling.' . $project->slug))
-                <div id="Siteplan-Tab" class="hidden flex-col gap-5 tab-content">
-                    <div class="flex flex-col gap-4">
-                        <div
-                            class="testi-card flex flex-col rounded-[22px] border border-custom-gray-40 p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
+            <div id="Siteplan-Tab" class="hidden flex-col gap-5 tab-content">
+                <div class="flex flex-col gap-4">
+                    <div
+                        class="testi-card flex flex-col rounded-[22px] border border-custom-gray-40 p-4 gap-3 bg-white hover:border-[#d40065] transition-all duration-300">
+
+                        @if ($project->siteplan)
+                            @livewire('siteplan-viewer', ['project' => $project])
+                        @elseif (View::exists('pages.detailkavling.' . $project->slug))
                             @include('pages.detailkavling.' . $project->slug)
-                        </div>
+                        @endif
+
                     </div>
                 </div>
-            @endif
+            </div>
 
-            <!-- Brosur Tab -->
             <div id="Brosur-Tab" class="hidden flex-col gap-5 tab-content">
                 <div class="flex flex-col gap-4">
                     <div
@@ -352,7 +349,6 @@
                                 @foreach ($brosurs as $index => $brosur)
                                     <div
                                         class="group relative overflow-hidden rounded-[22px] border border-custom-gray-40 bg-white hover:border-[#d40065] transition-all duration-300 shadow-sm hover:shadow-lg">
-                                        <!-- Container gambar -->
                                         <div class="relative aspect-[3/4] overflow-hidden">
                                             <img src="{{ asset('storage' . $brosur->photo) }}"
                                                 alt="Brosur {{ $index + 1 }}"
@@ -378,7 +374,6 @@
                 </div>
             </div>
 
-            <!-- Video Tab -->
             <div id="Video-Tab" class="hidden flex-col gap-5 tab-content">
                 <div class="flex flex-col gap-4">
                     <div
@@ -389,10 +384,8 @@
                             @endphp
 
                             <div class="video-wrapper w-full">
-                                <!-- Cek URL YouTube -->
                                 @if (strpos($url, 'youtube.com') !== false || strpos($url, 'youtu.be') !== false)
                                     @php
-                                        // Extract YouTube video ID properly
                                         if (strpos($url, 'youtu.be') !== false) {
                                             $video_id = basename(parse_url($url, PHP_URL_PATH));
                                         } elseif (
@@ -422,11 +415,8 @@
                                             <p class="text-gray-600">Video YouTube tidak dapat dimuat</p>
                                         </div>
                                     @endif
-
-                                    <!-- Cek URL Instagram -->
                                 @elseif (strpos($url, 'instagram.com') !== false)
                                     @php
-                                        // take video Instagram ID form URL - improved regex
                                         if (preg_match('/(?:reel|p)\/([A-Za-z0-9_-]+)/', $url, $matches)) {
                                             $instagram_id = $matches[1];
                                         } else {
@@ -447,11 +437,8 @@
                                             <p class="text-gray-600">Video Instagram tidak dapat ditemukan</p>
                                         </div>
                                     @endif
-
-                                    <!-- Cek URL TikTok -->
                                 @elseif (strpos($url, 'tiktok.com') !== false)
                                     @php
-                                        // Ambil ID video TikTok dari URL
                                         if (preg_match('/video\/(\d+)/', $url, $matches)) {
                                             $tiktok_id = $matches[1];
                                         } else {
@@ -509,14 +496,12 @@
 
             </div>
 
-            <!-- Maps Tab -->
             <div id="Map-Tab" class="hidden flex-col gap-5 tab-content">
                 <div class="flex flex-col gap-4">
                     <div
                         class="bonus-card flex flex-col rounded-[22px] border border-custom-gray-40 p-4 gap-3 bg-white hover:border-primary transition-all duration-300">
                         @if ($project->latlang)
                             @php
-                                // Parse latitude and longitude
                                 $coordinates = explode(',', $project->latlang);
                                 $lat = trim($coordinates[0] ?? '');
                                 $lng = trim($coordinates[1] ?? '');
@@ -524,7 +509,6 @@
 
                             @if ($lat && $lng)
                                 <div class="maps-wrapper w-full">
-                                    <!-- Google Maps Embed -->
                                     <div class="relative w-full h-96 rounded-lg overflow-hidden">
                                         <iframe
                                             src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1000!2d{{ $lng }}!3d{{ $lat }}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f15.1!5e0!3m2!1sen!2sid!4v{{ time() }}!5m2!1sen!2sid"
@@ -533,7 +517,6 @@
                                         </iframe>
                                     </div>
 
-                                    <!-- Map Actions -->
                                     <div
                                         class="mt-4 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center">
                                         <div>
@@ -593,7 +576,6 @@
         <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-50">
             <div
                 class="flex items-center justify-between rounded-full h-[61px] pl-6 pr-2 bg-gradient-to-t from-secondary to-primary">
-                <!-- Info Section -->
                 <div class="flex flex-col justify-center">
                     <span class="text-xs text-custom-gray-10 leading-none mb-1">Biaya Booking</span>
                     <p class="font-bold text-lg text-custom-gray-10 leading-none">
@@ -601,7 +583,6 @@
                     </p>
                 </div>
 
-                <!-- Button Section (Same height as container) -->
                 @if ($project->project_product->where('status', 'Tersedia')->count() == '0')
                     <a href="#"
                         class="flex items-center justify-center shrink-0 rounded-full w-[110px] h-[45px] p-3 text-sm bg-primary-secondary font-bold text-primary hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap">
@@ -616,14 +597,12 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('addon-script')
     <script src="{{ asset('vendor/fancybox/fancybox.umd.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Swiper Gallery
             var swiperProjectGallery = new Swiper('.swiper-gallery', {
                 direction: 'horizontal',
                 spaceBetween: 0,
@@ -681,19 +660,13 @@
             });
         });
 
-        // JavaScript untuk menangani tab switching
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all tab buttons
             const tabLinks = document.querySelectorAll('.tab-link');
             const tabContents = document.querySelectorAll('.tab-content');
 
-            // Add click event listener to each button
             tabLinks.forEach(button => {
                 button.addEventListener('click', () => {
-                    // Get the target tab id from the data attribute
                     const targetTab = button.getAttribute('data-target-tab');
-
-                    // Remove active state from all buttons
                     tabLinks.forEach(btn => {
                         btn.classList.remove('active', '!bg-primary',
                             '!text-custom-gray-10', 'bg-primary', 'text-custom-gray-10',
@@ -701,17 +674,14 @@
                         btn.classList.add('bg-primary-secondary', 'text-primary');
                     });
 
-                    // Add active state to the clicked button
                     button.classList.add('active', 'bg-primary', 'text-custom-gray-10');
                     button.classList.remove('bg-primary-secondary', 'text-primary');
 
-                    // Hide all tab contents
                     tabContents.forEach(content => {
                         content.classList.add('hidden');
                         content.classList.remove('flex', 'flex-col');
                     });
 
-                    // Show the target tab content
                     const targetContent = document.querySelector(targetTab);
                     if (targetContent) {
                         targetContent.classList.remove('hidden');
@@ -720,7 +690,6 @@
                 });
             });
 
-            // Set default active tab (tab pertama)
             if (tabLinks.length > 0) {
                 tabLinks[0].click();
             }
