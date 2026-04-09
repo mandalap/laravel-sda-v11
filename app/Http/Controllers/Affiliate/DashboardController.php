@@ -19,11 +19,19 @@ class DashboardController extends Controller
         $member = Auth::guard('member')->user();
         $agency = $member->agency;
 
-        $total_komisi = FeeTransaction::whereHas('bookingTransaction', function ($query) use ($agency) {
+        $komisi_selesai = FeeTransaction::whereHas('bookingTransaction', function ($query) use ($agency) {
             $query->where('agency_id', $agency->id);
         })
-            ->where('status', '!=', 'tersedia')
+            ->where('status', 'diambil')
             ->sum('jumlah_fee');
+
+        $komisi_tersedia = FeeTransaction::whereHas('bookingTransaction', function ($query) use ($agency) {
+            $query->where('agency_id', $agency->id);
+        })
+            ->where('status', 'tersedia')
+            ->sum('jumlah_fee');
+
+        $total_komisi = $komisi_selesai + $komisi_tersedia;
 
         $totalMember = Affiliate::with('member')
             ->whereHas('agency', function ($query) use ($agency) {
@@ -101,6 +109,8 @@ class DashboardController extends Controller
         return view('pages.affiliate.dashboard.index', [
             'agency' => $agency,
             'total_komisi' => $total_komisi,
+            'komisi_selesai' => $komisi_selesai,
+            'komisi_tersedia' => $komisi_tersedia,
             'totalMember' => $totalMember,
             'recentActivities' => $activities,
         ]);
