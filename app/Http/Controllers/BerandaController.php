@@ -39,10 +39,16 @@ class BerandaController extends Controller
         $kota = Lokasi::all();
         $kategories = Kategori::orderBy('kategori', 'desc')->get();
 
-        $projects = Project::approvedAndVisible()
+        $projectPopuler = Project::approvedAndVisible()
             ->whereHas('project_product', function ($query) {
                 $query->where('status', 'Tersedia');
-            })->take(5)
+            })
+            ->whereHas('kelompok', function ($query) {
+                $query->where('slug', 'popular');
+            })
+            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer', 'jenis'])
+            ->orderBy('created_at', 'desc')
+            ->take(4)
             ->get();
 
         $tanahKavlingTerbaik = Project::approvedAndVisible()
@@ -76,15 +82,9 @@ class BerandaController extends Controller
             ->get();
 
         $listingTerbaru = Project::approvedAndVisible()
-            ->whereHas('project_product', function ($query) {
-                $query->where('status', 'Tersedia');
-            })
-            ->whereHas('kelompok', function ($query) {
-                $query->where('kelompok', 'LIKE', '%terbaru%');
-            })
-            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer']) // Eager loading
+            ->with(['kategori', 'kelompok', 'project_product', 'lokasi', 'developer', 'jenis'])
             ->orderBy('created_at', 'desc')
-            ->take(5)
+            ->take(10)
             ->get();
 
         $cities = Lokasi::withApprovedProjects()
@@ -100,7 +100,6 @@ class BerandaController extends Controller
 
 
         return view('pages.beranda.index', compact(
-            'projects',
             'cities',
             'kategories',
             'kelompoks',
@@ -111,6 +110,7 @@ class BerandaController extends Controller
             'members',
             'testimoniBanners',
             'promoBanners',
+            'projectPopuler',
             'tanahKavlingTerbaik',
             'hunianRekomendasi',
             'listingTerbaru'
