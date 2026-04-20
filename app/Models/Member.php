@@ -55,6 +55,11 @@ class Member extends Authenticatable implements LaratrustUser, FilamentUser, Has
         return $this->hasMany(BookingTransaction::class);
     }
 
+    public function purchaseTransactions()
+    {
+        return $this->hasMany(PurchaseTransaction::class);
+    }
+
     public function agency()
     {
         return $this->hasOne(Agency::class);

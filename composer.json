@@ -11,6 +11,7 @@
         "cyrildewit/eloquent-viewable": "^7.1",
         "filament/filament": "^3.3",
         "flowframe/laravel-trend": "^0.4.0",
+        "hugomyb/filament-media-action": "^3.1",
         "joshembling/image-optimizer": "^1.5",
         "laravel-lang/lang": "^15.20",
         "laravel/framework": "^11.0",

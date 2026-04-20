@@ -136,4 +136,9 @@ class BookingTransaction extends Model
     {
         return $this->hasOne(FeeTransaction::class);
     }
+
+    public function purchaseTransaction()
+    {
+        return $this->hasOne(PurchaseTransaction::class);
+    }
 }
