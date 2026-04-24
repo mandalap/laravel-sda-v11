@@ -36,6 +36,7 @@ module.exports = {
                 "warning-main": "#F4DE1A",
                 "warning-secondary": "#FDF8D1",
                 "warning-pressed": "#928510",
+                "warning-border": "#FBF2A3",
                 "danger-secondary": "#F7C3CD",
                 "danger-pressed": "#8D001A",
                 "danger-focus": "#FFD9E0",

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('agency_id')->nullable()->constrained('agency');
 
             $table->string('invoice')->unique();
-            $table->date('tanggal_pembelian');
+            $table->dateTime('tanggal_pembelian');
             $table->decimal('harga_tanah', 15, 2);
             $table->decimal('diskon', 15, 2)->nullable();
             $table->decimal('total_harga', 15, 2);
@@ -27,16 +27,19 @@ return new class extends Migration
             $table->decimal('jumlah_dp', 15, 2)->default(0);
 
             $table->enum('metode_pembayaran', ['cash', 'kredit', 'cash_tempo']);
-            $table->integer('jumlah_bulan_cicilan')->nullable();
+            $table->unsignedInteger('jumlah_bulan_cicilan')->nullable();
             $table->decimal('harga_cicilan_perbulan', 15, 2)->nullable();
 
             $table->string('pjb')->nullable();
-            $table->date('tanggal_lunas')->nullable();
+            $table->dateTime('tanggal_lunas')->nullable();
             $table->enum('status', ['active', 'paid', 'cancelled'])->default('active');
 
             $table->text('catatan')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index('member_id');
+            $table->index('status');
         });
     }
 

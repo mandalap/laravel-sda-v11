@@ -16,17 +16,17 @@ return new class extends Migration
             $table->foreignId('purchase_transaction_id')->constrained('purchase_transactions');
 
             $table->string('no_transaksi')->unique();
-            $table->integer('no_cicilan');
+            $table->unsignedInteger('no_cicilan');
             $table->date('tanggal_cicilan');
             $table->decimal('harga_cicilan', 15, 2);
 
             $table->enum('metode_pembayaran', ['cash', 'transfer'])->nullable();
             $table->string('bukti_pembayaran')->nullable();
-            $table->timestamp('tanggal_bayar')->nullable();
+            $table->dateTime('tanggal_bayar')->nullable();
 
             $table->string('kwitansi')->nullable();
             $table->foreignId('verified_by')->nullable()->constrained('users');
-            $table->timestamp('verified_at')->nullable();
+            $table->dateTime('verified_at')->nullable();
             $table->text('catatan_admin')->nullable();
 
             $table->enum('status', [
@@ -39,6 +39,9 @@ return new class extends Migration
 
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index(['purchase_transaction_id', 'status']);
+            $table->index('status');
         });
     }
 

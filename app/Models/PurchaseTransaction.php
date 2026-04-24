@@ -35,8 +35,8 @@ class PurchaseTransaction extends Model
     ];
 
     protected $casts = [
-        'tanggal_pembelian'     => 'date',
-        'tanggal_lunas'         => 'date',
+        'tanggal_pembelian'     => 'datetime',
+        'tanggal_lunas'         => 'datetime',
         'harga_tanah'           => 'decimal:2',
         'diskon'                => 'decimal:2',
         'total_harga'           => 'decimal:2',
@@ -132,6 +132,14 @@ class PurchaseTransaction extends Model
             self::STATUS_CANCELLED => 'Batal',
             default                => '-',
         };
+    }
+
+    /**
+     * generate slug invoice pembelian
+     */
+    public function getSlugAttribute(): string
+    {
+        return rtrim(strtr(base64_encode($this->invoice), '+/', '-_'), '=');
     }
 
     // -------------------------------------------------------------------------

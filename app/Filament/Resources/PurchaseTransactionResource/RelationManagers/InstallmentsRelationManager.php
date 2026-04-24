@@ -210,6 +210,7 @@ class InstallmentsRelationManager extends RelationManager
                                 PurchaseInstallment::METODE_CASH => 'Cash',
                                 PurchaseInstallment::METODE_TRANSFER => 'Transfer',
                             ])
+                            ->default($record->metode_pembayaran)
                             ->visible(fn(Get $get) => $get('aksi') === 'approve');
 
                         $fields[] = FileUpload::make('kwitansi')
@@ -248,7 +249,7 @@ class InstallmentsRelationManager extends RelationManager
                                 if (! $available) {
                                     $record->purchaseTransaction->update([
                                         'status'        => 'paid',
-                                        'tanggal_lunas' => now()->toDateString(),
+                                        'tanggal_lunas' => now(),
                                     ]);
                                 }
 

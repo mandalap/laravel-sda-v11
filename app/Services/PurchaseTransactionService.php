@@ -69,7 +69,7 @@ class PurchaseTransactionService
                 if ($purchase->installments()->where('status', PurchaseInstallment::STATUS_PAID)->doesntExist()) {
                     $purchase->update([
                         'status'        => PurchaseTransaction::STATUS_PAID,
-                        'tanggal_lunas' => now()->toDateString(),
+                        'tanggal_lunas' => now(),
                     ]);
                 }
 
@@ -109,7 +109,7 @@ class PurchaseTransactionService
             'product_id'             => $booking->product_id,
             'agency_id'              => $booking->agency_id,
             'invoice'                => PurchaseTransaction::generateInvoice(),
-            'tanggal_pembelian'      => now()->toDateString(),
+            'tanggal_pembelian'      => now(),
             'harga_tanah'            => $hargaTanah,
             'harga_booking'          => $hargaBooking,
             'diskon'                 => $diskon,
@@ -122,7 +122,7 @@ class PurchaseTransactionService
             'status'                 => $isCash
                 ? PurchaseTransaction::STATUS_PAID
                 : PurchaseTransaction::STATUS_ACTIVE,
-            'tanggal_lunas'          => $isCash ? now()->toDateString() : null,
+            'tanggal_lunas'          => $isCash ? now() : null,
             'catatan'                => $data['catatan'] ?? null,
         ]);
     }
@@ -176,7 +176,7 @@ class PurchaseTransactionService
 
             $purchase->update([
                 'status'        => PurchaseTransaction::STATUS_PAID,
-                'tanggal_lunas' => now()->toDateString(),
+                'tanggal_lunas' => now(),
             ]);
             return;
         }

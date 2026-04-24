@@ -19,6 +19,9 @@ use App\Http\Controllers\Developer\RegisterController as DeveloperRegisterContro
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\SajadaBerdasiController;
 use App\Http\Controllers\SajadaJakselController;
+use App\Livewire\PayInstallment;
+use App\Livewire\PurchaseDetail;
+use App\Livewire\PurchaseHistory;
 
 // ============================================
 // GUEST ROUTES
@@ -146,6 +149,11 @@ Route::middleware('auth:member')->group(function () {
     // ====== RIWAYAT BOOKING - SPESIFIK ROUTES ======
     Route::get('/riwayat-booking', [ProfilController::class, 'riwayatBooking'])->name('riwayat.booking');
     Route::get('/riwayat-booking/{invoice}', [ProfilController::class, 'detailBooking'])->name('riwayat.booking.detail');
+
+    // ====== RIWAYAT PEMBELIAN - SPESIFIK ROUTES ======
+    Route::get('/riwayat-pembelian', PurchaseHistory::class)->name('purchase.history');
+    Route::get('/pembelian/{slug}', PurchaseDetail::class)->name('purchase.detail');
+    Route::get('/pembelian/{slug}/cicilan/{installmentId}/bayar', PayInstallment::class)->name('pay-installment');
 
     // ====== BOOKING INFO & CHECKOUT ======
     Route::get('/{jenis}/{kategori}/{project}/info', [DetailsController::class, 'custinfo'])->name('custinfo');
