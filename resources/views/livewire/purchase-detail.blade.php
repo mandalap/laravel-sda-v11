@@ -17,19 +17,7 @@
                         alt="invoice">
                     <span class="text-sm font-medium text-custom-gray-80">{{ $purchase->invoice }}</span>
                 </div>
-                @if ($purchase->status === 'active')
-                    <div
-                        class="inline-flex py-1 px-2 rounded bg-warning-secondary text-sm font-medium text-warning-pressed">
-                        Aktif</div>
-                @elseif ($purchase->status === 'paid')
-                    <div
-                        class="inline-flex py-1 px-2 rounded bg-success-secondary text-sm font-medium text-success-pressed">
-                        Lunas</div>
-                @elseif ($purchase->status === 'cancelled')
-                    <div
-                        class="inline-flex py-1 px-2 rounded bg-danger-secondary text-sm font-medium text-danger-pressed">
-                        Batal</div>
-                @endif
+                <x-status-badge status="{{ $purchase->status }}" label="{{ $purchase->status_label }}" />
             </div>
 
             <div class="border-t border-custom-gray-40"></div>
@@ -64,6 +52,13 @@
                 </div>
             </div>
         </div>
+
+        <a href="{{ $purchase->pjb ? asset('storage/' . $purchase->pjb) : '#' }}"
+            target="{{ $purchase->pjb ? '_blank' : '_self' }}"
+            class="flex items-center justify-center w-full h-9 rounded px-4 text-sm font-medium text-white transition-colors duration-200
+        {{ $purchase->pjb ? 'bg-primary hover:bg-black' : 'bg-primary/40 cursor-not-allowed pointer-events-none' }}">
+            {{ $purchase->pjb ? 'Lihat Dokumen PJB' : 'PJB Belum Tersedia' }}
+        </a>
 
         <div class="border-t border-custom-gray-40"></div>
 
@@ -148,7 +143,7 @@
                     @foreach ($purchase->installments as $cicilan)
                         <button wire:click="selectCicilan({{ $cicilan->id }})"
                             class="w-full h-12 flex items-center justify-center rounded-md border-2 text-sm font-semibold transition-all duration-200
-                    {{ $cicilan->status === 'paid' ? 'bg-success-secondary text-success-pressed' : '' }}
+                    {{ $cicilan->status === 'paid' ? 'bg-success-focus text-success-pressed' : '' }}
                     {{ $cicilan->status === 'pending' ? 'bg-warning-border text-warning-pressed' : '' }}
                     {{ in_array($cicilan->status, ['rejected', 'cancelled']) ? 'bg-danger-secondary text-danger-pressed' : '' }}
                     {{ $cicilan->status === 'unpaid' ? 'border-custom-gray-40 bg-custom-gray-10 text-custom-gray-70' : '' }}
@@ -158,14 +153,14 @@
                     @endforeach
                 </div>
 
-                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-custom-gray-70">
+                <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-1 text-xs text-custom-gray-70">
                     <span class="flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-sm bg-success-secondary border border-success-pressed"></span>
+                        <span class="w-2.5 h-2.5 rounded-sm bg-success-focus border border-success-pressed"></span>
                         Lunas
                     </span>
                     <span class="flex items-center gap-1.5">
                         <span class="w-2.5 h-2.5 rounded-sm bg-warning-border border border-warning-pressed"></span>
-                        Pending
+                        Menunggu Verifikasi
                     </span>
                     <span class="flex items-center gap-1.5">
                         <span class="w-2.5 h-2.5 rounded-sm bg-custom-gray-10 border border-custom-gray-40"></span>
@@ -187,7 +182,7 @@
                                 class="inline-flex py-1 px-2 rounded text-xs font-semibold
                     {{ $selectedCicilan->status === 'unpaid' ? 'bg-custom-gray-20 text-custom-gray-70' : '' }}
                     {{ $selectedCicilan->status === 'pending' ? 'bg-warning-border text-warning-pressed' : '' }}
-                    {{ $selectedCicilan->status === 'paid' ? 'bg-success-secondary text-success-pressed' : '' }}
+                    {{ $selectedCicilan->status === 'paid' ? 'bg-success-focus text-success-pressed' : '' }}
                     {{ in_array($selectedCicilan->status, ['rejected', 'cancelled']) ? 'bg-danger-secondary text-danger-pressed' : '' }}">
                                 {{ $selectedCicilan->status_label }}
                             </span>

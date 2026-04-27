@@ -43,6 +43,7 @@ module.exports = {
                 "success-main": "#1C7D44",
                 "success-secondary": "#EAFAF1",
                 "success-pressed": "#1C7D44",
+                "success-border": "#ACECC7",
                 "success-focus": "#D5F6E3",
                 "info-focus": "#CCD3F8",
             },

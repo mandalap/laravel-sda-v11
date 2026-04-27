@@ -114,7 +114,7 @@ class InstallmentsRelationManager extends RelationManager
 
                 IconColumn::make('bukti_pembayaran')
                     ->label('Bukti Pembayaran')
-                    ->icon(fn($state) => $state ? 'heroicon-o-photo' : 'heroicon-o-x-mark')
+                    ->icon(fn($state) => $state ? 'heroicon-o-document-text' : 'heroicon-o-x-mark')
                     ->color(fn($state) => $state ? 'info' : 'gray')
                     ->action(
                         MediaAction::make('lihat_bukti')

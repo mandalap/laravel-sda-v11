@@ -24,23 +24,7 @@
                                         class="w-5 h-5 flex-shrink-0" alt="invoice">
                                     <span class="text-sm font-medium text-custom-gray-80">{{ $item->invoice }}</span>
                                 </div>
-
-                                @if ($item->status === 'active')
-                                    <div
-                                        class="inline-flex py-1 px-2 rounded bg-warning-secondary text-sm font-medium text-warning-pressed">
-                                        Aktif
-                                    </div>
-                                @elseif ($item->status === 'paid')
-                                    <div
-                                        class="inline-flex py-1 px-2 rounded bg-success-secondary text-sm font-medium text-success-pressed">
-                                        Lunas
-                                    </div>
-                                @elseif ($item->status === 'cancelled')
-                                    <div
-                                        class="inline-flex py-1 px-2 rounded bg-danger-secondary text-sm font-medium text-danger-pressed">
-                                        Batal
-                                    </div>
-                                @endif
+                                <x-status-badge status="{{ $item->status }}" label="{{ $item->status_label }}" />
                             </div>
 
                             <div class="border-t border-custom-gray-40"></div>

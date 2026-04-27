@@ -26,6 +26,33 @@ class ViewPurchaseTransaction extends ViewRecord
             Actions\EditAction::make()
                 ->label('Edit'),
 
+            Actions\Action::make('upload_pjb')
+                ->label('Upload PJB')
+                ->icon('heroicon-o-document-arrow-up')
+                ->color('info')
+                ->visible(fn() => ! $this->record->pjb)
+                ->form([
+                    FileUpload::make('pjb')
+                        ->label('File PJB (PDF)')
+                        ->disk('public')
+                        ->directory('pjb')
+                        ->acceptedFileTypes(['application/pdf'])
+                        ->maxSize(5120)
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    $this->record->update([
+                        'pjb' => $data['pjb'],
+                    ]);
+
+                    Notification::make()
+                        ->title('PJB berhasil diupload.')
+                        ->success()
+                        ->send();
+
+                    $this->refreshFormData(['pjb']);
+                }),
+                
             Actions\Action::make('batalkan')
                 ->label('Batalkan Pembelian')
                 ->icon('heroicon-o-x-circle')
