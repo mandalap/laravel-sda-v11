@@ -161,18 +161,9 @@ class DetailsController extends Controller
             abort(404, 'Halaman tidak ditemukan');
         }
     }
+
     public function contactAdmin($jenis, $kategori, $project)
     {
-        // Cek apakah user sudah login
-        if (!Auth::check()) {
-            Alert::toast('Anda harus login terlebih dahulu untuk menghubungi admin', 'info')
-                ->autoClose(5000)
-                ->timerProgressBar();
-
-            return redirect()
-                ->route('login')
-                ->with('redirect_after_login', url()->previous());
-        }
         try {
             $project = Project::where('slug', $project)->firstOrFail();
             $whatsappConfig = WhatsappApiToken::where('status', 'active')->first();

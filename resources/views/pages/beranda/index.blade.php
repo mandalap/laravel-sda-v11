@@ -104,41 +104,38 @@
         </div>
     </div>
 
-    <section id="Popular" class="flex flex-col mt-5 gap-3">
+    <section id="Terbaru" class="flex flex-col mt-5 gap-3">
         <div class="flex justify-between items-center px-5">
-            <h2 class="text-base font-semibold text-custom-gray-100">Properti Populer</h2>
-            @if ($popularKelompok = $kelompoks->where('slug', 'popular')->first())
-                <a href="{{ route('properti.index', ['propertiType' => 'popular', 'propertiKategori' => 'all']) }}">
-                    <div class="flex gap-1 items-center">
-                        <span class="text-sm text-primary">Lihat Semua</span>
-                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                            alt="icon">
-                    </div>
-                </a>
-            @endif
+            <h2 class="text-base font-semibold text-custom-gray-100">Properti Terbaru</h2>
+            <a href="{{ route('properti.index', ['propertiKategori' => 'all', 'urutan' => 'terbaru']) }}">
+                <div class="flex gap-1 items-center">
+                    <span class="text-sm text-primary">Lihat Semua</span>
+                    <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
+                        alt="icon">
+                </div>
+            </a>
         </div>
 
-        <div class="overflow-x-hidden gap-4 w-full swiper">
+        <div class="overflow-x-hidden gap-4 w-full swiper swiper-terbaru">
             <div class="swiper-wrapper">
-                @forelse ($projects->filter(fn($project) => $project->kelompok->slug === 'popular') as $popular)
+                @forelse ($listingTerbaru as $terbaru)
                     <div class="swiper-slide !w-fit">
-                        <a href="{{ route('detailproject', [$popular->jenis->slug, $popular->kategori->slug, $popular->slug]) }}"
+                        <a href="{{ route('detailproject', [$terbaru->jenis->slug, $terbaru->kategori->slug, $terbaru->slug]) }}"
                             class="card">
                             <div
                                 class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
                                 <div class="relative">
                                     <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
-                                        <img src="{{ asset('storage/' . $popular->thumbnail) }}"
-                                            class="object-cover w-full h-full"
-                                            alt="{{ $popular->jenis->jenis }} {{ $popular->kategori->kategori }} {{ $popular->nama_project }} di {{ $popular->alamat_project }} - {{ $popular->lokasi->regency->name }}">
+                                        <img src="{{ asset('storage/' . $terbaru->thumbnail) }}"
+                                            class="object-cover w-full h-full" alt="{{ $terbaru->nama_project }}">
                                     </div>
-                                    <x-project-availability-badge :project="$popular" />
+                                    <x-project-availability-badge :project="$terbaru" />
                                 </div>
 
                                 <div class="flex flex-col gap-1">
-                                    <h3 class="text-sm font-medium text-custom-gray-100">{{ $popular->nama_project }}</h3>
+                                    <h3 class="text-sm font-medium text-custom-gray-100">{{ $terbaru->nama_project }}</h3>
                                     <p class="text-xs text-custom-gray-70">
-                                        {{ \Illuminate\Support\Str::limit($popular->alamat_project, 35) }}</p>
+                                        {{ \Illuminate\Support\Str::limit($terbaru->alamat_project, 35) }}</p>
                                 </div>
 
                                 <hr class="border-custom-gray-30">
@@ -147,18 +144,18 @@
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/location2.png') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-custom-gray-70">{{ $popular->lokasi->regency->name }}</p>
+                                        <p class="text-xs text-custom-gray-70">{{ $terbaru->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/category.png') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
-                                        <p class="text-xs text-custom-gray-70">{{ $popular->kategori->kategori }}</p>
+                                        <p class="text-xs text-custom-gray-70">{{ $terbaru->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/layer.png') }}"
                                             class="flex w-5 h-5 shrink-0" alt="icon">
                                         <p class="text-xs text-custom-gray-70">
-                                            Tersisa {{ $popular->project_product->where('status', 'Tersedia')->count() }}
+                                            Tersisa {{ $terbaru->project_product->where('status', 'Tersedia')->count() }}
                                             Unit
                                         </p>
                                     </div>
@@ -168,9 +165,7 @@
 
                                 <div class="flex">
                                     <div class="flex items-center">
-                                        <div>
-                                            {!! $popular->getPriceDisplay() !!}
-                                        </div>
+                                        {!! $terbaru->getPriceDisplay() !!}
                                     </div>
                                 </div>
 
@@ -184,8 +179,7 @@
                                             d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z"
                                             stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <p class="text-xs text-custom-gray-70">
-                                        {{ views($popular)->count() }}x Dilihat</p>
+                                    <p class="text-xs text-custom-gray-70">{{ views($terbaru)->count() }}x Dilihat</p>
                                 </div>
                             </div>
                         </a>
@@ -196,6 +190,68 @@
                     </div>
                 @endforelse
             </div>
+        </div>
+    </section>
+
+    <section id="Popular" class="flex flex-col mt-5 gap-3">
+        <div class="flex justify-between items-center px-5">
+            <h2 class="text-base font-semibold text-custom-gray-100">Properti Populer</h2>
+            @if ($kelompoks->where('slug', 'popular')->first())
+                <a href="{{ route('properti.index', ['propertiType' => 'popular', 'propertiKategori' => 'all']) }}">
+                    <div class="flex gap-1 items-center">
+                        <span class="text-sm text-primary">Lihat Semua</span>
+                        <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
+                            alt="icon">
+                    </div>
+                </a>
+            @endif
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 px-5">
+            @forelse ($projectPopuler as $popular)
+                <a href="{{ route('detailproject', [$popular->jenis->slug, $popular->kategori->slug, $popular->slug]) }}"
+                    class="card">
+                    <div
+                        class="flex flex-col rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300 h-full">
+
+                        <div class="relative">
+                            <div class="flex w-full h-full shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
+                                <img src="{{ asset('storage/' . $popular->thumbnail) }}"
+                                    class="object-cover w-full h-full" alt="{{ $popular->nama_project }}">
+                            </div>
+                            <x-project-availability-badge :project="$popular" />
+                        </div>
+
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xs font-medium text-custom-gray-100 line-clamp-2">{{ $popular->nama_project }}
+                            </h3>
+                            <p class="text-[10px] text-custom-gray-70 line-clamp-1">
+                                {{ \Illuminate\Support\Str::limit($popular->alamat_project, 25) }}</p>
+                        </div>
+
+                        <div class="flex items-center">
+                            {!! $popular->getPriceDisplay(['price_class' => 'text-xs font-semibold text-primary']) !!}
+                        </div>
+
+                        <div class="flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
+                                fill="none">
+                                <path
+                                    d="M0.666748 7.99984C0.666748 7.99984 3.33341 2.6665 8.00008 2.6665C12.6667 2.6665 15.3334 7.99984 15.3334 7.99984C15.3334 7.99984 12.6667 13.3332 8.00008 13.3332C3.33341 13.3332 0.666748 7.99984 0.666748 7.99984Z"
+                                    stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z"
+                                    stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <p class="text-[10px] text-custom-gray-70">{{ views($popular)->count() }}x Dilihat</p>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div class="col-span-2 flex justify-center items-center py-4">
+                    <h2 class="text-sm text-custom-gray-70">Properti belum tersedia</h2>
+                </div>
+            @endforelse
         </div>
     </section>
 

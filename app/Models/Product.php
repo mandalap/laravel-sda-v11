@@ -38,6 +38,11 @@ class Product extends Model
         return $this->hasMany(BookingTransaction::class);
     }
 
+    public function purchaseTransactions()
+    {
+        return $this->hasMany(PurchaseTransaction::class);
+    }
+
     public function successfulBookings()
     {
         return $this->hasMany(BookingTransaction::class)->where('status', 'success');
