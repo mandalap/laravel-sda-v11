@@ -164,6 +164,7 @@ class GoogleController extends Controller
             $member->update([
                 'email'             => null,
                 'email_verified_at' => null,
+                'thumbnail'         => null,
             ]);
         }
 
