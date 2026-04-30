@@ -37,8 +37,14 @@ class ProfilController extends Controller
     public function detail()
     {
         $member = Auth::guard('member')->user();
+
+        $googleProvider = $member->providers()
+            ->where('provider', 'google')
+            ->first();
+
         return view('pages.profile.detail', [
             'member' => $member,
+            'googleProvider' => $googleProvider,
         ]);
     }
 

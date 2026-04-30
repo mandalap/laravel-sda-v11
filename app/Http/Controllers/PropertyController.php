@@ -43,6 +43,10 @@ class PropertyController extends Controller
                 }
             }
 
+            if ($request->query('urutan')) {
+                $cleanParams['urutan'] = $request->query('urutan');
+            }
+
             return redirect()->route('properti.index', $cleanParams);
         }
 

@@ -43,30 +43,33 @@ class RegisterController extends Controller
     public function loginStore(Request $request): RedirectResponse
     {
         $request->validate([
-            'telepon' => ['required', 'string'],
+            'telepon'  => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
         try {
-            if (Auth::guard('member')->attempt($request->only('telepon', 'password'), $request->boolean('remember'))) {
-                $request->session()->regenerate();
+            $credentials = $request->only('telepon', 'password');
+            $remember    = $request->boolean('remember');
 
-                $user = Auth::guard('member')->user();
-
-                if (!$user->hasRole('member')) {
-                    Auth::guard('member')->logout();
-                    Alert::toast('Akun Anda tidak memiliki akses.', 'error')
-                        ->autoClose(10000)
-                        ->timerProgressBar();
-                    return back()->withInput($request->only('telepon'));
-                }
-
-                return redirect()->intended(RouteServiceProvider::HOME);
+            if (! Auth::guard('member')->attempt($credentials, $remember)) {
+                return back()
+                    ->withInput($request->only('telepon'))
+                    ->withErrors(['telepon' => 'Nomor WhatsApp atau password Anda salah.']);
             }
 
-            return back()
-                ->withInput($request->only('telepon'))
-                ->withErrors(['telepon' => 'Nomor WhatsApp atau password Anda salah.']);
+            $request->session()->regenerate();
+
+            $member = Auth::guard('member')->user();
+
+            if (! $member->hasRole('member')) {
+                Auth::guard('member')->logout();
+                Alert::toast('Akun Anda tidak memiliki akses.', 'error')
+                    ->autoClose(10000)
+                    ->timerProgressBar();
+                return back()->withInput($request->only('telepon'));
+            }
+
+            return redirect()->intended(RouteServiceProvider::HOME);
         } catch (\Exception $e) {
             Log::error('Login error: ' . $e->getMessage());
             Alert::toast('Terjadi kesalahan pada sistem.', 'error')
@@ -76,12 +79,25 @@ class RegisterController extends Controller
         }
     }
 
-    public function daftar()
+    public function daftar(Request $request)
     {
+        $googlePending = null;
+
+        if ($request->session()->has('google_pending')) {
+            $data = session('google_pending');
+
+            if (now()->timestamp <= $data['expired_at']) {
+                $googlePending = $data;
+            } else {
+                session()->forget('google_pending');
+            }
+        }
+
         return view('pages.register.daftar', [
-            'referral_code' => null,
-            'agency_name' => null,
-            'is_referral' => false
+            'referral_code'  => null,
+            'agency_name'    => null,
+            'is_referral'    => false,
+            'google_pending' => $googlePending,
         ]);
     }
 
@@ -91,53 +107,94 @@ class RegisterController extends Controller
             ->where('status', 'active')
             ->first();
 
-        if (!$agency) {
+        if (! $agency) {
             return redirect()->route('daftar')
                 ->with('error', 'Link referral tidak valid atau sudah tidak aktif.');
         }
 
         return view('pages.register.daftar', [
-            'referral_code' => $agency->agency_code,
-            'agency_name' => $agency->nama,
-            'is_referral' => true,
-            'referral_link' => $slug
+            'referral_code'  => $agency->agency_code,
+            'agency_name'    => $agency->nama,
+            'is_referral'    => true,
+            'referral_link'  => $slug,
+            'google_pending' => null,
         ]);
     }
 
     public function storeRegister(Request $request)
     {
         $request->validate([
-            'sapaan' => ['required', 'in:Pak,Bu,Bang,Kak'],
-            'nama' => ['required', 'string', 'max:255'],
-            'telepon' => ['required', 'string', 'max:15', 'unique:members,telepon', 'regex:/^08[0-9]{8,13}$/'],
+            'sapaan'        => ['required', 'in:Pak,Bu,Bang,Kak'],
+            'nama'          => ['required', 'string', 'max:255'],
+            'telepon'       => ['required', 'string', 'max:15', 'unique:members,telepon', 'regex:/^08[0-9]{8,13}$/'],
+            'email'         => ['nullable', 'email', 'unique:members,email'],
             'referral_code' => ['nullable', 'string', 'exists:agency,agency_code'],
         ], [
-            'sapaan.required' => 'Sapaan wajib dipilih.',
-            'sapaan.in' => 'Sapaan tidak valid.',
-            'nama.required' => 'Nama wajib diisi.',
-            'nama.max' => 'Nama maksimal 255 karakter.',
-            'telepon.required' => 'Nomor WhatsApp wajib diisi.',
-            'telepon.max' => 'Nomor WhatsApp maksimal 15 digit.',
-            'telepon.unique' => 'Nomor WhatsApp sudah terdaftar.',
-            'telepon.regex' => 'Format nomor WhatsApp tidak valid. Harus diawali 08.',
+            'sapaan.required'      => 'Sapaan wajib dipilih.',
+            'sapaan.in'            => 'Sapaan tidak valid.',
+            'nama.required'        => 'Nama wajib diisi.',
+            'nama.max'             => 'Nama maksimal 255 karakter.',
+            'telepon.required'     => 'Nomor WhatsApp wajib diisi.',
+            'telepon.max'          => 'Nomor WhatsApp maksimal 15 digit.',
+            'telepon.unique'       => 'Nomor WhatsApp sudah terdaftar.',
+            'telepon.regex'        => 'Format nomor WhatsApp tidak valid. Harus diawali 08.',
+            'email.email'          => 'Format email tidak valid.',
+            'email.unique'         => 'Email sudah terdaftar.',
             'referral_code.exists' => 'Kode referral tidak valid.',
         ]);
+
+        // Ambil google_pending dari session jika ada
+        $googlePending = session('google_pending');
+
+        // Jika dari Google, pastikan session belum expired
+        if ($googlePending && now()->timestamp > $googlePending['expired_at']) {
+            session()->forget('google_pending');
+            Alert::toast('Sesi Google sudah habis. Silakan ulangi login Google.', 'warning')
+                ->autoClose(8000)
+                ->timerProgressBar();
+            return redirect()->route('login');
+        }
 
         try {
             DB::beginTransaction();
 
             $rd = random_int(10000, 99999);
 
+            if ($googlePending) {
+                $email           = $googlePending['email'];
+                $emailVerifiedAt = now();
+                $thumbnail       = $googlePending['avatar'] ?? null;
+            } elseif ($request->filled('email')) {
+                $email           = $request->email;
+                $emailVerifiedAt = null;
+                $thumbnail       = null;
+            } else {
+                $email           = null;
+                $emailVerifiedAt = null;
+                $thumbnail       = null;
+            }
+
             $member = Member::create([
-                'sapaan' => $request->sapaan,
-                'nama' => $request->nama,
-                'telepon' => $request->telepon,
-                'password' => Hash::make($rd),
-                'recovery_code' => $rd,
+                'sapaan'            => $request->sapaan,
+                'nama'              => $request->nama,
+                'telepon'           => $request->telepon,
+                'email'             => $email,
+                'email_verified_at' => $emailVerifiedAt,
+                'thumbnail'         => $thumbnail,
+                'password'          => Hash::make($rd),
+                'recovery_code'     => $rd,
             ]);
 
             $memberRole = Role::where('name', 'member')->first();
             $member->addRole($memberRole);
+
+            if ($googlePending) {
+                $member->providers()->create([
+                    'provider'       => 'google',
+                    'provider_id'    => $googlePending['google_id'],
+                    'provider_token' => $googlePending['token'],
+                ]);
+            }
 
             if ($request->filled('referral_code')) {
                 $agency = Agency::whereRaw('BINARY agency_code = ?', [$request->referral_code])
@@ -158,17 +215,29 @@ class RegisterController extends Controller
                     return redirect()->back()->withInput();
                 }
             }
+
             DB::commit();
+
+            session()->forget('google_pending');
 
             SendWhatsAppDaftar::dispatch($member);
 
-            $message = 'Akun Anda berhasil dibuat. Silahkan cek WhatsApp untuk melihat password Anda.';
-            return redirect()->route('login')->with('success', $message);
+            if ($googlePending) {
+                Auth::guard('member')->login($member);
+                Alert::toast('Akun berhasil dibuat dan terhubung dengan Google!', 'success')
+                    ->autoClose(6000)
+                    ->timerProgressBar();
+                return redirect()->route('beranda');
+            }
+
+            return redirect()->route('login')
+                ->with('success', 'Akun Anda berhasil dibuat. Silahkan cek WhatsApp untuk melihat password Anda.');
         } catch (\Exception $e) {
             DB::rollBack();
-
             Log::error('Registration error: ' . $e->getMessage());
-            Alert::toast('Terjadi kesalahan pada sistem.', 'error')->autoClose(10000)->timerProgressBar();
+            Alert::toast('Terjadi kesalahan pada sistem.', 'error')
+                ->autoClose(10000)
+                ->timerProgressBar();
             return redirect()->back()->withInput();
         }
     }

@@ -1,5 +1,6 @@
 @if ($href)
-    <a href="{{ $href }}" {{ $attributes->merge(['class' => $getClasses()]) }}>
+    <a href="{{ $href }}"
+        {{ $attributes->merge(['class' => 'flex items-center justify-center ' . $getClasses()]) }}>
         {{ $slot }}
     </a>
 @else

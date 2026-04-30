@@ -90,7 +90,7 @@ class ProjectResource extends Resource
                                             ->disabled()
                                             ->dehydrated(),
 
-                                        Forms\Components\FileUpload::make('thumbnail')
+                                        FileUpload::make('thumbnail')
                                             ->nullable()
                                             ->image()
                                             ->optimize('webp'),
@@ -112,6 +112,20 @@ class ProjectResource extends Resource
                                         TextInput::make('latlang')
                                             ->label('Lat-Lang Google Maps')
                                             ->nullable(),
+
+                                        FileUpload::make('siteplan.svg_path')
+                                            ->label('File SVG Siteplan')
+                                            ->helperText('Upload file SVG murni (tanpa kode Blade). Pastikan setiap elemen blok memiliki id yang sama dengan code_product di tabel products.')
+                                            ->disk('public')
+                                            ->directory('siteplans')
+                                            ->acceptedFileTypes(['image/svg+xml'])
+                                            ->maxSize(5120)
+                                            ->nullable()
+                                            ->afterStateHydrated(function ($component, $record) {
+                                                if ($record && $record->siteplan) {
+                                                    $component->state([$record->siteplan->svg_path]);
+                                                }
+                                            }),
 
                                         RichEditor::make('deskripsi')
                                             ->label('Deskripsi')

@@ -33,7 +33,6 @@
     <x-navigation-route title="Dashboard" :backRoute="route('profil')" textColor="text-custom-gray-10" :showBackground="true"
         :showAgencyProfile="true" :agencyData="auth()->user()" />
 
-    <!-- Welcome Section -->
     <div class="relative z-10">
         <div class="flex flex-col w-fit px-5">
             <h1 class="font-semibold text-xl text-custom-gray-10">Selamat datang, agen!</h1>
@@ -41,7 +40,6 @@
         </div>
     </div>
 
-    <!-- Stats Cards -->
     <div class="relative z-10 px-5 mt-3">
         <div class="grid grid-cols-2 gap-2 mb-6">
             <div class="stats-card bg-custom-gray-10 p-2 rounded-2xl shadow-lg">
@@ -49,21 +47,21 @@
                     <div class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
                             fill="none" class="w-6 h-6" alt="icon">
-                            <path d="M8 4.5V5.5" stroke="#21725E" stroke-width="1.6" stroke-linecap="round"
+                            <path d="M8 4.5V5.5" stroke="#21725E" stroke-width="1.5" stroke-linecap="round"
                                 stroke-linejoin="round" />
-                            <path d="M8 10.5V11.5" stroke="#21725E" stroke-width="1.6" stroke-linecap="round"
+                            <path d="M8 10.5V11.5" stroke="#21725E" stroke-width="1.5" stroke-linecap="round"
                                 stroke-linejoin="round" />
                             <path
                                 d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
-                                stroke="#21725E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                stroke="#21725E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             <path
                                 d="M6.5 10.5H8.75C9.08152 10.5 9.39946 10.3683 9.63388 10.1339C9.8683 9.89946 10 9.58152 10 9.25C10 8.91848 9.8683 8.60054 9.63388 8.36612C9.39946 8.1317 9.08152 8 8.75 8H7.25C6.91848 8 6.60054 7.8683 6.36612 7.63388C6.1317 7.39946 6 7.08152 6 6.75C6 6.41848 6.1317 6.10054 6.36612 5.86612C6.60054 5.6317 6.91848 5.5 7.25 5.5H9.5"
-                                stroke="#21725E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                stroke="#21725E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm text-custom-gray-90 mb-1">Total Komisi</p>
-                        <p class="font-semibold text-base sm:text-sm text-custom-gray-90 break-words">
+                        <p class="text-xs text-custom-gray-90 mb-1">Total Komisi</p>
+                        <p class="font-semibold text-sm text-custom-gray-90 break-words">
                             Rp{{ number_format($total_komisi, 0, ',', '.') }}
                         </p>
                     </div>
@@ -91,9 +89,52 @@
                         </svg>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm text-custom-gray-90 mb-1">Total Member</p>
-                        <p class="font-semibold text-base sm:text-sm text-custom-gray-90 break-words">
+                        <p class="text-xs text-custom-gray-90 mb-1">Total Member</p>
+                        <p class="font-semibold text-sm text-custom-gray-90 break-words">
                             {{ $totalMember }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-card bg-custom-gray-10 p-2 rounded-2xl shadow-lg">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 bg-warning-secondary rounded-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none">
+                            <path d="M20 6L9 17L4 12" stroke="#928510" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs text-custom-gray-90 mb-1">Sudah Diterima</p>
+                        <p class="font-semibold text-sm text-custom-gray-90 break-words">
+                            Rp{{ number_format($komisi_selesai, 0, ',', '.') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-card bg-custom-gray-10 p-2 rounded-2xl shadow-lg">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 bg-danger-secondary rounded-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M21 5.25H3C2.58579 5.25 2.25 5.58579 2.25 6V18C2.25 18.4142 2.58579 18.75 3 18.75H21C21.4142 18.75 21.75 18.4142 21.75 18V6C21.75 5.58579 21.4142 5.25 21 5.25Z"
+                                stroke="#B00020" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M15.75 15.75H18.75" stroke="#B00020" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M11.25 15.75H12.75" stroke="#B00020" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M2.25 9.08447H21.75" stroke="#B00020" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs text-custom-gray-90 mb-1">Sisa Komisi</p>
+                        <p class="font-semibold text-sm text-custom-gray-90 break-words">
+                            Rp{{ number_format($komisi_tersedia, 0, ',', '.') }}
                         </p>
                     </div>
                 </div>
@@ -101,7 +142,6 @@
         </div>
     </div>
 
-    <!-- Main Features -->
     <section class="px-5 mb-6 flex flex-col gap-3">
         <h3 class="font-semibold text-base text-custom-gray-100">Menu Utama</h3>
         <div class="grid grid-cols-2 gap-3">
@@ -203,7 +243,6 @@
         </div>
     </section>
 
-    <!-- Recent Activity -->
     <section class="px-5 flex flex-col gap-3">
         <h3 class="font-semibold text-base text-custom-gray-100">Aktivitas Terbaru</h3>
         @foreach ($recentActivities as $activity)
@@ -262,9 +301,7 @@
 
 @push('addon-script')
     <script>
-        // Add smooth animations and interactions
         document.addEventListener('DOMContentLoaded', function() {
-            // Add ripple effect to buttons
             const buttons = document.querySelectorAll('.feature-item');
             buttons.forEach(button => {
                 button.addEventListener('click', function(e) {
@@ -298,12 +335,5 @@
             animation: ripple-animation 0.6s linear;
             pointer-events: none;
         }
-
-        /* @keyframes ripple-animation {
-                                                                                                                                                                                                            to {
-                                                                                                                                                                                                                transform: scale(4);
-                                                                                                                                                                                                                opacity: 0;
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        } */
     </style>
 @endpush
