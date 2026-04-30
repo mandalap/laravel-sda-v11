@@ -123,20 +123,11 @@ class GoogleController extends Controller
             'provider_token' => $googleUser->token,
         ]);
 
-        if (empty($member->email)) {
-            $member->update([
-                'email'             => $googleUser->getEmail(),
-                'email_verified_at' => now(),
-            ]);
-        }
-
-        if (empty($member->thumbnail)) {
-            $updateData['thumbnail'] = $googleUser->getAvatar();
-        }
-
-        if (! empty($updateData)) {
-            $member->update($updateData);
-        }
+        $member->update([
+            'email'             => $googleUser->getEmail(),
+            'email_verified_at' => now(),
+            'thumbnail'         => empty($member->thumbnail) ? $googleUser->getAvatar() : $member->thumbnail,
+        ]);
 
         Alert::toast('Akun Google berhasil dihubungkan!', 'success')
             ->autoClose(5000)
@@ -160,13 +151,11 @@ class GoogleController extends Controller
 
         $provider->delete();
 
-        if ($member->email_verified_at) {
-            $member->update([
-                'email'             => null,
-                'email_verified_at' => null,
-                'thumbnail'         => null,
-            ]);
-        }
+        $member->update([
+            'email'             => null,
+            'email_verified_at' => null,
+            'thumbnail'         => null,
+        ]);
 
         Alert::toast('Akun Google berhasil diputuskan.', 'success')
             ->autoClose(6000)
