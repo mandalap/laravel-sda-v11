@@ -13,6 +13,7 @@ class MemberProvider extends Model
         'provider',
         'provider_id',
         'provider_token',
+        'provider_avatar',
     ];
 
     public function member()
