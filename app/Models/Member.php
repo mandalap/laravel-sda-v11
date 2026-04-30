@@ -28,6 +28,7 @@ class Member extends Authenticatable implements LaratrustUser, FilamentUser, Has
         'sapaan',
         'nama',
         'email',
+        'email_verified_at',
         'telepon',
         'password',
         'recovery_code',
@@ -45,6 +46,10 @@ class Member extends Authenticatable implements LaratrustUser, FilamentUser, Has
         'recovery_code',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
     public function getAuthIdentifierName()
     {
         return 'id';
@@ -55,6 +60,11 @@ class Member extends Authenticatable implements LaratrustUser, FilamentUser, Has
         return $this->hasMany(BookingTransaction::class);
     }
 
+    public function purchaseTransactions()
+    {
+        return $this->hasMany(PurchaseTransaction::class);
+    }
+
     public function agency()
     {
         return $this->hasOne(Agency::class);
@@ -63,6 +73,16 @@ class Member extends Authenticatable implements LaratrustUser, FilamentUser, Has
     public function developer()
     {
         return $this->hasOne(Developer::class);
+    }
+
+    public function providers()
+    {
+        return $this->hasMany(MemberProvider::class);
+    }
+
+    public function hasGoogleConnected()
+    {
+        return $this->providers()->where('provider', 'google')->exists();
     }
 
     /**

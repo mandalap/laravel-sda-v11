@@ -25,6 +25,12 @@ use App\Jobs\WhatsAppBookingMemberTransaction;
 use App\Jobs\WhatsAppBookingAgencyTransaction;
 use App\Jobs\WhatsAppClosingMemberTransaction;
 use App\Jobs\WhatsAppClosingAgencyTransaction;
+use App\Services\PurchaseTransactionService;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Textarea;
+use Filament\Support\RawJs;
 
 class BookingTransactionResource extends Resource
 {
@@ -59,7 +65,8 @@ class BookingTransactionResource extends Resource
                 $query->where('status', 'Tersedia')
                     ->orWhere('status', 'Booking')
                     ->orWhere('status', 'Pending');
-            });
+            })
+            ;
     }
 
     public static function form(Form $form): Form
@@ -280,8 +287,8 @@ class BookingTransactionResource extends Resource
                     ->modalDescription(fn($record) => match ($record->status) {
                         'pending' => 'Isi detail pembayaran sebelum mengubah status menjadi "booking".',
                         'booking' => $record->agency_id
-                            ? 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi. Silakan masukkan fee marketing.'
-                            : 'Produk akan ditandai sebagai "TERJUAL" dan akan masuk ke riwayat transaksi.',
+                            ? 'Produk akan ditandai sebagai "TERJUAL". Silakan masukkan fee marketing.'
+                            : 'Produk akan ditandai sebagai "TERJUAL".',
                     })
                     ->modalButton('Ya, Konfirmasi')
                     ->form(fn($record) => match ($record->status) {
@@ -300,16 +307,129 @@ class BookingTransactionResource extends Resource
                                     'cash' => 'Cash',
                                 ]),
                         ],
-                        'booking' => $record->agency_id ? [
-                            TextInput::make('jumlah_fee')
-                                ->label('Fee Marketing')
+                        'booking' => [
+                            Placeholder::make('info_produk')
+                                ->label('Produk')
+                                ->content(fn() => "{$record->product->project->nama_project} — {$record->product->nama_product}"),
+
+                            Grid::make(2)
+                                ->schema([
+                                    Placeholder::make('info_harga_tanah')
+                                        ->label('Harga Tanah')
+                                        ->content(fn() => 'Rp ' . number_format($record->harga_tanah, 0, ',', '.')),
+
+                                    Placeholder::make('info_diskon')
+                                        ->label('Diskon')
+                                        ->content(fn() => 'Rp ' . number_format($record->diskon, 0, ',', '.')),
+
+                                    Placeholder::make('info_total_harga')
+                                        ->label('Total Harga ')
+                                        ->content(fn() => 'Rp ' . number_format($record->total_harga, 0, ',', '.')),
+
+                                    Placeholder::make('info_harga_booking')
+                                        ->label('Uang Booking')
+                                        ->content(fn() => 'Rp ' . number_format($record->jumlah_uang_booking, 0, ',', '.')),
+                                ]),
+                            ...($record->agency_id ? [
+                                TextInput::make('jumlah_fee')
+                                    ->label('Fee Marketing')
+                                    ->prefix('Rp')
+                                    ->numeric()
+                                    ->required()
+                                    ->mask(RawJs::make('$money($input)'))
+                                    ->stripCharacters(',')
+                                    ->placeholder('0'),
+                            ] : []),
+
+                            Select::make('metode_pembayaran')
+                                ->label('Metode Pembayaran Pembelian')
+                                ->options([
+                                    'cash'       => 'Cash',
+                                    'kredit'     => 'Kredit',
+                                    'cash_tempo' => 'Cash Tempo',
+                                ])
+                                ->required()
+                                ->live(),
+
+                            TextInput::make('jumlah_dp')
+                                ->label('Jumlah DP')
                                 ->prefix('Rp')
                                 ->numeric()
-                                ->required()
-                                ->helperText('Masukkan fee untuk marketing yang menangani transaksi ini')
-                                ->placeholder('0'),
-                        ] : [],
-                        default => []
+                                ->default(0)
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->live(debounce: 500)
+                                ->visible(fn(Forms\Get $get) => in_array($get('metode_pembayaran'), ['kredit', 'cash_tempo'])),
+
+                            Grid::make(2)
+                                ->schema([
+                                    Select::make('bulan_mulai_cicilan')
+                                        ->label('Mulai Cicilan Bulan')
+                                        ->options(collect(range(1, 12))->mapWithKeys(fn($m) => [
+                                            $m => \Carbon\Carbon::create()->month($m)->translatedFormat('F'),
+                                        ]))
+                                        ->required()
+                                        ->default(now()->addMonth()->month),
+
+                                    Select::make('tahun_mulai_cicilan')
+                                        ->label('Tahun')
+                                        ->options(collect(range(now()->year, now()->year + 5))->mapWithKeys(fn($y) => [$y => $y]))
+                                        ->required()
+                                        ->default(now()->year),
+                                ])
+                                ->visible(fn(Forms\Get $get) => in_array($get('metode_pembayaran'), ['kredit', 'cash_tempo'])),
+
+                            TextInput::make('jumlah_bulan_cicilan')
+                                ->label('Jumlah Bulan Cicilan')
+                                ->numeric()
+                                ->minValue(1)
+                                ->maxValue(360)
+                                ->suffix('bulan')
+                                ->live(debounce: 500)
+                                ->required(fn(Forms\Get $get) => in_array($get('metode_pembayaran'), ['kredit', 'cash_tempo']))
+                                ->visible(fn(Forms\Get $get) => in_array($get('metode_pembayaran'), ['kredit', 'cash_tempo'])),
+
+                            Placeholder::make('preview_kalkulasi')
+                                ->label('Estimasi Cicilan')
+                                ->visible(fn(Forms\Get $get) => in_array($get('metode_pembayaran'), ['kredit', 'cash_tempo']))
+                                ->content(function (Forms\Get $get) use ($record) {
+                                    $rawDp   = str_replace([',', '.'], '', $get('jumlah_dp') ?? '0');
+                                    $dp      = (float) $rawDp;
+
+                                    $bulan   = (int) ($get('jumlah_bulan_cicilan') ?? 0);
+                                    $sisa    = $record->total_harga - $record->jumlah_uang_booking - $dp;
+                                    $nominal = ($bulan > 0) ? (int) round($sisa / $bulan) : 0;
+
+                                    if ($sisa <= 0) {
+                                        return new \Illuminate\Support\HtmlString(
+                                            '<span style="color: red;">DP melebihi sisa tagihan. Periksa kembali.</span>'
+                                        );
+                                    }
+
+                                    if ($bulan <= 0) {
+                                        return '— Masukkan jumlah bulan cicilan';
+                                    }
+
+                                    return new \Illuminate\Support\HtmlString(
+                                        '<div style="line-height: 1.8;">' .
+                                            '<strong>Sisa tagihan</strong> : Rp ' . number_format($sisa, 0, ',', '.') . '<br>' .
+                                            '<strong>Cicilan/bulan</strong> : Rp ' . number_format($nominal, 0, ',', '.') . '<br>' .
+                                            '<strong>Total ' . $bulan . ' bulan</strong> : Rp ' . number_format($nominal * $bulan, 0, ',', '.') .
+                                            '</div>'
+                                    );
+                                }),
+
+                            FileUpload::make('pjb')
+                                ->label('Upload PJB (PDF)')
+                                ->disk('public')
+                                ->directory('pjb')
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->maxSize(5120),
+
+                            Textarea::make('catatan')
+                                ->label('Catatan')
+                                ->rows(2),
+                        ],
                     })
                     ->action(function ($record, array $data) {
                         if ($record->status === 'pending') {
@@ -331,25 +451,20 @@ class BookingTransactionResource extends Resource
                                 WhatsAppBookingMemberTransaction::dispatch($record);
                             }
                         } elseif ($record->status === 'booking') {
-                            $record->product->update(['status' => 'Terjual']);
-                            // Simpan fee marketing ke tabel fee_transactions hanya jika ada agency_id
-                            if ($record->agency_id && isset($data['jumlah_fee']) && $data['jumlah_fee'] > 0) {
-                                FeeTransaction::create([
-                                    'booking_transaction_id' => $record->id,
-                                    'jumlah_fee' => $data['jumlah_fee'],
-                                    'status' => 'tersedia',
-                                    'created_at' => now(),
-                                    'updated_at' => now(),
-                                ]);
+                            $service = app(PurchaseTransactionService::class);
+                            $purchase = $service->createFromBooking($record, $data);
+
+                            WhatsAppClosingMemberTransaction::dispatch($record);
+
+                            if ($record->agency_id && ! empty($data['jumlah_fee'])) {
                                 WhatsAppClosingAgencyTransaction::dispatch($record);
                             }
-                            WhatsAppClosingMemberTransaction::dispatch($record);
-                        }
 
-                        Notification::make()
-                            ->title('Transaksi berhasil dikonfirmasi.')
-                            ->success()
-                            ->send();
+                            Notification::make()
+                                ->title('Pembelian berhasil dibuat.')
+                                ->success()
+                                ->send();
+                        }
                     }),
 
                 Tables\Actions\Action::make('batal')
