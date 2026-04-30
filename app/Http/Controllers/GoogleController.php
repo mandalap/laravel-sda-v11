@@ -45,6 +45,7 @@ class GoogleController extends Controller
                 'provider'       => 'google',
                 'provider_id'    => $googleUser->getId(),
                 'provider_token' => $googleUser->token,
+                'provider_avatar' => $googleUser->getAvatar(),
             ]);
 
             return $this->loginMember($member);
@@ -121,6 +122,7 @@ class GoogleController extends Controller
             'provider'       => 'google',
             'provider_id'    => $googleUser->getId(),
             'provider_token' => $googleUser->token,
+            'provider_avatar' => $googleUser->getAvatar(),
         ]);
 
         $member->update([
@@ -149,12 +151,14 @@ class GoogleController extends Controller
             return redirect()->route('detail.profil');
         }
 
+        $googleAvatar = $provider->provider_avatar;
+
         $provider->delete();
 
         $member->update([
             'email'             => null,
             'email_verified_at' => null,
-            'thumbnail'         => null,
+            'thumbnail'         => $member->thumbnail === $googleAvatar ? null : $member->thumbnail,
         ]);
 
         Alert::toast('Akun Google berhasil diputuskan.', 'success')
