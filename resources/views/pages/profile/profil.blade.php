@@ -15,8 +15,12 @@
     <div id="Header" class="relative flex gap-3 px-5">
         <div class="flex flex-col">
             @if (Auth::user()->thumbnail)
-                <img src="{{ asset('storage/' . Auth::user()->thumbnail) }}" class="w-14 h-14 rounded-full border border-dark"
-                    alt="icon">
+                @php
+                    $thumbnail = Auth::user()->thumbnail;
+                    $isUrl = str_starts_with($thumbnail, 'http');
+                @endphp
+                <img src="{{ $isUrl ? $thumbnail : asset('storage/' . $thumbnail) }}"
+                    class="w-14 h-14 rounded-full border border-dark" alt="thumbnail" referrerpolicy="no-referrer">
             @else
                 <img src="{{ asset('/assets/images/icons/profil-default.png') }}"
                     class="w-14 h-14 rounded-full border bg-custom-gray-10" alt="Default thumbnail">
@@ -47,7 +51,7 @@
                     <div class="flex items-center gap-2">
                         <img src="{{ 'assets/images/icons/password-primary.png' }}" class="w-6 h-6" alt="icon">
 
-                        <p class="text-sm text-custom-gray-90">Password</p>
+                        <p class="text-sm text-custom-gray-90">Ubah Kata Sandi</p>
                     </div>
                     <img src="{{ asset('assets/images/icons/arrow-profile.png') }}" class="w-5 h-5" alt="icon">
                 </a>
@@ -63,7 +67,8 @@
                     <img src="{{ asset('assets/images/icons/arrow-profile.png') }}" class="w-5 h-5" alt="icon">
                 </a>
 
-                <a href="{{ route('purchase.history') }}" class="flex justify-between items-center h-11 hover:text-primary">
+                <a href="{{ route('purchase.history') }}"
+                    class="flex justify-between items-center h-11 hover:text-primary">
                     <div class="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none">

@@ -28,8 +28,8 @@
             <x-input-fieldv2 label="Nama Lengkap" name="nama" type="text" :value="$member->nama"
                 placeholder="Masukkan Nama Lengkap" icon="assets/images/icons/user-primary.png" />
 
-            <x-input-fieldv2 label="No. Handphone" name="telepon" type="tel" :value="$member->telepon"
-                placeholder="Masukkan No. Handphone" icon="assets/images/icons/phone-primary.png" />
+            <x-input-fieldv2 label="Nomor WhatsApp" name="telepon" type="tel" :value="$member->telepon"
+                placeholder="Masukkan Nomor WhatsApp. Cth: 08xxx" icon="assets/images/icons/phone-primary.png" />
 
             <x-input-fieldv2 label="Jenis Kelamin" name="gender" type="select" :value="$member->gender"
                 placeholder="Pilih Jenis Kelamin" icon="assets/images/icons/gender-primary.png" :options="[
@@ -38,7 +38,7 @@
                 ]" />
 
             <x-input-fieldv2 label="Email" name="email" type="email" :value="$member->email" placeholder="Masukkan Email"
-                icon="assets/images/icons/email-primary.png" />
+                icon="assets/images/icons/email-primary.png" :readonly="(bool) $member->email_verified_at" />
 
             <x-input-fieldv2 label="Tempat Lahir" name="tempat_lahir" type="text" :value="$member->tempat_lahir"
                 placeholder="Masukkan Tempat Lahir" icon="assets/images/icons/house-primary.png" />
@@ -58,11 +58,14 @@
                 <div class="w-full border border-primary rounded p-3">
                     <div class="flex flex-col items-center justify-center text-center space-y-2" id="upload-area">
                         @if ($member->thumbnail)
-                            {{-- Jika sudah ada foto, tampilkan preview --}}
+                            @php
+                                $isUrl = str_starts_with($member->thumbnail, 'http');
+                            @endphp
                             <div class="relative">
                                 <div class="w-20 h-20 rounded-lg overflow-hidden border-2 border-gray-200">
-                                    <img src="{{ asset('storage/' . $member->thumbnail) }}"
-                                        class="w-full h-full object-cover" alt="Current Profile">
+                                    <img src="{{ $isUrl ? $member->thumbnail : asset('storage/' . $member->thumbnail) }}"
+                                        class="w-full h-full object-cover" alt="Current Profile"
+                                        referrerpolicy="no-referrer">
                                 </div>
                                 <button type="button" id="remove-photo-btn"
                                     class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors duration-200 text-sm font-bold">
@@ -80,7 +83,6 @@
                                     alt="icon">
                             </button>
                         @else
-                            {{-- Jika belum ada foto, tampilkan upload area --}}
                             <div class="w-[50px] h-[50px] bg-primary-border rounded-full flex items-center justify-center">
                                 <img src="{{ asset('assets/images/icons/file-primary.png') }}" class="w-8 h-8"
                                     alt="icon">
@@ -109,6 +111,55 @@
             </x-button-primary>
         </div>
     </form>
+
+    <div class="flex flex-col gap-2 p-5">
+        <p class="font-medium text-sm text-custom-gray-90">Akun Terhubung</p>
+
+        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-xl bg-white">
+            <div class="flex items-center gap-3">
+                <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+                    <path fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+
+                <div>
+                    <p class="text-sm font-medium text-gray-800">Google</p>
+                    @if ($googleProvider)
+                        <p class="text-xs text-green-600">Terhubung</p>
+                    @else
+                        <p class="text-xs text-gray-400">Belum terhubung</p>
+                    @endif
+                </div>
+            </div>
+
+            @if ($googleProvider)
+                <form action="{{ route('google.disconnect') }}" method="POST" id="form-disconnect-google">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" onclick="showConfirm('confirm-disconnect-google')"
+                        class="px-3 py-1.5 text-xs font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors">
+                        Putuskan
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('google.connect') }}"
+                    class="px-3 py-1.5 text-xs font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors">
+                    Sambungkan
+                </a>
+            @endif
+        </div>
+    </div>
+
+    <x-confirm-dialog id="confirm-disconnect-google" title="Putuskan Akun Google?"
+        message="Anda tidak akan bisa login menggunakan Google setelah ini." confirm-text="Ya, Putuskan"
+        cancel-text="Batal" type="danger" form-id="form-disconnect-google" />
+
     @include('includes.footer')
 @endsection
 
@@ -123,28 +174,19 @@
             // Simpan HTML awal
             const initialHTML = uploadArea.innerHTML;
 
-            console.log('Upload elements found:', {
-                uploadButton: !!uploadButton,
-                fileInput: !!fileInput,
-                uploadArea: !!uploadArea
-            });
-
             // Event listener untuk button click
             function attachUploadButtonListener() {
                 const currentUploadButton = document.getElementById('upload-button');
                 if (currentUploadButton) {
                     currentUploadButton.addEventListener('click', function() {
-                        console.log('Upload button clicked');
                         fileInput.click();
                     });
                 }
             }
 
-            // Event listener untuk remove button (jika ada foto existing)
             if (removePhotoBtn) {
                 removePhotoBtn.addEventListener('click', function() {
                     if (confirm('Apakah Anda yakin ingin menghapus foto profil?')) {
-                        // Reset ke state upload
                         uploadArea.innerHTML = `
                         <div class="w-[50px] h-[50px] bg-primary-border rounded-full flex items-center justify-center">
                             <img src="{{ asset('assets/images/icons/file-primary.png') }}" class="w-8 h-8" alt="icon">
@@ -166,7 +208,6 @@
                     `;
                         attachUploadButtonListener();
 
-                        // Add hidden input untuk mark deletion (jika diperlukan)
                         const deleteInput = document.createElement('input');
                         deleteInput.type = 'hidden';
                         deleteInput.name = 'delete_current_photo';
@@ -182,7 +223,6 @@
             // Event listener untuk file selection
             fileInput.addEventListener('change', function(e) {
                 const file = e.target.files[0];
-                console.log('File selected:', file);
 
                 removeErrorMessage();
 

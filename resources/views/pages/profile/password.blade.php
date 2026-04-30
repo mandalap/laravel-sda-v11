@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Ubah Password
+    Ubah Kata Sandi
 @endsection
 
 @push('prepend-style')

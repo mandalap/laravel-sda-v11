@@ -16,6 +16,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Affiliate\ProfileController as AffiliateProfileController;
 use App\Http\Controllers\Affiliate\TransactionController;
 use App\Http\Controllers\Developer\RegisterController as DeveloperRegisterController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\SajadaBerdasiController;
 use App\Http\Controllers\SajadaJakselController;
@@ -31,6 +32,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/login', [RegisterController::class, 'login'])->name('login');
     Route::post('login', [RegisterController::class, 'loginStore'])->name('store.login');
+
+    Route::get('/auth-google', [GoogleController::class, 'redirect'])->name('auth.google');
+    Route::get('/auth-redirect', [GoogleController::class, 'callback'])->name('auth.google.callback');
 
     // Daftar
     Route::get('/daftar', [RegisterController::class, 'daftar'])->name('daftar');
@@ -142,6 +146,10 @@ Route::middleware('auth:member')->group(function () {
     Route::get('/akun', [ProfilController::class, 'index'])->name('profil');
     Route::get('/profil', [ProfilController::class, 'detail'])->name('detail.profil');
     Route::put('/profil-update', [ProfilController::class, 'updateProfil'])->name('update.profil');
+
+    Route::get('/profil/google/connect', [GoogleController::class, 'connectRedirect'])->name('google.connect');
+    Route::get('/profil/google/callback', [GoogleController::class, 'connectCallback'])->name('google.connect.callback');
+    Route::delete('/profil/google/disconnect', [GoogleController::class, 'disconnect'])->name('google.disconnect');
 
     Route::get('/password', [ProfilController::class, 'password'])->name('index.password');
     Route::put('/password-update', [ProfilController::class, 'updatePassword'])->name('update.password');
