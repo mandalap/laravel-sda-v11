@@ -28,7 +28,6 @@ use App\Livewire\PurchaseHistory;
 // GUEST ROUTES
 // ============================================
 Route::middleware('guest')->group(function () {
-    Route::redirect('/', '/login');
 
     Route::get('/login', [RegisterController::class, 'login'])->name('login');
     Route::post('login', [RegisterController::class, 'loginStore'])->name('store.login');
@@ -118,6 +117,7 @@ Route::middleware(['auth:member', 'check.developer'])->group(function () {
 Route::get('/bank-search', [AffiliateProfileController::class, 'search'])->name('bank.search');
 
 // Beranda
+Route::get('/', [BerandaController::class, 'beranda'])->name('home');
 Route::get('/beranda', [BerandaController::class, 'beranda'])->name('beranda');
 
 // Cek Booking
