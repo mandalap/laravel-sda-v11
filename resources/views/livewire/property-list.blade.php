@@ -43,7 +43,10 @@
 
     <div id="projects-container">
         @forelse($projects as $project)
-            @include('pages.property.partials.project-card', compact('project'))
+            @include('pages.property.partials.project-card', [
+                'project' => $project,
+                'mode' => $mode,
+            ])
         @empty
             @if ($cari || $this->hasActiveFilter)
                 <x-not-found />

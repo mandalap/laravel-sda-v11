@@ -37,6 +37,8 @@ class PropertyList extends Component
     public $kelompokOptions;
     public int $perPage = 10;
 
+    public string $mode = 'detail';
+
     const URUTAN_OPTIONS = [
         ['value' => 'terbaru',  'label' => 'Terbaru'],
         ['value' => 'terlama',  'label' => 'Terlama'],
@@ -51,7 +53,9 @@ class PropertyList extends Component
         array $preKategoriIds = [],
         ?int  $preKelompokId  = null,
         array $preLokasiIds   = [],
+        string $mode          = 'detail',
     ): void {
+        $this->mode = $mode;
         $this->lokasiOptions   = $lokasiOptions;
         $this->kategoriOptions = $kategoriOptions;
         $this->kelompokOptions = $kelompokOptions;
@@ -223,6 +227,7 @@ class PropertyList extends Component
             'projects'      => $projects,
             'totalCount'    => $projects->total(),
             'uraianOptions' => self::URUTAN_OPTIONS,
+            'mode'          => $this->mode,
         ]);
     }
 }

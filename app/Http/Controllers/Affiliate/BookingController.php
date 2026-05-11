@@ -19,6 +19,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\WhatsAppPendingAgencyTransaction;
 use App\Jobs\WhatsAppPendingMemberTransaction;
+use App\Models\Lokasi;
 use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
@@ -161,74 +162,18 @@ class BookingController extends Controller
     {
         $member = Auth::guard('member')->user();
 
-        // Ambil parameter filter dan cari dari URL
-        $filter = $request->query('filter');
-        $cari = $request->query('cari');
-        $kat = $request->query('propertiKategori', 'all'); // Gunakan 'all' jika tidak ada kategori
-        $page = $request->query('page', 1); // Default ke halaman 1
+        $kategoriOptions = Kategori::orderBy('kategori')->get();
+        $lokasiOptions   = Lokasi::with('regency')
+            ->whereHas('project', fn($q) => $q->approvedAndVisible())
+            ->get()
+            ->sortBy(fn($l) => $l->regency?->name)
+            ->values();
 
-        // Jika kategori yang dipilih adalah 'all', ambil semua kategori
-        if ($kat == 'all') {
-            $kategori = Kategori::all();
-        } else {
-            // Ambil kategori berdasarkan slug
-            $kategori = Kategori::where('slug', $kat)->firstOrFail();
-        }
-
-        // Buat query dasar untuk mengambil proyek berdasarkan kategori dan status proyek
-        $query = Project::where('projects.is_approved', 'Diterima')
-            ->where('projects.status', 'tampil');
-
-        // Jika ada pencarian, terapkan filter pencarian
-        if ($cari) {
-            $query->where(function ($q) use ($cari) {
-                $q->where('nama_project', 'like', '%' . $cari . '%')
-                    ->orWhere('alamat_project', 'like', '%' . $cari . '%');
-            });
-        }
-
-        // Terapkan filter lain seperti 'terbaru', 'terlama'
-        if ($filter == 'terbaru') {
-            $query->orderBy('id', 'desc');
-        } elseif ($filter == 'terlama') {
-            $query->orderBy('id', 'asc');
-        } else {
-            $query->withCount(['products' => function ($query) {
-                $query->where('products.status', 'Tersedia');
-            }])
-                ->orderByDesc('products_count');
-        }
-
-        // Hitung total proyek untuk filter saat ini
-        $projectCount = $query->count();
-
-        // Untuk permintaan AJAX, kirimkan proyek dalam format JSON
-        if ($request->ajax()) {
-            $projects = $query->skip(($page - 1) * 5)->take(5)->get();
-
-            $html = '';
-            if ($projects->count() > 0) {
-                $html = view('pages.affiliate.booking.itemProperti', compact('projects'))->render();
-            }
-
-            return response()->json([
-                'html' => $html,
-                'hasMorePages' => $projects->count() == 5 && $page * 5 < $projectCount
-            ]);
-        }
-
-        // Untuk pemuatan halaman awal, ambil 5 proyek pertama
-        $projects = $query->skip(($page - 1) * 5)->take(5)->get();
-
-        return view("pages.affiliate.booking.index", [
-            'member' => $member,
-            'projects' => $projects,
-            'kategori' => $kategori,
-            'filter' => $filter,
-            'cari' => $cari,
-            'kat' => $kat,
-            'projectCount' => $projectCount,
-        ]);
+        return view('pages.affiliate.booking.index', compact(
+            'member',
+            'kategoriOptions',
+            'lokasiOptions',
+        ));
     }
 
     public function detail($project)
