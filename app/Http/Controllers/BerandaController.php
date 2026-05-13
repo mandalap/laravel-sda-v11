@@ -11,12 +11,15 @@ use App\Models\Product;
 use App\Models\Project;
 use App\Models\PromoBanner;
 use App\Models\TestimoniBanner;
+use App\Services\SeoService;
 
 class BerandaController extends Controller
 {
     //
-    public function beranda()
+    public function beranda(SeoService $seo)
     {
+        // Set SEO meta tags untuk homepage
+        $seo->setForHomepage();
 
         $kelompoks = Kelompok::all();
         // Mengambil semua data TestimoniBanner

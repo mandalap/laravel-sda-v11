@@ -8,11 +8,15 @@ use App\Models\Lokasi;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use App\Services\SeoService;
 
 class ListCityController extends Controller
 {
-    public function lihatkota(Request $request)
+    public function lihatkota(Request $request, SeoService $seo)
     {
+        // Set SEO meta tags untuk halaman list kota
+        $seo->setForCityList();
+
         $totalcities = Lokasi::count();
 
         $cities = Lokasi::with([
