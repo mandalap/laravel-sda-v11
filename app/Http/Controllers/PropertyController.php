@@ -6,10 +6,11 @@ use App\Models\Kategori;
 use App\Models\Kelompok;
 use App\Models\Lokasi;
 use Illuminate\Http\Request;
+use App\Services\SeoService;
 
 class PropertyController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, SeoService $seo)
     {
         $kategoriSlug = $request->query('propertiKategori', 'all');
         $kelompokSlug = $request->query('propertiType');
@@ -82,6 +83,9 @@ class PropertyController extends Controller
             !empty($kelompokParam)  => optional(Kelompok::where('slug', $kelompokParam)->first())->kelompok ?? 'Semua Properti',
             default                 => 'Semua Properti',
         };
+
+        // Set SEO meta tags untuk halaman list properti
+        $seo->setForPropertyList($pageTitle);
 
         return view('pages.property.index', compact(
             'lokasiOptions',

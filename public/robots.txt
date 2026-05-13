@@ -1,2 +1,15 @@
 User-agent: *
-Disallow:
+Disallow: /login
+Disallow: /daftar
+Disallow: /akun
+Disallow: /profil
+Disallow: /admin
+Disallow: /riwayat-booking
+Disallow: /riwayat-pembelian
+Disallow: /checkout
+Disallow: /get-snap-token
+Disallow: /affiliate
+Disallow: /kerjasama
+Disallow: /password
+
+Sitemap: https://sajadadigital.com/sitemap.xml

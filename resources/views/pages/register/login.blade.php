@@ -4,6 +4,10 @@
     Masuk
 @endsection
 
+@section('meta_robots')
+    <meta name="robots" content="noindex, nofollow">
+@endsection
+
 @push('prepend-style')
 @endpush
 @push('addon-style')

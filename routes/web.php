@@ -20,6 +20,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\SajadaBerdasiController;
 use App\Http\Controllers\SajadaJakselController;
+use App\Http\Controllers\SitemapController;
 use App\Livewire\PayInstallment;
 use App\Livewire\PurchaseDetail;
 use App\Livewire\PurchaseHistory;
@@ -112,6 +113,9 @@ Route::middleware(['auth:member', 'check.developer'])->group(function () {
 // ============================================
 // PUBLIC ROUTES - SPECIFIC FIRST
 // ============================================
+
+// Sitemap XML
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Bank Search
 Route::get('/bank-search', [AffiliateProfileController::class, 'search'])->name('bank.search');

@@ -8,20 +8,26 @@ use App\Models\Product;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Services\SeoService;
 
 class PencarianController extends Controller
 {
     //
-    public function index()
+    public function index(SeoService $seo)
     {
+        // Set SEO meta tags untuk halaman pencarian (noindex)
+        $seo->setForSearch();
         $kategori = Kategori::orderBy('kategori', 'asc')->get();
         $lokasi = Lokasi::orderBy('slug', 'asc')->get();
 
         return view('pages.pencarian.index', compact('kategori', 'lokasi'));
     }
 
-    public function findproperti(Request $request)
+    public function findproperti(Request $request, SeoService $seo)
     {
+        // Set SEO meta tags untuk hasil pencarian (noindex)
+        $seo->setForSearch($request->nama);
+
         $nama = $request->nama;
         $lokasi = $request->lokasi;
 
