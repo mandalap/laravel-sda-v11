@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Services\SeoService;
 
 class DetailsController extends Controller
 {
@@ -132,7 +133,7 @@ class DetailsController extends Controller
     }
 
     //
-    public function index($jenis, $kategori, $project)
+    public function index($jenis, $kategori, $project, SeoService $seo)
     {
         try {
             $jenis = Jenis::where('slug', $jenis)->firstOrFail();
@@ -145,8 +146,13 @@ class DetailsController extends Controller
                 'projectPhotos',
                 'projectsBrosur',
                 'products',
-                'siteplan'
+                'siteplan',
+                'lokasi.regency',
+                'project_product',
             ])->where("slug", $project)->firstOrFail();
+
+            // Set SEO meta tags untuk halaman detail project
+            $seo->setForProjectDetail($project, $kategori, $jenis);
 
             views($project)->record();
 
