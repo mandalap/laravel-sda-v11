@@ -53,7 +53,6 @@ Route::middleware(['auth:member', 'check.agency.registered'])->group(function ()
     Route::get('/get-kota', [AffiliateController::class, 'getKota'])->name('get-kota');
 
     Route::prefix('affiliate')->name('affiliate.')->group(function () {
-        Route::get('/', [AffiliateController::class, 'index'])->name('index');
         Route::get('/daftar', [AffiliateController::class, 'daftar'])->name('daftar');
         Route::post('/daftar-submit', [AffiliateController::class, 'store'])->name('daftar.store');
     });
@@ -137,6 +136,9 @@ Route::get('/sajada-berdasi', [SajadaBerdasiController::class, 'index'])->name('
 
 // Sajada Jaksel
 Route::get('/sajada-jaksel', [SajadaJakselController::class, 'index'])->name('sajada.jaksel');
+
+// Daftar Agen
+Route::get('/daftar-agen', [AffiliateController::class, 'index'])->name('agen.index');
 
 // Lihat Kota
 Route::get('/lihat-kota', [ListCityController::class, 'lihatkota'])->name('lihatkota');

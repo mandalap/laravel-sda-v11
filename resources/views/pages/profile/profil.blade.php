@@ -105,7 +105,7 @@
 
                 <hr class="border-custom-gray-40 ml-8">
 
-                <a href="{{ route('affiliate.index') }}"
+                <a href="{{ route('affiliate.dashboard') }}"
                     class="flex justify-between items-center h-11 hover:text-primary">
                     <div class="flex items-center gap-2">
                         <img src="{{ 'assets/images/icons/affiliate-primary.png' }}" class="w-6 h-6" alt="icon">

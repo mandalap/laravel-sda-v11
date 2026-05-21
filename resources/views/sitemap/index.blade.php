@@ -33,12 +33,22 @@
     </url>
 
     {{-- Semua Halaman Detail Project --}}
-    @foreach($projects as $project)
-    <url>
-        <loc>{{ route('detailproject', [$project->jenis->slug ?? 'properti', $project->kategori->slug ?? 'lainnya', $project->slug]) }}</loc>
-        <lastmod>{{ $project->updated_at->toAtomString() }}</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
+    @foreach ($projects as $project)
+        <url>
+            <loc>
+                {{ route('detailproject', [$project->jenis->slug ?? 'properti', $project->kategori->slug ?? 'lainnya', $project->slug]) }}
+            </loc>
+            <lastmod>{{ $project->updated_at->toAtomString() }}</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
     @endforeach
+
+    {{-- Halaman Daftar Agen --}}
+    <url>
+        <loc>{{ route('agen.index') }}</loc>
+        <lastmod>{{ now()->toAtomString() }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
 </urlset>

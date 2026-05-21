@@ -126,7 +126,7 @@
 @endpush
 
 @section('content')
-    <x-navigation-route title="Pendaftaran Sajada Affiliate" :backRoute="route('affiliate.index')" textColor="text-primary" />
+    <x-navigation-route title="Pendaftaran Sajada Affiliate" :backRoute="route('agen.index')" textColor="text-primary" />
 
 
     <div class="px-5 w-full">
