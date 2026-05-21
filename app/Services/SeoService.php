@@ -206,4 +206,32 @@ class SeoService
         OpenGraph::setDescription("Cari properti di {$appName}.");
         OpenGraph::setSiteName($appName);
     }
+
+    public function setForAgenList(): void
+    {
+        $appName = config('app.name', 'Sajada Digital');
+
+        SEOMeta::setDescription("Daftar agen properti terbaik di {$appName}. Bergabung sebagai agen dan dapatkan komisi menarik dari setiap penjualan properti di Pontianak & sekitarnya.");
+        SEOMeta::setKeywords([
+            'daftar agen properti pontianak',
+            'agen properti pontianak',
+            'komisi properti pontianak',
+            'affiliate properti',
+            'lowongan agen properti',
+            'sajada digital agen',
+        ]);
+        SEOMeta::setCanonical(route('agen.index'));
+        
+        OpenGraph::setTitle("Daftar Agen Properti | {$appName}");
+        OpenGraph::setDescription("Bergabung sebagai agen properti di {$appName} dan dapatkan komisi menarik.");
+        OpenGraph::setUrl(route('agen.index'));
+        OpenGraph::addProperty('type', 'website');
+        OpenGraph::addImage(asset('assets/images/icons/logo.svg'));
+        OpenGraph::setSiteName($appName);
+
+        JsonLd::setType('WebPage');
+        JsonLd::setTitle("Daftar Agen | {$appName}");
+        JsonLd::setDescription("Bergabung sebagai agen properti di Pontianak.");
+        JsonLd::setUrl(route('agen.index'));
+    }
 }

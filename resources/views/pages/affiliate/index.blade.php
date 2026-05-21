@@ -18,56 +18,61 @@
         <div id="TopAgents" class="relative px-5 mt-5">
             <div class="flex flex-row rounded-2xl ring-1 ring-custom-gray-40 bg-custom-gray-10 overflow-hidden gap-3 p-4">
                 <div
-                    class="relative w-24 sm:w-24 md:w-40 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
+                    class="relative w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-30">
                     @if ($agency->photo)
-                        <img src="{{ asset('storage/' . $agency->photo) }}" class="w-full h-full object-contain"
+                        <img src="{{ asset('storage/' . $agency->photo) }}" class="w-full h-full object-cover"
                             alt="{{ $agency->nama }}">
                     @else
-                        @php
-                            $nameParts = preg_split('/\s+/', trim($agency->nama));
-                            $initials = '';
-                            foreach ($nameParts as $part) {
-                                if ($part !== '' && mb_strlen($initials) < 2) {
-                                    $initials .= mb_strtoupper(mb_substr($part, 0, 1));
-                                }
-                            }
-                        @endphp
                         <div
-                            class="w-24 h-24 sm:w-32 md:w-40 flex items-center justify-center bg-custom-gray-30 text-custom-gray-100 font-semibold text-3xl">
-                            {{ $initials ?: strtoupper(substr($agency->nama, 0, 1)) }}
+                            class="w-full h-full flex items-center justify-center bg-custom-gray-30">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-primary/50" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path fill-rule="evenodd" d="M12 2a5 5 0 100 10A5 5 0 0012 2zM4 20a8 8 0 1116 0H4z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </div>
                     @endif
                 </div>
 
-                <div class="flex flex-col justify-center gap-1">
-                    <h3 class="font-medium text-sm text-custom-gray-100">{{ $agency->nama }}</h3>
-                    <p class="text-xs text-custom-gray-80 leading-relaxed">
+                <div class="flex flex-col justify-center gap-1 flex-1 min-w-0">
+                    <h3 class="font-semibold text-sm sm:text-base md:text-lg text-custom-gray-100 truncate">
+                        {{ $agency->nama }}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-custom-gray-60 truncate">
                         {{ $agency->kota_id }}
                     </p>
-                    <div class="flex flex-row gap-1">
-                        <div class="flex flex-col items-center justify-center rounded p-2 bg-primary-secondary">
-                            <p class=" font-semibold text-sm text-custom-gray-100">{{ $agency->lama_bergabung }}</p>
-                            <p class="text-[10px] text-custom-gray-80">Bergabung</p>
-                        </div>
-                        <div class="flex flex-col items-center justify-center rounded p-2 bg-primary-secondary">
-                            <p class=" font-semibold text-sm text-custom-gray-100">{{ $agency->produk_terjual_count }}</p>
-                            <p class="text-[10px] text-custom-gray-80">Terjual</p>
 
+                    {{-- Stats --}}
+                    <div class="flex flex-row gap-2 mt-1">
+                        <div
+                            class="flex flex-col items-center justify-center rounded px-2 py-1.5 sm:px-3 sm:py-2 bg-primary-secondary flex-1">
+                            <p class="font-bold text-xs sm:text-sm md:text-base text-custom-gray-100 whitespace-nowrap">
+                                {{ $agency->lama_bergabung }}
+                            </p>
+                            <p class="text-[9px] sm:text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Bergabung</p>
                         </div>
-                        <div class=" flex flex-col items-center justify-center rounded p-2 bg-primary-secondary">
-                            <p class=" font-semibold text-sm text-custom-gray-100">{{ $agency->komisi_formatted }}</p>
-                            <p class="text-[10px] text-custom-gray-80">Komisi</p>
+                        <div
+                            class="flex flex-col items-center justify-center rounded px-2 py-1.5 sm:px-3 sm:py-2 bg-primary-secondary flex-1">
+                            <p class="font-bold text-xs sm:text-sm md:text-base text-custom-gray-100">
+                                {{ $agency->produk_terjual_count }}
+                            </p>
+                            <p class="text-[9px] sm:text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Terjual</p>
+                        </div>
+                        <div
+                            class="flex flex-col items-center justify-center rounded px-2 py-1.5 sm:px-3 sm:py-2 bg-primary-secondary flex-1">
+                            <p class="font-bold text-xs sm:text-sm md:text-base text-custom-gray-100 whitespace-nowrap">
+                                {{ $agency->komisi_formatted }}
+                            </p>
+                            <p class="text-[9px] sm:text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Komisi</p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     @empty
-        <div class="relative px-5 mt-5">
-            <div class="rounded-2xl ring-1 ring-custom-gray-40 bg-custom-gray-10 overflow-hidden gap-3 p-4">
-                <p class="text-sm text-custom-gray-80">Belum ada agen yang tersedia saat ini.</p>
-            </div>
-        </div>
+        <x-no-data />
     @endforelse
 
     <div class="relative px-5 mt-5 pb-6">
@@ -85,7 +90,7 @@
         <div class="relative flex justify-center min-h-full p-4">
             <div class="relative w-full max-w-lg bg-white rounded-2xl flex flex-col h-fit mt-auto mb-auto">
 
-                <div class="flex items-center justify-between px-5 pt-5 pb-4 border-b border-gray-100">
+                <div class="flex items-center justify-end px-5 pt-5 pb-4 border-b border-gray-100">
                     <button id="close-affiliate-modal" type="button"
                         class="text-custom-gray-70 hover:text-primary p-1 rounded-lg hover:bg-gray-100 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

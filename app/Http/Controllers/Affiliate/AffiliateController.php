@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Lokasi;
 use App\Models\Regency;
+use App\Services\SeoService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,23 +17,25 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class AffiliateController extends Controller
 {
-    public function index()
+    public function index(SeoService $seo)
     {
+        $seo->setForAgenList();
+        
         // Ambil agency yang memiliki penjualan (booking status = 'booking' & product status = 'Terjual')
         $topAgencies = Agency::withCount(['bookingTransactions as produk_terjual_count' => function ($query) {
-                $query->where('booking_transactions.status', 'booking')
-                      ->whereHas('product', function ($q) {
-                          $q->where('status', 'Terjual');
-                      });
-            }])
+            $query->where('booking_transactions.status', 'booking')
+                ->whereHas('product', function ($q) {
+                    $q->where('status', 'Terjual');
+                });
+        }])
             ->withSum(['feeTransactions as total_komisi' => function ($query) {
                 $query->where('fee_transactions.status', 'diambil');
             }], 'jumlah_fee')
             ->whereHas('bookingTransactions', function ($query) {
                 $query->where('booking_transactions.status', 'booking')
-                      ->whereHas('product', function ($q) {
-                          $q->where('status', 'Terjual');
-                      });
+                    ->whereHas('product', function ($q) {
+                        $q->where('status', 'Terjual');
+                    });
             })
             ->orderByDesc('produk_terjual_count')
             ->limit(5)
@@ -58,7 +61,7 @@ class AffiliateController extends Controller
                 } elseif ($komisi >= 1000) {
                     $agency->komisi_formatted = '+' . number_format($komisi / 1000, 0, ',', '.') . ' rb';
                 } else {
-                    $agency->komisi_formatted = 'Rp ' . number_format($komisi, 0, ',', '.');
+                    $agency->komisi_formatted = 'Rp' . number_format($komisi, 0, ',', '.');
                 }
 
                 return $agency;
