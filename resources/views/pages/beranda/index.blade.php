@@ -85,7 +85,7 @@
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kelola Lahan</p>
                 </div>
             </a>
-            <a href="{{ route('affiliate.index') }}">
+            <a href="{{ route('agen.index') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
                         <img src="{{ asset('assets/images/icons/agen.png') }}" class="object-cover" alt="icon">
