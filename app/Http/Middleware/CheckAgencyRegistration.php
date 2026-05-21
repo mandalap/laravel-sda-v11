@@ -21,7 +21,7 @@ class CheckAgencyRegistration
         if (!$isRegistered) {
             // Jika belum terdaftar, redirect ke affiliate.index
             Alert::toast('Silahkan daftar terlebih dahulu.', 'error')->autoClose(10000)->timerProgressBar();
-            return redirect()->route('affiliate.daftar');
+            return redirect()->route('agen.index');
         }
 
         return $next($request);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Lokasi;
 use App\Models\Regency;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -17,16 +18,61 @@ class AffiliateController extends Controller
 {
     public function index()
     {
-        return view('pages.affiliate.index');
+        // Ambil agency yang memiliki penjualan (booking status = 'booking' & product status = 'Terjual')
+        $topAgencies = Agency::withCount(['bookingTransactions as produk_terjual_count' => function ($query) {
+                $query->where('booking_transactions.status', 'booking')
+                      ->whereHas('product', function ($q) {
+                          $q->where('status', 'Terjual');
+                      });
+            }])
+            ->withSum(['feeTransactions as total_komisi' => function ($query) {
+                $query->where('fee_transactions.status', 'diambil');
+            }], 'jumlah_fee')
+            ->whereHas('bookingTransactions', function ($query) {
+                $query->where('booking_transactions.status', 'booking')
+                      ->whereHas('product', function ($q) {
+                          $q->where('status', 'Terjual');
+                      });
+            })
+            ->orderByDesc('produk_terjual_count')
+            ->limit(5)
+            ->get()
+            ->map(function ($agency) {
+                $now = Carbon::now();
+                $joined = Carbon::parse($agency->created_at);
+                $diff = $joined->diff($now);
+
+                if ($diff->y > 0) {
+                    $agency->lama_bergabung = $diff->y . ' Tahun ';
+                } elseif ($diff->m > 0) {
+                    $agency->lama_bergabung = $diff->m . ' Bulan ';
+                } else {
+                    $agency->lama_bergabung = $diff->d . ' Hari';
+                }
+
+                $komisi = $agency->total_komisi ?? 0;
+                if ($komisi >= 1000000000) {
+                    $agency->komisi_formatted = '+' . number_format($komisi / 1000000000, 1, ',', '.') . ' M';
+                } elseif ($komisi >= 1000000) {
+                    $agency->komisi_formatted = '+' . number_format($komisi / 1000000, 0, ',', '.') . ' jt';
+                } elseif ($komisi >= 1000) {
+                    $agency->komisi_formatted = '+' . number_format($komisi / 1000, 0, ',', '.') . ' rb';
+                } else {
+                    $agency->komisi_formatted = 'Rp ' . number_format($komisi, 0, ',', '.');
+                }
+
+                return $agency;
+            });
+
+        return view('pages.affiliate.index', compact('topAgencies'));
     }
 
     public function getKota(Request $request)
     {
         $search = $request->search;
 
-        // Ambil data regency dengan nama yang unik
         $data = Regency::where('name', 'like', "%$search%")
-            ->distinct()  // Pastikan hanya kota unik yang diambil
+            ->distinct()
             ->orderBy('name')
             ->limit(20)
             ->get(['id', 'name']);
@@ -47,7 +93,6 @@ class AffiliateController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validasi input dari form
             $agencyData = $request->validate([
                 'nama' => 'required|string|max:255',
                 'sapaan' => 'required|string',
@@ -60,12 +105,10 @@ class AffiliateController extends Controller
                 'agency_code' => 'nullable|unique:agency,agency_code',
             ]);
 
-            // Jika tidak ada agency_code yang diisi, buat kode secara otomatis
             if (!$request->filled('agency_code')) {
-                // Membuat kode acak yang unik dan memastikan tidak ada duplikasi di database
                 do {
-                    $agencyCode = Str::random(8); // Buat kode acak sepanjang 8 karakter
-                } while (Agency::where('agency_code', $agencyCode)->exists()); // Pastikan kode unik
+                    $agencyCode = Str::random(8);
+                } while (Agency::where('agency_code', $agencyCode)->exists());
                 $agencyData['agency_code'] = $agencyCode;
             }
 
@@ -83,10 +126,8 @@ class AffiliateController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            // Simpan data ke database
             Agency::create($agencyData);
 
-            // Setelah berhasil, tampilkan pesan sukses dan arahkan pengguna kembali
             Alert::toast('Anda berhasil melakukan pendaftaran.', 'success')->autoClose(10000)->timerProgressBar();
             return redirect()->route('affiliate.dashboard');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -94,7 +135,6 @@ class AffiliateController extends Controller
                 ->withErrors($e->validator)
                 ->withInput();
         } catch (\Exception $e) {
-            // Tangkap error jika ada dan tampilkan pesan error
             Alert::toast($e->getMessage(), 'error')->autoClose(10000)->timerProgressBar();
             return redirect()->back()->withInput();
         }

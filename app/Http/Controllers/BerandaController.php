@@ -12,27 +12,30 @@ use App\Models\Project;
 use App\Models\PromoBanner;
 use App\Models\TestimoniBanner;
 use App\Services\SeoService;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Illuminate\Http\Request;
 
 class BerandaController extends Controller
 {
     //
-    public function beranda(SeoService $seo)
+    public function beranda(SeoService $seo, Request $request)
     {
-        // Set SEO meta tags untuk homepage
         $seo->setForHomepage();
 
+
+        if (request()->is('beranda')) {
+            SEOMeta::setRobots('noindex, follow');
+        }
+
         $kelompoks = Kelompok::all();
-        // Mengambil semua data TestimoniBanner
         $testimoniBanners = TestimoniBanner::where('status', 'active')->get();
         $promoBanners = PromoBanner::where('status', 'active')
             ->where(function ($query) {
                 $now = now();
                 $query->where(function ($q) use ($now) {
-                    // Banner dengan tanggal mulai dan selesai yang valid
                     $q->where('start_date', '<=', $now)
                         ->where('end_date', '>=', $now);
                 })->orWhere(function ($q) {
-                    // Banner tanpa batasan waktu (null)
                     $q->whereNull('start_date')
                         ->whereNull('end_date');
                 });

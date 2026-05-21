@@ -138,6 +138,10 @@ class SeoService
         ]);
         SEOMeta::setCanonical(route('properti.index'));
 
+        if (request()->getQueryString()) {
+            SEOMeta::setRobots('noindex, follow');
+        }
+
         OpenGraph::setDescription("Temukan {$pageTitle} terlengkap di {$appName}.");
         OpenGraph::setUrl(route('properti.index'));
         OpenGraph::addProperty('type', 'website');
