@@ -66,4 +66,19 @@ class Agency extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+    public function bookingTransactions()
+    {
+        return $this->hasMany(BookingTransaction::class);
+    }
+
+    public function purchaseTransactions()
+    {
+        return $this->hasMany(PurchaseTransaction::class);
+    }
+
+    public function feeTransactions()
+    {
+        return $this->hasManyThrough(FeeTransaction::class, BookingTransaction::class);
+    }
 }

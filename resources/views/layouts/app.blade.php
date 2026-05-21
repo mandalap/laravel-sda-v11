@@ -31,7 +31,7 @@
 
 <body>
     <div id="Content-Container"
-        class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
+        class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-custom-gray-10 overflow-x-hidden">
 
         @hasSection('content')
             @yield('content')
@@ -42,6 +42,8 @@
         @include('sweetalert::alert')
 
     </div>
+
+    @stack('modals')
 
     @stack('prepend-script')
     @include('includes.script')
