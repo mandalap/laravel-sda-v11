@@ -23,8 +23,7 @@
                         <img src="{{ asset('storage/' . $agency->photo) }}" class="w-full h-full object-cover"
                             alt="{{ $agency->nama }}">
                     @else
-                        <div
-                            class="w-full h-full flex items-center justify-center bg-custom-gray-30">
+                        <div class="w-full h-full flex items-center justify-center bg-custom-gray-30">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-primary/50" viewBox="0 0 24 24"
                                 fill="currentColor">
@@ -36,35 +35,32 @@
                 </div>
 
                 <div class="flex flex-col justify-center gap-1 flex-1 min-w-0">
-                    <h3 class="font-semibold text-sm sm:text-base md:text-lg text-custom-gray-100 truncate">
+                    <h3 class="font-medium text-sm md:text-lg text-custom-gray-100 truncate">
                         {{ $agency->nama }}
                     </h3>
-                    <p class="text-xs sm:text-sm text-custom-gray-60 truncate">
+                    <p class="text-xs md:text-sm text-custom-gray-60 truncate">
                         {{ $agency->kota_id }}
                     </p>
 
-                    {{-- Stats --}}
-                    <div class="flex flex-row gap-2 mt-1">
-                        <div
-                            class="flex flex-col items-center justify-center rounded px-2 py-1.5 sm:px-3 sm:py-2 bg-primary-secondary flex-1">
-                            <p class="font-bold text-xs sm:text-sm md:text-base text-custom-gray-100 whitespace-nowrap">
-                                {{ $agency->lama_bergabung }}
+                    <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2">
+                        <div class="flex flex-col items-center justify-center rounded p-1.5 bg-primary-secondary">
+                            <p class="font-semibold text-sm sm:text-xs md:text-base text-custom-gray-100">
+                                {{ $agency->produk_tanah_terjual_count ?? 0 }}
                             </p>
-                            <p class="text-[9px] sm:text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Bergabung</p>
+                            <p class="text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Tanah
+                            </p>
                         </div>
-                        <div
-                            class="flex flex-col items-center justify-center rounded px-2 py-1.5 sm:px-3 sm:py-2 bg-primary-secondary flex-1">
-                            <p class="font-bold text-xs sm:text-sm md:text-base text-custom-gray-100">
+                        <div class="flex flex-col items-center justify-center rounded p-1.5 bg-primary-secondary">
+                            <p class="font-semibold text-sm md:text-base text-custom-gray-100">
+                                {{ $agency->produk_rumah_terjual_count ?? 0 }}
+                            </p>
+                            <p class="text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Rumah</p>
+                        </div>
+                        <div class="flex flex-col items-center justify-center rounded p-1.5 bg-primary-secondary">
+                            <p class="font-semibold text-sm sm:text-xs md:text-base text-primary">
                                 {{ $agency->produk_terjual_count }}
                             </p>
-                            <p class="text-[9px] sm:text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Terjual</p>
-                        </div>
-                        <div
-                            class="flex flex-col items-center justify-center rounded px-2 py-1.5 sm:px-3 sm:py-2 bg-primary-secondary flex-1">
-                            <p class="font-bold text-xs sm:text-sm md:text-base text-custom-gray-100 whitespace-nowrap">
-                                {{ $agency->komisi_formatted }}
-                            </p>
-                            <p class="text-[9px] sm:text-[10px] md:text-xs text-custom-gray-60 mt-0.5">Komisi</p>
+                            <p class="text-[10px] md:text-xs text-primary mt-0.5">Terjual</p>
                         </div>
                     </div>
                 </div>
@@ -90,7 +86,8 @@
         <div class="relative flex justify-center min-h-full p-4">
             <div class="relative w-full max-w-lg bg-white rounded-2xl flex flex-col h-fit mt-auto mb-auto">
 
-                <div class="flex items-center justify-end px-5 pt-5 pb-4 border-b border-gray-100">
+                <div class="flex items-center justify-between px-5 pt-5">
+                    <h3 class="font-semibold text-base text-custom-gray-100">Benefit menjadi Agen</h3>
                     <button id="close-affiliate-modal" type="button"
                         class="text-custom-gray-70 hover:text-primary p-1 rounded-lg hover:bg-gray-100 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +97,7 @@
                     </button>
                 </div>
 
-                <div class="px-5 py-4 flex flex-col gap-4">
+                <div class="px-5 py-4 flex flex-col gap-5">
 
                     <div
                         class="flex flex-col rounded-2xl ring-1 ring-custom-gray-40 overflow-hidden transition-all duration-300 hover:ring-primary">
