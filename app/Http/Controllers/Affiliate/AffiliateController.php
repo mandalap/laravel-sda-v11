@@ -20,17 +20,37 @@ class AffiliateController extends Controller
     public function index(SeoService $seo)
     {
         $seo->setForAgenList();
-        
-        // Ambil agency yang memiliki penjualan (booking status = 'booking' & product status = 'Terjual')
-        $topAgencies = Agency::withCount(['bookingTransactions as produk_terjual_count' => function ($query) {
-            $query->where('booking_transactions.status', 'booking')
-                ->whereHas('product', function ($q) {
-                    $q->where('status', 'Terjual');
-                });
-        }])
-            ->withSum(['feeTransactions as total_komisi' => function ($query) {
-                $query->where('fee_transactions.status', 'diambil');
-            }], 'jumlah_fee')
+
+        $topAgencies = Agency::withCount([
+            'bookingTransactions as produk_terjual_count' => function ($query) {
+                $query->where('booking_transactions.status', 'booking')
+                    ->whereHas('product', function ($q) {
+                        $q->where('status', 'Terjual');
+                    });
+            },
+            'bookingTransactions as produk_rumah_terjual_count' => function ($query) {
+                $query->where('booking_transactions.status', 'booking')
+                    ->whereHas('product', function ($q) {
+                        $q->where('status', 'Terjual')
+                            ->whereHas('project', function ($q2) {
+                                $q2->whereHas('kategori', function ($q3) {
+                                    $q3->where('slug', 'rumah');
+                                });
+                            });
+                    });
+            },
+            'bookingTransactions as produk_tanah_terjual_count' => function ($query) {
+                $query->where('booking_transactions.status', 'booking')
+                    ->whereHas('product', function ($q) {
+                        $q->where('status', 'Terjual')
+                            ->whereHas('project', function ($q2) {
+                                $q2->whereHas('kategori', function ($q3) {
+                                    $q3->where('slug', 'tanah-kavling');
+                                });
+                            });
+                    });
+            }
+        ])
             ->whereHas('bookingTransactions', function ($query) {
                 $query->where('booking_transactions.status', 'booking')
                     ->whereHas('product', function ($q) {
@@ -39,33 +59,7 @@ class AffiliateController extends Controller
             })
             ->orderByDesc('produk_terjual_count')
             ->limit(5)
-            ->get()
-            ->map(function ($agency) {
-                $now = Carbon::now();
-                $joined = Carbon::parse($agency->created_at);
-                $diff = $joined->diff($now);
-
-                if ($diff->y > 0) {
-                    $agency->lama_bergabung = $diff->y . ' Tahun ';
-                } elseif ($diff->m > 0) {
-                    $agency->lama_bergabung = $diff->m . ' Bulan ';
-                } else {
-                    $agency->lama_bergabung = $diff->d . ' Hari';
-                }
-
-                $komisi = $agency->total_komisi ?? 0;
-                if ($komisi >= 1000000000) {
-                    $agency->komisi_formatted = '+' . number_format($komisi / 1000000000, 1, ',', '.') . ' M';
-                } elseif ($komisi >= 1000000) {
-                    $agency->komisi_formatted = '+' . number_format($komisi / 1000000, 0, ',', '.') . ' jt';
-                } elseif ($komisi >= 1000) {
-                    $agency->komisi_formatted = '+' . number_format($komisi / 1000, 0, ',', '.') . ' rb';
-                } else {
-                    $agency->komisi_formatted = 'Rp' . number_format($komisi, 0, ',', '.');
-                }
-
-                return $agency;
-            });
+            ->get();
 
         return view('pages.affiliate.index', compact('topAgencies'));
     }
