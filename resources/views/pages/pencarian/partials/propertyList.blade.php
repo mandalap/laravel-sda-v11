@@ -23,20 +23,20 @@
                 <div class="flex flex-col gap-[6px]">
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/location2.png') }}"
-                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                         <p class="text-xs text-custom-gray-70 line-clamp-1">
                             {{ $item->lokasi->regency->name }}
                         </p>
                     </div>
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/category.png') }}"
-                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                         <p class="text-xs text-custom-gray-70 truncate">
                             {{ $item->kategori->kategori }}</p>
                     </div>
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('assets/images/icons/layer.png') }}"
-                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                            class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                         <p class="text-xs text-custom-gray-70 truncate">
                             Tersisa
                             {{ $item->project_product->where('status', 'Tersedia')->count() }} Unit
@@ -54,7 +54,7 @@
 
                 <div class="flex items-center gap-[6px]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                        fill="none">
+                        fill="none" aria-hidden="true">
                         <path
                             d="M0.666748 7.99984C0.666748 7.99984 3.33341 2.6665 8.00008 2.6665C12.6667 2.6665 15.3334 7.99984 15.3334 7.99984C15.3334 7.99984 12.6667 13.3332 8.00008 13.3332C3.33341 13.3332 0.666748 7.99984 0.666748 7.99984Z"
                             stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />

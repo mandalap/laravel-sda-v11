@@ -25,7 +25,7 @@
             <h1 class="text-sm leading-[20px]">Temukan Property Impian Kamu</h1>
         </div>
         <a href="#" class="flex justify-center items-center h-19 overflow-hidden rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[48px] h-[54px]" alt="icon">
+            <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[48px] h-[54px]" alt="" aria-hidden="true">
         </a>
     </div>
 
@@ -59,7 +59,7 @@
                 <a href="{{ route('properti.index', ['propertiKategori' => $kategori->slug]) }}">
                     <div class="flex flex-col items-center gap-1">
                         <div class="w-9 h-9 flex shrink-0">
-                            <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt="icon">
+                            <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt="" aria-hidden="true">
                         </div>
                         <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">
                             {{ $kategori->kategori }}
@@ -72,7 +72,7 @@
             <a href="{{ route('sajada.berdasi') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt="icon">
+                        <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt="" aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Pemberkasan</p>
                 </div>
@@ -80,7 +80,7 @@
             <a href="{{ route('sajada.jaksel') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt="icon">
+                        <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt="" aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kelola Lahan</p>
                 </div>
@@ -88,7 +88,7 @@
             <a href="{{ route('agen.index') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/agen.png') }}" class="object-cover" alt="icon">
+                        <img src="{{ asset('assets/images/icons/agen.png') }}" class="object-cover" alt="" aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Daftar Agen</p>
                 </div>
@@ -96,7 +96,7 @@
             <a href="{{ route('developer.index') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="icon">
+                        <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="" aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Developer</p>
                 </div>
@@ -111,7 +111,7 @@
                 <div class="flex gap-1 items-center">
                     <span class="text-sm text-primary">Lihat Semua</span>
                     <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                        alt="icon">
+                        alt="" aria-hidden="true">
                 </div>
             </a>
         </div>
@@ -143,17 +143,17 @@
                                 <div class="flex flex-col gap-1.5">
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/location2.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
+                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true">
                                         <p class="text-xs text-custom-gray-70">{{ $terbaru->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/category.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
+                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true">
                                         <p class="text-xs text-custom-gray-70">{{ $terbaru->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/layer.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="icon">
+                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true">
                                         <p class="text-xs text-custom-gray-70">
                                             Tersisa {{ $terbaru->project_product->where('status', 'Tersedia')->count() }}
                                             Unit
@@ -171,7 +171,7 @@
 
                                 <div class="flex items-center gap-[6px]">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 16 16" fill="none">
+                                        viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                         <path
                                             d="M0.666748 7.99984C0.666748 7.99984 3.33341 2.6665 8.00008 2.6665C12.6667 2.6665 15.3334 7.99984 15.3334 7.99984C15.3334 7.99984 12.6667 13.3332 8.00008 13.3332C3.33341 13.3332 0.666748 7.99984 0.666748 7.99984Z"
                                             stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
@@ -201,7 +201,7 @@
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                            alt="icon">
+                            alt="" aria-hidden="true">
                     </div>
                 </a>
             @endif
@@ -235,7 +235,7 @@
 
                         <div class="flex items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 16 16"
-                                fill="none">
+                                fill="none" aria-hidden="true">
                                 <path
                                     d="M0.666748 7.99984C0.666748 7.99984 3.33341 2.6665 8.00008 2.6665C12.6667 2.6665 15.3334 7.99984 15.3334 7.99984C15.3334 7.99984 12.6667 13.3332 8.00008 13.3332C3.33341 13.3332 0.666748 7.99984 0.666748 7.99984Z"
                                     stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
@@ -262,7 +262,7 @@
                 <div class="flex gap-1 items-center">
                     <span class="text-sm text-primary">Lihat Semua</span>
                     <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                        alt="icon">
+                        alt="" aria-hidden="true">
                 </div>
             </a>
         </div>
@@ -275,7 +275,7 @@
                         class="flex items-center rounded-lg p-2 gap-1.5 bg-white border border-custom-gray-40 overflow-hidden transition-all duration-300 hover:border-primary">
                         <div class="w-[47px] h-[47px] flex shrink-0 rounded-[4px] overflow-hidden">
                             <img src="{{ asset('storage/' . $city->thumbnail) }}" class="object-cover w-full h-full"
-                                alt="icon">
+                                alt="" aria-hidden="true">
                         </div>
                         <div class="flex flex-col">
                             <h3 class="font-medium text-xs">{{ $city->regency->name }}</h3>
@@ -300,7 +300,7 @@
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                            alt="icon">
+                            alt="" aria-hidden="true">
                     </div>
                 </a>
             @endif
@@ -333,20 +333,20 @@
                             <div class="flex flex-col gap-[6px]">
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/location2.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                                     <p class="text-xs text-custom-gray-70 line-clamp-1">
                                         {{ $kavlingterbaik->lokasi->regency->name }}
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/category.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         {{ $kavlingterbaik->kategori->kategori }}</p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/layer.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         Tersisa
                                         {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }} Unit
@@ -364,7 +364,7 @@
 
                             <div class="flex items-center gap-[6px]">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    viewBox="0 0 16 16" fill="none">
+                                    viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                     <path
                                         d="M0.666748 7.99984C0.666748 7.99984 3.33341 2.6665 8.00008 2.6665C12.6667 2.6665 15.3334 7.99984 15.3334 7.99984C15.3334 7.99984 12.6667 13.3332 8.00008 13.3332C3.33341 13.3332 0.666748 7.99984 0.666748 7.99984Z"
                                         stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
@@ -418,7 +418,7 @@
                     <div class="flex gap-1 items-center">
                         <span class="text-sm text-primary">Lihat Semua</span>
                         <img src="{{ asset('assets/images/icons/arrow-right.svg') }}" class="flex w-4 h-4 shrink-0"
-                            alt="icon">
+                            alt="" aria-hidden="true">
                     </div>
                 </a>
             @endif
@@ -451,20 +451,20 @@
                             <div class="flex flex-col gap-[6px]">
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/location2.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         {{ $hunianRekomendasi->lokasi->regency->name }}
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/category.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         {{ $hunianRekomendasi->kategori->kategori }}</p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/layer.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="icon">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         Tersisa
                                         {{ $hunianRekomendasi->project_product->where('status', 'Tersedia')->count() }}
@@ -483,7 +483,7 @@
 
                             <div class="flex items-center gap-[6px]">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    viewBox="0 0 16 16" fill="none">
+                                    viewBox="0 0 16 16" fill="none" aria-hidden="true">
                                     <path
                                         d="M0.666748 7.99984C0.666748 7.99984 3.33341 2.6665 8.00008 2.6665C12.6667 2.6665 15.3334 7.99984 15.3334 7.99984C15.3334 7.99984 12.6667 13.3332 8.00008 13.3332C3.33341 13.3332 0.666748 7.99984 0.666748 7.99984Z"
                                         stroke="#757575" stroke-linecap="round" stroke-linejoin="round" />
@@ -509,7 +509,7 @@
         <section id="Counter" class="flex flex-cols p-5 gap-3 justify-between bg-gray-100">
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="icon">
+                    <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="" aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -523,7 +523,7 @@
 
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="icon">
+                    <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="" aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -537,7 +537,7 @@
 
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="icon">
+                    <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="" aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -551,7 +551,7 @@
 
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="icon">
+                    <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="" aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -597,13 +597,13 @@
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/munzalan.png') }}"
-                                    class="w-full h-full object-contain" alt="Munzalan">
+                                    class="w-full h-full object-contain" alt="Balai Niaga Munzalan">
                             </div>
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/sajada.png') }}"
-                                    class="w-full h-full object-contain" alt="Sajada">
+                                    class="w-full h-full object-contain" alt="Sajada Digital Agency">
                             </div>
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
