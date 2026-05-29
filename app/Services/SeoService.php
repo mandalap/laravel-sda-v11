@@ -44,7 +44,7 @@ class SeoService
         OpenGraph::setUrl(url('/'));
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
-        OpenGraph::addImage(asset('assets/images/icons/logo.svg'));
+        OpenGraph::addImage(asset('assets/images/icons/logo.jpg'));
         OpenGraph::setSiteName($appName);
 
         TwitterCard::setTitle("Jual Tanah Kavling Murah & Kredit | {$appName}");
@@ -145,7 +145,7 @@ class SeoService
         OpenGraph::setDescription("Temukan {$pageTitle} terlengkap di {$appName}.");
         OpenGraph::setUrl(route('properti.index'));
         OpenGraph::addProperty('type', 'website');
-        OpenGraph::addImage(asset('assets/images/icons/logo.svg'));
+        OpenGraph::addImage(asset('assets/images/icons/logo.jpg'));
         OpenGraph::setSiteName($appName);
 
         TwitterCard::setDescription("Daftar {$pageTitle} terlengkap di {$appName}.");
@@ -178,7 +178,7 @@ class SeoService
         OpenGraph::setDescription("Cari properti berdasarkan kota di {$appName}.");
         OpenGraph::setUrl(route('lihatkota'));
         OpenGraph::addProperty('type', 'website');
-        OpenGraph::addImage(asset('assets/images/icons/logo.svg'));
+        OpenGraph::addImage(asset('assets/images/icons/logo.jpg'));
         OpenGraph::setSiteName($appName);
 
         JsonLd::setType('CollectionPage');
@@ -226,7 +226,7 @@ class SeoService
         OpenGraph::setDescription("Bergabung sebagai agen properti di {$appName} dan dapatkan komisi menarik.");
         OpenGraph::setUrl(route('agen.index'));
         OpenGraph::addProperty('type', 'website');
-        OpenGraph::addImage(asset('assets/images/icons/logo.svg'));
+        OpenGraph::addImage(asset('assets/images/icons/logo.jpg'));
         OpenGraph::setSiteName($appName);
 
         JsonLd::setType('WebPage');
