@@ -10,6 +10,7 @@ use App\Models\Agency;
 use App\Models\Affiliate;
 use Laratrust\Models\Role;
 use App\Providers\RouteServiceProvider;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +29,7 @@ class RegisterController extends Controller
 
     public function login(Request $request)
     {
+        SEOMeta::setRobots('noindex, nofollow');
         if ($request->session()->has('just_logged_out')) {
             $request->session()->forget('just_logged_out');
             return view('pages.register.login');
@@ -81,6 +83,7 @@ class RegisterController extends Controller
 
     public function daftar(Request $request)
     {
+        SEOMeta::setRobots('noindex, nofollow');
         $googlePending = null;
 
         if ($request->session()->has('google_pending')) {
@@ -103,6 +106,7 @@ class RegisterController extends Controller
 
     public function daftarWithReff($slug)
     {
+        SEOMeta::setRobots('noindex, nofollow');
         $agency = Agency::where('slug', strtolower($slug))
             ->where('status', 'active')
             ->first();
