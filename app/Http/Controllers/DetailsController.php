@@ -133,11 +133,11 @@ class DetailsController extends Controller
     }
 
     //
-    public function index($jenis, $kategori, $project, SeoService $seo)
+    public function index($jenisSlug, $kategoriSlug, $projectSlug, SeoService $seo)
     {
         try {
-            $jenis = Jenis::where('slug', $jenis)->firstOrFail();
-            $kategori = Kategori::where('slug', $kategori)->firstOrFail();
+            $jenis = Jenis::where('slug', $jenisSlug)->firstOrFail();
+            $kategori = Kategori::where('slug', $kategoriSlug)->firstOrFail();
 
             $whatsappConfig = WhatsappApiToken::where('status', 'active')->first();
 
@@ -149,20 +149,33 @@ class DetailsController extends Controller
                 'siteplan',
                 'lokasi.regency',
                 'project_product',
-            ])->where("slug", $project)->firstOrFail();
+            ])->where('slug', $projectSlug)->firstOrFail();
 
-            // Set SEO meta tags untuk halaman detail project
+            if ($project->jenis->slug !== $jenisSlug || $project->kategori->slug !== $kategoriSlug) {
+                return redirect()->route('detailproject', [
+                    $project->jenis->slug,
+                    $project->kategori->slug,
+                    $project->slug
+                ], 301);
+            }
+
             $seo->setForProjectDetail($project, $kategori, $jenis);
-
             views($project)->record();
 
-            // Ambil relasi yang sudah di-load
             $facilities = $project->projectFasilitas;
             $photos = $project->projectPhotos;
             $siteplan = $project->products;
             $brosurs = $project->projectsBrosur;
 
-            return view("pages.details.index", compact('project', 'photos', 'facilities', 'brosurs', 'kategori', 'siteplan', 'whatsappConfig'));
+            return view('pages.details.index', compact(
+                'project',
+                'photos',
+                'facilities',
+                'brosurs',
+                'kategori',
+                'siteplan',
+                'whatsappConfig'
+            ));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             abort(404, 'Halaman tidak ditemukan');
         }
