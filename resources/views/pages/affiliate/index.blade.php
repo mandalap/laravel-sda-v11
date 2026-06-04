@@ -71,10 +71,13 @@
         <x-no-data />
     @endforelse
 
-    <div class="relative px-5 mt-5 pb-6">
-        <x-button-primary id="open-affiliate-modal" type="button" :full-width="true">
-            Daftar sebagai Agen Penjualan
-        </x-button-primary>
+    <div id="bottom-button" class="relative flex w-full h-[80px] shrink-0">
+        <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-50">
+            <div class="flex items-center justify-center h-11 font-medium text-sm text-white bg-primary hover:bg-black rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                id="open-affiliate-modal">
+                Daftar sebagai Agen Penjualan
+            </div>
+        </div>
     </div>
 @endsection
 

@@ -14,13 +14,12 @@
 
     <div class="px-5">
         <div
-            class="w-full h-[210px] rounded-2xl border border-2 border-green-primary relative overflow-hidden flex items-center justify-center p-8">
+            class="w-full h-[210px] rounded-2xl border-2 border-green-primary relative overflow-hidden flex items-center justify-center p-8">
             <img src="{{ asset('assets/images/photos/sajada-jaksel.png') }}" alt="Sajada Jaksel"
                 class="max-w-full max-h-full object-contain">
         </div>
 
         <div class="mt-5">
-            {{-- Deskripsi Section --}}
             <div class="mb-5">
                 <h2 class="text-base font-semibold text-custom-gray-100 mb-2">Deskripsi</h2>
                 <p class="text-sm text-custom-gray-90 leading-relaxed">
@@ -29,7 +28,6 @@
                 </p>
             </div>
 
-            {{-- layanan Section --}}
             <div class="mb-5">
                 <h2 class="text-base font-semibold text-custom-gray-100 mb-2">Layanan</h2>
 
@@ -93,141 +91,10 @@
         </div>
     </div>
 
-    {{-- Contact Section --}}
-    {{-- <div class="bg-gradient-to-t from-green-secondary to-green-primary px-6 sm:px-5 pt-5 pb-10">
-        <h3 class="text-sm sm:text-base font-semibold text-custom-gray-10 text-center mb-4 sm:mb-6">
-            Partner Notaris Kami
-        </h3>
-        <div class="block md:hidden space-y-4 sm:space-y-6">
-            <div class="flex items-center gap-4 sm:gap-6">
-                <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 flex items-center justify-center">
-                    <div
-                        class="absolute w-16 h-16 sm:w-[78px] sm:h-[78px] bg-custom-gray-10 rounded-lg transform -rotate-[20deg]">
-                    </div>
-                    <div class="absolute w-16 h-16 sm:w-[78px] sm:h-[78px] bg-secondary-border rounded-lg"></div>
-                </div>
-                <div class="text-custom-gray-10 text-xs sm:text-sm ml-3 sm:ml-6 flex-1">
-                    <div class="flex mb-1">
-                        <span class="w-10 sm:w-12 flex-shrink-0">Nama</span>
-                        <span class="mx-1 sm:mx-2">:</span>
-                        <span class="font-medium truncate">Winifred Mante</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-10 sm:w-12 flex-shrink-0">Alamat</span>
-                        <span class="mx-1 sm:mx-2">:</span>
-                        <span class="font-medium truncate">90942 Pfeffer Meadows</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4 sm:gap-6 flex-row-reverse">
-                <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 flex items-center justify-center">
-                    <div
-                        class="absolute w-16 h-16 sm:w-[78px] sm:h-[78px] bg-custom-gray-10 rounded-lg transform rotate-[20deg]">
-                    </div>
-                    <div class="absolute w-16 h-16 sm:w-[78px] sm:h-[78px] bg-secondary-border rounded-lg"></div>
-                </div>
-                <div class="text-custom-gray-10 text-xs sm:text-sm ml-3 sm:ml-6 flex-1">
-                    <div class="flex mb-1">
-                        <span class="w-10 sm:w-12 flex-shrink-0">Nama</span>
-                        <span class="mx-1 sm:mx-2">:</span>
-                        <span class="font-medium truncate">Winifred Mante</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-10 sm:w-12 flex-shrink-0">Alamat</span>
-                        <span class="mx-1 sm:mx-2">:</span>
-                        <span class="font-medium truncate">90942 Pfeffer Meadows</span>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Partner 3 - Gambar di Kiri -->
-            <div class="flex items-center gap-4 sm:gap-6">
-                <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 flex items-center justify-center">
-                    <div
-                        class="absolute w-16 h-16 sm:w-[78px] sm:h-[78px] bg-custom-gray-10 rounded-lg transform -rotate-[20deg]">
-                    </div>
-                    <div class="absolute w-16 h-16 sm:w-[78px] sm:h-[78px] bg-secondary-border rounded-lg"></div>
-                </div>
-                <div class="text-custom-gray-10 text-xs sm:text-sm ml-3 sm:ml-6 flex-1">
-                    <div class="flex mb-1">
-                        <span class="w-10 sm:w-12 flex-shrink-0">Nama</span>
-                        <span class="mx-1 sm:mx-2">:</span>
-                        <span class="font-medium truncate">Winifred Mante</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-10 sm:w-12 flex-shrink-0">Alamat</span>
-                        <span class="mx-1 sm:mx-2">:</span>
-                        <span class="font-medium truncate">90942 Pfeffer Meadows</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Desktop: Grid Layout 3 Columns -->
-        <div class="hidden md:grid md:grid-cols-3 gap-6 lg:gap-8">
-            <!-- Partner 1 -->
-            <div class="flex flex-col items-center text-center">
-                <div class="relative w-24 h-24 mb-4 flex items-center justify-center">
-                    <div class="absolute w-[78px] h-[78px] bg-custom-gray-10 rounded-lg transform -rotate-[20deg]"></div>
-                    <div class="absolute w-[78px] h-[78px] bg-secondary-border rounded-lg"></div>
-                </div>
-                <div class="text-custom-gray-10 text-sm">
-                    <div class="mb-2">
-                        <span class="block font-medium">Winifred Mante</span>
-                        <span class="text-xs opacity-80">Nama</span>
-                    </div>
-                    <div>
-                        <span class="block font-medium">90942 Pfeffer Meadows</span>
-                        <span class="text-xs opacity-80">Alamat</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Partner 2 -->
-            <div class="flex flex-col items-center text-center">
-                <div class="relative w-24 h-24 mb-4 flex items-center justify-center">
-                    <div class="absolute w-[78px] h-[78px] bg-custom-gray-10 rounded-lg transform rotate-[20deg]"></div>
-                    <div class="absolute w-[78px] h-[78px] bg-secondary-border rounded-lg"></div>
-                </div>
-                <div class="text-custom-gray-10 text-sm">
-                    <div class="mb-2">
-                        <span class="block font-medium">Winifred Mante</span>
-                        <span class="text-xs opacity-80">Nama</span>
-                    </div>
-                    <div>
-                        <span class="block font-medium">90942 Pfeffer Meadows</span>
-                        <span class="text-xs opacity-80">Alamat</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Partner 3 -->
-            <div class="flex flex-col items-center text-center">
-                <div class="relative w-24 h-24 mb-4 flex items-center justify-center">
-                    <div class="absolute w-[78px] h-[78px] bg-custom-gray-10 rounded-lg transform -rotate-[20deg]"></div>
-                    <div class="absolute w-[78px] h-[78px] bg-secondary-border rounded-lg"></div>
-                </div>
-                <div class="text-custom-gray-10 text-sm">
-                    <div class="mb-2">
-                        <span class="block font-medium">Winifred Mante</span>
-                        <span class="text-xs opacity-80">Nama</span>
-                    </div>
-                    <div>
-                        <span class="block font-medium">90942 Pfeffer Meadows</span>
-                        <span class="text-xs opacity-80">Alamat</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     <div id="BottomNav" class="relative flex w-full h-[80px] shrink-0">
         <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-50">
             <div
                 class="flex items-center justify-between rounded-xl h-[66px] pl-6 pr-2 bg-gradient-to-l from-success-pressed to-green-primary">
-                <!-- Info Section -->
                 <div class="flex flex-col justify-center">
                     <span class="text-sm font-semibold text-custom-gray-10 leading-none mb-1 block">Butuh Informasi</span>
                     <span class="text-sm font-semibold text-custom-gray-10 leading-none block">Lebih Lanjut?</span>
