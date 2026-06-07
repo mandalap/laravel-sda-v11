@@ -145,7 +145,7 @@
     <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center w-full px-5 z-50">
         <a href="{{ route('beranda') }}"
             class="flex overflow-hidden justify-center items-center w-9 h-9 bg-white rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/arrow-left-primary.png') }}" class="w-5 h-5" alt="icon">
+            <img src="{{ asset('assets/images/icons/arrow-left-primary.png') }}" class="w-5 h-5" alt="" aria-hidden="true">
         </a>
     </div>
 
@@ -157,7 +157,7 @@
                         <a href="{{ asset('storage/' . $photo->photo) }}" data-fancybox="gallery"
                             data-caption="Foto {{ $index + 1 }} - {{ $project->nama_project }}">
                             <img src="{{ asset('storage/' . $photo->photo) }}" class="gallery-slide-image"
-                                alt="gallery thumbnails">
+                                alt="Foto {{ $index + 1 }} - {{ $project->nama_project }}" loading="lazy">
                         </a>
                     </div>
                 </div>
@@ -190,11 +190,11 @@
 
         <div id="Features" class="grid grid-cols-2 gap-3">
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/location2.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
+                <img src="{{ asset('assets/images/icons/location2.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">{{ $project->lokasi->regency->name }}</p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/layer.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
+                <img src="{{ asset('assets/images/icons/layer.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
                 @php
                     $stok = $project->project_product->where('status', 'Tersedia')->count();
                 @endphp
@@ -203,17 +203,17 @@
                 </p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/category.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
+                <img src="{{ asset('assets/images/icons/category.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">{{ $project->kategori->kategori }}</p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/size.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
+                <img src="{{ asset('assets/images/icons/size.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">
                     {{ $project->ukuran_kavling ?: '-' }}
                 </p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/file.png') }}" class="w-4 h-4 flex shrink-0" alt="icon">
+                <img src="{{ asset('assets/images/icons/file.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">Sertifikat {{ $project->sertifikat }}</p>
             </div>
         </div>
@@ -233,13 +233,13 @@
                     <a href="{{ route('detailproject.contact', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
                         class="p-2 rounded-xl flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="chat">
+                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="" aria-hidden="true">
                         </div>
                     </a>
                 @else
                     <div class="p-2 rounded-xl flex items-center gap-2 opacity-50 cursor-not-allowed">
                         <div class="w-9 h-9 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="chat">
+                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="" aria-hidden="true">
                         </div>
                     </div>
                 @endif
@@ -304,7 +304,7 @@
                             class="bonus-card flex items-center rounded-[22px] border border-custom-gray-40 p-[10px] gap-3 hover:border-[#d40065] transition-all duration-300">
                             <div class="flex w-[26px] h-[26px] shrink-0">
                                 <img src="{{ asset('assets/images/icons/check-mark.svg') }}"
-                                    class="object-cover w-full h-full" alt="icon">
+                                    class="object-cover w-full h-full" alt="" aria-hidden="true">
                             </div>
                             <div>
                                 <p class="font-semibold">{{ $facility->fasilitas }}</p>
@@ -315,7 +315,7 @@
                             class="bonus-card flex items-center rounded-[22px] border border-custom-gray-40 p-[10px] gap-3 hover:border-[#d40065] transition-all duration-300">
                             <div class="flex w-[26px] h-[26px] shrink-0">
                                 <img src="{{ asset('assets/images/icons/check-mark.svg') }}"
-                                    class="object-cover w-full h-full" alt="icon">
+                                    class="object-cover w-full h-full" alt="" aria-hidden="true">
                             </div>
                             <div>
                                 <p class="font-semibold">Belum Ada Fasilitas</p>
