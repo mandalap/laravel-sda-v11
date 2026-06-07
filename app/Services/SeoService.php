@@ -21,22 +21,6 @@ class SeoService
         $appName = config('app.name', 'Sajada Digital');
 
         SEOMeta::setDescription("Cari tanah kavling murah, tanah kavling kredit, rumah, dan properti terbaik di Pontianak, Kubu Raya & sekitarnya. Booking online mudah & aman bersama {$appName}.");
-        SEOMeta::setKeywords([
-            'tanah kavling murah',
-            'tanah kavling kredit',
-            'tanah kavling pontianak',
-            'jual tanah kavling',
-            'kavling murah pontianak',
-            'properti pontianak',
-            'tanah murah pontianak',
-            'kavling kredit murah',
-            'beli tanah kavling',
-            'investasi tanah kavling',
-            'tanah kavling kubu raya',
-            'sajada digital',
-            'rumah murah pontianak',
-            'booking tanah online',
-        ]);
         SEOMeta::setCanonical(url('/'));
 
         OpenGraph::setTitle("Jual Tanah Kavling Murah & Kredit | {$appName}");
@@ -62,33 +46,21 @@ class SeoService
     public function setForProjectDetail(Project $project, Kategori $kategori, Jenis $jenis): void
     {
         $appName = config('app.name', 'Sajada Digital');
-
         $pricing = $project->getPricingInfo();
         $priceText = $project->formatShortPrice($pricing['min_price']);
-
         $lokasi = optional(optional($project->lokasi)->regency)->name ?? 'Indonesia';
 
-        // Title: Nama Project - Kategori Lokasi
-        $title = "{$project->nama_project} - {$kategori->kategori} {$lokasi}";
+        $title = "{$project->nama_project} | {$kategori->kategori} {$lokasi} – {$appName}";
 
-        $deskripsiClean = Str::limit(strip_tags($project->deskripsi ?? ''), 120);
-        $description = "Jual {$kategori->kategori} {$project->nama_project} mulai {$priceText} di {$lokasi}. {$deskripsiClean} Booking online sekarang!";
+        $deskripsiClean = Str::limit(strip_tags($project->deskripsi ?? ''), 100);
+        $description = "Jual {$kategori->kategori} {$project->nama_project} mulai {$priceText} "
+            . "di {$lokasi}. {$deskripsiClean} Booking sekarang!";
+        SEOMeta::setDescription(Str::limit($description, 160));
 
         // Canonical URL
         $canonicalUrl = route('detailproject', [$jenis->slug, $kategori->slug, $project->slug]);
 
         SEOMeta::setDescription($description);
-        SEOMeta::setKeywords([
-            $project->nama_project,
-            $kategori->kategori,
-            "{$kategori->kategori} {$lokasi}",
-            "{$kategori->kategori} murah",
-            "tanah kavling {$lokasi}",
-            "properti {$lokasi}",
-            "jual {$kategori->kategori} {$lokasi}",
-            "{$kategori->kategori} kredit",
-            'sajada digital',
-        ]);
         SEOMeta::setCanonical($canonicalUrl);
 
         OpenGraph::setTitle("{$project->nama_project} | {$kategori->kategori}");
@@ -98,13 +70,13 @@ class SeoService
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::setSiteName($appName);
         if ($project->thumbnail) {
-            OpenGraph::addImage(asset('storage/' . $project->thumbnail));
+            OpenGraph::addImage(asset('storage/' . ltrim($project->thumbnail, '/')));
         }
 
         TwitterCard::setTitle("{$project->nama_project} | {$kategori->kategori}");
         TwitterCard::setDescription("Mulai {$priceText} di {$lokasi}. Booking online sekarang!");
         if ($project->thumbnail) {
-            TwitterCard::setImage(asset('storage/' . $project->thumbnail));
+            TwitterCard::setImage(asset('storage/' . ltrim($project->thumbnail, '/')));
         }
 
         // JSON-LD - RealEstateListing Schema
@@ -113,7 +85,7 @@ class SeoService
         JsonLd::setDescription(Str::limit(strip_tags($project->deskripsi ?? ''), 200));
         JsonLd::setUrl($canonicalUrl);
         if ($project->thumbnail) {
-            JsonLd::addImage(asset('storage/' . $project->thumbnail));
+            JsonLd::addImage(asset('storage/' . ltrim($project->thumbnail, '/')));
         }
     }
 
@@ -125,17 +97,6 @@ class SeoService
         $appName = config('app.name', 'Sajada Digital');
 
         SEOMeta::setDescription("Daftar {$pageTitle} terlengkap. Tanah kavling murah, kredit, dan properti terbaik di Pontianak & sekitarnya. Cari dan booking properti impian Anda sekarang di {$appName}!");
-        SEOMeta::setKeywords([
-            strtolower($pageTitle),
-            'tanah kavling murah',
-            'properti murah pontianak',
-            'daftar properti',
-            'tanah kavling kredit',
-            'jual properti',
-            'kavling murah',
-            'rumah murah',
-            'sajada digital',
-        ]);
         SEOMeta::setCanonical(route('properti.index'));
 
         if (request()->getQueryString()) {
@@ -164,14 +125,6 @@ class SeoService
         $appName = config('app.name', 'Sajada Digital');
 
         SEOMeta::setDescription("Cari tanah kavling, rumah, dan properti berdasarkan kota. Temukan properti terbaik di Pontianak, Kubu Raya, dan kota lainnya bersama {$appName}.");
-        SEOMeta::setKeywords([
-            'properti pontianak',
-            'tanah kavling pontianak',
-            'properti kubu raya',
-            'cari properti berdasarkan kota',
-            'lokasi properti',
-            'sajada digital',
-        ]);
         SEOMeta::setCanonical(route('lihatkota'));
 
         OpenGraph::setTitle("Pilih Kota | {$appName}");
@@ -212,16 +165,8 @@ class SeoService
         $appName = config('app.name', 'Sajada Digital');
 
         SEOMeta::setDescription("Daftar agen properti terbaik di {$appName}. Bergabung sebagai agen dan dapatkan komisi menarik dari setiap penjualan properti di Pontianak & sekitarnya.");
-        SEOMeta::setKeywords([
-            'daftar agen properti pontianak',
-            'agen properti pontianak',
-            'komisi properti pontianak',
-            'affiliate properti',
-            'lowongan agen properti',
-            'sajada digital agen',
-        ]);
         SEOMeta::setCanonical(route('agen.index'));
-        
+
         OpenGraph::setTitle("Daftar Agen Properti | {$appName}");
         OpenGraph::setDescription("Bergabung sebagai agen properti di {$appName} dan dapatkan komisi menarik.");
         OpenGraph::setUrl(route('agen.index'));
