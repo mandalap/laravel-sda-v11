@@ -182,8 +182,8 @@
                     'strike_class' => 'text-sm text-custom-gray-80 font-medium',
                     'strike_top' => '6px',
                 ]) !!}</p>
-            <h2 class="text-lg text-custom-gray-100 font-medium">{{ $project->nama_project }}</h2>
-            <p class="text-sm text-custom-gray-90 font medium">{{ $project->alamat_project }}</p>
+            <h1 class="text-lg text-custom-gray-100 font-medium">{{ $project->nama_project }}</h1>
+            <h2 class="text-sm text-custom-gray-90 font medium">{{ $project->alamat_project }}</h2>
         </div>
 
         <hr class="border-custom-gray-40 -mx-5">
