@@ -22,6 +22,7 @@
         "livewire/livewire": "^3.6",
         "midtrans/midtrans-php": "^2.6",
         "realrashid/sweet-alert": "^7.3",
+        "resend/resend-laravel": "^1.4",
         "santigarcor/laratrust": "^8.4",
         "spatie/laravel-activitylog": "^4.10"
     },
