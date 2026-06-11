@@ -34,7 +34,6 @@ class AdminPanelProvider extends PanelProvider
             ->authGuard('web')
             ->authPasswordBroker('users')
             ->profile(isSimple: false)
-            ->databaseNotifications()
             ->databaseTransactions()
             ->unsavedChangesAlerts()
             ->navigationGroups([

@@ -283,9 +283,14 @@ class PurchaseTransactionResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('Detail'),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('detail')
+                    ->label('Detail')
+                    ->icon('heroicon-o-eye')
+                    ->color('info')
+                    ->url(fn($record) => static::getUrl('view', ['record' => $record])),
+
+                Tables\Actions\EditAction::make()
+                    ->label('Edit'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
