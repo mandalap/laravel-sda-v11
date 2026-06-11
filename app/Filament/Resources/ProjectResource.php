@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
+use App\Filament\Resources\ProjectResource\RelationManagers\ProductsRelationManager;
 use App\Models\Developer;
 use App\Models\Jenis;
 use App\Models\Kategori;
@@ -340,8 +341,7 @@ class ProjectResource extends Resource
                     }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make()
-                    ->label('Detail')
-                    ->color('warning'),
+                    ->label('Detail'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -355,7 +355,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProductsRelationManager::class,
         ];
     }
 
@@ -364,6 +364,7 @@ class ProjectResource extends Resource
         return [
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
+            'view'   => Pages\ViewProject::route('/{record}'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
