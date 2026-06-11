@@ -48,8 +48,8 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
-        'ses' => [
-            'transport' => 'ses',
+        'resend' => [
+            'transport' => 'resend',
         ],
 
         'postmark' => [
