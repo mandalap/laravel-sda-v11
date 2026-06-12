@@ -100,7 +100,7 @@
                     <span class="text-sm font-semibold text-custom-gray-10 leading-none block">Lebih Lanjut?</span>
                 </div>
 
-                <a href="https://wa.me/6281234567890" target="_blank"
+                <a href="https://wa.me/6285179888988" target="_blank"
                     class="flex items-center justify-center shrink-0 rounded-full w-[170px] h-[40px] px-2 bg-custom-gray-10 hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap overflow-hidden">
                     <img src="{{ asset('assets/images/icons/logo-whatsapp.png') }}" alt="WhatsApp" class="w-[22px] h-[22px] mr-1 flex-shrink-0">
                     <span class="text-sm font-semibold text-success-pressed">Hubungi Kami</span>
