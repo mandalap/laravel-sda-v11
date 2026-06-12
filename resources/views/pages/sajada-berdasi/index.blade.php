@@ -19,7 +19,6 @@
         </div>
 
         <div class="mt-5">
-            {{-- Deskripsi Section --}}
             <div class="mb-5">
                 <h2 class="text-base font-semibold text-custom-gray-100 mb-2">Deskripsi</h2>
                 <p class="text-sm text-custom-gray-90 leading-relaxed">
@@ -28,7 +27,6 @@
                 </p>
             </div>
 
-            {{-- layanan Section --}}
             <div class="mb-5">
                 <h2 class="text-base font-semibold text-custom-gray-100 mb-2">Layanan</h2>
 
@@ -119,18 +117,16 @@
         </div>
     </div>
 
-    {{-- Contact Section --}}
     <div id="BottomNav" class="relative flex w-full h-[80px] shrink-0">
         <div class="fixed bottom-5 w-full max-w-[640px] px-5 z-50">
             <div
                 class="flex items-center justify-between rounded-xl h-[66px] pl-6 pr-2 bg-gradient-to-l from-secondary to-primary">
-                <!-- Info Section -->
                 <div class="flex flex-col justify-center">
                     <span class="text-sm font-semibold text-custom-gray-10 leading-none mb-1 block">Butuh Informasi</span>
                     <span class="text-sm font-semibold text-custom-gray-10 leading-none block">Lebih Lanjut?</span>
                 </div>
 
-                <a href="https://wa.me/6281234567890" target="_blank"
+                <a href="https://wa.me/6285179888988" target="_blank"
                     class="flex items-center justify-center shrink-0 rounded-full w-[170px] h-[40px] px-2 bg-custom-gray-10 hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap overflow-hidden">
                     <img src="{{ asset('assets/images/icons/logo-whatsapp.png') }}" alt="WhatsApp"
                         class="w-[22px] h-[22px] mr-1 flex-shrink-0">
