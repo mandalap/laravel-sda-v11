@@ -66,8 +66,34 @@
                 </div>
             </div>
         </div>
-
         @livewire('affiliate-members')
+
+        <div id="BottomNav" class="relative flex w-full h-[80px] shrink-0">
+            <div class="bottom-5 w-full max-w-[640px]">
+                <div
+                    class="flex items-center justify-between rounded-xl h-[66px] pl-6 pr-2 bg-gradient-to-l from-secondary to-primary">
+                    <div class="flex flex-col justify-center max-w-[150px] sm:max-w-none">
+                        <span class="text-sm font-semibold text-custom-gray-10 leading-tight">
+                            Butuh Informasi Project Terbaru?
+                        </span>
+                    </div>
+
+                    <a href="https://chat.whatsapp.com/LEEcdfholM34yGKx0szuio" target="_blank"
+                        class="flex items-center justify-center shrink-0 rounded-full
+                        h-[40px]
+                        px-3 sm:px-4
+                        min-w-[130px] sm:min-w-[170px]
+                        bg-custom-gray-10
+                        hover:bg-black hover:text-white
+                        transition-all duration-300">
+                        <img src="{{ asset('assets/images/icons/logo-whatsapp.png') }}" alt="WhatsApp"
+                            class="w-5 h-5 sm:w-[22px] sm:h-[22px] mr-1 flex-shrink-0">
+                        <span class="text-sm font-semibold text-primary whitespace-nowrap">Gabung Sekarang</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
     @include('includes.footerAgency')
 @endsection
