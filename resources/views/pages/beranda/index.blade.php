@@ -25,7 +25,8 @@
             <h1 class="text-sm leading-[20px]">Temukan Property Impian Kamu</h1>
         </div>
         <a href="#" class="flex justify-center items-center h-19 overflow-hidden rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[48px] h-[54px]" alt="" aria-hidden="true">
+            <img src="{{ asset('assets/images/icons/logo.svg') }}" class="w-[48px] h-[54px]" alt=""
+                aria-hidden="true">
         </a>
     </div>
 
@@ -59,7 +60,8 @@
                 <a href="{{ route('properti.index', ['propertiKategori' => $kategori->slug]) }}">
                     <div class="flex flex-col items-center gap-1">
                         <div class="w-9 h-9 flex shrink-0">
-                            <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt="" aria-hidden="true">
+                            <img src="{{ asset('storage/' . $kategori->icon) }}" class="object-cover" alt=""
+                                aria-hidden="true">
                         </div>
                         <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">
                             {{ $kategori->kategori }}
@@ -72,7 +74,8 @@
             <a href="{{ route('sajada.berdasi') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt="" aria-hidden="true">
+                        <img src="{{ asset('assets/images/icons/berdasi.png') }}" class="object-cover" alt=""
+                            aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Pemberkasan</p>
                 </div>
@@ -80,7 +83,8 @@
             <a href="{{ route('sajada.jaksel') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt="" aria-hidden="true">
+                        <img src="{{ asset('assets/images/icons/jaksel.png') }}" class="object-cover" alt=""
+                            aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Kelola Lahan</p>
                 </div>
@@ -88,7 +92,8 @@
             <a href="{{ route('agen.index') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/agen.png') }}" class="object-cover" alt="" aria-hidden="true">
+                        <img src="{{ asset('assets/images/icons/agen.png') }}" class="object-cover" alt=""
+                            aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Daftar Agen</p>
                 </div>
@@ -96,7 +101,8 @@
             <a href="{{ route('developer.index') }}">
                 <div class="flex flex-col items-center gap-1">
                     <div class="w-9 h-9 flex shrink-0">
-                        <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt="" aria-hidden="true">
+                        <img src="{{ asset('assets/images/icons/kerja-sama.png') }}" class="object-cover" alt=""
+                            aria-hidden="true">
                     </div>
                     <p class="font-medium text-center text-xs text-custom-gray-90 leading-[21px]">Developer</p>
                 </div>
@@ -125,7 +131,7 @@
                             <div
                                 class="flex flex-col w-[250px] shrink-0 rounded-2xl border border-custom-gray-40 p-3 gap-[10px] hover:border-primary text-black transition-all duration-300">
                                 <div class="relative">
-                                    <div class="flex w-full h-[180px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
+                                    <div class="flex w-full h-[210px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
                                         <img src="{{ asset('storage/' . $terbaru->thumbnail) }}"
                                             class="object-cover w-full h-full" alt="{{ $terbaru->nama_project }}">
                                     </div>
@@ -133,9 +139,9 @@
                                 </div>
 
                                 <div class="flex flex-col gap-1">
-                                    <h3 class="text-sm font-medium text-custom-gray-100">{{ $terbaru->nama_project }}</h3>
-                                    <p class="text-xs text-custom-gray-70">
-                                        {{ \Illuminate\Support\Str::limit($terbaru->alamat_project, 35) }}</p>
+                                    <h3 class="text-sm font-medium text-custom-gray-100 truncate">
+                                        {{ $terbaru->nama_project }}</h3>
+                                    <p class="text-xs text-custom-gray-70 truncate">{{ $terbaru->alamat_project }}</p>
                                 </div>
 
                                 <hr class="border-custom-gray-30">
@@ -223,10 +229,10 @@
                         </div>
 
                         <div class="flex flex-col gap-1">
-                            <h3 class="text-xs font-medium text-custom-gray-100 line-clamp-2">{{ $popular->nama_project }}
+                            <h3 class="text-xs font-medium text-custom-gray-100 line-clamp-1">{{ $popular->nama_project }}
                             </h3>
-                            <p class="text-[10px] text-custom-gray-70 line-clamp-1">
-                                {{ \Illuminate\Support\Str::limit($popular->alamat_project, 25) }}</p>
+                            <p class="text-[10px] text-custom-gray-70 truncate">
+                                {{ $popular->alamat_project }}</p>
                         </div>
 
                         <div class="flex items-center">
@@ -509,7 +515,8 @@
         <section id="Counter" class="flex flex-cols p-5 gap-3 justify-between bg-gray-100">
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt="" aria-hidden="true">
+                    <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt=""
+                        aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -523,7 +530,8 @@
 
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt="" aria-hidden="true">
+                    <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt=""
+                        aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -537,7 +545,8 @@
 
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt="" aria-hidden="true">
+                    <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt=""
+                        aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -551,7 +560,8 @@
 
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
-                    <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt="" aria-hidden="true">
+                    <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt=""
+                        aria-hidden="true">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
