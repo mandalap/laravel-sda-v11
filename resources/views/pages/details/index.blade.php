@@ -145,7 +145,8 @@
     <div id="TopNavAbsolute" class="absolute top-[30px] flex items-center w-full px-5 z-50">
         <a href="{{ route('beranda') }}"
             class="flex overflow-hidden justify-center items-center w-9 h-9 bg-white rounded-full shrink-0">
-            <img src="{{ asset('assets/images/icons/arrow-left-primary.png') }}" class="w-5 h-5" alt="" aria-hidden="true">
+            <img src="{{ asset('assets/images/icons/arrow-left-primary.png') }}" class="w-5 h-5" alt=""
+                aria-hidden="true">
         </a>
     </div>
 
@@ -190,11 +191,13 @@
 
         <div id="Features" class="grid grid-cols-2 gap-3">
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/location2.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
+                <img src="{{ asset('assets/images/icons/location2.png') }}" class="w-4 h-4 flex shrink-0" alt=""
+                    aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">{{ $project->lokasi->regency->name }}</p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/layer.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
+                <img src="{{ asset('assets/images/icons/layer.png') }}" class="w-4 h-4 flex shrink-0" alt=""
+                    aria-hidden="true">
                 @php
                     $stok = $project->project_product->where('status', 'Tersedia')->count();
                 @endphp
@@ -203,48 +206,48 @@
                 </p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/category.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
+                <img src="{{ asset('assets/images/icons/category.png') }}" class="w-4 h-4 flex shrink-0" alt=""
+                    aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">{{ $project->kategori->kategori }}</p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/size.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
+                <img src="{{ asset('assets/images/icons/size.png') }}" class="w-4 h-4 flex shrink-0" alt=""
+                    aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">
                     {{ $project->ukuran_kavling ?: '-' }}
                 </p>
             </div>
             <div class="flex items-center gap-[6px]">
-                <img src="{{ asset('assets/images/icons/file.png') }}" class="w-4 h-4 flex shrink-0" alt="" aria-hidden="true">
+                <img src="{{ asset('assets/images/icons/file.png') }}" class="w-4 h-4 flex shrink-0" alt=""
+                    aria-hidden="true">
                 <p class="text-sm text-custom-gray-80 font-medium">Sertifikat {{ $project->sertifikat }}</p>
             </div>
         </div>
 
-        <hr class="border-custom-gray-40 -mx-5">
-
-        <div id="Contact" class="flex flex-col">
-            <div class="flex flex-row gap-3 justify-between items-center">
-                <div class="flex flex-col">
-                    <h2 class="text-sm text-custom-gray-100 font-bold">Hubungi Admin</h2>
-                    <div class="text-xs text-custom-gray-90">
-                        Tanyakan apapun terkait dengan produk ini secara langsung ke Admin kami.
-                    </div>
+        @if ($whatsappConfig && $whatsappConfig->sender)
+            <hr class="border-custom-gray-40 -mx-5">
+            <div
+                class="flex items-center gap-3 rounded-xl min-h-[66px] pl-3 pr-3 py-2 bg-gradient-to-l from-success-pressed to-green-primary">
+                <div class="flex flex-col justify-center flex-1 min-w-0">
+                    <span class="text-xs sm:text-sm font-semibold text-custom-gray-10 leading-tight">
+                        Butuh Informasi Detail Terkait Produk?
+                    </span>
                 </div>
 
-                @if ($whatsappConfig && $whatsappConfig->sender)
-                    <a href="{{ route('detailproject.contact', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
-                        class="p-2 rounded-xl flex items-center gap-2 hover:opacity-80 transition-opacity">
-                        <div class="w-9 h-9 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="" aria-hidden="true">
-                        </div>
-                    </a>
-                @else
-                    <div class="p-2 rounded-xl flex items-center gap-2 opacity-50 cursor-not-allowed">
-                        <div class="w-9 h-9 bg-gray-400 rounded-full flex items-center justify-center flex-shrink-0">
-                            <img src="{{ asset('assets/images/icons/chat.svg') }}" class="w-5 h-5" alt="" aria-hidden="true">
-                        </div>
-                    </div>
-                @endif
+                <a href="{{ route('detailproject.contact', [$project->jenis->slug, $project->kategori->slug, $project->slug]) }}"
+                    class="flex items-center justify-center shrink-0 rounded-full
+                h-[40px]
+                px-3 sm:px-4
+                min-w-[110px] sm:min-w-[170px]
+                bg-custom-gray-10
+                hover:bg-black hover:text-white
+                transition-all duration-300">
+                    <img src="{{ asset('assets/images/icons/logo-whatsapp.png') }}" alt="WhatsApp"
+                        class="w-5 h-5 sm:w-[22px] sm:h-[22px] mr-1 flex-shrink-0">
+                    <span class="text-sm font-semibold text-success-pressed whitespace-nowrap">Hubungi Kami</span>
+                </a>
             </div>
-        </div>
+        @endif
 
         <hr class="border-custom-gray-40 -mx-5">
 
