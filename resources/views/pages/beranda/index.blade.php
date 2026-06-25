@@ -133,7 +133,7 @@
                                 <div class="relative">
                                     <div class="flex w-full h-[210px] shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
                                         <img src="{{ asset('storage/' . $terbaru->thumbnail) }}"
-                                            class="object-cover w-full h-full" alt="{{ $terbaru->nama_project }}">
+                                            class="object-cover w-full h-full" alt="{{ $terbaru->nama_project }}" loading="lazy">
                                     </div>
                                     <x-project-availability-badge :project="$terbaru" />
                                 </div>
@@ -149,17 +149,17 @@
                                 <div class="flex flex-col gap-1.5">
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/location2.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true">
+                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true" loading="lazy">
                                         <p class="text-xs text-custom-gray-70">{{ $terbaru->lokasi->regency->name }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/category.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true">
+                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true" loading="lazy">
                                         <p class="text-xs text-custom-gray-70">{{ $terbaru->kategori->kategori }}</p>
                                     </div>
                                     <div class="flex items-center gap-[6px]">
                                         <img src="{{ asset('assets/images/icons/layer.png') }}"
-                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true">
+                                            class="flex w-5 h-5 shrink-0" alt="" aria-hidden="true" loading="lazy">
                                         <p class="text-xs text-custom-gray-70">
                                             Tersisa {{ $terbaru->project_product->where('status', 'Tersedia')->count() }}
                                             Unit
@@ -223,7 +223,7 @@
                         <div class="relative">
                             <div class="flex w-full h-full shrink-0 rounded bg-[#D9D9D9] overflow-hidden">
                                 <img src="{{ asset('storage/' . $popular->thumbnail) }}"
-                                    class="object-cover w-full h-full" alt="{{ $popular->nama_project }}">
+                                    class="object-cover w-full h-full" alt="{{ $popular->nama_project }}" loading="lazy">
                             </div>
                             <x-project-availability-badge :project="$popular" />
                         </div>
@@ -281,7 +281,7 @@
                         class="flex items-center rounded-lg p-2 gap-1.5 bg-white border border-custom-gray-40 overflow-hidden transition-all duration-300 hover:border-primary">
                         <div class="w-[47px] h-[47px] flex shrink-0 rounded-[4px] overflow-hidden">
                             <img src="{{ asset('storage/' . $city->thumbnail) }}" class="object-cover w-full h-full"
-                                alt="" aria-hidden="true">
+                                alt="" aria-hidden="true" loading="lazy">
                         </div>
                         <div class="flex flex-col">
                             <h3 class="font-medium text-xs">{{ $city->regency->name }}</h3>
@@ -321,7 +321,7 @@
                         <div
                             class="relative w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                             <img src="{{ asset('storage/' . $kavlingterbaik->thumbnail) }}"
-                                class="w-full h-full object-contain" alt="{{ $kavlingterbaik->nama_project }}">
+                                class="w-full h-full object-contain" alt="{{ $kavlingterbaik->nama_project }}" loading="lazy">
                             <x-project-availability-badge :project="$kavlingterbaik" />
                         </div>
 
@@ -339,20 +339,20 @@
                             <div class="flex flex-col gap-[6px]">
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/location2.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true" loading="lazy">
                                     <p class="text-xs text-custom-gray-70 line-clamp-1">
                                         {{ $kavlingterbaik->lokasi->regency->name }}
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/category.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true" loading="lazy">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         {{ $kavlingterbaik->kategori->kategori }}</p>
                                 </div>
                                 <div class="flex items-center gap-[6px]">
                                     <img src="{{ asset('assets/images/icons/layer.png') }}"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" alt="" aria-hidden="true" loading="lazy">
                                     <p class="text-xs text-custom-gray-70 truncate">
                                         Tersisa
                                         {{ $kavlingterbaik->project_product->where('status', 'Tersedia')->count() }} Unit
@@ -404,7 +404,7 @@
                                     <div
                                         class="w-full h-full rounded-[20px] overflow-hidden hover:border-primary transition-all duration-300">
                                         <img src="{{ asset('storage/' . $banner->image) }}"
-                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial">
+                                            class="w-full h-full object-cover rounded-[20px]" alt="testimonial" loading="lazy">
                                     </div>
                                 </div>
                             @endforeach
@@ -438,7 +438,7 @@
                         <div
                             class="relative w-40 sm:w-40 md:w-60 flex-shrink-0 flex items-center justify-center rounded overflow-hidden bg-custom-gray-10">
                             <img src="{{ asset('storage/' . $hunianRekomendasi->thumbnail) }}"
-                                class="w-full h-full object-contain" alt="{{ $hunianRekomendasi->nama_project }}">
+                                class="w-full h-full object-contain" alt="{{ $hunianRekomendasi->nama_project }}" loading="lazy">
                             <x-project-availability-badge :project="$hunianRekomendasi" />
                         </div>
 
@@ -516,7 +516,7 @@
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/estate-agent.svg') }}" class="object-cover" alt=""
-                        aria-hidden="true">
+                        aria-hidden="true" loading="lazy">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -531,7 +531,7 @@
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/property.svg') }}" class="object-cover" alt=""
-                        aria-hidden="true">
+                        aria-hidden="true" loading="lazy">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -546,7 +546,7 @@
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/leader.png') }}" class="object-cover" alt=""
-                        aria-hidden="true">
+                        aria-hidden="true" loading="lazy">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -561,7 +561,7 @@
             <article class="flex flex-col items-center">
                 <div class="flex justify-center items-center mb-6 w-14 h-14">
                     <img src="{{ asset('assets/images/icons/group.svg') }}" class="object-cover" alt=""
-                        aria-hidden="true">
+                        aria-hidden="true" loading="lazy">
                 </div>
                 <h2 class="text-center">
                     <div class="flex items-center justify-center mb-2">
@@ -576,7 +576,7 @@
     </div>
 
     <div class="counter-wrapper mt-5">
-        <section id="PartnerKerjasama" class="flex flex-col gap-3 p-4 bg-primary">
+        <section id="PartnerKerjasama" class="flex flex-col gap-3 py-4 bg-primary">
             <div class="flex justify-center w-full">
                 <p class="text-center text-custom-gray-10 text-base font-semibold">
                     Partner Kerjasama Kami
@@ -584,46 +584,84 @@
             </div>
 
             <div class="partner-swiper-container overflow-hidden w-full">
-                <div class="partner-swiper">
+                <div class="partner-swiper-row1">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/riil-property.png') }}"
-                                    class="w-full h-full object-contain" alt="Riil Property">
+                                    class="w-full h-full object-contain" alt="Riil Property" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/erka-land.png') }}"
-                                    class="w-full h-full object-contain" alt="Erka Land">
+                                    class="w-full h-full object-contain" alt="Erka Land" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/baiti-land.png') }}"
-                                    class="w-full h-full object-contain" alt="Baiti Land">
+                                    class="w-full h-full object-contain" alt="Baiti Land" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/munzalan.png') }}"
-                                    class="w-full h-full object-contain" alt="Balai Niaga Munzalan">
+                                    class="w-full h-full object-contain" alt="Balai Niaga Munzalan" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/sajada.png') }}"
-                                    class="w-full h-full object-contain" alt="Sajada Digital Agency">
+                                    class="w-full h-full object-contain" alt="Sajada Digital Agency" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide flex items-center justify-center">
                             <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
                                 <img src="{{ asset('assets/images/photos/propertimu.png') }}"
-                                    class="w-full h-full object-contain" alt="Propertimu">
+                                    class="w-full h-full object-contain" alt="Propertimu" loading="lazy">
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="partner-swiper-container overflow-hidden w-full">
+                <div class="partner-swiper-row2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/awan-kavling.png') }}"
+                                    class="w-full h-full object-contain" alt="Awan Kavling" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/massland.png') }}"
+                                    class="w-full h-full object-contain" alt="Massland" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/ladjaime-land.png') }}"
+                                    class="w-full h-full object-contain" alt="Ladjaime Land" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/pesona-jaya-properti.png') }}"
+                                    class="w-full h-full object-contain" alt="Pesona Jaya Properti" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="swiper-slide flex items-center justify-center">
+                            <div class="w-[80px] h-[80px] bg-white rounded-lg p-2 flex items-center justify-center">
+                                <img src="{{ asset('assets/images/photos/grand-fa.png') }}"
+                                    class="w-full h-full object-contain" alt="Grand FA" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 
@@ -691,15 +729,47 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            var partnerSwiper = new Swiper('.partner-swiper', {
+            // Baris 1: Geser ke Kiri (default direction)
+            var partnerSwiperRow1 = new Swiper('.partner-swiper-row1', {
                 slidesPerView: 4,
                 spaceBetween: 8,
                 loop: true,
                 autoplay: {
-                    delay: 2000,
+                    delay: 0,
                     disableOnInteraction: false,
                 },
-                speed: 1000,
+                speed: 3000,
+                freeMode: true,
+                freeModeMomentum: false,
+                breakpoints: {
+                    320: {
+                        slidesPerView: 4,
+                        spaceBetween: 8,
+                    },
+                    480: {
+                        slidesPerView: 4,
+                        spaceBetween: 8,
+                    },
+                    640: {
+                        slidesPerView: 5,
+                        spaceBetween: 8,
+                    }
+                }
+            });
+
+            // Baris 2: Geser ke Kanan (reverse direction)
+            var partnerSwiperRow2 = new Swiper('.partner-swiper-row2', {
+                slidesPerView: 4,
+                spaceBetween: 8,
+                loop: true,
+                autoplay: {
+                    delay: 0,
+                    disableOnInteraction: false,
+                    reverseDirection: true,
+                },
+                speed: 3000,
+                freeMode: true,
+                freeModeMomentum: false,
                 breakpoints: {
                     320: {
                         slidesPerView: 4,
